@@ -120,7 +120,8 @@ workflows:
                 "naca",
                 "tistos",
                 "meshSimpleSurface",
-                "meshPrismBlock"
+                "meshPrismBlock",
+                "simpleAxialRunner"
               ]
               oss: [
                 'ubuntu',

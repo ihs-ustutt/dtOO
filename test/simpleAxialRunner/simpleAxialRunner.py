@@ -1,3 +1,51 @@
+"""
+Create a very simple machine that consists only of an axial runner. First
+an object is created by:
+
+>>> machine = simpleAxialRunner()
+
+The channel is created by two splines each containing two control points. 
+Within the channel a mean plane is defined and a thickness distribution
+is added. The machine is created by: 
+
+>>> bundle = machine.create(alpha_2_1=40.0) 
+
+This results in a machine with an outlet angle at the shroud of 40 degree.
+
+The OpenFOAMCase is created by:
+
+>>> bundle.cptr_dC()["of"].runCurrentState()
+
+The current case is then written to a directory:
+
+>>> cDir = bundle.cptr_dC()["of"].getDirectory( 
+...   dtOO.lVHOstateHandler().commonState() 
+... )
+
+The `foamlib` package is used to modify the dicts.
+
+>>> import foamlib
+
+Initialize ``foamlib`` object
+
+>>> fc = foamlib.FoamCase( cDir )
+
+Before running the simulation the `writeInterval` and `endTime` is adjusted 
+by:
+
+>>> fc.control_dict['writeInterval'] = 25
+>>> fc.control_dict['endTime'] = 50
+
+Additionally, the flow is treated as laminar:
+
+>>> fc.turbulence_properties["RAS"]["turbulence"] = False
+
+The `foamlib` package is used to start the simulation:
+
+>>> fc.run() # doctest: +ELLIPSIS
+(of_...
+"""
+
 import logging
 logging.basicConfig(
   format='[ %(asctime)s - %(levelname)8s - %(filename)s:%(lineno)d ]'
@@ -18,68 +66,12 @@ import numpy as np
 class simpleAxialRunner:
   """Simple machine consisting of an axial runner only.
 
-  Create a very simple machine that consists only of an axial runner. First
-  an object is created by:
-
-  >>> machine = simpleAxialRunner()
-
-  The channel is created by two splines each containing two control points. 
-  Within the channel a mean plane is defined and a thickness distribution
-  is added. The machine is created by: 
-
-  >>> bundle = machine.create(alpha_2_1=40.0) 
-  
-  This results in a machine with an outlet angle at the shroud of 40 degree.
-
-  The OpenFOAMCase is created by:
-
-  >>> bundle.cptr_dC()["of"].runCurrentState()
-
-  The current case is then written to a directory:
-
-  >>> cDir = bundle.cptr_dC()["of"].getDirectory( 
-  ...   dtOO.lVHOstateHandler().commonState() 
-  ... )
-
-  The `foamlib` package is used to modify the dicts.
-
-  >>> import foamlib
-  
-  Initialize ``foamlib`` object
-
-  >>> fc = foamlib.FoamCase( cDir )
-
-  Before running the simulation the `writeInterval` and `endTime` is adjusted 
-  by:
-
-  >>> fc.control_dict['writeInterval'] = 25
-  >>> fc.control_dict['endTime'] = 50
-
-  Additionally, the flow is treated as laminar:
-
-  >>> fc.turbulence_properties["RAS"]["turbulence"] = False
-
-  The `foamlib` package is used to start the simulation:
-
-  >>> fc.run()
-
-  Attributes
+  Parameters
   ----------
   None
-
   """
  
   def __init__(self):
-    """Constructor.
-
-    Parameters
-    ----------
-    None
-
-    Returns
-    -------
-    None
-    """
     pass
 
   def create( 

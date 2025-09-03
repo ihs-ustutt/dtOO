@@ -231,6 +231,20 @@ add_test(
 set_tests_properties(floatAtt PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST floatAtt PROPERTY LABELS base-test)
 
+#
+# simpleAxialRunner
+#
+add_test(
+  NAME simpleAxialRunner
+  COMMAND
+    "${Python3_EXECUTABLE}" 
+    "-m" "doctest" 
+    "simpleAxialRunner.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/simpleAxialRunner
+)
+set_tests_properties(simpleAxialRunner PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+set_property(TEST simpleAxialRunner PROPERTY LABELS base-test)
+
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
     IF(IS_DIRECTORY ${dirPath})
