@@ -51,6 +51,14 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Test</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-dtOO.test.interTransMesh.interTransMesh">Transfinite Mesh <code class="docutils literal notranslate"><span class="pre">interTransMesh</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-dtOO.test.floatAtt.floatAtt">Minimization <code class="docutils literal notranslate"><span class="pre">floatAtt</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dtOO.test.simpleAxialRunner.simpleAxialRunner">Simple Axial Runner <code class="docutils literal notranslate"><span class="pre">simpleAxialRunner</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dtOO.test.simpleAxialRunner.simpleAxialRunner.CreateAndShow"><code class="docutils literal notranslate"><span class="pre">CreateAndShow()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dtOO.test.simpleAxialRunner.simpleAxialRunner.simpleAxialRunner"><code class="docutils literal notranslate"><span class="pre">simpleAxialRunner</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dtOO.test.simpleAxialRunner.simpleAxialRunner.simpleAxialRunner.create"><code class="docutils literal notranslate"><span class="pre">simpleAxialRunner.create()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API documentation</a></li>
@@ -410,6 +418,108 @@ iterations:</p>
 <span class="go">True</span>
 </pre></div>
 </div>
+</section>
+<section id="module-dtOO.test.simpleAxialRunner.simpleAxialRunner">
+<span id="simple-axial-runner-simpleaxialrunner"></span><h2>Simple Axial Runner <code class="docutils literal notranslate"><span class="pre">simpleAxialRunner</span></code><a class="headerlink" href="#module-dtOO.test.simpleAxialRunner.simpleAxialRunner" title="Link to this heading"></a></h2>
+<p>Create a very simple machine that consists only of an axial runner. First
+an object is created by:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">machine</span> <span class="o">=</span> <span class="n">simpleAxialRunner</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The channel is created by two splines each containing two control points.
+Within the channel a mean plane is defined and a thickness distribution
+is added. The machine is created by:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bundle</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">alpha_2_1</span><span class="o">=</span><span class="mf">40.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This results in a machine with an outlet angle at the shroud of 40 degree.</p>
+<p>The OpenFOAMCase is created by:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bundle</span><span class="o">.</span><span class="n">cptr_dC</span><span class="p">()[</span><span class="s2">&quot;of&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">runCurrentState</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The current case is then written to a directory:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cDir</span> <span class="o">=</span> <span class="n">bundle</span><span class="o">.</span><span class="n">cptr_dC</span><span class="p">()[</span><span class="s2">&quot;of&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">getDirectory</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">lVHOstateHandler</span><span class="p">()</span><span class="o">.</span><span class="n">commonState</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <cite>foamlib</cite> package is used to modify the dicts.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">foamlib</span>
+</pre></div>
+</div>
+<p>Initialize <code class="docutils literal notranslate"><span class="pre">foamlib</span></code> object</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fc</span> <span class="o">=</span> <span class="n">foamlib</span><span class="o">.</span><span class="n">FoamCase</span><span class="p">(</span> <span class="n">cDir</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Before running the simulation the <cite>writeInterval</cite> and <cite>endTime</cite> is adjusted
+by:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">&#39;writeInterval&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">&#39;endTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
+</pre></div>
+</div>
+<p>Additionally, the flow is treated as laminar:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fc</span><span class="o">.</span><span class="n">turbulence_properties</span><span class="p">[</span><span class="s2">&quot;RAS&quot;</span><span class="p">][</span><span class="s2">&quot;turbulence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>The <cite>foamlib</cite> package is used to start the simulation:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fc</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="go">(of_...</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="dtOO.test.simpleAxialRunner.simpleAxialRunner.CreateAndShow">
+<span class="sig-prename descclassname"><span class="pre">dtOO.test.simpleAxialRunner.simpleAxialRunner.</span></span><span class="sig-name descname"><span class="pre">CreateAndShow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dtOO/test/simpleAxialRunner/simpleAxialRunner.html#CreateAndShow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtOO.test.simpleAxialRunner.simpleAxialRunner.CreateAndShow" title="Link to this definition"></a></dt>
+<dd><p>Create and show machine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>List[ dtOO.dtBundle, dtOOInParaVIEW ]</em> – List containing the dtBundle and the render object for ParaVIEW.</p></li>
+<li><p><em>See Also</em></p></li>
+<li><p><em>———</em></p></li>
+<li><p><strong>simpleAxialRunner.create</strong> (<em>Create machine.</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dtOO.test.simpleAxialRunner.simpleAxialRunner.simpleAxialRunner">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtOO.test.simpleAxialRunner.simpleAxialRunner.</span></span><span class="sig-name descname"><span class="pre">simpleAxialRunner</span></span><a class="reference internal" href="_modules/dtOO/test/simpleAxialRunner/simpleAxialRunner.html#simpleAxialRunner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtOO.test.simpleAxialRunner.simpleAxialRunner.simpleAxialRunner" title="Link to this definition"></a></dt>
+<dd><p>Simple machine consisting of an axial runner only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dtOO.test.simpleAxialRunner.simpleAxialRunner.simpleAxialRunner.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha_1_0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">90.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_1_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">90.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2_0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">80.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">80.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dtOOPythonSWIG.dtBundle</span></span></span><a class="reference internal" href="_modules/dtOO/test/simpleAxialRunner/simpleAxialRunner.html#simpleAxialRunner.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtOO.test.simpleAxialRunner.simpleAxialRunner.simpleAxialRunner.create" title="Link to this definition"></a></dt>
+<dd><p>Create machine.</p>
+<p>The machine is created and dtOO’s logfile is created as <cite>build.log</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha_1_0</strong> (<em>float</em><em>, </em><em>default = 90.0</em>) – Inlet angle at hub.</p></li>
+<li><p><strong>alpha_1_1</strong> (<em>float</em><em>, </em><em>default = 90.0</em>) – Inlet angle at shroud.</p></li>
+<li><p><strong>alpha_2_0</strong> (<em>float</em><em>, </em><em>default = 80.0</em>) – Outlet angle at hub.</p></li>
+<li><p><strong>alpha_2_1</strong> (<em>float</em><em>, </em><em>default = 80.0</em>) – Outlet angle at shroud.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container that contains machine’s parts.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dtContainer</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 

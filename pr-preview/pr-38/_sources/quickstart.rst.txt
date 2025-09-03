@@ -5,25 +5,25 @@ The fastest way of trying dtOO is by using the provided image:
 
 .. code-block:: bash
 
-  docker pull atismer/dtoo:stable
+  docker pull atismer/dtoo-opensuse:stable
 
 You can simply run the container by executing:
 
 .. code-block:: bash
 
-  docker run -it atismer/dtoo:stable
+  docker run -it atismer/dtoo-opensuse:stable
 
-Within the container navigate to the demo case:
+Within the container navigate to the test case:
 
 .. code-block:: bash
 
-  cd /dtOO/demo/simpleAxialRunner
+  cd /dtOO/test/simpleAxialRunner
 
 Simulate the machine as a ``doctest`` in the container by:
 
 .. code-block:: python
 
-  python3.11 -m doctest simpleAxialRunner.py
+  python3.12 -m doctest simpleAxialRunner.py
 
 The geometry, mesh and simulation case is automatically created. Additionally,
 the simulation is performed. After a few minutes, you will see a folder named
@@ -35,10 +35,8 @@ Visualization
 -------------
 
 .. note::
-  Since 
-  `[dtOO-ThirdParty@7ec5a5a] <https://github.com/ihs-ustutt/dtOO-ThirdParty/commit/7ec5a5af8caa8e26ab2f63c76d8482eeb8c0c3ff>`_
-  and `[dtOO@07fc88] <https://github.com/ihs-ustutt/dtOO/commit/07fcd88e86e42123a17c692071eafaf4c8c96742>`_
-  the framework in the container is compiled with Python 3.11. Currently, 
+  Since `[dtOO@3e86741] <https://github.com/ihs-ustutt/dtOO/commit/3e86741d90e6b651376def3f3751eb390c8577f8>`_
+  the framework in the container is compiled with a new Python version. Currently, 
   the openSUSE Leap respositories provide ``paraview`` only compiled with 
   Python 3.6. Then, it is not possible to use the framework in ``paraview``'s 
   ``Python Shell``. Therefore, it is necessary to compile ``paraview`` in the 
@@ -72,18 +70,18 @@ before running the container by:
     -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
     dtoo-gui
 
-Within the container navigate to the demo case:
+Within the container navigate to the test case:
 
 .. code-block:: bash
 
-  cd /dtOO/demo/simpleAxialRunner
+  cd /dtOO/test/simpleAxialRunner
 
 You can open ``paraview`` and investigate the geometry. Adjust ``PYTHONPATH`` 
 and open ``paraview``  by:
 
 .. code-block:: bash
 
-  export PYTHONPATH=/dtOO/demo/simpleAxialRunner:$PYTHONPATH
+  export PYTHONPATH=/dtOO/test/simpleAxialRunner:$PYTHONPATH
   paraview
 
 Then, just open the ``Python Shell`` and type:
