@@ -27,77 +27,108 @@
                                         runTimeModifiable yes;
                                         writeFormat       binary;
                                         functions {
+        ptot {
+                type pressure ;
+                libs (fieldFunctionObjects) ;
+                mode total ;
+                result ptot ;
+                rho rhoInf ;
+                rhoInf 1.0 ;
+                writeControl writeTime ;
+                executeControl timeStep ;
+                executeInterval 1 ;
+        }        
         Q_ru_in {
-                type swakExpression ;
-                valueType patch ;
-                verbose true ;
-                patchName RU_INLET ;
-                expression &quot; phi &quot; ;
-                accumulations ( sum ) ;
-                outputInterval 1 ;
+                type surfaceFieldValue ;
+                libs (fieldFunctionObjects) ;
+                enabled yes ;
+                writeControl timeStep ;
+                regionType patch ;
+                names (RU_INLET) ;
+                operation sum ;
+                writeFields no ;
+                fields (phi) ;
         }
         Q_ru_out {
-                type swakExpression ;
-                valueType patch ;
-                verbose true ;
-                patchName RU_OUTLET ;
-                expression &quot; phi &quot; ;
-                accumulations ( sum ) ;
-                outputInterval 1 ;
+                type surfaceFieldValue ;
+                libs (fieldFunctionObjects) ;
+                enabled yes ;
+                writeControl timeStep ;
+                regionType patch ;
+                names (RU_OUTLET) ;
+                operation sum ;
+                writeFields no ;
+                fields (phi) ;
         }
         Q_ru_periops {
-        type swakExpression ;
-                valueType patch ;
-                verbose true ;
-                patchName RU_PERIOPS ;
-                expression &quot; phi &quot; ;
-                accumulations ( sum ) ;
-                outputInterval 1 ;
+                type surfaceFieldValue ;
+                libs (fieldFunctionObjects) ;
+                enabled yes ;
+                writeControl timeStep ;
+                regionType patch ;
+                names (RU_PERIOPS) ;
+                operation sum ;
+                writeFields no ;
+                fields (phi) ;
         }
         Q_ru_perioss {
-                type swakExpression ;
-                valueType patch ;
-                verbose true ;
-                patchName RU_PERIOSS ;
-                expression &quot; phi &quot; ;
-                accumulations ( sum ) ;
-                outputInterval 1 ;
+                type surfaceFieldValue ;
+                libs (fieldFunctionObjects) ;
+                enabled yes ;
+                writeControl timeStep ;
+                regionType patch ;
+                names (RU_PERIOSS) ;
+                operation sum ;
+                writeFields no ;
+                fields (phi) ;
         }
         ptot_ru_in {
-                type swakExpression ;
-                valueType patch ;
-                verbose true ;
-                patchName RU_INLET ;
-                expression &quot; (p+.5*magSqr(U)) * phi / sum( phi )&quot; ;
-                accumulations ( sum ) ;
-                outputInterval 1 ;
-                }
-                ptot_ru_out {
-                type swakExpression ;
-                valueType patch ;
-                verbose true ;
-                patchName RU_OUTLET ;
-                expression &quot; (p+.5*magSqr(U)) * phi / sum( phi )&quot; ;
-                accumulations ( sum ) ;
-                outputInterval 1 ;
+                type surfaceFieldValue ;
+                libs (fieldFunctionObjects) ;
+                enabled yes ;
+                writeControl timeStep ;
+                regionType patch ;
+                names (RU_INLET) ;
+                operation weightedAverage ;
+                weightField phi ;
+                writeFields no ;
+                fields (ptot) ;
+        }
+        ptot_ru_out {
+                type surfaceFieldValue ;
+                libs (fieldFunctionObjects) ;
+                enabled yes ;
+                writeControl timeStep ;
+                regionType patch ;
+                names (RU_OUTLET) ;
+                operation weightedAverage ;
+                weightField phi ;
+                writeFields no ;
+                fields (ptot) ;
         }
         ptot_ru_periops {
-                type swakExpression ;
-                valueType patch ;
-                verbose true ;
-                patchName RU_PERIOPS ;
-                expression &quot; (p+.5*magSqr(U)) * phi / sum( phi )&quot; ;
-                accumulations ( sum ) ;
-                outputInterval 1 ;
-                }
-                ptot_ru_perioss {
-                type swakExpression ;
-                valueType patch ;
-                verbose true ;
-                patchName RU_PERIOSS ;
-                expression &quot; (p+.5*magSqr(U)) * phi / sum( phi )&quot; ;
-                accumulations ( sum ) ;
-                outputInterval 1 ;
+                type surfaceFieldValue ;
+                libs (fieldFunctionObjects) ;
+                enabled yes ;
+                writeControl timeStep ;
+                regionType patch ;
+                names (RU_PERIOPS) ;
+                operation weightedAverage ;
+                weightField phi ;
+                writeFields no ;
+                fields (ptot) ;
+        }
+        ptot_ru_perioss {
+                type surfaceFieldValue ;
+                libs (fieldFunctionObjects) ;
+                enabled yes ;
+                writeControl timeStep ;
+                regionType patch ;
+                names (RU_PERIOSS) ;
+                operation weightedAverage ;
+                weightField phi ;
+                writeFields no ;
+                fields (ptot) ;
         }
         forces {
                 type forces ;
@@ -111,15 +142,13 @@
                 CofR ( 0 0 0 ) ;
         }
         V_CAV {
-                type swakExpression ;
-                valueType internalField ;
-                verbose true ;
-                variables (
-                &quot;x= 1;&quot; &quot;x=(p&gt;-97.7)?0:x;&quot;
-                );
-                expression &quot;x*vol()&quot;;
-                accumulations ( sum ) ;
-                outputInterval 1 ;
+                type cavitationVolume ;
+                libs (cavitationVolume) ;
+                enabled yes ;
+                writeControl timeStep ;
+                operation sum ;
+                writeFields no ;
+                fields (p) ;
         }
 
         
@@ -172,8 +201,6 @@
         }
 
         libs (
-                                                &quot;libsimpleFunctionObjects.so&quot;
-                                                &quot;libsimpleSwakFunctionObjects.so&quot;
                                                 &quot;libmappedFieldFixedValue.so&quot;
                                         );
                 }
