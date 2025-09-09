@@ -60,8 +60,11 @@
           number_points_two="5"
           order="3"
           nf="v3_zz"
-	  closeU="true"
-	  closeSmooth="0.1"
+          skinOrderMin="2"
+          skinOrderMax="2"
+          skinNIterations="3"
+          closeU="true"
+          closeSmooth="0.5"
         />
         <analyticFunction label="vec3d2d_{ii}_blade"/>
       </builder>
