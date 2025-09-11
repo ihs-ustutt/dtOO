@@ -19,7 +19,14 @@ jobs:
             GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
             GIT_THIRDPARTY_SHA=`git ls-tree HEAD dtOO-ThirdParty | awk '{print $3}'`
             DOCKER_TAG=unstable
-            if [[ "$GIT_BRANCH" == "main" ]]; then DOCKER_TAG=stable ; fi
+            GIT_CIRCLECI_OPTS=""
+            if [[ "$GIT_BRANCH" == "main" ]]; then DOCKER_TAG=stable ; \
+            else GIT_CIRCLECI_OPTS=`git log --format=raw -n 1 ${CIRCLE_SHA1} \
+                | grep -oP "circleci:[a-z0-9= ]+:" \
+                | sed -e "s%circleci%%g" \
+                | sed -e "s%:%%g"` ; \
+            fi
+            echo "${GIT_CIRCLECI_OPTS}"
             docker build \
               --build-arg "TAG=${GIT_THIRDPARTY_SHA}" \
               --build-arg "GIT_REV=${GIT_REV}" \
