@@ -55,7 +55,7 @@ jobs:
   test:
     docker:
       - image: "cimg/base:current"
-    resource_class: small
+    resource_class: large
     parameters:
       tregs:
         type: string
