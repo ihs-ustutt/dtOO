@@ -60,17 +60,6 @@ jobs:
             docker push \
               --all-tags \
               ${DOCKER_USERNAME}/dtoo-ubuntu
-  fakebuild:
-    docker:
-      - image: "cimg/base:current"
-    resource_class: small
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Build and Push Docker image
-          command: |
-            echo "Fake build"
   test:
     docker:
       - image: "cimg/base:current"
@@ -90,14 +79,13 @@ jobs:
             docker run \
               -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
               bash --login -c \
-              "cd /dtOO/build && ctest -R '^<< parameters.tregs >>$|^<< parameters.tregs >>.*<< parameters.oss >>.*'"
+              "cd /dtOO/build && ctest -VV -R '^<< parameters.tregs >>$|^<< parameters.tregs >>.*<< parameters.oss >>.*'"
 
 workflows:
   wf-build:
     jobs:
       - build-opensuse
       - build-ubuntu
-      #- fakebuild
       - test:
           requires:
             - build-opensuse
