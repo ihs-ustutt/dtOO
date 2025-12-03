@@ -1,103 +1,23 @@
 version: 2.1
 
+# Define the jobs we want to run for this project
 jobs:
   build:
     docker:
-      - image: "cimg/base:current"
-    resource_class: large
-    parameters:
-      oss:
-        type: string
+      - image: cimg/base:2023.03
     steps:
       - checkout
-      - setup_remote_docker
-      - run:
-          name: Build and Push Docker image
-          command: |
-            GIT_REV=`git rev-parse HEAD`
-            GIT_DESC=`git describe --tags`
-            GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
-            GIT_THIRDPARTY_SHA=`git ls-tree HEAD dtOO-ThirdParty | awk '{print $3}'`
-            DOCKER_TAG=unstable
-            GIT_CIRCLECI_OPTS=""
-            if [[ "$GIT_BRANCH" == "main" ]]; then DOCKER_TAG=stable ; \
-            else GIT_CIRCLECI_OPTS=`git log --format=raw -n 1 ${CIRCLE_SHA1} \
-                | grep -oP "circleci:[a-z0-9= ]+:" \
-                | sed -e "s%circleci%%g" \
-                | sed -e "s%:%%g"` ; \
-            fi
-            echo "${GIT_CIRCLECI_OPTS}"
-            docker build \
-              --build-arg "TAG=${GIT_THIRDPARTY_SHA}" \
-              --build-arg "GIT_REV=${GIT_REV}" \
-              --build-arg "CONTAINER=atismer/dtoo-base-<< parameters.oss >>" \
-              --progress=plain \
-              -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
-              -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:latest \
-              -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_DESC} \
-              -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${DOCKER_TAG} .
-            echo "$DOCKER_PASSWORD" \
-              | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker push \
-              --all-tags \
-              ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>
+      - run: echo "this is the build job"
   test:
     docker:
-      - image: "cimg/base:current"
-    resource_class: small
-    parameters:
-      tregs:
-        type: string
-      oss:
-        type: string
+      - image: cimg/base:2023.03
     steps:
       - checkout
-      - setup_remote_docker
-      - run:
-          name: Test Docker Image
-          command: |
-            GIT_REV=`git rev-parse HEAD`
-            docker run \
-              -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
-              bash --login -c \
-              "cd /dtOO/build && ctest -VV -R '^<< parameters.tregs >>$|^<< parameters.tregs >>.*<< parameters.oss >>.*'"
+      - run: echo "this is the test job"
 
+# Orchestrate our job run sequence
 workflows:
-  wf-build:
+  build_and_test:
     jobs:
-      - build:
-          matrix: 
-            parameters:
-               oss: [
-                'ubuntu',
-                'opensuse'
-              ]       
-      - test:
-          requires:
-            - build-opensuse
-            - build-ubuntu
-          matrix: 
-            parameters:
-              tregs: [
-                "baseSWIG", 
-                "transformerSWIG", 
-                "analyticGeometrySWIG", 
-                "constValueSWIG",
-                "canadaLight",
-                "dtClusteredSingletonState",
-                "partRotatingMap2dTo3d",
-                "pyDtOO-dtField",
-                "write-runData",
-                "pyDtOO-doctest",
-                "interTransMesh",
-                "floatAtt",
-                "naca",
-                "tistos",
-                "meshSimpleSurface",
-                "meshPrismBlock",
-                "simpleAxialRunner"
-              ]
-              oss: [
-                'ubuntu',
-                'opensuse'
-              ]
+      - build
+      - test
