@@ -1,23 +1,127 @@
 version: 2.1
 
-# Define the jobs we want to run for this project
 jobs:
   build:
     docker:
-      - image: cimg/base:2023.03
+      - image: "cimg/base:current"
+    resource_class: large
+    parameters:
+      oss:
+        type: string
     steps:
       - checkout
-      - run: echo "this is the build job"
+      - setup_remote_docker
+      - run:
+          name: Build and Push Docker image
+          command: |
+            GIT_REV=`git rev-parse HEAD`
+            GIT_DESC=`git describe --tags`
+            GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+            GIT_THIRDPARTY_SHA=`git ls-tree HEAD dtOO-ThirdParty | awk '{print $3}'`
+            DOCKER_TAG=unstable
+            GIT_CIRCLECI_OPTS=`git log --format=raw -n 1 ${CIRCLE_SHA1}`
+            _useSha=""
+            if [[ "$GIT_BRANCH" == "main" ]]; then 
+              DOCKER_TAG=stable
+            else 
+              if echo "$GIT_CIRCLECI_OPTS" | grep -oP "circleci:[a-z0-9= ]+:"; then
+                echo "Options for CircleCI detected."
+                GIT_CIRCLECI_OPTS=`git log --format=raw -n 1 ${CIRCLE_SHA1} \
+                  | grep -oP "circleci:[a-z0-9= ]+:" \
+                  | sed -e "s%circleci%%g" \
+                  | sed -e "s%:%%g"`
+                if echo "$GIT_CIRCLECI_OPTS" | grep -oP "nobuild="; then
+                  echo "  nobuild option detected."
+                  _useSha=`echo "${GIT_CIRCLECI_OPTS}" \
+                    | grep -oP "nobuild=[^ ]+"`
+                  _useSha=${_useSha//nobuild=/}
+                fi
+              else
+                GIT_CIRCLECI_OPTS=""
+              fi
+            fi
+            echo "GIT_CIRCLECI_OPTS=${GIT_CIRCLECI_OPTS}"
+            echo "_useSha=${_useSha}"
+            echo "$DOCKER_PASSWORD" \
+              | docker login -u "$DOCKER_USERNAME" --password-stdin
+            if [ -z "$_useSha" ]; then
+              docker build \
+                --build-arg "TAG=${GIT_THIRDPARTY_SHA}" \
+                --build-arg "GIT_REV=${GIT_REV}" \
+                --build-arg "CONTAINER=atismer/dtoo-base-<< parameters.oss >>" \
+                --progress=plain \
+                -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
+                -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:latest \
+                -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_DESC} \
+                -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${DOCKER_TAG} .
+              docker push \
+                --all-tags \
+                ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>
+            else
+              docker buildx imagetools \
+                create ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${_useSha} \
+                --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
+                --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:latest \
+                --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_DESC} \
+                --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${DOCKER_TAG}
+            fi 
   test:
     docker:
-      - image: cimg/base:2023.03
+      - image: "cimg/base:current"
+    resource_class: medium
+    parameters:
+      tregs:
+        type: string
+      oss:
+        type: string
     steps:
       - checkout
-      - run: echo "this is the test job"
+      - setup_remote_docker
+      - run:
+          name: Test Docker Image
+          command: |
+            GIT_REV=`git rev-parse HEAD`
+            docker run \
+              -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
+              bash --login -c \
+              "cd /dtOO/build && ctest -VV -R '^<< parameters.tregs >>$|^<< parameters.tregs >>.*<< parameters.oss >>.*'"
 
-# Orchestrate our job run sequence
 workflows:
-  build_and_test:
+  wf-build:
     jobs:
-      - build
-      - test
+      - build:
+          matrix: 
+            parameters:
+               oss: [
+                'ubuntu',
+                'opensuse'
+              ]       
+      - test:
+          requires:
+            - build-opensuse
+            - build-ubuntu
+          matrix: 
+            parameters:
+              tregs: [
+                "baseSWIG", 
+                "transformerSWIG", 
+                "analyticGeometrySWIG", 
+                "constValueSWIG",
+                "canadaLight",
+                "dtClusteredSingletonState",
+                "partRotatingMap2dTo3d",
+                "pyDtOO-dtField",
+                "write-runData",
+                "pyDtOO-doctest",
+                "interTransMesh",
+                "floatAtt",
+                "naca",
+                "tistos",
+                "meshSimpleSurface",
+                "meshPrismBlock",
+                "simpleAxialRunner"
+              ]
+              oss: [
+                'ubuntu',
+                'opensuse'
+              ]
