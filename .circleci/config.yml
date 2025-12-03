@@ -31,7 +31,7 @@ jobs:
             _useSha=${_useSha//nobuild=/}
             echo "$DOCKER_PASSWORD" \
               | docker login -u "$DOCKER_USERNAME" --password-stdin
-            if [ -z "$_useSha" ]; then
+            if [ -z "$_useSha" ]; then \
               docker build \
                 --build-arg "TAG=${GIT_THIRDPARTY_SHA}" \
                 --build-arg "GIT_REV=${GIT_REV}" \
@@ -40,17 +40,17 @@ jobs:
                 -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
                 -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:latest \
                 -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_DESC} \
-                -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${DOCKER_TAG} .
+                -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${DOCKER_TAG} . ; \
               docker push \
                 --all-tags \
-                ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>
-            else
+                ${DOCKER_USERNAME}/dtoo-<< parameters.oss >> ; \
+            else \
               docker buildx imagetools \
                 create ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${_useSha} \
                 --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
                 --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:latest \
                 --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_DESC} \
-                --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${DOCKER_TAG}
+                --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${DOCKER_TAG} ; \
             fi 
   test:
     docker:
