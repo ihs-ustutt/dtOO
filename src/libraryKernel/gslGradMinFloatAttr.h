@@ -35,7 +35,7 @@ public:
     dtReal const &precision,
     dtInt const &maxIterations = 100
   )
-    : minFloatAttr(attribute, guess, step, precision, maxIterations){};
+    : minFloatAttr(attribute, guess, step, precision, maxIterations) {};
   gslGradMinFloatAttr(
     dt__pH(floatAtt) const &attribute,
     dtPoint2 const &guess,
@@ -43,7 +43,7 @@ public:
     dtReal const &precision,
     dtInt const &maxIterations = 100
   )
-    : minFloatAttr(attribute, guess, step, precision, maxIterations){};
+    : minFloatAttr(attribute, guess, step, precision, maxIterations) {};
   gslGradMinFloatAttr(
     dt__pH(floatAtt) const &attribute,
     std::vector<dtPoint2> const &guess,
@@ -51,7 +51,7 @@ public:
     dtReal const &precision,
     dtInt const &maxIterations = 100
   )
-    : minFloatAttr(attribute, guess, step, precision, maxIterations){};
+    : minFloatAttr(attribute, guess, step, precision, maxIterations) {};
   gslGradMinFloatAttr(
     dt__pH(floatAtt) const &attribute,
     dtPoint3 const &guess,
@@ -59,7 +59,7 @@ public:
     dtReal const &precision,
     dtInt const &maxIterations = 100
   )
-    : minFloatAttr(attribute, guess, step, precision, maxIterations){};
+    : minFloatAttr(attribute, guess, step, precision, maxIterations) {};
   gslGradMinFloatAttr(
     dt__pH(floatAtt) const &attribute,
     std::vector<dtPoint3> const &guess,
@@ -67,7 +67,7 @@ public:
     dtReal const &precision,
     dtInt const &maxIterations = 100
   )
-    : minFloatAttr(attribute, guess, step, precision, maxIterations){};
+    : minFloatAttr(attribute, guess, step, precision, maxIterations) {};
   gslGradMinFloatAttr(
     dt__pH(floatAtt) const &attribute,
     dtReal const &guess,
@@ -75,8 +75,8 @@ public:
     dtReal const &precision,
     dtInt const &maxIterations = 100
   )
-    : minFloatAttr(attribute, guess, step, precision, maxIterations){};
-  gslGradMinFloatAttr(minFloatAttr const &orig) : minFloatAttr(orig){};
+    : minFloatAttr(attribute, guess, step, precision, maxIterations) {};
+  gslGradMinFloatAttr(minFloatAttr const &orig) : minFloatAttr(orig) {};
   virtual ~gslGradMinFloatAttr();
   virtual gslGradMinFloatAttr *clone(void) const;
   virtual bool perform();
