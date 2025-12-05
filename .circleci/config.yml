@@ -25,13 +25,13 @@ jobs:
               DOCKER_TAG=stable
             else 
               if echo "$GIT_CIRCLECI_OPTS" | grep -oP "circleci:[a-z0-9= ]+:"; then
-                echo "Options for CircleCI detected."
+                echo "-> Options for CircleCI detected."
                 GIT_CIRCLECI_OPTS=`git log --format=raw -n 1 ${CIRCLE_SHA1} \
                   | grep -oP "circleci:[a-z0-9= ]+:" \
                   | sed -e "s%circleci%%g" \
                   | sed -e "s%:%%g"`
                 if echo "$GIT_CIRCLECI_OPTS" | grep -oP "nobuild="; then
-                  echo "  nobuild option detected."
+                  echo "  -> nobuild option detected."
                   _useSha=`echo "${GIT_CIRCLECI_OPTS}" \
                     | grep -oP "nobuild=[^ ]+"`
                   _useSha=${_useSha//nobuild=/}
