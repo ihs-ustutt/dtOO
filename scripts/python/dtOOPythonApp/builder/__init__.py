@@ -59,3 +59,12 @@ from .map3dTo3dGmsh_gridFromChannel import (
 from .rotatingMap2dTo3d_splitFitted import (
   rotatingMap2dTo3d_splitFitted
 )
+from .analyticGeometry_piecewiseMeridionalRotContour import (
+  analyticGeometry_piecewiseMeridionalRotContour
+)
+from .draftTubeCenterline import draftTubeCenterline
+from .draftTubeCone import draftTubeCone
+from .draftTubeDiffusor import draftTubeDiffusor
+from .draftTubeElbow import draftTubeElbow
+from .draftTubeParameterDistribution import draftTubeParameterDistribution
+
