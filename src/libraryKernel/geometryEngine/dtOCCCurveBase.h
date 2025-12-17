@@ -22,6 +22,7 @@ License
 
 // clang-format off
 #include <dtLinearAlgebra.h>
+#include <Standard_Handle.hxx>
 #include <Geom_Curve.hxx>
 // clang-format on
 #include <logMe/dtMacros.h>
