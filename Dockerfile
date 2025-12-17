@@ -26,7 +26,6 @@ RUN cmake \
   -DCMAKE_INSTALL_PREFIX=${DTOO_EXTERNLIBS} \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
   -DPython3_EXECUTABLE=$(which python3.12) \
-  -DDTOO_OCC_78=ON \
   ..
 RUN make -j ${NCPU} install
 
