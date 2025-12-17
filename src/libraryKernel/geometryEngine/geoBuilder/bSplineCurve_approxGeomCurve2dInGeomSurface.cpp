@@ -41,13 +41,11 @@ bSplineCurve_approxGeomCurve2dInGeomSurface ::
     dtCurve2d const *const dtC2d, dtSurface const *const dtS
   )
 {
-  Handle(Geom2d_Curve) gc = Handle(Geom2d_Curve)::DownCast(
-    dtOCCCurve2d::ConstDownCast(dtC2d)->OCCRef().getOCC()->Copy()
-  );
+  Handle(Geom2d_Curve) gc = Handle(Geom2d_Curve
+  )::DownCast(dtOCCCurve2d::ConstDownCast(dtC2d)->OCCRef().getOCC()->Copy());
 
-  Handle(Geom_Surface) gs = Handle(Geom_Surface)::DownCast(
-    dtOCCSurface::ConstDownCast(dtS)->OCCRef().getOCC()->Copy()
-  );
+  Handle(Geom_Surface) gs = Handle(Geom_Surface
+  )::DownCast(dtOCCSurface::ConstDownCast(dtS)->OCCRef().getOCC()->Copy());
 
   Handle(Adaptor2d_Curve2d) hc = new Geom2dAdaptor_Curve(gc);
   Handle(Adaptor3d_Surface) hs = new GeomAdaptor_Surface(gs);
