@@ -1,0 +1,779 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dtOO.test.simpleAxialRunner.simpleAxialRunner &mdash; dtOO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html">
+            
+              <img src="../../../../_static/dtoo-logo-inv-nbg.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demonstration.html">Demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../test.html">Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/ihs-ustutt/dtOO">Back to GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">dtOO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dtOO.test.simpleAxialRunner.simpleAxialRunner</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dtOO.test.simpleAxialRunner.simpleAxialRunner</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Create a very simple machine that consists only of an axial runner. First</span>
+<span class="sd">an object is created by:</span>
+
+<span class="sd">&gt;&gt;&gt; machine = simpleAxialRunner()</span>
+
+<span class="sd">The channel is created by two splines each containing two control points. </span>
+<span class="sd">Within the channel a mean plane is defined and a thickness distribution</span>
+<span class="sd">is added. The machine is created by: </span>
+
+<span class="sd">&gt;&gt;&gt; bundle = machine.create(alpha_2_1=40.0) </span>
+
+<span class="sd">This results in a machine with an outlet angle at the shroud of 40 degree.</span>
+
+<span class="sd">The OpenFOAMCase is created by:</span>
+
+<span class="sd">&gt;&gt;&gt; bundle.cptr_dC()[&quot;of&quot;].runCurrentState()</span>
+
+<span class="sd">The current case is then written to a directory:</span>
+
+<span class="sd">&gt;&gt;&gt; cDir = bundle.cptr_dC()[&quot;of&quot;].getDirectory( </span>
+<span class="sd">...   dtOO.lVHOstateHandler().commonState() </span>
+<span class="sd">... )</span>
+
+<span class="sd">The `foamlib` package is used to modify the dicts.</span>
+
+<span class="sd">&gt;&gt;&gt; import foamlib</span>
+
+<span class="sd">Initialize ``foamlib`` object</span>
+
+<span class="sd">&gt;&gt;&gt; fc = foamlib.FoamCase( cDir )</span>
+
+<span class="sd">Before running the simulation the `writeInterval` and `endTime` is adjusted </span>
+<span class="sd">by:</span>
+
+<span class="sd">&gt;&gt;&gt; fc.control_dict[&#39;writeInterval&#39;] = 25</span>
+<span class="sd">&gt;&gt;&gt; fc.control_dict[&#39;endTime&#39;] = 50</span>
+
+<span class="sd">Additionally, the flow is treated as laminar:</span>
+
+<span class="sd">&gt;&gt;&gt; fc.turbulence_properties[&quot;RAS&quot;][&quot;turbulence&quot;] = False</span>
+
+<span class="sd">The `foamlib` package is used to start the simulation:</span>
+
+<span class="sd">&gt;&gt;&gt; fc.run() # doctest: +ELLIPSIS</span>
+<span class="sd">(of_...</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+  <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;[ </span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(levelname)8s</span><span class="s1"> - </span><span class="si">%(filename)s</span><span class="s1">:</span><span class="si">%(lineno)d</span><span class="s1"> ]&#39;</span>
+         <span class="s1">&#39; - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span> 
+  <span class="n">datefmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">-%b-%y %H:%M:%S&#39;</span><span class="p">,</span> 
+  <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
+<span class="p">)</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Debug&quot;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Info&quot;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Warning&quot;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dtOO</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<div class="viewcode-block" id="simpleAxialRunner">
+<a class="viewcode-back" href="../../../../test.html#dtOO.test.simpleAxialRunner.simpleAxialRunner.simpleAxialRunner">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">simpleAxialRunner</span><span class="p">:</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Simple machine consisting of an axial runner only.</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  None</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+ 
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<div class="viewcode-block" id="simpleAxialRunner.create">
+<a class="viewcode-back" href="../../../../test.html#dtOO.test.simpleAxialRunner.simpleAxialRunner.simpleAxialRunner.create">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span> 
+    <span class="bp">self</span><span class="p">,</span> 
+    <span class="n">alpha_1_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">90.0</span><span class="p">,</span> 
+    <span class="n">alpha_1_1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">90.0</span><span class="p">,</span> 
+    <span class="n">alpha_2_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">80.0</span><span class="p">,</span> 
+    <span class="n">alpha_2_1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">80.0</span>
+  <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtBundle</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create machine.</span>
+<span class="sd">  </span>
+<span class="sd">    The machine is created and dtOO&#39;s logfile is created as `build.log`.</span>
+<span class="sd">  </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    alpha_1_0: float, default = 90.0</span>
+<span class="sd">      Inlet angle at hub.</span>
+<span class="sd">    alpha_1_1: float, default = 90.0</span>
+<span class="sd">      Inlet angle at shroud.</span>
+<span class="sd">    alpha_2_0: float, default = 80.0</span>
+<span class="sd">      Outlet angle at hub.</span>
+<span class="sd">    alpha_2_1: float, default = 80.0</span>
+<span class="sd">      Outlet angle at shroud.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dtContainer</span>
+<span class="sd">      Container that contains machine&#39;s parts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create an empty container</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtBundle</span><span class="p">()</span>
+
+    <span class="c1"># Create log file</span>
+    <span class="n">dtOO</span><span class="o">.</span><span class="n">logMe</span><span class="o">.</span><span class="n">initLog</span><span class="p">(</span><span class="s1">&#39;build.log&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Init staticProperties</span>
+    <span class="n">dtOO</span><span class="o">.</span><span class="n">staticPropertiesHandler</span><span class="o">.</span><span class="n">getInstance</span><span class="p">()</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+      <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">(</span>
+        <span class="s1">&#39;{&#39;</span>
+          <span class="s1">&#39;&quot;option&quot; : [&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;reparamOnFace_precision&quot;, &quot;value&quot; : &quot;1.e-06&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;reparamInVolume_precision&quot;,&quot;value&quot; : &quot;1.e-06&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;reparam_internalRestarts&quot;, &quot;value&quot; : &quot;10&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;reparam_restarts&quot;, &quot;value&quot; : &quot;10&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;reparam_restartIncreasePrecision&quot;, &quot;value&quot; : &quot;10.&quot;},&#39;</span>
+            <span class="s1">&#39;{&#39;</span>
+              <span class="s1">&#39;&quot;name&quot; : &quot;reparam_internalRestartDecreasePrecision&quot;,&#39;</span>
+              <span class="s1">&#39; &quot;value&quot; : &quot;0.9&quot;&#39;</span>
+            <span class="s1">&#39;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;invY_precision&quot;, &quot;value&quot; : &quot;1.e-04&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;xyz_resolution&quot;, &quot;value&quot; : &quot;1.e-06&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;XYZ_resolution&quot;, &quot;value&quot; : &quot;1.e-05&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;uvw_resolution&quot;, &quot;value&quot; : &quot;1.e-04&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;point_render_diameter&quot;, &quot;value&quot; : &quot;0.005&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;vector_render_size&quot;, &quot;value&quot; : &quot;0.05&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;function_render_resolution_u&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;function_render_resolution_v&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;function_render_resolution_w&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;geometry_render_resolution_u&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;geometry_render_resolution_v&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;geometry_render_resolution_w&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;logLevel&quot;, &quot;value&quot; : &quot;99&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;isEqualExtendCheck&quot;, &quot;value&quot; : &quot;false&quot;}&#39;</span>
+          <span class="s1">&#39;]&#39;</span>
+        <span class="s1">&#39;}&#39;</span>
+      <span class="p">)</span>
+    <span class="p">)</span>
+  
+    <span class="c1"># Init baseContainer and labeledVectorHandlings</span>
+    <span class="n">bC</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_bC</span><span class="p">()</span>
+    <span class="n">cV</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_cV</span><span class="p">()</span>
+
+    <span class="c1"># at least one constValue is necessary for creating states</span>
+    <span class="n">cV</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span>
+      <span class="n">dtOO</span><span class="o">.</span><span class="n">sliderFloatParam</span><span class="p">(</span><span class="s2">&quot;QIn&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="c1"># clearing prevents segmentation fault</span>
+    <span class="n">dtOO</span><span class="o">.</span><span class="n">lVHOstateHandler</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">dtOO</span><span class="o">.</span><span class="n">lVHOstateHandler</span><span class="p">(</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">(),</span> <span class="n">cV</span> <span class="p">)</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
+   
+    <span class="n">aF</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_aF</span><span class="p">()</span> 
+    <span class="n">aG</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_aG</span><span class="p">()</span> 
+    <span class="n">bV</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_bV</span><span class="p">()</span> 
+    <span class="n">dC</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_dC</span><span class="p">()</span> 
+    <span class="n">dP</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_dP</span><span class="p">()</span> 
+
+    <span class="c1"># channel</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+      <span class="n">rotatingMap2dTo3d_hubShroudCreate</span>
+    <span class="p">)</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">rotatingMap2dTo3d_hubShroudCreate</span><span class="p">(</span>
+      <span class="s2">&quot;xyz_channel&quot;</span><span class="p">,</span>
+      <span class="n">shroudPoints</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">2.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">),</span>  
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">2.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span>  
+      <span class="p">],</span>
+      <span class="n">hubPoints</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">),</span>  
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span>  
+      <span class="p">],</span>
+      <span class="n">order</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="n">rotVector</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="n">container</span> <span class="p">)</span>
+
+    <span class="c1"># conformalMapping</span>
+    <span class="n">theT</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">uVw_phirMs</span><span class="p">()</span>
+    <span class="n">theT</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+      <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">()</span>\
+        <span class="o">.</span><span class="n">appendStr</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;uVw_phirMs&quot;</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_nV&quot;</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_nW&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>\
+          <span class="s2">&quot;_rM2d&quot;</span><span class="p">,</span> \
+          <span class="n">aG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;xyz_channel&quot;</span><span class="p">)</span>\
+        <span class="p">),</span>\
+      <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">aG</span> \
+    <span class="p">)</span>
+    <span class="n">bC</span><span class="o">.</span><span class="n">dtTransformer</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">theT</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+
+    <span class="c1"># meanplane</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+      <span class="n">analyticSurface_threePointMeanplane</span><span class="p">,</span>
+      <span class="n">analyticSurface_threePointMeanplaneFromRatio</span><span class="p">,</span>
+      <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span>
+    <span class="p">)</span>
+    <span class="c1"># ru</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">analyticSurface_threePointMeanplaneFromRatio</span><span class="p">(</span>
+      <span class="s2">&quot;meanplane&quot;</span><span class="p">,</span>
+      <span class="n">spanwiseCuts</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="mf">0.00</span><span class="p">,</span>  
+        <span class="mf">0.50</span><span class="p">,</span>  
+        <span class="mf">1.00</span><span class="p">,</span>
+      <span class="p">],</span>
+      <span class="n">alphaOne</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="n">alpha_1_0</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="n">alpha_1_1</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="mi">1</span>
+      <span class="p">)(),</span>
+      <span class="n">alphaTwo</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="n">alpha_2_0</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="n">alpha_2_1</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="mi">1</span>
+      <span class="p">)(),</span>
+      <span class="n">ratioX</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">),</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">),</span>  
+        <span class="p">],</span>
+        <span class="mi">1</span>
+      <span class="p">)(),</span>
+      <span class="n">deltaY</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.30</span><span class="p">),</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.80</span><span class="p">),</span>  
+        <span class="p">],</span>
+        <span class="mi">1</span>
+      <span class="p">)(),</span>
+      <span class="n">offX</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="mi">1</span>
+      <span class="p">)(),</span>
+      <span class="n">offY</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="mi">1</span>
+      <span class="p">)(),</span>
+      <span class="n">targetLength</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.50</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="mi">2</span>
+      <span class="p">)(),</span>
+      <span class="n">targetLengthTolerance</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+      <span class="n">originOnLengthPercent</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="n">container</span> <span class="p">)</span>
+
+    <span class="c1"># blade thickness distribution</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+      <span class="n">vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution</span>
+    <span class="p">)</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution</span><span class="p">(</span>
+      <span class="s2">&quot;thicknessDistribution&quot;</span><span class="p">,</span>
+      <span class="n">spanwiseCuts</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="mf">0.00</span><span class="p">,</span>  
+        <span class="mf">1.00</span><span class="p">,</span>
+      <span class="p">],</span>
+      <span class="n">tLe</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="mi">1</span>
+      <span class="p">)(),</span>
+      <span class="n">uLe</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="mi">1</span>
+      <span class="p">)(),</span>
+      <span class="n">tMid</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="mi">1</span>
+      <span class="p">)(),</span>
+      <span class="n">uMid</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="mi">1</span>
+      <span class="p">)(),</span>
+      <span class="n">tTe</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="mi">1</span>
+      <span class="p">)(),</span>
+      <span class="n">uTe</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.80</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.80</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="mi">1</span>
+      <span class="p">)()</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="n">container</span> <span class="p">)</span>
+
+    <span class="c1"># blade</span>
+    <span class="n">dAdd</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">discreteAddNormal</span><span class="p">()</span>
+    <span class="n">dAdd</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+      <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">(</span>
+        <span class="s1">&#39;{&quot;option&quot; : [{&quot;name&quot; : &quot;debug&quot;, &quot;value&quot; : &quot;false&quot;}]}&#39;</span>
+      <span class="p">)</span>\
+        <span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="s2">&quot;_tt&quot;</span><span class="p">,</span> <span class="n">aF</span><span class="p">[</span><span class="s2">&quot;thicknessDistribution&quot;</span><span class="p">])</span>\
+        <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_nU&quot;</span><span class="p">,</span> <span class="mi">61</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_nV&quot;</span><span class="p">,</span> <span class="mi">41</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_order&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">appendDtVector3</span><span class="p">(</span><span class="s2">&quot;_nf&quot;</span><span class="p">,</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span>
+      <span class="n">bC</span><span class="p">,</span> <span class="n">cV</span><span class="p">,</span> <span class="n">aF</span><span class="p">,</span> <span class="n">aG</span>
+    <span class="p">)</span>
+    <span class="n">theAF</span> <span class="o">=</span> <span class="n">dAdd</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span> 
+      <span class="n">aF</span><span class="p">[</span><span class="s2">&quot;meanplane&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">theAF</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;blade&quot;</span><span class="p">)</span>
+    <span class="n">aF</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAF</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+   
+    <span class="c1"># mesh block</span>
+    <span class="n">fRef</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dMuParserTwoD</span><span class="p">(</span>
+      <span class="s2">&quot;1.0*0.15, xx, yy&quot;</span><span class="p">,</span> <span class="s2">&quot;xx&quot;</span><span class="p">,</span> <span class="s2">&quot;yy&quot;</span>
+    <span class="p">)</span>
+    <span class="n">fRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;thicknessMeshBlock&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+      <span class="n">fRef</span><span class="o">.</span><span class="n">setMin</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.0</span><span class="p">)</span>
+      <span class="n">fRef</span><span class="o">.</span><span class="n">setMax</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">aF</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">fRef</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+    <span class="n">dAdd</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">discreteAddNormal</span><span class="p">()</span>
+    <span class="n">dAdd</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+      <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">(</span>
+        <span class="s1">&#39;{&quot;option&quot; : [{&quot;name&quot; : &quot;debug&quot;, &quot;value&quot; : &quot;false&quot;}]}&#39;</span>
+        <span class="p">)</span>\
+        <span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="s2">&quot;_tt&quot;</span><span class="p">,</span> <span class="n">aF</span><span class="p">[</span><span class="s2">&quot;thicknessMeshBlock&quot;</span><span class="p">])</span>\
+        <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_nU&quot;</span><span class="p">,</span> <span class="mi">61</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_nV&quot;</span><span class="p">,</span> <span class="mi">41</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_order&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">appendDtVector3</span><span class="p">(</span><span class="s2">&quot;_nf&quot;</span><span class="p">,</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span>
+      <span class="n">bC</span><span class="p">,</span> <span class="n">cV</span><span class="p">,</span> <span class="n">aF</span><span class="p">,</span> <span class="n">aG</span>
+    <span class="p">)</span>
+    <span class="n">theAF</span> <span class="o">=</span> <span class="n">dAdd</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span> <span class="n">aF</span><span class="p">[</span><span class="s2">&quot;blade&quot;</span><span class="p">]</span> <span class="p">)</span>
+    <span class="n">theAF</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;meshBlock&quot;</span><span class="p">)</span>
+    <span class="n">aF</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAF</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+    
+    <span class="c1"># split mesh block</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">vec3dThreeD_skinAndSplit</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">vec3dThreeD_skinAndSplit</span><span class="p">(</span>
+      <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;meshBlock&quot;</span><span class="p">,</span>
+      <span class="n">aFOne</span> <span class="o">=</span> <span class="n">aF</span><span class="p">[</span><span class="s2">&quot;blade&quot;</span><span class="p">],</span>
+      <span class="n">aFTwo</span> <span class="o">=</span> <span class="n">aF</span><span class="p">[</span><span class="s2">&quot;meshBlock&quot;</span><span class="p">],</span>
+      <span class="n">splitDim</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="n">splits</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.30</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.30</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.70</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.70</span><span class="p">,</span> <span class="mf">0.90</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.90</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">],</span>
+      <span class="p">]</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># do conformal mapping</span>
+    <span class="c1">#</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;meanplane&quot;</span><span class="p">,</span> <span class="s2">&quot;blade&quot;</span><span class="p">,</span> <span class="s2">&quot;meshBlock&quot;</span><span class="p">,]:</span>
+      <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoDInMap3dTo3d</span><span class="p">(</span>
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
+          <span class="n">bC</span><span class="o">.</span><span class="n">ptrTransformerContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;uVw_phirMs&quot;</span>
+          <span class="p">)</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span>
+            <span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+          <span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span> <span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_channel&quot;</span><span class="p">]</span> <span class="p">)</span>
+      <span class="p">)</span>
+      <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
+      <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+    <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="n">aF</span><span class="o">.</span><span class="n">getIndices</span><span class="p">(</span><span class="s2">&quot;meshBlock_*&quot;</span><span class="p">):</span>
+      <span class="n">ii</span> <span class="o">=</span> <span class="n">aF</span><span class="o">.</span><span class="n">getLabel</span><span class="p">(</span> <span class="n">iNum</span> <span class="p">)</span>
+      <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dThreeDInMap3dTo3d</span><span class="p">(</span>
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dThreeD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
+          <span class="n">bC</span><span class="o">.</span><span class="n">ptrTransformerContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;uVw_phirMs&quot;</span>
+          <span class="p">)</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span>
+            <span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+          <span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span> <span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_channel&quot;</span><span class="p">]</span> <span class="p">)</span>
+      <span class="p">)</span>
+      <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
+      <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+
+    <span class="c1"># fe_meanplane</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+      <span class="n">vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane</span>
+    <span class="p">)</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane</span><span class="p">(</span> 
+      <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;xyz_fe_meanplane&quot;</span><span class="p">,</span>
+      <span class="n">channel</span> <span class="o">=</span> <span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_channel&quot;</span><span class="p">],</span>
+      <span class="n">meanplane</span> <span class="o">=</span> <span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_meanplane&quot;</span><span class="p">],</span>
+      <span class="n">ratioOut</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">),</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">)</span>
+        <span class="p">]</span>
+      <span class="p">)(),</span>
+      <span class="n">segUs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+      <span class="n">segVs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">]</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="n">container</span> <span class="p">)</span>
+
+    <span class="c1"># grid channel</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+      <span class="n">rotatingMap2dTo3d_gridChannel</span>
+    <span class="p">)</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">rotatingMap2dTo3d_gridChannel</span><span class="p">(</span>
+      <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;xyz_gridChannel&quot;</span><span class="p">,</span> 
+      <span class="n">channelSide</span> <span class="o">=</span> <span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_fe_meanplane&quot;</span><span class="p">],</span> 
+      <span class="n">numberOfSections</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+      <span class="n">rotVector</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="n">container</span> <span class="p">)</span>
+
+    <span class="c1"># create mesh&#39;s topology</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="n">aG</span><span class="o">.</span><span class="n">getIndices</span><span class="p">(</span><span class="s2">&quot;xyz_meshBlock_*&quot;</span><span class="p">):</span>
+      <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">aG</span><span class="p">[</span> <span class="n">aG</span><span class="o">.</span><span class="n">getLabel</span><span class="p">(</span> <span class="n">iNum</span> <span class="p">)</span> <span class="p">]</span> <span class="p">)</span>
+    <span class="n">couplingFaces</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">couplingFaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> 
+      <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span><span class="n">segmentConstUPercent</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
+      <span class="n">couplingFaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> 
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="n">block</span> <span class="p">)</span><span class="o">.</span><span class="n">segmentConstWPercent</span><span class="p">(</span> <span class="mf">1.0</span> <span class="p">)</span>
+      <span class="p">)</span>
+    <span class="n">couplingFaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> 
+      <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="n">blocks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span><span class="n">segmentConstUPercent</span><span class="p">(</span> <span class="mf">1.0</span> <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+      <span class="n">map3dTo3dGmsh_gridFromChannelAndBlocks</span>
+    <span class="p">)</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">map3dTo3dGmsh_gridFromChannelAndBlocks</span><span class="p">(</span>
+      <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span>
+      <span class="n">channel</span> <span class="o">=</span> <span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_gridChannel&quot;</span><span class="p">],</span>
+      <span class="n">blocks</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">,</span>
+      <span class="n">blade</span> <span class="o">=</span> <span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_blade&quot;</span><span class="p">],</span>
+      <span class="n">couplingFaces</span> <span class="o">=</span> <span class="n">couplingFaces</span><span class="p">,</span>
+      <span class="n">nBoundaryLayers</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+      <span class="n">nElementsSpanwise</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+      <span class="n">nElementsNormal</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+      <span class="n">firstElementSizeHubToShroud</span> <span class="o">=</span> <span class="mf">0.005</span><span class="p">,</span>
+      <span class="n">firstElementSizeNormalBlade</span> <span class="o">=</span> <span class="mf">0.005</span><span class="p">,</span>
+      <span class="n">bladeHubElementSize</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+        <span class="p">[</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.010</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.007</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.007</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.007</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.010</span><span class="p">),</span>
+        <span class="p">],</span> <span class="mi">1</span>
+      <span class="p">)(),</span>
+      <span class="n">bladeHubElementScale</span> <span class="o">=</span> <span class="mf">0.10</span><span class="p">,</span>
+      <span class="n">channelInletOutletDir</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="n">channelHubShroudDir</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+      <span class="n">charLengthMax</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+      <span class="n">charLengthMin</span><span class="o">=</span><span class="mf">0.025</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">enableDebug</span><span class="p">()</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="n">container</span> <span class="p">)</span>
+
+    <span class="c1"># channelExtension</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">rotatingMap2dTo3d_hubShroudCreate</span><span class="p">(</span>
+      <span class="s2">&quot;xyz_diffuser&quot;</span><span class="p">,</span>
+      <span class="n">shroudPoints</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">2.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span>  
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">2.50</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.00</span><span class="p">),</span>  
+      <span class="p">],</span>
+      <span class="n">hubPoints</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span>  
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.00</span><span class="p">),</span>  
+      <span class="p">],</span>
+      <span class="n">order</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="n">rotVector</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="n">container</span> <span class="p">)</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">rotatingMap2dTo3d_gridChannel</span><span class="p">(</span>
+      <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;xyz_gridDiffuser&quot;</span><span class="p">,</span> 
+      <span class="n">channelSide</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span> 
+        <span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_diffuser&quot;</span><span class="p">]</span> 
+      <span class="p">)</span><span class="o">.</span><span class="n">segmentConstUPercent</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span>
+      <span class="n">numberOfSections</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+      <span class="n">rotVector</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="n">container</span> <span class="p">)</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+      <span class="n">map3dTo3dGmsh_gridFromChannel</span>
+    <span class="p">)</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">map3dTo3dGmsh_gridFromChannel</span><span class="p">(</span>
+      <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;meshDiffuser&quot;</span><span class="p">,</span>
+      <span class="n">channel</span> <span class="o">=</span> <span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_gridDiffuser&quot;</span><span class="p">],</span>
+      <span class="n">nBoundaryLayers</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+      <span class="n">nElementsRadial</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+      <span class="n">nElementsCircumferential</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+      <span class="n">nElementsMeridional</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+      <span class="n">firstElementSizeHubToShroud</span> <span class="o">=</span> <span class="mf">0.005</span><span class="p">,</span>
+      <span class="n">firstElementSizeInlet</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+      <span class="n">channelInletOutletDir</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="n">channelHubShroudDir</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+      <span class="n">channelSuctionPressureDir</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">enableDebug</span><span class="p">()</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="n">container</span> <span class="p">)</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+      <span class="n">ofOpenFOAMCase_turboMachine</span><span class="p">,</span>
+      <span class="n">ofOpenFOAMCase_setupWrapper</span>
+    <span class="p">)</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">ofOpenFOAMCase_turboMachine</span><span class="p">(</span>
+      <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;of&quot;</span><span class="p">,</span>
+      <span class="n">bVs</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">bV</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">],</span> <span class="n">bV</span><span class="p">[</span><span class="s2">&quot;meshDiffuser&quot;</span><span class="p">],</span>
+      <span class="p">],</span>
+      <span class="n">dictRule</span> <span class="o">=</span> \
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">controlDict</span><span class="p">(</span>
+            <span class="n">application</span> <span class="o">=</span> <span class="s2">&quot;simpleFoam&quot;</span><span class="p">,</span>
+            <span class="n">endTime</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+            <span class="n">QPatches</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mesh_inlet&#39;</span><span class="p">,</span><span class="s1">&#39;mesh_outlet&#39;</span><span class="p">,],</span>
+            <span class="n">PTPatches</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mesh_inlet&#39;</span><span class="p">,</span> <span class="s1">&#39;mesh_outlet&#39;</span><span class="p">,],</span>
+            <span class="n">FPatches</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mesh_blade&#39;</span><span class="p">,],</span>
+            <span class="n">libs</span> <span class="o">=</span> <span class="p">[</span>
+              <span class="s2">&quot;libsimpleFunctionObjects.so&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;libsimpleSwakFunctionObjects.so&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;libmappedFieldFixedValue.so&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;libmixingPlane.so&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+          <span class="p">)</span>
+        <span class="o">+</span> <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">fvSchemes</span><span class="p">()</span>
+        <span class="o">+</span> <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">fvSolution</span><span class="p">()</span>
+        <span class="o">+</span> <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">transportModel</span><span class="p">()</span>
+        <span class="o">+</span> <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">turbulenceProperties</span><span class="p">(),</span>
+        <span class="c1">#+ ofOpenFOAMCase_setupWrapper.MRFProperties(</span>
+        <span class="c1">#    cellZones = [&quot;mesh&quot;,], </span>
+        <span class="c1">#    omegas    = [9.81,], </span>
+        <span class="c1">#    nonRotatingPatches = [</span>
+        <span class="c1">#      [</span>
+        <span class="c1">#        &quot;mesh_suction&quot;, &quot;mesh_pressure&quot;, </span>
+        <span class="c1">#        &quot;mesh_inlet&quot;, &quot;mesh_outlet&quot;,</span>
+        <span class="c1">#        &quot;mesh_shroud&quot;,</span>
+        <span class="c1">#      ],</span>
+        <span class="c1">#    ], </span>
+        <span class="c1">#    patches = [], </span>
+        <span class="c1">#    axes = [dtOO.dtVector3(0,0,1)],</span>
+        <span class="c1">#    origins = [dtOO.dtPoint3(0,0,0)]</span>
+        <span class="c1">#  ),</span>
+        <span class="n">fieldRules</span> <span class="o">=</span> <span class="p">[</span> 
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">fieldRuleString</span><span class="p">(</span><span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,]),</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">fieldRuleString</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,]),</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">fieldRuleString</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,]),</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">fieldRuleString</span><span class="p">(</span><span class="s2">&quot;omega&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,]),</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">fieldRuleString</span><span class="p">(</span><span class="s2">&quot;nut&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,]),</span>
+        <span class="p">],</span>
+        <span class="n">setupRules</span> <span class="o">=</span> <span class="p">[</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">emptyRuleString</span><span class="p">(),</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">cylindricalInletRuleString</span><span class="p">(</span>
+            <span class="s2">&quot;mesh_inlet&quot;</span><span class="p">,</span> 
+            <span class="p">[</span><span class="s2">&quot;U&quot;</span><span class="p">],</span> 
+            <span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="p">]</span>
+          <span class="p">),</span> 
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">inletRuleString</span><span class="p">(</span>
+            <span class="s2">&quot;mesh_inlet&quot;</span><span class="p">,</span> 
+            <span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;omega&quot;</span><span class="p">,],</span> 
+            <span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span> <span class="p">]</span>
+          <span class="p">),</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">wallRuleString</span><span class="p">(</span>
+            <span class="s2">&quot;mesh_shroud&quot;</span><span class="p">,</span> 
+            <span class="p">[</span><span class="s2">&quot;omega&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;nut&quot;</span><span class="p">]</span>
+          <span class="p">),</span>
+           <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">wallRuleString</span><span class="p">(</span>
+            <span class="s2">&quot;mesh_hub&quot;</span><span class="p">,</span> 
+            <span class="p">[</span><span class="s2">&quot;omega&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;nut&quot;</span><span class="p">]</span>
+          <span class="p">),</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">wallRuleString</span><span class="p">(</span>
+            <span class="s2">&quot;mesh_blade&quot;</span><span class="p">,</span> 
+            <span class="p">[</span><span class="s2">&quot;omega&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;nut&quot;</span><span class="p">]</span>
+          <span class="p">),</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">cyclicAmiRuleString</span><span class="p">(</span>
+            <span class="s2">&quot;mesh_pressure&quot;</span><span class="p">,</span> <span class="s2">&quot;mesh_suction&quot;</span>
+          <span class="p">),</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">mixingPlaneRuleString</span><span class="p">(</span>
+            <span class="s2">&quot;mesh_outlet&quot;</span><span class="p">,</span> <span class="s2">&quot;meshDiffuser_inlet&quot;</span><span class="p">,</span> 
+            <span class="p">[</span><span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;omega&quot;</span><span class="p">,],</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> 
+            <span class="n">origin</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">stackAxis</span> <span class="o">=</span> <span class="s2">&quot;R&quot;</span>
+          <span class="p">),</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">wallRuleString</span><span class="p">(</span>
+            <span class="s2">&quot;meshDiffuser_hub&quot;</span><span class="p">,</span> 
+            <span class="p">[</span><span class="s2">&quot;omega&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;nut&quot;</span><span class="p">]</span>
+          <span class="p">),</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">wallRuleString</span><span class="p">(</span>
+            <span class="s2">&quot;meshDiffuser_shroud&quot;</span><span class="p">,</span> 
+            <span class="p">[</span><span class="s2">&quot;omega&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;nut&quot;</span><span class="p">]</span>
+          <span class="p">),</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">cyclicAmiRuleString</span><span class="p">(</span>
+            <span class="s2">&quot;meshDiffuser_pressure&quot;</span><span class="p">,</span> <span class="s2">&quot;meshDiffuser_suction&quot;</span>
+          <span class="p">),</span>
+          <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">outletRuleString</span><span class="p">(</span>
+            <span class="s2">&quot;meshDiffuser_outlet&quot;</span><span class="p">,</span> 
+            <span class="p">[</span><span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;omega&quot;</span><span class="p">,]</span>
+          <span class="p">),</span>
+        <span class="p">]</span>
+       
+    <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="n">container</span> <span class="p">)</span>
+
+
+    <span class="k">return</span> <span class="n">container</span></div>
+</div>
+
+  
+<div class="viewcode-block" id="CreateAndShow">
+<a class="viewcode-back" href="../../../../test.html#dtOO.test.simpleAxialRunner.simpleAxialRunner.CreateAndShow">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">CreateAndShow</span><span class="p">(</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Create and show machine.</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  None</span>
+
+<span class="sd">  Returns</span>
+<span class="sd">  -------</span>
+<span class="sd">  List[ dtOO.dtBundle, dtOOInParaVIEW ]</span>
+<span class="sd">    List containing the dtBundle and the render object for ParaVIEW.</span>
+
+<span class="sd">  See Also:</span>
+<span class="sd">  ---------</span>
+<span class="sd">  simpleAxialRunner.create : Create machine.</span>
+
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.vis</span><span class="w"> </span><span class="kn">import</span> <span class="n">dtOOInParaVIEW</span>
+  <span class="n">cc</span> <span class="o">=</span> <span class="n">simpleAxialRunner</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+  <span class="n">rr</span> <span class="o">=</span> <span class="n">dtOOInParaVIEW</span><span class="p">(</span> <span class="n">cc</span> <span class="p">)</span>
+  <span class="n">rr</span><span class="o">.</span><span class="n">Show</span><span class="p">(</span> <span class="n">rr</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span> <span class="s2">&quot;xyz_channel.*&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s2">&quot;xyz_channel&quot;</span> <span class="p">)</span>
+  <span class="n">rr</span><span class="o">.</span><span class="n">Show</span><span class="p">(</span> <span class="n">rr</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span> <span class="s2">&quot;xyz_diffuser.*&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s2">&quot;xyz_diffuser&quot;</span> <span class="p">)</span>
+  <span class="n">rr</span><span class="o">.</span><span class="n">Show</span><span class="p">(</span> <span class="n">rr</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span> <span class="s2">&quot;xyz_meanplane.*&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s2">&quot;xyz_meanplane&quot;</span> <span class="p">)</span>
+  <span class="n">rr</span><span class="o">.</span><span class="n">Show</span><span class="p">(</span> <span class="n">rr</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span> <span class="s2">&quot;xyz_blade.*&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s2">&quot;xyz_blade&quot;</span> <span class="p">)</span>
+  <span class="n">rr</span><span class="o">.</span><span class="n">Show</span><span class="p">(</span> <span class="n">rr</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span> <span class="s2">&quot;xyz_meshBlock.*&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s2">&quot;xyz_meshBlock&quot;</span> <span class="p">)</span>
+  <span class="n">rr</span><span class="o">.</span><span class="n">Show</span><span class="p">(</span> <span class="n">rr</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span> <span class="s2">&quot;meanplane.*&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s2">&quot;meanplane&quot;</span> <span class="p">)</span>
+  <span class="n">rr</span><span class="o">.</span><span class="n">Show</span><span class="p">(</span> <span class="n">rr</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span> <span class="s2">&quot;blade.*&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s2">&quot;blade&quot;</span> <span class="p">)</span>
+  <span class="n">rr</span><span class="o">.</span><span class="n">Show</span><span class="p">(</span> <span class="n">rr</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span> <span class="s2">&quot;meshBlock.*&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s2">&quot;meshBlock&quot;</span> <span class="p">)</span>
+  <span class="n">rr</span><span class="o">.</span><span class="n">Show</span><span class="p">(</span> <span class="n">rr</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span> <span class="s2">&quot;xyz_fe_meanplane.*&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s2">&quot;xyz_fe_meanplane&quot;</span> <span class="p">)</span>
+  <span class="n">rr</span><span class="o">.</span><span class="n">Show</span><span class="p">(</span> <span class="n">rr</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span> <span class="s2">&quot;xyz_gridChannel.*&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s2">&quot;xyz_gridChannel&quot;</span> <span class="p">)</span>
+  <span class="n">rr</span><span class="o">.</span><span class="n">Show</span><span class="p">(</span> <span class="n">rr</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span> <span class="s2">&quot;xyz_gridDiffuser.*&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s2">&quot;xyz_gridDiffuser&quot;</span> <span class="p">)</span>
+
+  <span class="k">return</span> <span class="n">cc</span><span class="p">,</span> <span class="n">rr</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+  <span class="n">simpleAxialRunner</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Alexander Tismer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
