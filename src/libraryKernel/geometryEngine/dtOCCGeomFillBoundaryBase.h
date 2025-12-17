@@ -31,10 +31,10 @@ class dtOCCGeomFillBoundaryBase {
 public:
   dt__classOnlyName(dtOCCGeomFillBoundaryBase);
   dtOCCGeomFillBoundaryBase();
-  dtOCCGeomFillBoundaryBase(Handle_GeomFill_Boundary &orig);
+  dtOCCGeomFillBoundaryBase(Handle(GeomFill_Boundary) & orig);
   virtual ~dtOCCGeomFillBoundaryBase();
-  void setOCC(Handle_GeomFill_Boundary occCurve);
-  Handle_GeomFill_Boundary const getOCC(void) const;
+  void setOCC(Handle(GeomFill_Boundary) occCurve);
+  Handle(GeomFill_Boundary) const getOCC(void) const;
   std::string dumpToString(void) const;
 
 private:

@@ -22,23 +22,23 @@ License
 
 namespace dtOO {
 struct dtOCCSurfaceBase::OCCHanWrap {
-  Handle_Geom_Surface occHandle;
+  Handle(Geom_Surface) occHandle;
 };
 
 dtOCCSurfaceBase::dtOCCSurfaceBase() : _hanWrap(new OCCHanWrap()) {}
 
-dtOCCSurfaceBase::dtOCCSurfaceBase(Handle_Geom_Surface orig)
+dtOCCSurfaceBase::dtOCCSurfaceBase(Handle(Geom_Surface) orig)
   : _hanWrap(new OCCHanWrap())
 {
   _hanWrap->occHandle = orig;
 }
 
-void dtOCCSurfaceBase::setOCC(Handle_Geom_Surface occSurface)
+void dtOCCSurfaceBase::setOCC(Handle(Geom_Surface) occSurface)
 {
   _hanWrap->occHandle = occSurface;
 }
 
-Handle_Geom_Surface const dtOCCSurfaceBase::getOCC(void) const
+Handle(Geom_Surface) const dtOCCSurfaceBase::getOCC(void) const
 {
   return _hanWrap->occHandle;
 }

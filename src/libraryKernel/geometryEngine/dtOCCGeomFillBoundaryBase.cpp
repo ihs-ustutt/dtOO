@@ -22,7 +22,7 @@ License
 
 namespace dtOO {
 struct dtOCCGeomFillBoundaryBase::OCCHanWrap {
-  Handle_GeomFill_Boundary occHandle;
+  Handle(GeomFill_Boundary) occHandle;
 };
 
 dtOCCGeomFillBoundaryBase::dtOCCGeomFillBoundaryBase()
@@ -31,21 +31,21 @@ dtOCCGeomFillBoundaryBase::dtOCCGeomFillBoundaryBase()
 }
 
 dtOCCGeomFillBoundaryBase::dtOCCGeomFillBoundaryBase(
-  Handle_GeomFill_Boundary &orig
+  Handle(GeomFill_Boundary) & orig
 )
   : _hanWrap(new OCCHanWrap())
 {
   _hanWrap->occHandle = orig;
 }
 
-void dtOCCGeomFillBoundaryBase::setOCC(Handle_GeomFill_Boundary occCurve)
+void dtOCCGeomFillBoundaryBase::setOCC(Handle(GeomFill_Boundary) occCurve)
 {
   dt__throwIf(occCurve.IsNull(), setOCC());
 
   _hanWrap->occHandle = occCurve;
 }
 
-Handle_GeomFill_Boundary const dtOCCGeomFillBoundaryBase::getOCC(void) const
+Handle(GeomFill_Boundary) const dtOCCGeomFillBoundaryBase::getOCC(void) const
 {
   dt__throwIf(_hanWrap->occHandle.IsNull(), getOCC());
 

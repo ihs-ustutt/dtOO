@@ -22,25 +22,25 @@ License
 
 namespace dtOO {
 struct dtOCCCurve2dBase::OCCHanWrap {
-  Handle_Geom2d_Curve occHandle;
+  Handle(Geom2d_Curve) occHandle;
 };
 
 dtOCCCurve2dBase::dtOCCCurve2dBase() : _hanWrap(new OCCHanWrap) {}
 
-dtOCCCurve2dBase::dtOCCCurve2dBase(Handle_Geom2d_Curve orig)
+dtOCCCurve2dBase::dtOCCCurve2dBase(Handle(Geom2d_Curve) orig)
   : _hanWrap(new OCCHanWrap())
 {
   _hanWrap->occHandle = orig;
 }
 
-void dtOCCCurve2dBase::setOCC(Handle_Geom2d_Curve occCurve)
+void dtOCCCurve2dBase::setOCC(Handle(Geom2d_Curve) occCurve)
 {
   dt__throwIf(occCurve.IsNull(), setOCC());
 
   _hanWrap->occHandle = occCurve;
 }
 
-Handle_Geom2d_Curve const dtOCCCurve2dBase::getOCC(void) const
+Handle(Geom2d_Curve) const dtOCCCurve2dBase::getOCC(void) const
 {
   dt__throwIf(_hanWrap->occHandle.IsNull(), getOCC());
 
