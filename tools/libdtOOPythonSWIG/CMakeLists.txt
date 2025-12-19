@@ -15,22 +15,16 @@
 #
 #------------------------------------------------------------------------------
 
-option(DTOO_USE_PYTHONOCC "Use PythonOCC" OFF)
-
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 
 find_package(SWIG 4.0.2 REQUIRED)
 include(${SWIG_USE_FILE})
 
-if (DTOO_USE_PYTHONOCC)
-  find_package(PythonOCC REQUIRED)
-  add_definitions(-DDTOO_HAS_PYTHONOCC)
-  include_directories(
-    ${PythonOCC_INCLUDE_DIR}/wrapper
-    ${PythonOCC_INCLUDE_DIR}/headers
-  )
-  list(APPEND CMAKE_SWIG_FLAGS -DDTOO_HAS_PYTHONOCC)
-endif (DTOO_USE_PYTHONOCC)
+find_package(PythonOCC REQUIRED)
+include_directories(
+  ${PythonOCC_INCLUDE_DIR}/wrapper
+  ${PythonOCC_INCLUDE_DIR}/headers
+)
 
 include_directories(
   ${Python3_INCLUDE_DIRS}
