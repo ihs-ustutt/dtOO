@@ -14,6 +14,8 @@ logging.error("Error")
 import dtOOPythonSWIG as dtOO
 
 import numpy as np
+import sys
+import importlib
 
 class piecewiseRadMeridional:
 
@@ -91,9 +93,17 @@ class piecewiseRadMeridional:
     dC = container.cptr_dC() 
     dP = container.cptr_dP() 
 
-    from dtOOPythonApp.builder import (analyticGeometry_piecewiseMeridionalRotContour)
+    #from dtOOPythonApp.builder import (analyticGeometry_piecewiseMeridionalRotContour)
+    
+    modname = "dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour"
+    if modname in sys.modules: 
+        print(f"reloading: {modname}")
+        module=importlib.reload(sys.modules[modname])
+    else:
+        print(f"loading: {modname}")
+        module=importlib.import_module(modname)
 
-    radMeridionalContour = analyticGeometry_piecewiseMeridionalRotContour(  # same object / class as axial machine
+    radMeridionalContour = module.analyticGeometry_piecewiseMeridionalRotContour(  # same object / class as axial machine
       "radMeridionalContour",
       hubCurves = [
         dtOO.analyticCurve(
@@ -108,7 +118,7 @@ class piecewiseRadMeridional:
           dtOO.bSplineCurve_pointConstructOCC(
             dtOO.vectorDtPoint3()
               << dtOO.dtPoint3(+1.29, +0.00, +0.36)
-              << dtOO.dtPoint3(+0.76, +0.00, +0.36)
+              << dtOO.dtPoint3(+1.00, +0.00, +0.36)
               << dtOO.dtPoint3(+0.40, +0.00, +0.12)
               << dtOO.dtPoint3(+0.20, +0.00, -0.33),
             2
@@ -175,258 +185,258 @@ class piecewiseRadMeridional:
           ).result()
         )
       ],
-      hub_splits = [ [], [], [], [],],
-      shroud_splits = [ [], [], ],
-      layer_thickness = 0.5,
-      layer_supports = []#0.33, 0.66],
+      hub_splits = [ [], [], [0.2], [], [],],
+      shroud_splits = [ [], [], [], []],
+      layer_thickness = 0.2,
+      layer_supports = [0.33, 0.66],
       #rotVector=dtOO.dtVector3(0,0,-1)
     ).enableDebug()#.buildExtract( container )
     container = radMeridionalContour.buildExtract(container)
     
 
-#    a = radMeridionalContour.regChannel(0)      # rotating a specific channel 
-#    a <<= "xyz_channel"                         # renaming it
-#    aG.append( a )                              # adding it to the analytic geometry container
-#    
-#    # conformalMapping                       -> makes a mapping of the goemetry in the uvw-parameter space
-#    theT = dtOO.uVw_phirMs()
-#    theT.jInit(
-#      dtOO.jsonPrimitive()\
-#        .appendStr("label", "uVw_phirMs")\
-#        .appendInt("_nV", 31)\
-#        .appendInt("_nW", 11)\
-#        .appendAnalyticGeometry(\
-#          "_rM2d", \
-#          aG.get("xyz_channel")\
-#        ),\
-#      None, None, None, aG \
-#    )
-#    bC.dtTransformer().add( theT.clone() )  # adds theT to base container
-#
-#    # meanplane                                         -> generates the "skeletal" line of the blade
-#    from dtOOPythonApp.builder import (
-#      analyticSurface_threePointMeanplaneFromRatio,
-#      scaOneD_scaCurve2dOneDPointConstruct
-#    )
-#    # ru
-#    alpha_1_0 = 50.             # leading and trailing edge angles
-#    #alpha_1_mid = 50.
-#    alpha_1_1 = 60.
-#    alpha_2_0 = 50.
-#    #alpha_2_mid = 80.
-#    alpha_2_1 = 60.
-#
-#    container = analyticSurface_threePointMeanplaneFromRatio(
-#      "meanplane",
-#      #spanwise -> along leading / trailing edge directions
-#      spanwiseCuts = [    
-#        0.00,  
-#        0.50,  
-#        1.00,
-#      ],                    
-#      alphaOne = scaOneD_scaCurve2dOneDPointConstruct(
-#        [
-#          dtOO.dtPoint2(0.00, (np.pi/180.) * alpha_1_0), 
-#          #dtOO.dtPoint2(0.50, (np.pi/180.) * alpha_1_mid),
-#          dtOO.dtPoint2(1.00, (np.pi/180.) * alpha_1_1),
-#        ],
-#        1
-#      )(),
-#      alphaTwo = scaOneD_scaCurve2dOneDPointConstruct(
-#        [
-#          dtOO.dtPoint2(0.00, (np.pi/180.) * alpha_2_0),
-#          #dtOO.dtPoint2(0.50, (np.pi/180.) * alpha_2_mid),  
-#          dtOO.dtPoint2(1.00, (np.pi/180.) * alpha_2_1),
-#        ],
-#        1
-#      )(),
-#      ratioX = scaOneD_scaCurve2dOneDPointConstruct(
-#        [
-#          dtOO.dtPoint2(0.00, 0.50),
-#          dtOO.dtPoint2(1.00, 0.50),  
-#        ],
-#        1
-#      )(),
-#      deltaY = scaOneD_scaCurve2dOneDPointConstruct(
-#        [
-#          dtOO.dtPoint2(0.00, 0.30),
-#          dtOO.dtPoint2(1.00, 0.80),  
-#        ],
-#        1
-#      )(),
-#      offX = scaOneD_scaCurve2dOneDPointConstruct(
-#        [
-#          dtOO.dtPoint2(0.00, 0.0),  
-#          dtOO.dtPoint2(1.00, 0.0),
-#        ],
-#        1
-#      )(),
-#      offY = scaOneD_scaCurve2dOneDPointConstruct(
-#        [
-#          dtOO.dtPoint2(0.00, 0.4),  
-#          dtOO.dtPoint2(1.00, 0.4),
-#        ],
-#        1
-#      )(),
-#      targetLength = scaOneD_scaCurve2dOneDPointConstruct(
-#        [
-#          dtOO.dtPoint2(0.00, 2.3),  
-#          dtOO.dtPoint2(0.50, 2.0),  
-#          dtOO.dtPoint2(1.00, 0.8),
-#        ],
-#        2
-#      )(),
-#      targetLengthTolerance = 0.01,
-#      originOnLengthPercent = 0.0
-#    ).buildExtract( container )
-#
-#    # blade thickness distribution                                          -> thickness distr along blade (u is bladewise direction 0 to 1)
-#    from dtOOPythonApp.builder import (
-#      vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution
-#    )
-#    container = vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution(
-#      "thicknessDistribution",
-#      spanwiseCuts = [
-#        0.00,  
-#        1.00,
-#      ],
-#      tLe = scaOneD_scaCurve2dOneDPointConstruct(
-#        [
-#          dtOO.dtPoint2(0.00, 0.05),  
-#          dtOO.dtPoint2(1.00, 0.05),
-#        ],
-#        1
-#      )(),
-#      uLe = scaOneD_scaCurve2dOneDPointConstruct(
-#        [
-#          dtOO.dtPoint2(0.00, 0.00),  
-#          dtOO.dtPoint2(1.00, 0.00),
-#        ],
-#        1
-#      )(),
-#      tMid = scaOneD_scaCurve2dOneDPointConstruct(
-#        [
-#          dtOO.dtPoint2(0.00, 0.07),  
-#          dtOO.dtPoint2(1.00, 0.07),
-#        ],
-#        1
-#      )(),
-#      uMid = scaOneD_scaCurve2dOneDPointConstruct(
-#        [
-#          dtOO.dtPoint2(0.00, 0.50),  
-#          dtOO.dtPoint2(1.00, 0.50),
-#        ],
-#        1
-#      )(),
-#      tTe = scaOneD_scaCurve2dOneDPointConstruct(
-#        [
-#          dtOO.dtPoint2(0.00, 0.01),  
-#          dtOO.dtPoint2(1.00, 0.01),
-#        ],
-#        1
-#      )(),
-#      uTe = scaOneD_scaCurve2dOneDPointConstruct(
-#        [
-#          dtOO.dtPoint2(0.00, 0.80),  
-#          dtOO.dtPoint2(1.00, 0.80),
-#        ],
-#        1
-#      )()
-#    ).buildExtract( container )
-#
-#    # blade                                                         -> combining thickness distribution and skeletal line for final blade
-#    dAdd = dtOO.discreteAddNormal()
-#    dAdd.jInit(
-#      dtOO.jsonPrimitive(
-#        '{"option" : [{"name" : "debug", "value" : "false"}]}'
-#      )\
-#        .appendAnalyticFunction("_tt", aF["thicknessDistribution"])\
-#        .appendInt("_nU", 61)\
-#        .appendInt("_nV", 41)\
-#        .appendInt("_order", 3)\
-#        .appendDtVector3("_nf", dtOO.dtVector3(0,0,1)),
-#      None, None, aF, None
-#    )
-#    theAF = dAdd.applyAnalyticFunction( 
-#      aF["meanplane"]
-#    )
-#    theAF.setLabel("blade")
-#    aF.push_back( theAF.clone() )
-#   
-#    # mesh block
-#    fRef = dtOO.vec3dMuParserTwoD(              # sets mesh block thickness around blade (O-grid)
-#      "1.0*0.15, xx, yy", "xx", "yy"            # block will be 0.15 around blade
-#    )
-#    fRef.setLabel("thicknessMeshBlock")
-#    for i in range(2):
-#      fRef.setMin(i, +0.0)                      # parameter range in two directions
-#      fRef.setMax(i, +1.0)
-#    aF.set( fRef.clone() )
-#    dAdd = dtOO.discreteAddNormal()             # dAdd is joint blade object, now layer is added in normal direction
-#    dAdd.jInit(                                 # thicknessMeshBlock is layered over the blade
-#      dtOO.jsonPrimitive(
-#        '{"option" : [{"name" : "debug", "value" : "false"}]}'
-#        )\
-#        .appendAnalyticFunction("_tt", aF["thicknessMeshBlock"])\
-#        .appendInt("_nU", 61)\
-#        .appendInt("_nV", 41)\
-#        .appendInt("_order", 3)\
-#        .appendDtVector3("_nf", dtOO.dtVector3(0,0,1)),
-#      None, None, aF, None
-#    )
-#    theAF = dAdd.applyAnalyticFunction( aF["blade"] )
-#    theAF.setLabel("meshBlock")                         # renamed as meshBlock
-#    aF.push_back( theAF.clone() )
-#    
-#    # split mesh block
-#    from dtOOPythonApp.builder import vec3dThreeD_skinAndSplit
-#    container = vec3dThreeD_skinAndSplit(
-#      label = "meshBlock",
-#      aFOne = aF["blade"],          # geometries between which the split should be made 
-#      aFTwo = aF["meshBlock"],
-#      splitDim = 0,                 # decides the parametric direction of the split
-#      splits = [                    # sequential split along u or v direction of aFOne
-#        [0.00, 0.10],
-#        [0.10, 0.30],
-#        [0.30, 0.45],
-#        [0.45, 0.55],
-#        [0.55, 0.70],
-#        [0.70, 0.90],
-#        [0.90, 1.00],
-#      ]
-#    ).buildExtract(container)
-#
-#    #i
-#    # do conformal mapping
-#    #
-#    for ii in ["meanplane", "blade", "meshBlock",]:         # takes those geometries
-#      theAG = dtOO.vec3dTwoDInMap3dTo3d(
-#        dtOO.vec3dTwoD.MustConstDownCast(
-#          bC.ptrTransformerContainer().get(
-#            "uVw_phirMs"
-#          ).applyAnalyticFunction(
-#            aF[ii].clone()
-#          )
-#        ),
-#        dtOO.map3dTo3d.ConstDownCast( aG["xyz_channel"] )   # maps them inside the xyz domain of xyz_channel
-#      )
-#      theAG.setLabel("xyz_"+ii)                             # renames everything to be called xyz_...
-#      aG.push_back( theAG.clone() )
-#    for iNum in aF.getIndices("meshBlock_*"):               # does the same thing with the mesh blocks around the blade 
-#      ii = aF.getLabel( iNum )
-#      theAG = dtOO.vec3dThreeDInMap3dTo3d(
-#        dtOO.vec3dThreeD.MustConstDownCast(
-#          bC.ptrTransformerContainer().get(
-#            "uVw_phirMs"
-#          ).applyAnalyticFunction(
-#            aF[ii].clone()
-#          )
-#        ),
-#        dtOO.map3dTo3d.ConstDownCast( aG["xyz_channel"] )
-#      )
-#      theAG.setLabel("xyz_"+ii)
-#      aG.push_back( theAG.clone() )
-#
+    a = radMeridionalContour.regChannel(1)      # rotating a specific channel 
+    a <<= "xyz_channel"                         # renaming it
+    aG.append( a )                              # adding it to the analytic geometry container
+    
+    # conformalMapping                       -> makes a mapping of the goemetry in the uvw-parameter space
+    theT = dtOO.uVw_phirMs()
+    theT.jInit(
+      dtOO.jsonPrimitive()\
+        .appendStr("label", "uVw_phirMs")\
+        .appendInt("_nV", 31)\
+        .appendInt("_nW", 11)\
+        .appendAnalyticGeometry(\
+          "_rM2d", \
+          aG.get("xyz_channel")\
+        ),\
+      None, None, None, aG \
+    )
+    bC.dtTransformer().add( theT.clone() )  # adds theT to base container
+
+    # meanplane                                         -> generates the "skeletal" line of the blade
+    from dtOOPythonApp.builder import (
+      analyticSurface_threePointMeanplaneFromRatio,
+      scaOneD_scaCurve2dOneDPointConstruct
+    )
+    # ru
+    alpha_1_0 = 50.             # leading and trailing edge angles
+    #alpha_1_mid = 50.
+    alpha_1_1 = 60.
+    alpha_2_0 = 40.
+    #alpha_2_mid = 80.
+    alpha_2_1 = 50.
+
+    container = analyticSurface_threePointMeanplaneFromRatio(
+      "meanplane",
+      #spanwise -> along leading / trailing edge directions
+      spanwiseCuts = [    
+        0.00,  
+        0.50,  
+        1.00,
+      ],                    
+      alphaOne = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, (np.pi/180.) * alpha_1_0), 
+          #dtOO.dtPoint2(0.50, (np.pi/180.) * alpha_1_mid),
+          dtOO.dtPoint2(1.00, (np.pi/180.) * alpha_1_1),
+        ],
+        1
+      )(),
+      alphaTwo = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, (np.pi/180.) * alpha_2_0),
+          #dtOO.dtPoint2(0.50, (np.pi/180.) * alpha_2_mid),  
+          dtOO.dtPoint2(1.00, (np.pi/180.) * alpha_2_1),
+        ],
+        1
+      )(),
+      ratioX = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.0),
+          dtOO.dtPoint2(1.00, 0.50),  
+        ],
+        1
+      )(),
+      deltaY = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.40),
+          dtOO.dtPoint2(1.00, 0.80),  
+        ],
+        1
+      )(),
+      offX = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.0),  
+          dtOO.dtPoint2(1.00, 0.0),
+        ],
+        1
+      )(),
+      offY = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.1),  
+          dtOO.dtPoint2(1.00, 0.07),
+        ],
+        1
+      )(),
+      targetLength = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 1.20),  
+          dtOO.dtPoint2(0.50, 0.90),  
+          dtOO.dtPoint2(1.00, 0.50),
+        ],
+        2
+      )(),
+      targetLengthTolerance = 0.01,
+      originOnLengthPercent = 0.0
+    ).buildExtract( container )
+
+    # blade thickness distribution                                          -> thickness distr along blade (u is bladewise direction 0 to 1)
+    from dtOOPythonApp.builder import (
+      vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution
+    )
+    container = vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution(
+      "thicknessDistribution",
+      spanwiseCuts = [
+        0.00,  
+        1.00,
+      ],
+      tLe = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.03),  
+          dtOO.dtPoint2(1.00, 0.03),
+        ],
+        1
+      )(),
+      uLe = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.00),  
+          dtOO.dtPoint2(1.00, 0.00),
+        ],
+        1
+      )(),
+      tMid = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.05),  
+          dtOO.dtPoint2(1.00, 0.05),
+        ],
+        1
+      )(),
+      uMid = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.50),  
+          dtOO.dtPoint2(1.00, 0.50),
+        ],
+        1
+      )(),
+      tTe = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.02),  
+          dtOO.dtPoint2(1.00, 0.02),
+        ],
+        1
+      )(),
+      uTe = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.80),  
+          dtOO.dtPoint2(1.00, 0.80),
+        ],
+        1
+      )()
+    ).buildExtract( container )
+
+    # blade                                                         -> combining thickness distribution and skeletal line for final blade
+    dAdd = dtOO.discreteAddNormal()
+    dAdd.jInit(
+      dtOO.jsonPrimitive(
+        '{"option" : [{"name" : "debug", "value" : "false"}]}'
+      )\
+        .appendAnalyticFunction("_tt", aF["thicknessDistribution"])\
+        .appendInt("_nU", 61)\
+        .appendInt("_nV", 41)\
+        .appendInt("_order", 3)\
+        .appendDtVector3("_nf", dtOO.dtVector3(0,0,1)),
+      None, None, aF, None
+    )
+    theAF = dAdd.applyAnalyticFunction( 
+      aF["meanplane"]
+    )
+    theAF.setLabel("blade")
+    aF.push_back( theAF.clone() )
+   
+    # mesh block
+    fRef = dtOO.vec3dMuParserTwoD(              # sets mesh block thickness around blade (O-grid)
+      "1.0*0.03, xx, yy", "xx", "yy"            # block will be 0.15 around blade
+    )
+    fRef.setLabel("thicknessMeshBlock")
+    for i in range(2):
+      fRef.setMin(i, +0.0)                      # parameter range in two directions
+      fRef.setMax(i, +1.0)
+    aF.set( fRef.clone() )
+    dAdd = dtOO.discreteAddNormal()             # dAdd is joint blade object, now layer is added in normal direction
+    dAdd.jInit(                                 # thicknessMeshBlock is layered over the blade
+      dtOO.jsonPrimitive(
+        '{"option" : [{"name" : "debug", "value" : "false"}]}'
+        )\
+        .appendAnalyticFunction("_tt", aF["thicknessMeshBlock"])\
+        .appendInt("_nU", 61)\
+        .appendInt("_nV", 41)\
+        .appendInt("_order", 3)\
+        .appendDtVector3("_nf", dtOO.dtVector3(0,0,1)),
+      None, None, aF, None
+    )
+    theAF = dAdd.applyAnalyticFunction( aF["blade"] )
+    theAF.setLabel("meshBlock")                         # renamed as meshBlock
+    aF.push_back( theAF.clone() )
+    
+    # split mesh block
+    from dtOOPythonApp.builder import vec3dThreeD_skinAndSplit
+    container = vec3dThreeD_skinAndSplit(
+      label = "meshBlock",
+      aFOne = aF["blade"],          # geometries between which the split should be made 
+      aFTwo = aF["meshBlock"],
+      splitDim = 0,                 # decides the parametric direction of the split
+      splits = [                    # sequential split along u or v direction of aFOne
+        [0.00, 0.10],
+        [0.10, 0.30],
+        [0.30, 0.45],
+        [0.45, 0.55],
+        [0.55, 0.70],
+        [0.70, 0.90],
+        [0.90, 1.00],
+      ]
+    ).buildExtract(container)
+
+    #i
+    # do conformal mapping
+    #
+    for ii in ["meanplane", "blade", "meshBlock",]:         # takes those geometries
+      theAG = dtOO.vec3dTwoDInMap3dTo3d(
+        dtOO.vec3dTwoD.MustConstDownCast(
+          bC.ptrTransformerContainer().get(
+            "uVw_phirMs"
+          ).applyAnalyticFunction(
+            aF[ii].clone()
+          )
+        ),
+        dtOO.map3dTo3d.ConstDownCast( aG["xyz_channel"] )   # maps them inside the xyz domain of xyz_channel
+      )
+      theAG.setLabel("xyz_"+ii)                             # renames everything to be called xyz_...
+      aG.push_back( theAG.clone() )
+    #for iNum in aF.getIndices("meshBlock_*"):               # does the same thing with the mesh blocks around the blade 
+    #  ii = aF.getLabel( iNum )
+    #  theAG = dtOO.vec3dThreeDInMap3dTo3d(
+    #    dtOO.vec3dThreeD.MustConstDownCast(
+    #      bC.ptrTransformerContainer().get(
+    #        "uVw_phirMs"
+    #      ).applyAnalyticFunction(
+    #        aF[ii].clone()
+    #      )
+    #    ),
+    #    dtOO.map3dTo3d.ConstDownCast( aG["xyz_channel"] )
+    #  )
+    #  theAG.setLabel("xyz_"+ii)
+    #  aG.push_back( theAG.clone() )
+
 #    # create mesh's topology
 #    blocks = []
 #    for iNum in aG.getIndices("xyz_meshBlock_*"):
