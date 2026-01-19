@@ -17,7 +17,7 @@ import numpy as np
 import sys
 import importlib
 
-class piecewiseRadMeridional:
+class piecewiseRadMeridional_hubRound:
 
   def __init__(self):
     pass
@@ -128,23 +128,17 @@ class piecewiseRadMeridional:
           dtOO.bSplineCurve_pointConstructOCC(
             dtOO.vectorDtPoint3()
               << dtOO.dtPoint3(+0.20, +0.00, -0.33)
-              << dtOO.dtPoint3(+0.20, +0.00, -1.54),
-            1
+              << dtOO.dtPoint3(+0.15, +0.00, -0.44)
+              << dtOO.dtPoint3(+0.15, +0.00, -0.50)
+              << dtOO.dtPoint3(+0.00, +0.00, -0.55),
+            3
           ).result()
         ),
         dtOO.analyticCurve(
           dtOO.bSplineCurve_pointConstructOCC(
             dtOO.vectorDtPoint3()
-              << dtOO.dtPoint3(+0.20, +0.00, -1.54)
-              << dtOO.dtPoint3(+0.28, +0.00, -1.84),
-            1
-          ).result()
-        ),
-        dtOO.analyticCurve(
-          dtOO.bSplineCurve_pointConstructOCC(
-            dtOO.vectorDtPoint3()
-              << dtOO.dtPoint3(+0.28, +0.00, -1.84)
-              << dtOO.dtPoint3(+0.28, +0.00, -2.55),
+              << dtOO.dtPoint3(+0.00, +0.00, -0.50)
+              << dtOO.dtPoint3(+0.00, +0.00, -2.55),
             1
           ).result()
         )
@@ -185,7 +179,7 @@ class piecewiseRadMeridional:
           ).result()
         )
       ],
-      hub_splits = [ [], [], [0.2], [], [],],
+      hub_splits = [ [], [], [], [],],
       shroud_splits = [ [], [], [], []],
       layer_thickness = 0.2,
       layer_supports = [0.33, 0.66],
@@ -704,7 +698,7 @@ def CreateAndShow( *args, **kwargs ):
 
   """
   from dtOOPythonApp.vis import dtOOInParaVIEW
-  cc = piecewiseRadMeridional().create(*args, **kwargs)
+  cc = piecewiseRadMeridional_hubRound().create(*args, **kwargs)
 
   rr = dtOOInParaVIEW( cc )
 ##  rr.Show( rr.Find( "xyz_channel.*", True), "xyz_channel" )
@@ -723,5 +717,5 @@ def CreateAndShow( *args, **kwargs ):
   return cc, rr
 
 if __name__ == "__main__":
-  piecewiseRadMeridional().create()
-
+  piecewiseRadMeridional_hubRound().create()
+piecewiseRadMeridional_hubRound
