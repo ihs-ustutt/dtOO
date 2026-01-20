@@ -41,7 +41,7 @@ import logging
 import numpy
 
 
-class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
+class analyticGeometryAdapted_piecewiseMeridionalRotContour(dtBundleBuilder):
     """Create a grid channel.
 
     The grid channel is created by rotating the channelSide in the range:
@@ -61,6 +61,9 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
         shroud_splits: List[List[float]],
         layer_thickness: float,
         layer_supports: List[float] = [],
+        interface_hub: List[float] = [],             # [curve, percent]
+        interface_shroud: List[float] = [],
+        interface_curvature: List[float] = [],         # [curvature offset, percent]
         internals: List[analyticGeometry] = [],
         rotVector: dtVector3 = dtVector3(0, 0, 1),
         origin: dtPoint3 = dtPoint3(0, 0, 0),
@@ -88,9 +91,9 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
 
         """
         logging.info("Initializing %s ..." % (label))
-        super(analyticGeometry_piecewiseMeridionalRotContour, self).__init__()
+        super(analyticGeometryAdapted_piecewiseMeridionalRotContour, self).__init__()
         self.label_ = label
-
+        
         self.origin_ = origin
         self.rotVector_ = dtLinearAlgebra.normalize(rotVector)
 
@@ -99,7 +102,7 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
         #
         self.hubCurves_ = self.createSplits(hub_splits, hubCurves, "Hub")
         self.shroudCurves_ = self.createSplits(shroud_splits, shroudCurves, "Shroud")
-
+        
         #
         # Extract a bounding box from all start and end points of hub and
         # shroud curves; necessary for calculating the normal direction
@@ -108,6 +111,12 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
             self.hubCurves_ + self.shroudCurves_
         )
 
+        self.interfaces_ = self.createInterface(self.hubCurves_,
+                                               self.shroudCurves_,
+                                               interface_hub,
+                                               interface_shroud,
+                                               interface_curvature,
+                                               self.normalAxis_)
         #
         # Create regular channels (6-sided regions) by skin construct from
         # hub to shroud
@@ -142,9 +151,6 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
                                                                                 # takes the last two hub curves (in example piecewise)
             numpy.min([len(self.hubCurves_), len(self.shroudCurves_)]) - 1 :
         ]
-        print("length regular hub: ", len(self.hubCurves_))
-        print("length regular shroud: ", len(self.shroudCurves_))
-        print("length special hub: ", len(self.speHub_))
         #
         # Loop over all hub curves of special channel to find curves that have
         # a radius of zero; from those curves no boundary layers will be
@@ -174,7 +180,6 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
         ]
         logging.info("%d special shrouds created." % len(self.speShroud_))
         
-        print("length special hub: ", len(self.speHub_))
         #
         # Add special radial curves
         #
@@ -220,11 +225,71 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
         self.internals_ = []
         for internal in internals:
             self.internals_.append(map3dTo3d.MustDownCast(internal))
-        """         
+        """        
+
+    def createInterface(self, 
+                        hubCurves,
+                        shroudCurves,
+                        interface_hub,
+                        interface_shroud, 
+                        curve, 
+                        normalAxis):    
+        
+        if (len(interface_hub) != len(interface_shroud)) or (len(interface_hub) != len(curve)):
+            raise ValueError("interface arrays need the same no. of entries.")
+
+        interfaces = []
+
+        for ii in range(len(interface_hub)):
+            
+            pointHub = analyticCurve.MustDownCast(
+                    hubCurves[interface_hub[ii][0]]).getPointPercent(
+                            interface_hub[ii][1])
+            pointShroud = analyticCurve.MustDownCast(
+                    shroudCurves[interface_shroud[ii][0]]).getPointPercent(
+                            interface_shroud[ii][1])
+        
+            MP_linear = analyticCurve(
+                bSplineCurve_pointConstructOCC(
+                    vectorDtPoint3()
+                    << pointHub
+                    << pointShroud,
+                    1
+                ).result()
+            )
+            
+            direction = curve[ii][2]
+            #MP_linear.firstDerUPercent(curve[1])
+
+            pointCurve = (analyticCurve.MustDownCast(MP_linear).getPointPercent(curve[ii][1])
+                + dtLinearAlgebra.normalize(
+                    dtLinearAlgebra.crossProduct(
+                        MP_linear.firstDerUPercent(curve[ii][1]), normalAxis
+                    )
+                ) 
+                * MP_linear.length() * curve[ii][0] 
+                * direction)
+       
+       
+            interface = analyticCurve(
+                bSplineCurve_pointConstructOCC(
+                    vectorDtPoint3()
+                    << pointHub
+                    << pointCurve
+                    << pointShroud,
+                    2
+                ).result()
+            )
+            
+            interfaces.append(interface.clone())
+            logging.debug("Interface [%d]" %  ii)
+        
+        return interfaces
+    
     # Generates boundary layers
     # baseFlags : booleans determinig if layer should be made (not for curves with radius of 0)
     # radCurves : radial curves
-    def checkAndCreateLayer(self, baseCurves, baseFlags, radCurves):    
+    def checkAndCreateLayer(self, baseCurves, baseFlags, radCurves):
         layerFaces = []
         if baseFlags == []:
             for curve in baseCurves:
@@ -566,7 +631,13 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
                     "debug_channel_" + str(ii) + "_" + self.label_,
                 )
                 ii = ii + 1
-
+            ii = 0
+            for interface in self.interfaces_:
+                self.appendAnalyticGeometry(
+                    interface.clone(),
+                    "debug_interface_" + str(ii) + "_" + self.label_,
+                )
+                ii = ii + 1
         return
 
     def regChannel(self, pos: int) -> analyticGeometry:     # returns the rotated segment of the channel number
