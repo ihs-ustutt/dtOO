@@ -34,6 +34,10 @@ from dtOOPythonSWIG import (
     partRotatingMap2dTo3d,
     trimmedCurve_uBounds,
     geomCurve_curveReverseConstructOCC,
+    curveCurveDist,
+    dtCurve,
+    gslMinFloatAttr,
+    vectorReal,
 )
 
 from typing import List, Union, Tuple
@@ -226,7 +230,9 @@ class analyticGeometryAdapted_piecewiseMeridionalRotContour(dtBundleBuilder):
         for internal in internals:
             self.internals_.append(map3dTo3d.MustDownCast(internal))
         """        
-
+    #
+    # creates an interface curve between two specified points on the hub and the shroud curve
+    #
     def createInterface(self, 
                         hubCurves,
                         shroudCurves,
@@ -239,16 +245,19 @@ class analyticGeometryAdapted_piecewiseMeridionalRotContour(dtBundleBuilder):
             raise ValueError("interface arrays need the same no. of entries.")
 
         interfaces = []
-
+        
+        # iterating through all the interfaces that will be created
         for ii in range(len(interface_hub)):
             
+            # finds the points at the specified percentage of the specified hub and shroud curves
             pointHub = analyticCurve.MustDownCast(
                     hubCurves[interface_hub[ii][0]]).getPointPercent(
                             interface_hub[ii][1])
             pointShroud = analyticCurve.MustDownCast(
                     shroudCurves[interface_shroud[ii][0]]).getPointPercent(
                             interface_shroud[ii][1])
-        
+            
+            # creates a straigth line between the two points
             MP_linear = analyticCurve(
                 bSplineCurve_pointConstructOCC(
                     vectorDtPoint3()
@@ -259,8 +268,13 @@ class analyticGeometryAdapted_piecewiseMeridionalRotContour(dtBundleBuilder):
             )
             
             direction = curve[ii][2]
-            #MP_linear.firstDerUPercent(curve[1])
 
+            # calculates the curvature point by making an offset in normal 
+            # direction of the specified percentage from MP_linear
+            # the normal direction is calculated from the crossproduct 
+            # of the direction of MP_linear and the normalAxis
+            # the offset is a specified percentage of the length of MP_linear
+            # times +-1 for direction
             pointCurve = (analyticCurve.MustDownCast(MP_linear).getPointPercent(curve[ii][1])
                 + dtLinearAlgebra.normalize(
                     dtLinearAlgebra.crossProduct(
@@ -270,7 +284,7 @@ class analyticGeometryAdapted_piecewiseMeridionalRotContour(dtBundleBuilder):
                 * MP_linear.length() * curve[ii][0] 
                 * direction)
        
-       
+            # interface as a bSpline curve from the three points
             interface = analyticCurve(
                 bSplineCurve_pointConstructOCC(
                     vectorDtPoint3()
@@ -283,8 +297,78 @@ class analyticGeometryAdapted_piecewiseMeridionalRotContour(dtBundleBuilder):
             
             interfaces.append(interface.clone())
             logging.debug("Interface [%d]" %  ii)
+       
+        # checking if the generated interfaces are intersecting with any hub or shroud curves 
+        intersects_hub = self.detectIntersect(interfaces, hubCurves)
+        intersects_shroud = self.detectIntersect(interfaces, shroudCurves)
+
+        # logging or warning if intersections occur
+        if (not intersects_hub and not intersects_shroud):
+            logging.debug("Interfaces created without any illegal intersections")
+        else:
+            for i_hub in range(len(intersects_hub)):
+                logging.warning(
+                    "Illegal intersect between interface no. %i and hub curve no. %i",
+                    intersects_hub[i_hub][0],
+                    intersects_hub[i_hub][1]
+                )
+
+            for i_shroud in range(len(intersects_shroud)):
+                logging.warning(
+                    "Illegal intersect between interface no. %i and shroud curve no. %i",
+                    intersects_shroud[i_shroud][0], 
+                    intersects_shroud[i_shroud][1]
+                )
         
         return interfaces
+    #
+    # searches for intersections between two lists of curves
+    #
+    def detectIntersect(self, interfaces, curves):
+            
+            intersect_list = []
+
+            for ii in range(len(interfaces)):
+                
+                # trimms the interface curve at 5 and 95 percent 
+                # this is done so the planned intersect is not detected 
+                # (this would only occur at very high angles) 
+                interface = analyticCurve.MustDownCast(interfaces[ii]).ptrDtCurve()
+                cut_interface = analyticCurve(
+                    trimmedCurve_uBounds(
+                        interface,
+                        interface.u_uPercent(0.05),
+                        interface.u_uPercent(0.95),                          # generates new curve between percentages (0 and input)
+                    ).result()
+                )
+                
+                #self.appendAnalyticGeometry(
+                #    cut_interface.clone(),
+                #    "debug_cut_interface_" + str(ii) + "_" + self.label_,
+                #)
+
+                for ic in range(len(curves)):
+                    # creates a minimization object to search for the intersect point between the two curves
+                    # implemented form the documentation: Transfinite Mesh
+                    gmf = gslMinFloatAttr(
+                        curveCurveDist(cut_interface.ptrConstDtCurve(), curves[ic].ptrConstDtCurve()),
+                        vectorReal([0.5, 0.5,]),
+                        vectorReal([0.001, 0.001,]),
+                        1.e-8,
+                        100
+                    )
+                    # returns True if a intersect is detected
+                    interbool = gmf.perform()
+
+                    del gmf
+                    #print("interface ", str(ii), "and hub Curve ", str(ic), "intersect is ", str(interbool))
+                    
+                    # caches the curves which intersect for return
+                    if interbool == True:
+                        intersect_list.append([ii, ic, interbool])
+
+            return intersect_list
+                    
     
     # Generates boundary layers
     # baseFlags : booleans determinig if layer should be made (not for curves with radius of 0)
