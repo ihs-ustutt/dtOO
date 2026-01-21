@@ -1,0 +1,25 @@
+  cleanup:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request_target' && github.event.action == 'closed'
+    needs: docs
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+
+      - name: Configure remote URL with token
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
+      - name: Remove preview folder
+        run: |
+          PREVIEW_DIR="pr-preview/pr-${{ github.event.pull_request.number }}"
+          if [ -d "$PREVIEW_DIR" ]; then
+            rm -rf "$PREVIEW_DIR"
+            git add -A
+            git commit -m "Remove preview for PR #${{ github.event.pull_request.number }}" || echo "No changes to commit"
+            git push origin gh-pages
+          else
+            echo "No preview directory found, nothing to delete."
+          fi
