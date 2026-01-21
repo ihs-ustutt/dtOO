@@ -18,7 +18,7 @@ concurrency: preview-${{ github.ref }}
 jobs:
   docs:
     runs-on: ubuntu-latest
-    environment: pr-preview
+    environment: ${{ github.event.pull_request.head.repo.full_name == github.repository && 'pr-preview-trusted' || 'pr-preview' }}
     permissions:
       contents: write
       pages: write
