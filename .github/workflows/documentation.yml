@@ -36,9 +36,13 @@ jobs:
       - name: (PR) Set base URL for preview
         if: github.ref != 'refs/heads/main'
         run: echo "BASE_URL=https://${{ env.DOMAIN }}/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
+      - name: Configure git auth for GITHUB_TOKEN
+        if: github.event_name == 'pull_request_target'
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
       - name: (PR) Deploy preview
+        if: github.event_name == 'pull_request_target'
         uses: rossjrw/pr-preview-action@v1
-        if: github.ref != 'refs/heads/main'
         with:
-          source-dir: doc/_build/            
+          source-dir: doc/_build/
           token: ${{ secrets.GITHUB_TOKEN }}
