@@ -38,6 +38,8 @@ from dtOOPythonSWIG import (
     dtCurve,
     gslMinFloatAttr,
     vectorReal,
+    vectorHandlingConstDtCurve,
+    bSplineSurface_bSplineCurveFillConstructOCC,
 )
 
 from typing import List, Union, Tuple
@@ -61,9 +63,11 @@ class analyticGeometryAdapted_piecewiseMeridionalRotContour(dtBundleBuilder):
         label: str,
         hubCurves: List[analyticGeometry],
         shroudCurves: List[analyticGeometry],
-        hub_splits: List[List[float]],
-        shroud_splits: List[List[float]],
-        layer_thickness: float,
+        hub_splits: List[List[float]] = [],
+        hub_combine: List[List[bool]] = [],
+        shroud_splits: List[List[float]] = [],
+        shroud_combine: List[List[bool]] = [],
+        layer_thickness: float = 0,
         layer_supports: List[float] = [],
         interface_hub: List[float] = [],             # [curve, percent]
         interface_shroud: List[float] = [],
@@ -125,7 +129,53 @@ class analyticGeometryAdapted_piecewiseMeridionalRotContour(dtBundleBuilder):
         # Create regular channels (6-sided regions) by skin construct from
         # hub to shroud
         #
+        print(type(analyticCurve.MustConstDownCast(self.hubCurves_[0]).ptrDtCurve()))
+        
+        #  routine for creation of regular hubs with skips
         self.regChannels_ = []
+        vhc = vectorHandlingConstDtCurve()
+
+        i_max = numpy.min([len(self.hubCurves_), len(self.shroudCurves_)]) - 1 
+        
+        if len(hub_combine) < i_max:
+            hub_combine.extend([[] for _ in range(i_max - len(hub_combine))])
+        if len(shroud_combine) < i_max:
+            shroud_combine.extend([[] for _ in range(i_max - len(shroud_combine))])
+
+        i_h = 0
+        i_s = 0
+        
+        while True:
+            
+            # checks if a countour line should be skipped
+            if hub_combine[i_h]:
+                print(type(analyticCurve.MustDownCast(self.hubCurves_[i_h]).ptrDtCurve()))
+                #vhc.push_back(analyticCurve.MustDownCast(self.hubCurves_[i_h]).ptrDtCurve())
+                i_h = i_h + 1
+            
+            if shroud_combine[i_h]:
+                #vhc.push_back(analyticCurve.MustDownCast(self.shroudCurves_[i_s]).ptrDtCurve())
+                i_s = i_s + 1
+            
+            if ((not hub_combine[i_h]) and (not shroud_combine[i_s])):
+                # creates the channel if the contour isnt skipped
+                vhc.push_back(analyticCurve.MustDownCast(self.hubCurves_[i_h]).ptrDtCurve())
+                vhc.push_back(analyticCurve.MustDownCast(self.shroudCurves_[i_s]).ptrDtCurve())
+
+                self.regChannels_.append(                                       # iterates over curve list and matches hub and shroud segments 
+                    analyticSurface(                                            # seqential matches
+                        bSplineSurface_skinConstructOCC(vhc).result()
+                        #bSplineSurface2d_bSplineCurve2dFillConstructOCC(vhc).result()
+                    )
+                )           
+                del vhc
+                vhc = vectorHandlingConstDtCurve()
+                i_h = i_h + 1
+                i_s = i_s + 1
+
+            if i_h >= i_max or i_s >= i_max:
+                break
+        """
         for ii in range(
             numpy.min([len(self.hubCurves_), len(self.shroudCurves_)]) - 1  # smaller amount of split curves
         ):
@@ -141,6 +191,7 @@ class analyticGeometryAdapted_piecewiseMeridionalRotContour(dtBundleBuilder):
                     ).result()
                 )
             )
+        """
         logging.info("%d regular channels created." % len(self.regChannels_))
 
         #
