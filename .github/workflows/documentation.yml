@@ -1,44 +1,72 @@
 name: documentation
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches: [main]
+  pull_request_target:
+    types: [opened, synchronize, reopened, closed]
+  workflow_dispatch:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+  pull-requests: write
 
 concurrency: preview-${{ github.ref }}
 
 jobs:
   docs:
     runs-on: ubuntu-latest
+    environment: pr-preview
     permissions:
-      pull-requests: write
       contents: write
+      pages: write
+      id-token: write
+      pull-requests: write
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+
       - uses: actions/setup-python@v3
+
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.1.0
         with:
           doxyfile-path: "Doxyfile"
-          working-directory: "./doc"        
+          working-directory: "./doc"
+
       - name: Install dependencies
         run: |
           pip install sphinx sphinx_rtd_theme myst_parser breathe
+
       - name: Sphinx build
         run: |
           cd doc && sphinx-build . _build
+
       - name: (main) Deploy
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: JamesIves/github-pages-deploy-action@v4
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         with:
           folder: doc/_build/
           clean-exclude: pr-preview/
+
       - name: (PR) Set base URL for preview
-        if: github.ref != 'refs/heads/main'
+        if: github.event_name == 'pull_request_target'
         run: echo "BASE_URL=https://${{ env.DOMAIN }}/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
+
+      - name: Configure git auth for GITHUB_TOKEN
+        if: github.event_name == 'pull_request_target'
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
       - name: (PR) Deploy preview
+        if: github.event_name == 'pull_request_target'
         uses: rossjrw/pr-preview-action@v1
-        if: github.ref != 'refs/heads/main'
         with:
-          source-dir: doc/_build/            
+          source-dir: doc/_build/
           token: ${{ secrets.GITHUB_TOKEN }}
+
