@@ -1,7 +1,17 @@
+name: Cleanup PR Previews
+
+on:
+  pull_request_target:
+    types: [closed]
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
   cleanup:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request_target' && github.event.action == 'closed'
-    needs: docs
+
     steps:
       - name: Checkout gh-pages branch
         uses: actions/checkout@v3
@@ -23,3 +33,4 @@
           else
             echo "No preview directory found, nothing to delete."
           fi
+
