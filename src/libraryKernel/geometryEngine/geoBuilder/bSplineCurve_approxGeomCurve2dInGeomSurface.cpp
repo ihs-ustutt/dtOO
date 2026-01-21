@@ -50,17 +50,13 @@ bSplineCurve_approxGeomCurve2dInGeomSurface ::
   Handle(Adaptor2d_Curve2d) hc = new Geom2dAdaptor_Curve(gc);
   Handle(Adaptor3d_Surface) hs = new GeomAdaptor_Surface(gs);
 
-  Handle(Geom_BSplineCurve) curve = Approx_CurveOnSurface(
-                                      hc,
-                                      hs,
-                                      Standard_Real(0.0),
-                                      Standard_Real(1.0),
-                                      Precision::Confusion(),
-                                      GeomAbs_Shape::GeomAbs_C2,
-                                      Standard_Integer(2),
-                                      Standard_Integer(5)
-  )
-                                      .Curve3d();
+  Approx_CurveOnSurface acos(
+    hc, hs, Standard_Real(0.0), Standard_Real(1.0), Precision::Confusion()
+  );
+  acos.Perform(
+    Standard_Integer(5), Standard_Integer(2), GeomAbs_Shape::GeomAbs_C2
+  );
+  Handle(Geom_BSplineCurve) curve = acos.Curve3d();
 
   dtOCCCurveBase base;
   base.setOCC(curve);

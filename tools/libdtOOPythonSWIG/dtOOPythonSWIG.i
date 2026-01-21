@@ -355,14 +355,12 @@ namespace dtOO {
 #include <jsonHeaven/jsonPrimitive.h>
 #include <interfaceHeaven/dtBundle.h>
 using namespace dtOO;
-#ifdef DTOO_HAS_PYTHONOCC
-  #include <TColStd_module.hxx>
-  #include <TCollection_module.hxx>
-  #include <Message_module.hxx>
-  #include <Geom_module.hxx>
-  #include <TColgp_module.hxx>
-  #include <Standard_Persistent.hxx>
-#endif
+#include <TColStd_module.hxx>
+#include <TCollection_module.hxx>
+#include <Message_module.hxx>
+#include <Geom_module.hxx>
+#include <TColgp_module.hxx>
+#include <Standard_Persistent.hxx>
 #include <attributionHeaven/floatAtt.h>
 #include <attributionHeaven/pointGeometryDist.h>
 #include <attributionHeaven/geometryGeometryDist.h>
@@ -388,11 +386,9 @@ namespace dtOO {
 %include <std_string.i>
 %include <std_pair.i>
 %include <exception.i>
-#ifdef DTOO_HAS_PYTHONOCC
 %import Standard.i
 %import math.i
 %import Geom.i
-#endif
 %exception;
 
 %exception {

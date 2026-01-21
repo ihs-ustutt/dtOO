@@ -31,10 +31,10 @@ class dtOCCSurfaceBase {
 public:
   dt__classOnlyName(dtOCCSurfaceBase);
   dtOCCSurfaceBase();
-  dtOCCSurfaceBase(Handle_Geom_Surface orig);
+  dtOCCSurfaceBase(Handle(Geom_Surface) orig);
   virtual ~dtOCCSurfaceBase();
-  void setOCC(Handle_Geom_Surface);
-  Handle_Geom_Surface const getOCC(void) const;
+  void setOCC(Handle(Geom_Surface));
+  Handle(Geom_Surface) const getOCC(void) const;
   std::string dumpToString(void) const;
 
 private:
