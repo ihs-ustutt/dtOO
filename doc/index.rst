@@ -7,6 +7,8 @@
 Welcome to dtOO's documentation!
 ================================
 
+I want this sentence here!
+
 dtOO is a scientific C++ library with a Python interface for designing
 hydraulic machines. It is built based on the idea of providing a 
 toolbox for geometry generation, mesh generation and simulation setup 
