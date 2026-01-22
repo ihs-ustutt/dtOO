@@ -22,3 +22,9 @@ Simple Axial Runner ``simpleAxialRunner``
 
 .. automodule:: dtOO.test.simpleAxialRunner.simpleAxialRunner
     :members:
+
+Cuboid Mesh ``meshCuboid``
+=========================
+
+.. automodule:: dtOO.test.meshCuboid.meshCuboid
+    :members:
