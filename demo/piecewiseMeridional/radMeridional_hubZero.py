@@ -17,7 +17,7 @@ import numpy as np
 import sys
 import importlib
 
-class piecewiseRadMeridional_hubZero:
+class radMeridional_hubZero:
 
   def __init__(self):
     pass
@@ -95,7 +95,7 @@ class piecewiseRadMeridional_hubZero:
 
     #from dtOOPythonApp.builder import (analyticGeometry_piecewiseMeridionalRotContour)
     
-    modname = "dtOOPythonApp.builder.analyticGeometryAdapted_piecewiseMeridionalRotContour"
+    modname = "dtOOPythonApp.builder.analyticGeometryLayers_piecewiseMeridionalRotContour"
     if modname in sys.modules: 
         print(f"reloading: {modname}")
         module=importlib.reload(sys.modules[modname])
@@ -103,7 +103,7 @@ class piecewiseRadMeridional_hubZero:
         print(f"loading: {modname}")
         module=importlib.import_module(modname)
 
-    radMeridionalContour = module.analyticGeometryAdapted_piecewiseMeridionalRotContour(  # same object / class as axial machine
+    radMeridionalContour = module.analyticGeometryLayers_piecewiseMeridionalRotContour(  # same object / class as axial machine
       "radMeridionalContour",
       hubCurves = [
         dtOO.analyticCurve(
@@ -120,7 +120,7 @@ class piecewiseRadMeridional_hubZero:
               << dtOO.dtPoint3(+1.29, +0.00, +0.36)
               << dtOO.dtPoint3(+1.00, +0.00, +0.36)
               << dtOO.dtPoint3(+0.40, +0.00, +0.12)
-              << dtOO.dtPoint3(+0.20, +0.00, -0.33),
+              << dtOO.dtPoint3(+0.10, +0.00, -0.55),
             2
           ).result()
         ),
@@ -137,15 +137,15 @@ class piecewiseRadMeridional_hubZero:
         dtOO.analyticCurve(
           dtOO.bSplineCurve_pointConstructOCC(
             dtOO.vectorDtPoint3()
-              << dtOO.dtPoint3(+0.20, +0.00, -0.33)
-              << dtOO.dtPoint3(+0.00, +0.00, -0.33),
+              << dtOO.dtPoint3(+0.10, +0.00, -0.55)
+              << dtOO.dtPoint3(+0.00, +0.00, -0.55),
             1
           ).result()
         ),
         dtOO.analyticCurve(
           dtOO.bSplineCurve_pointConstructOCC(
             dtOO.vectorDtPoint3()
-              << dtOO.dtPoint3(+0.00, +0.00, -0.33)
+              << dtOO.dtPoint3(+0.00, +0.00, -0.55)
               << dtOO.dtPoint3(+0.00, +0.00, -2.55),
             1
           ).result()
@@ -187,17 +187,62 @@ class piecewiseRadMeridional_hubZero:
           ).result()
         )
       ],
-      hub_splits = [ [], [], [], [0.15],],
-      hub_combine = [[], [], [1], [], [],],
+      hub_splits = [ [], [0.5], [], [],],
+      hub_combine = [[], [], [], [], [],],
       shroud_splits = [ [], [], [], []],
       shroud_combine = [[], [], [], [],],
       layer_thickness = 0.2,
       layer_supports = [0.33, 0.66],
+
+      interface_hub = [[0, 0.8],
+                       [1,0.9],],                # [curve, percent]
+      interface_shroud = [[0, 0.8],
+                          [2, 0.8],],
+      interface_curvature = [[0.3, 0.5, 1],
+                             [0.3, 0.3, -1],],    # [curvature offset percent, hub to shroud percent, direction]
+
+
       #rotVector=dtOO.dtVector3(0,0,-1)
     ).enableDebug()#.buildExtract( container )
     container = radMeridionalContour.buildExtract(container)
-    
+    """
+       self.regChannels_ = []
+        for ii in range(len(interface_hub)):
 
+            vhc = vectorHandlingConstDtCurve()
+
+            print("interface type 1 = ", type(self.interfaces_[ii]))
+            print("interface type 2 = ", type(analyticCurve.MustDownCast(self.interfaces_[ii])))
+            #vhc.push_back(analyticCurve.MustDownCast(self.interfaces_[ii]))
+
+
+            add_hub = 0
+            add_shroud = 0
+
+            if ii > 0:
+                #vhc.push_back(analyticCurve.MustDownCast(self.interfaces_[ii-1]))
+                add_hub = interface_hub[ii-1][0]
+                add_shroud = interface_shroud[ii-1][0]
+
+            for jj in range(interface_hub[ii][0] - add_hub):
+                print("curve type 2 = ", type(analyticCurve.MustDownCast(self.hubCurves_[jj+add_hub])))
+                vhc.push_back(analyticCurve.MustDownCast(self.hubCurves_[jj + add_hub]))
+
+            for jj in range(interface_shroud[ii][0] - add_shroud):
+                print("######### DEBUG ")
+                vhc.push_back(analyticCurve.MustDownCast(self.shroudCurves_[jj + add_shroud]))
+
+                
+            self.regChannels_.append(                                       # iterates over curve list and matches hub and shroud segments 
+                analyticSurface(                                            # seqential matches
+                    bSplineSurface_skinConstructOCC(vhc).result()
+                    #bSplineSurface2d_bSplineCurve2dFillConstructOCC(vhc).result()
+                )
+            )           
+            del vhc
+
+    """
+    """
     a = radMeridionalContour.regChannel(1)      # rotating a specific channel 
     a <<= "xyz_channel"                         # renaming it
     aG.append( a )                              # adding it to the analytic geometry container
@@ -426,6 +471,7 @@ class piecewiseRadMeridional_hubZero:
       )
       theAG.setLabel("xyz_"+ii)                             # renames everything to be called xyz_...
       aG.push_back( theAG.clone() )
+      """
     #for iNum in aF.getIndices("meshBlock_*"):               # does the same thing with the mesh blocks around the blade 
     #  ii = aF.getLabel( iNum )
     #  theAG = dtOO.vec3dThreeDInMap3dTo3d(
@@ -708,7 +754,7 @@ def CreateAndShow( *args, **kwargs ):
 
   """
   from dtOOPythonApp.vis import dtOOInParaVIEW
-  cc = piecewiseRadMeridional_hubZero().create(*args, **kwargs)
+  cc = radMeridional_hubZero().create(*args, **kwargs)
 
   rr = dtOOInParaVIEW( cc )
 ##  rr.Show( rr.Find( "xyz_channel.*", True), "xyz_channel" )
@@ -727,5 +773,5 @@ def CreateAndShow( *args, **kwargs ):
   return cc, rr
 
 if __name__ == "__main__":
-  piecewiseRadMeridional_hubZero().create()
-piecewiseRadMeridional_hubZero
+  radMeridional_hubZero().create()
+radMeridional_hubZero
