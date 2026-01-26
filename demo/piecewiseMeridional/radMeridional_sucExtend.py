@@ -17,7 +17,7 @@ import numpy as np
 import sys
 import importlib
 
-class piecewiseRadMeridional_SucExtend:
+class radMeridional_SucExtend:
 
   def __init__(self):
     pass
@@ -95,7 +95,7 @@ class piecewiseRadMeridional_SucExtend:
 
     #from dtOOPythonApp.builder import (analyticGeometry_piecewiseMeridionalRotContour)
     
-    modname = "dtOOPythonApp.builder.analyticGeometryAdapted_piecewiseMeridionalRotContour"
+    modname = "dtOOPythonApp.builder.analyticGeometryLayers_piecewiseMeridionalRotContour"
     if modname in sys.modules: 
         print(f"reloading: {modname}")
         module=importlib.reload(sys.modules[modname])
@@ -103,7 +103,7 @@ class piecewiseRadMeridional_SucExtend:
         print(f"loading: {modname}")
         module=importlib.import_module(modname)
 
-    radMeridionalContour = module.analyticGeometryAdapted_piecewiseMeridionalRotContour(  # same object / class as axial machine
+    radMeridionalContour = module.analyticGeometryLayers_piecewiseMeridionalRotContour(  # same object / class as axial machine
       "radMeridionalContour",
       hubCurves = [
         dtOO.analyticCurve(
@@ -738,7 +738,7 @@ def CreateAndShow( *args, **kwargs ):
 
   """
   from dtOOPythonApp.vis import dtOOInParaVIEW
-  cc =piecewiseRadMeridional_SucExtend().create(*args, **kwargs)
+  cc =radMeridional_SucExtend().create(*args, **kwargs)
 
   rr = dtOOInParaVIEW( cc )
 ##  rr.Show( rr.Find( "xyz_channel.*", True), "xyz_channel" )
@@ -757,5 +757,5 @@ def CreateAndShow( *args, **kwargs ):
   return cc, rr
 
 if __name__ == "__main__":
-  piecewiseRadMeridional_SucExtend().create()
+  radMeridional_SucExtend().create()
 
