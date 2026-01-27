@@ -65,9 +65,9 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         hubCurves: List[analyticGeometry],
         shroudCurves: List[analyticGeometry],
         hub_splits: List[List[float]] = [],
-        hub_combine: List[List[bool]] = [],
+        #hub_combine: List[List[bool]] = [],
         shroud_splits: List[List[float]] = [],
-        shroud_combine: List[List[bool]] = [],
+        #shroud_combine: List[List[bool]] = [],
         layer_thickness: float = 0,
         layer_supports: List[float] = [],
         interface_hub: List[float] = [],             # [curve, percent]
@@ -105,46 +105,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         
         self.origin_ = origin
         self.rotVector_ = dtLinearAlgebra.normalize(rotVector)
-        """
-        for ii in range(interface_hub[-1][0]):
-            if ii == 0:
-                regCurveHub = analyticCurve(
-                        bSplineCurve_curveConnectConstructOCC(
-                            analyticCurve.MustDownCast(
-                                hubCurves[ii]
-                            ).ptrDtCurve(), 
-                            analyticCurve.MustDownCast(
-                                hubCurves[ii+1]
-                            ).ptrDtCurve()
-                        ).result())
-
-            else:
-                regCurveHub = analyticCurve(bSplineCurve_curveConnectConstructOCC(analyticCurve.MustDownCast(regCurveHub).ptrDtCurve(), analyticCurve.MustDownCast(hubCurves[ii+1]).ptrDtCurve()).result())
-
-        self.appendAnalyticGeometry(
-            regCurveHub.clone(),
-            "debug_regHubCurve_TEST_"  + self.label_,
-        )
-
-        for ii in range(interface_shroud[-1][0]):
-            if ii == 0:
-                regCurveShroud = analyticCurve(
-                        bSplineCurve_curveConnectConstructOCC(
-                            analyticCurve.MustDownCast(
-                                shroudCurves[ii]
-                            ).ptrDtCurve(), 
-                            analyticCurve.MustDownCast(
-                                shroudCurves[ii+1]
-                            ).ptrDtCurve()
-                        ).result())
-
-            else:
-                regCurveShroud = analyticCurve(bSplineCurve_curveConnectConstructOCC(analyticCurve.MustDownCast(regCurveShroud).ptrDtCurve(), analyticCurve.MustDownCast(shroudCurves[ii+1]).ptrDtCurve()).result())
-
-        self.appendAnalyticGeometry(
-            regCurveShroud.clone(),
-            "debug_regShroudCurve_TEST_"  + self.label_,
-        )"""
+        
         #
         # Extract a bounding box from all start and end points of hub and
         # shroud curves; necessary for calculating the normal direction
@@ -152,25 +113,24 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         self.normalAxis_ = self.calculateNormalAxis(            # returns normal direction of entire "2D domain"
             hubCurves + shroudCurves
         )
-
+        
+        # Generates interface curves
         self.interfaces_ = self.createInterface(hubCurves,
                                                shroudCurves,
                                                interface_hub,
                                                interface_shroud,
                                                interface_curvature,
                                                self.normalAxis_)
-        #self.hubSplits_ = []
-        #for i in range(len(hub_splits)):
-        #    for l in range(max(1, len(hub_splits[i]))):
-        #        self.hubSplits_[i].append((hub_splits[i][l], None))
+        
+        # Mapping the list of splits
+        # Every split entrie gets a None descriptor 
+        # This will tell the code that it isnt a interface split
         self.hubSplits_ = []
-
         for i in range(len(hub_splits)):
             splits = []
             for l in range(len(hub_splits[i])):
                 splits.append((hub_splits[i][l], None))
             self.hubSplits_.append(splits)
-        print("self.hubSplits_ = ", self.hubSplits_)
         
         self.shroudSplits_ = []
         for i in range(len(shroud_splits)):
@@ -178,96 +138,42 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
             for l in range(len(shroud_splits[i])):
                 splits.append((shroud_splits[i][l], None))
             self.shroudSplits_.append(splits)
-        print("self.hubSplits_ = ", self.shroudSplits_)
         
-        # adding interface points to splits        # adding interface points to splits
+        # The hub and shroud points of the interfaces are added to the lists of splits
+        # they get the ID of the interface i as a descriptor
+        # trough this the correct interfaces can be tracked later
         for i in range(len(interface_hub)):
             self.hubSplits_[interface_hub[i][0]].append((interface_hub[i][1],i))
             self.hubSplits_[i].sort()
             self.shroudSplits_[interface_shroud[i][0]].append((interface_shroud[i][1],i))
             self.shroudSplits_[i].sort()
-        print("self.hubSplits_ = ", self.hubSplits_)
-        print("self.shroudSplits_ = ", self.shroudSplits_)
 
-        #for i_interface in range(len(interface_hub)):
-        #    hub_splits[interface_hub[i_interface][0]].append([interface_hub[i_interface][1],1])
-        #    hub_splits[i_interface].sort()
-        #    shroud_splits[interface_shroud[i_interface][0]].append([interface_shroud[i_interface][1],1])
-        #    shroud_splits[i_interface].sort()
-
-        #print("hub_splits = ", hub_splits)
-        #print("shroud_splits = ", shroud_splits)
         #
-        # Create split of hub and shroud curves
-        #
+        # Create splits of hub and shroud curves
+        # hub_cti and shroud_cti (curve_to_interface) contains a datastructure list
+        # Here is mapped which of the newly spilt curves are located upstream of an interface
+        # a curve located upstream of an interface is marked with the interface ID the others with None
         self.hubCurves_, hub_cti = self.createSplits(self.hubSplits_, hubCurves, "Hub")
         self.shroudCurves_, shroud_cti = self.createSplits(self.shroudSplits_, shroudCurves, "Shroud")
+        print("len(hub) = ", len(self.hubCurves_))
+        print("len(shroud) = ", len(self.shroudCurves_))
         print("hub_cti = ", hub_cti)
         print("shroud_cti = ", shroud_cti)
-        
+       
+        # the cti lists will be updated to map all the curves to the regular channels they will be part of
+        # every cut curve will be appointed the ID of its respective reg channel defined by its interface
+        # None means that the chrve is part of a layer channel
         hub_cti = self.propagate_interface_ids_next(hub_cti)
         shroud_cti = self.propagate_interface_ids_next(shroud_cti)
         print("hub_cti = ", hub_cti)
         print("shroud_cti = ", shroud_cti)
-        print("will this show")
-        #
-        # Create regular channels (6-sided regions) by skin construct from
-        # hub to shroud
-        #
-        """
-        #  routine for creation of regular hubs with skips
-        self.regChannels_ = []
-        vhc = vectorHandlingConstDtCurve()
-
-        i_max = numpy.min([len(self.hubCurves_), len(self.shroudCurves_)]) - 1 
         
-        if len(hub_combine) < i_max:
-            hub_combine.extend([[] for _ in range(i_max - len(hub_combine))])
-        if len(shroud_combine) < i_max:
-            shroud_combine.extend([[] for _ in range(i_max - len(shroud_combine))])
-
-        i_h = 0
-        i_s = 0
-        
-        while True:
-            
-            # checks if a countour line should be skipped
-            if hub_combine[i_h]:
-                print(type(analyticCurve.MustDownCast(self.hubCurves_[i_h]).ptrDtCurve()))
-                #vhc.push_back(analyticCurve.MustDownCast(self.hubCurves_[i_h]).ptrDtCurve())
-                i_h = i_h + 1
-            
-            if shroud_combine[i_h]:
-                #vhc.push_back(analyticCurve.MustDownCast(self.shroudCurves_[i_s]).ptrDtCurve())
-                i_s = i_s + 1
-            
-            if ((not hub_combine[i_h]) and (not shroud_combine[i_s])):
-                # creates the channel if the contour isnt skipped
-                vhc.push_back(analyticCurve.MustDownCast(self.hubCurves_[i_h]).ptrDtCurve())
-                vhc.push_back(analyticCurve.MustDownCast(self.shroudCurves_[i_s]).ptrDtCurve())
-
-                self.regChannels_.append(                                       # iterates over curve list and matches hub and shroud segments 
-                    analyticSurface(                                            # seqential matches
-                        bSplineSurface_skinConstructOCC(vhc).result()
-                        #bSplineSurface2d_bSplineCurve2dFillConstructOCC(vhc).result()
-                    )
-                )           
-                del vhc
-                vhc = vectorHandlingConstDtCurve()
-                i_h = i_h + 1
-                i_s = i_s + 1
-
-            if i_h >= i_max or i_s >= i_max:
-                break
-        """
         #
-        # Add special radial curves
+        # Add inlet and outlet curves
         #
-        self.speRad_ = []
-        #
-        # Use radial curve of last regular channel to have conform surfaces
-        #
-        self.speRad_.append(                                    # generates curve at end of flow channel, from end points of hub and shroud
+        self.inOutCurves_ = []
+        # The inlet curve is needed as a boundary for the first regular channel
+        self.inOutCurves_.append(                                    
             analyticCurve(
                 bSplineCurve_pointConstructOCC(
                     self.hubCurves_[0].getPointPercent(0),
@@ -275,53 +181,43 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 ).result()
             )
         )
- 
-
-        self.regChannels_ = []
-        """
-        self.regChannels_.append(                                       # iterates over curve list and matches hub and shroud segments 
-            analyticSurface(                                            # seqential matches
-                bSplineSurface_bSplineCurveFillConstructOCC(
-                    analyticCurve.MustDownCast(                         # curves are skinned with each other and surface generated           
-                        self.speRad_[0]
-                    ).ptrDtCurve(),
-                    analyticCurve.MustDownCast(
-                        self.hubCurves_[0]
-                    ).ptrDtCurve(),
-                    analyticCurve.MustDownCast(
-                        self.shroudCurves_[0]
-                    ).ptrDtCurve(),
-                    analyticCurve.MustDownCast(
-                        self.interfaces_[0]
-                    ).ptrDtCurve(),
+        # The outlet curve will be needed for layer generation
+        self.inOutCurves_.append(                                    
+            analyticCurve(
+                bSplineCurve_pointConstructOCC(
+                    self.hubCurves_[-1].getPointPercent(1),
+                    self.shroudCurves_[-1].getPointPercent(1),
                 ).result()
             )
         )
-        """
+ 
+        # Generating regular channels from the interfaces
+        # here all the channels are defined trough the hub and shroud curves and the interface
+        # the last interface builds the last regular channel
+        # the regChannels are generated by crating a surface from 4 curves
+        # these curves are the upsteam and downstream boundaries 
+        # and the combined hub and shroud curves of the channel
+        self.regChannels_ = []
+        # interating trough the interfaces (interface_hub and ..._shroud have to be the same size)
         for ii in range(len(interface_hub)):
 
             vhc = vectorHandlingConstDtCurve()
-            
-            print("interface type 1 = ", type(self.interfaces_[ii]))
-            print("interface type 2 = ", type(analyticCurve.MustDownCast(self.interfaces_[ii])))
+            # the current interface is always a boundary
             vhc.push_back(analyticCurve.MustDownCast(self.interfaces_[ii]).ptrDtCurve())
-
-
-            add_hub = -1
-            add_shroud = -1
             
             if ii == 0:
-                vhc.push_back(analyticCurve.MustDownCast(self.speRad_[0]).ptrDtCurve())
+                # the first regChannel gets the inlet as a boundary curve
+                vhc.push_back(analyticCurve.MustDownCast(self.inOutCurves_[0]).ptrDtCurve())
             else:
+                # the other regChannels get the previous interface as boundary
                 vhc.push_back(analyticCurve.MustDownCast(self.interfaces_[ii-1]).ptrDtCurve())
             
             first = 0
+            # iterating over the hubCurves
             for jj in range(len(self.hubCurves_)):
-                print("#######################")
-                print("cti = ", hub_cti[jj])
-                print("ii = ", ii)
+                # checking if the interface ID of the current curve matches the current interface
                 if hub_cti[jj] == ii:
-                    print("is equal")
+                    # if it matches the curve will be combined with the other matching curves
                     if first == 0:
                         regCurveHub = self.hubCurves_[jj]
                          
@@ -343,7 +239,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 "debug_regCurveHub_TEST1_" + str(ii) + "_" + self.label_,
             )
             first = 0
-
+            # the same is done for the shroud curves
             for jj in range(len(self.shroudCurves_)):
                 if shroud_cti[jj] == ii:
                     if first == 0:
@@ -367,44 +263,18 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 "debug_regCurveShroud_TEST1_" + str(ii) + "_" + self.label_,
             )
 
-            """
-            for jj in range(interface_shroud[ii][0] + 1 - add_shroud+1):
-                print("######### DEBUG ")
-                vhc.push_back(analyticCurve.MustDownCast(self.shroudCurves_[jj + add_shroud+1]).ptrDtCurve())
-                self.appendAnalyticGeometry(
-                    self.shroudCurves_[jj + add_shroud+1].clone(),
-                    "debug_shroudCurve_TEST1_" + str(jj) + "_" + "regCh" + str(ii) + "_" + self.label_,
-                )
-            """
-                
-            self.regChannels_.append(                                       # iterates over curve list and matches hub and shroud segments 
-                analyticSurface(                                            # seqential matches
+            # generates the regular Channel by filling the four curves in vhc    
+            self.regChannels_.append(                                        
+                analyticSurface(                                            
                     bSplineSurface_bSplineCurveFillConstructOCC(vhc).result()
-                    #bSplineSurface2d_bSplineCurve2dFillConstructOCC(vhc).result()
                 )
             )  
             
             del vhc
-        """
-        for ii in range(
-            numpy.min([len(self.hubCurves_), len(self.shroudCurves_)]) - 1  # smaller amount of split curves
-        ):
-            self.regChannels_.append(                                       # iterates over curve list and matches hub and shroud segments 
-                analyticSurface(                                            # seqential matches
-                    bSplineSurface_skinConstructOCC(
-                        analyticCurve.MustDownCast(                         # curves are skinned with each other and surface generated           
-                            self.hubCurves_[ii]
-                        ).ptrDtCurve(),
-                        analyticCurve.MustDownCast(
-                            self.shroudCurves_[ii]
-                        ).ptrDtCurve(),
-                    ).result()
-                )
-            )
-        """
         
         logging.info("%d regular channels created." % len(self.regChannels_))
-
+        """
+        #
         #
         # Create special channels ( rotation of a multiple bounded surfaces)
         #
@@ -417,6 +287,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                                                                                 # takes the last two hub curves (in example piecewise)
             numpy.min([len(self.hubCurves_), len(self.shroudCurves_)]) - 1 :
         ]
+    
         #
         # Loop over all hub curves of special channel to find curves that have
         # a radius of zero; from those curves no boundary layers will be
@@ -437,7 +308,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 self.speHubLayer_.append(True)
         logging.info("%d special hubs created." % len(self.speHub_))
         logging.info("SpeHubLayer %s" % self.speHubLayer_)
-
+        
         #
         # Add special shroud curves
         #
@@ -445,7 +316,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
             numpy.min([len(self.hubCurves_), len(self.shroudCurves_)]) - 1 :    
         ]
         logging.info("%d special shrouds created." % len(self.speShroud_))
-        
+        """ 
         #
         # Add special radial curves
         #
@@ -632,7 +503,11 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                         intersect_list.append([ii, ic, interbool])
 
             return intersect_list
-                    
+    
+    # edits the cti / curve_to_interface list
+    # the list is first returned by self.cerateSplits()
+    # it originally only tracks which curve is directly upstream of an interface
+    # here it is propagated so the curve Ids math the number of the regular channel they will be part of
     def propagate_interface_ids_next(self, curve_to_interface):
         result = curve_to_interface.copy()
         n = len(result)
@@ -776,48 +651,61 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
             * pp[0]
         )
         return vv
-
+    
+    # splits will be created here
     @staticmethod
-    def createSplits(splits, inCurves, lab):                                    # inputs (hub and shroud) curves and splits
+    def createSplits(splits, inCurves, lab): 
         outCurves = []
+        # mapping of all the curves and their corresponding interface IDs
         curve_to_interface = []
+
         for cc in range(len(splits)):
-            
             curve = analyticCurve.MustDownCast(inCurves[cc]).ptrDtCurve()
             
+            # if a split is made (splits[cc] contains an entrie)
             if splits[cc]:
+                # makes a list of all the occuring splits in this curve
                 split_pos = [0.0] + [s[0] for s in splits[cc]] + [1.0]
-                interface_ids = [s[1] for s in splits[cc]]  # corresponding interface IDs (None if normal split)
-
-                #split_pos = [0]
-                #for s in range(len(splits[cc])):
-                #    split_pos.append(splits[cc][s])
-                #split_pos.append(1)
-                print("split_pos = ", split_pos)
+                # makes a list of the IDs the new curves will have
+                interface_ids = [s[1] for s in splits[cc]]
+                # iterating over the splits on this curve
                 
                 for n in range(len(split_pos)-1):
-                    ac = analyticCurve(
-                        trimmedCurve_uBounds(
-                            curve,
-                            curve.u_uPercent(split_pos[n]),
-                            curve.u_uPercent(split_pos[n+1]),                          # generates new curve between percentages (0 and input)
-                        ).result()
-                    )
-                    outCurves.append(ac.clone())                                # split curve is  appended to outCurves
+                    # exception for when a interface is located on 0 or 100 percent of a curve
+                    # doesnt make a split just corrects the cti
+                    if split_pos[n] == split_pos[n+1]:
+                        #iface_id = interface_ids[n] if n < len(interface_ids) else None
+                        iface_id = interface_ids[n] if n < len(interface_ids) else interface_ids[-1]
+                        curve_to_interface[n-1] = iface_id
                     
-                    # Determine interface ownership
-                    # We assign the interface ID of the *upper bound* of the segment
-                    iface_id = interface_ids[n] if n < len(interface_ids) else None
-                    curve_to_interface.append(iface_id)
+                    else:
+                        # trimms the curves ath the split positions
+                        ac = analyticCurve(
+                            trimmedCurve_uBounds(
+                                curve,
+                                curve.u_uPercent(split_pos[n]),
+                                curve.u_uPercent(split_pos[n+1]),   # generates new curve between percentages (0 and input)
+                            ).result()
+                        )
+                        outCurves.append(ac.clone())                # split curve is  appended to outCurves
+                        
+                        # Determine interface ownership
+                        # We assign the interface ID of the *upper bound* of the segment
+                        iface_id = interface_ids[n] if n < len(interface_ids) else None
+                        curve_to_interface.append(iface_id)
 
-                    logging.debug(
-                        "Split %s[%d] [%5f, %5f]" % (lab, cc, split_pos[n], split_pos[n+1])
-                    )
+                        logging.debug(
+                            "Split %s[%d] [%5f, %5f]" % (lab, cc, split_pos[n], split_pos[n+1])
+                        )
+            # if the curve is not split the whole curve will be copied        
             else:
-                outCurves.append(inCurves[cc].clone())                          # if no splits just returns curves
+                outCurves.append(inCurves[cc].clone())                
                 logging.debug("Copy %s[%d]" % (lab, cc))
+                # adds none to curve to interface
                 curve_to_interface.append(None)
-        return outCurves, curve_to_interface                                                        # returns split curves
+        
+        # returns the cut curves and the cti    
+        return outCurves, curve_to_interface    
 
     @staticmethod
     def calculateNormalAxis(curves):
@@ -973,17 +861,18 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
             for aCurve in self.shroudCurves_:
                 self.appendAnalyticGeometry(
                     aCurve.clone(),
-                    "debug_shroudCurves_" + str(ii) + "_" + self.label_,
+                    "debug_shroudCurve_" + str(ii) + "_" + self.label_,
                 )
                 ii = ii + 1
             ii = 0
             for aCurve in self.hubCurves_:
                 self.appendAnalyticGeometry(
                     aCurve.clone(),
-                    "debug_hubCurves_" + str(ii) + "_" + self.label_,
+                    "debug_hubCurve_" + str(ii) + "_" + self.label_,
                 )
                 ii = ii + 1
             ii = 0
+            """
             for aCurve in self.speHub_:
                 self.appendAnalyticGeometry(
                     aCurve.clone(),
@@ -998,10 +887,11 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 )
                 ii = ii + 1
             ii = 0
-            for aCurve in self.speRad_:
+            """
+            for aCurve in self.inOutCurves_:
                 self.appendAnalyticGeometry(
                     aCurve.clone(),
-                    "debug_speRad_" + str(ii) + "_" + self.label_,
+                    "debug_inOutCurve_" + str(ii) + "_" + self.label_,
                 )
                 ii = ii + 1
 
