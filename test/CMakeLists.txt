@@ -245,6 +245,21 @@ add_test(
 set_tests_properties(simpleAxialRunner PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST simpleAxialRunner PROPERTY LABELS base-test)
 
+#
+# meshCuboid
+#
+add_test(
+  NAME meshCuboid 
+  COMMAND 
+    "${Python3_EXECUTABLE}" 
+    "-m" "doctest" 
+    "meshCuboid.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshCuboid
+)
+set_tests_properties(meshCuboid PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+set_property(TEST meshCuboid PROPERTY LABELS base-test)
+DTOO_ADDTESTWLABEL("meshCuboid")
+
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
     IF(IS_DIRECTORY ${dirPath})

@@ -33,9 +33,12 @@ sca3PPointsBSplineOneD::sca3PPointsBSplineOneD()
     _curve(dt__tmpPtr(
       dtCurve2d,
       bSplineCurve2d_pointConstructOCC(
-        ::boost::assign::list_of(dtPoint2(0.0, 0.0))(dtPoint2(0.5, 0.5))(
-          dtPoint2(1.0, 1.0)
-        ),
+        // clang-format off
+        ::boost::assign::list_of
+          (dtPoint2(0.0, 0.0))
+          (dtPoint2(0.5, 0.5))
+          (dtPoint2(1.0, 1.0)),
+        // clang-format on
         2
       )
         .result()
@@ -58,10 +61,14 @@ sca3PPointsBSplineOneD::sca3PPointsBSplineOneD(
     _curve(dt__tmpPtr(
       dtCurve2d,
       bSplineCurve2d_pointConstructOCC(
-        ::boost::assign::
-          list_of(dtPoint2(0.0, 0.0))(dtPoint2(xB, yB))(dtPoint2(0.5 * (xB + xA), 0.5 * (yB + yA)))(dtPoint2(xA, yA))(
-            dtPoint2(1.0, 1.0)
-          ),
+        // clang-format off
+        ::boost::assign::list_of
+          (dtPoint2(0.0, 0.0))
+          (dtPoint2(xB, yB))
+          (dtPoint2(0.5 * (xB + xA), 0.5 * (yB + yA)))
+          (dtPoint2(xA, yA))
+          (dtPoint2(1.0, 1.0)),
+        // clang-format on
         2
       )
         .result()
