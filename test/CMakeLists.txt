@@ -256,7 +256,7 @@ add_test(
     "meshCuboid.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshCuboid
 )
-set_tests_properties(tistos PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+set_tests_properties(meshCuboid PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST meshCuboid PROPERTY LABELS base-test)
 DTOO_ADDTESTWLABEL("meshCuboid")
 
