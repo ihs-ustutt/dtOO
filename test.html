@@ -59,6 +59,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#cuboid-mesh-meshcuboid">Cuboid Mesh <code class="docutils literal notranslate"><span class="pre">meshCuboid</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API documentation</a></li>
@@ -520,6 +521,434 @@ by:</p>
 
 </dd></dl>
 
+</section>
+<section id="cuboid-mesh-meshcuboid">
+<h2>Cuboid Mesh <code class="docutils literal notranslate"><span class="pre">meshCuboid</span></code><a class="headerlink" href="#cuboid-mesh-meshcuboid" title="Link to this heading"></a></h2>
+<p id="module-dtOO.test.meshCuboid.meshCuboid">Create a cuboid by translating and skinning a base surface.
+Generate a  mesh of the geometry with a grading on a single edge.</p>
+<figure class="align-center" id="id5">
+<span id="gradingcuboid"></span><a class="reference internal image-reference" href="_images/gradingCuboid.png"><img alt="_images/gradingCuboid.png" src="_images/gradingCuboid.png" width="600" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">The final mesh generated in this test; visible are the surfaces “top”
+(orange), “skin_1” (yellow) and “skin_5” (green); graded edge is located
+between the green and yellow surface; “base” surface is the opposite surface
+of “top”</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Import <code class="docutils literal notranslate"><span class="pre">dtOO</span></code> and <code class="docutils literal notranslate"><span class="pre">numpy</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dtOO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</pre></div>
+</div>
+<p>Define <code class="docutils literal notranslate"><span class="pre">dtOO</span></code>’s options:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtOO</span><span class="o">.</span><span class="n">staticPropertiesHandler</span><span class="o">.</span><span class="n">getInstance</span><span class="p">()</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;{&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;option&quot; : [&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;reparamOnFace_precision&quot;, &quot;value&quot; : &quot;1.e-05&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;reparamInVolume_precision&quot;,&quot;value&quot; : &quot;1.e-05&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;invY_precision&quot;, &quot;value&quot; : &quot;1.e-04&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;xyz_resolution&quot;, &quot;value&quot; : &quot;1.e-05&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;XYZ_resolution&quot;, &quot;value&quot; : &quot;1.e-04&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;uvw_resolution&quot;, &quot;value&quot; : &quot;1.e-04&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;point_render_diameter&quot;, &quot;value&quot; : &quot;0.005&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;vector_render_size&quot;, &quot;value&quot; : &quot;0.05&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;function_render_resolution_u&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;function_render_resolution_v&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;function_render_resolution_w&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;geometry_render_resolution_u&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;geometry_render_resolution_v&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;geometry_render_resolution_w&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;ompNumThreads&quot;, &quot;value&quot; : &quot;2&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;map1dTo3d_deltaPer&quot;, &quot;value&quot; : &quot;0.01&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;map2dTo3d_deltaPer&quot;, &quot;value&quot; : &quot;0.01&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;map3dTo3d_deltaPer&quot;, &quot;value&quot; : &quot;0.01&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;logLevel&quot;, &quot;value&quot; : &quot;0&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;isEqualExtendCheck&quot;, &quot;value&quot; : &quot;false&quot;}&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;]&#39;</span>
+<span class="gp">... </span>    <span class="s1">&#39;}&#39;</span>
+<span class="gp">... </span>  <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a log file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtOO</span><span class="o">.</span><span class="n">logMe</span><span class="o">.</span><span class="n">initLog</span><span class="p">(</span><span class="s1">&#39;gradingCuboid.log&#39;</span><span class="p">)</span>
+<span class="go">&#39;gradingCuboid.log&#39;</span>
+</pre></div>
+</div>
+<p>Create containers for object handling:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtBundle</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cV</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_cV</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtOO</span><span class="o">.</span><span class="n">lVHOstateHandler</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtOO</span><span class="o">.</span><span class="n">lVHOstateHandler</span><span class="p">(</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">(),</span> <span class="n">cV</span> <span class="p">)</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aF</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_aF</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aG</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_aG</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bV</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_bV</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dP</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_dP</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create an array for the corners of the base surface:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p0</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p3</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p01</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p12</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p23</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p30</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create 4 B-Splines connecting the corners and the intermediate points:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve01</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">vectorDtPoint3</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">p0</span> <span class="o">&lt;&lt;</span> <span class="n">p01</span> <span class="o">&lt;&lt;</span> <span class="n">p1</span><span class="p">,</span> <span class="mi">2</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve12</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">vectorDtPoint3</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">p1</span> <span class="o">&lt;&lt;</span> <span class="n">p12</span> <span class="o">&lt;&lt;</span> <span class="n">p2</span><span class="p">,</span> <span class="mi">2</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve23</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">vectorDtPoint3</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">p2</span> <span class="o">&lt;&lt;</span> <span class="n">p23</span> <span class="o">&lt;&lt;</span> <span class="n">p3</span><span class="p">,</span> <span class="mi">2</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve30</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">vectorDtPoint3</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">p3</span> <span class="o">&lt;&lt;</span> <span class="n">p30</span> <span class="o">&lt;&lt;</span> <span class="n">p0</span><span class="p">,</span> <span class="mi">2</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create the base surface as a B-Spline surface from the four curves:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surf0</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineSurface_bSplineCurveFillConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">curve01</span><span class="p">,</span> <span class="n">curve12</span><span class="p">,</span> <span class="n">curve23</span><span class="p">,</span> <span class="n">curve30</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create an analytic surface and label it with the string “base”:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">base</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticSurface</span><span class="p">(</span><span class="n">surf0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">base</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Deposit a clone of the surface in <code class="docutils literal notranslate"><span class="pre">aG</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">base</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Create the top surface by translating the base surface.
+The command <code class="docutils literal notranslate"><span class="pre">geomSurface_surfaceTranslateConstructOCC</span></code> takes a surface and
+a translation vector as input:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surf1</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">geomSurface_surfaceTranslateConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">base</span><span class="o">.</span><span class="n">ptrConstDtSurface</span><span class="p">(),</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create an analytic surface, label it with the string “top” and deposit it in
+<code class="docutils literal notranslate"><span class="pre">aG</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">top</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticSurface</span><span class="p">(</span><span class="n">surf1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">top</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">top</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a vector and fill it with the handles of the “base” and “top” surfaces:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vhs</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vectorHandlingConstDtSurface</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vhs</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">base</span><span class="o">.</span><span class="n">ptrConstDtSurface</span><span class="p">()</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vhs</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">top</span><span class="o">.</span><span class="n">ptrConstDtSurface</span><span class="p">()</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Create surfaces of the cuboid by skinning the base and the top surface.
+The builder <code class="docutils literal notranslate"><span class="pre">bSplineSurfaces_bSplineSurfaceSkinConstructOCC</span></code> takes the
+vector <cite>vhs</cite> as input:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vh</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineSurfaces_bSplineSurfaceSkinConstructOCC</span><span class="p">(</span><span class="n">vhs</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Iterate over the skinned surfaces in order to create analytic surfaces. Label
+and deposit them in the <code class="docutils literal notranslate"><span class="pre">aG</span></code> container.
+The skinned surfaces are labeled with the string <code class="docutils literal notranslate"><span class="pre">skin_</span></code> plus their iterator:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">vh</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">aa</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticSurface</span><span class="p">(</span> <span class="n">i</span> <span class="p">)</span>
+<span class="gp">... </span>  <span class="n">aa</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;skin_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+<span class="gp">... </span>  <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">aa</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+<span class="gp">... </span>  <span class="n">p</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Create and initialize the volume for meshing:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ref</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3dGmsh</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ref</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ref</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;{&quot;label&quot; : &quot;meshCuboid&quot;,&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;&quot;option&quot; : [&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;[gmsh]General.Terminal&quot;, &quot;value&quot; : &quot;1.&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;[gmsh]General.Verbosity&quot;, &quot;value&quot; : &quot;100.&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;[gmsh]General.ExpertMode&quot;, &quot;value&quot; : &quot;1.&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;[gmsh]Mesh.CharacteristicLengthMin&quot;, &quot;value&quot; : &quot;0.05&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;[gmsh]Mesh.CharacteristicLengthMax&quot;, &quot;value&quot; : &quot;0.1&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;[gmsh]Mesh.Algorithm&quot;, &quot;value&quot; : &quot;1&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;[gmsh]Mesh.MeshSizeExtendFromBoundary&quot;, &quot;value&quot; : &quot;1&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;[gmsh]Mesh.MeshSizeFromPoints&quot;, &quot;value&quot; : &quot;1&quot;}&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;],&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;analyticGeometry&quot; : []&#39;</span>
+<span class="gp">... </span>    <span class="s1">&#39;}&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Add the analytic geometries to the Gmsh model.
+Iterate over all analytic geometries and add them to the model with
+<code class="docutils literal notranslate"><span class="pre">addIfFaceToGmshModel</span></code>.
+The sucessfully added geometries are saved in the vector fid:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fid</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vectorInt</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a_i</span> <span class="ow">in</span> <span class="n">aG</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">tid</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">addIfFaceToGmshModel</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">dtOO</span><span class="o">.</span><span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span> <span class="n">a_i</span> <span class="p">)</span>
+<span class="gp">... </span>  <span class="p">)</span>
+<span class="gp">... </span>  <span class="k">if</span> <span class="n">tid</span><span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">fid</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Add a volume to the Gmsh model with <code class="docutils literal notranslate"><span class="pre">addIfRegionToGmshModel</span></code>.
+The volume is defined by the geometries in vector fid:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ref</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">addIfRegionToGmshModel</span><span class="p">(</span><span class="n">dtOO</span><span class="o">.</span><span class="n">infinityMap3dTo3d</span><span class="p">(),</span> <span class="n">fid</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+<p>Define and initialize the mesh boundaries by handing the surface labels to
+gmsh.
+“skin_0” and “skin_2” are the same geometries as “base” and “top” and are not
+handed over.
+The specifier <code class="docutils literal notranslate"><span class="pre">_facesPerEntry</span></code> defines how many faces each geometry has.
+According to the number of faces a indice is added (for example: “base_0” for
+the first face of “base”).:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bVOAnalyticGeometryToFace</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;{&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;analyticGeometry&quot; : [&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;label&quot; : &quot;base&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;label&quot; : &quot;top&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;label&quot; : &quot;skin_1&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;label&quot; : &quot;skin_3&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;label&quot; : &quot;skin_4&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;label&quot; : &quot;skin_5&quot;}&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;],&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;_inc&quot; : 10.0,&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;_facesPerEntry&quot; : [1,1,1,1,1,1]&#39;</span>
+<span class="gp">... </span>    <span class="s1">&#39;}&#39;</span>
+<span class="gp">... </span>  <span class="p">),</span>
+<span class="gp">... </span>  <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">aG</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ref</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">preUpdate</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Set the number of elements to 10 on all edges by iterating over them:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">ref</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">dtEdges</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="n">e</span><span class="o">.</span><span class="n">meshTransfiniteWNElements</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set the number of elments to 20 on the edges connecting the top and the bottom
+surface.
+The method <code class="docutils literal notranslate"><span class="pre">getDtGmshEdgeTagListByFromToPhysical</span></code> takes two surfaces and
+returns the tag list of the edges between them.
+By iterating through the tag list the number of elements is set on each edge.
+Set the surface meshes on the sides to transfinite:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">eID</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeTagListByFromToPhysical</span><span class="p">(</span><span class="s2">&quot;base*&quot;</span><span class="p">,</span><span class="s2">&quot;top*&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">eID</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">theEdge</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeByTag</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">theEdge</span><span class="o">.</span><span class="n">meshTransfiniteWNElements</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">theEdge</span><span class="o">.</span><span class="n">dtFaces</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">f</span><span class="o">.</span><span class="n">meshTransfinite</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Make the “base” surface transfinite with <code class="docutils literal notranslate"><span class="pre">meshTransfinite</span></code> and recombine
+it with <code class="docutils literal notranslate"><span class="pre">meshRecombine</span></code>.
+This will generate hex elements in the transfinite layer.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ref</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">&quot;base_0&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">meshTransfinite</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ref</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">&quot;base_0&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">meshRecombine</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Set a grading on the edge between “skin_1” and “skin_5”. The Edge is found
+by comparing the tags of the edges of both surfaces.
+The common edge of both surfaces will have the same absolute value of the tag.
+The grading is set with the command <code class="docutils literal notranslate"><span class="pre">setGrading</span></code> the second entry in this
+command is an identifier:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">edges_1</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">&quot;skin_1_0&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">dtEdges</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edges_2</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">&quot;skin_5_0&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">dtEdges</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">e1</span> <span class="ow">in</span> <span class="n">edges_1</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="k">for</span> <span class="n">e2</span> <span class="ow">in</span> <span class="n">edges_2</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">e1</span><span class="o">.</span><span class="n">tag</span><span class="p">())</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">e2</span><span class="o">.</span><span class="n">tag</span><span class="p">()):</span>
+<span class="gp">... </span>      <span class="n">e1</span><span class="o">.</span><span class="n">setGrading</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Define the grading function. The method
+<code class="docutils literal notranslate"><span class="pre">scaTanhGradingOneD(c,</span> <span class="pre">g,</span> <span class="pre">gMin,</span> <span class="pre">gMax)</span></code> builds a tanh-function.
+The function is defined by the following formula:</p>
+<div class="math notranslate nohighlight">
+\[f(x)=c[0]+c[1]*tanh(g*(c[2]+c[3]*x))/tanh(g)\]</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gradingFun</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">scaTanhGradingOneDCompound</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">scaTanhGradingOneD</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">dtOO</span><span class="o">.</span><span class="n">vectorReal</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">5.0</span>
+<span class="gp">... </span>  <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Label the grading function and push it into <code class="docutils literal notranslate"><span class="pre">aF</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gradingFun</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="s2">&quot;aF_grading&quot;</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aF</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">gradingFun</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Define the grading. The <code class="docutils literal notranslate"><span class="pre">_type</span></code> is the identifier specified in
+<code class="docutils literal notranslate"><span class="pre">setGrading</span></code>.
+<code class="docutils literal notranslate"><span class="pre">_firstElementSize</span></code> sets the size of the first element in the grading. The
+grading function is specified with <code class="docutils literal notranslate"><span class="pre">_grading</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bVOSetPrescribedElementSize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;{&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;_type&quot;: 3,&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;_firstElementSize&quot;: 0.005,&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;_grading&quot; : { &quot;analyticFunction&quot; : {&quot;label&quot; : &quot;aF_grading&quot;} }&#39;</span>
+<span class="gp">... </span>    <span class="s1">&#39;}&#39;</span>
+<span class="gp">... </span>  <span class="p">),</span>
+<span class="gp">... </span>  <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">aF</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ref</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ref</span><span class="o">.</span><span class="n">attachBVObserver</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Define the mesh rules.
+The following rules are set:</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">dtMeshFreeGradingGEdge</span></code>:</dt><dd><p>Connects the specified grading numbers and functions.</p>
+<p><code class="docutils literal notranslate"><span class="pre">typeTransfinite</span></code> contains an array of all the grading identifiers</p>
+<p><code class="docutils literal notranslate"><span class="pre">gradingFunctions</span></code> contains an array with all the analytic functions
+of the gradings</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dtMeshGFace</span></code>:</dt><dd><p>Creates the mesh of the “base” and the “top” surfaces.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dtMeshGFaceWithTransfiniteLayer</span></code>:</dt><dd><p>Creates the mesh of the other surfaces with transfinite layers.</p>
+<p><code class="docutils literal notranslate"><span class="pre">_nLayers</span></code> specifies the number of layers on the opposing ends of
+the face.</p>
+<p><code class="docutils literal notranslate"><span class="pre">_direction</span></code> specifies the direction of the layers (parametric u
+or v).</p>
+<p><code class="docutils literal notranslate"><span class="pre">_nSmooth</span></code> specifies the number of smoothing iterations.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dtMeshGRegionWithBoundaryLayer</span></code>:</dt><dd><p>Creates the mesh of the volume between the surfaces.</p>
+<p><code class="docutils literal notranslate"><span class="pre">_nSpacingSteps</span></code> specifies the layers in the Volume. The magnitde has
+to be (<code class="docutils literal notranslate"><span class="pre">_nLayers</span></code>-1). Additionally, the normals on this surface are
+flipped, if the number is negative.</p>
+<p><code class="docutils literal notranslate"><span class="pre">_faceLabel</span></code> specifies the face where the layers are.</p>
+<p><code class="docutils literal notranslate"><span class="pre">_slidableFaceLabel</span></code> specifies the faces where the mesh is built
+adaptively.</p>
+<p><code class="docutils literal notranslate"><span class="pre">dtMesh3DOperator</span></code> specifies the mesh operator used for the
+transition of the layers to the tetraedral mesh.</p>
+<p><code class="docutils literal notranslate"><span class="pre">_fixedFaceLabel</span></code> specifies the face on the opposite side to
+<code class="docutils literal notranslate"><span class="pre">_faceLabel</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dtMeshGRegion</span></code>:</dt><dd><p>Creates the volume mesh,
+specifically handles the pyramid elements between the hex-layer and
+the tet-elements.</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bVOMeshRule</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;{&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;option&quot; : [&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;debug&quot;, &quot;value&quot; : &quot;true&quot;}&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;],&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;_rule1D&quot; : [&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;&quot;dtMeshFreeGradingGEdge(*)&quot;&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;],&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;_rule2D&quot; : [&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;&quot;dtMeshGFace(base_0)&quot;,&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;&quot;dtMeshGFace(top_0)&quot;,&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;&quot;dtMeshGFaceWithTransfiniteLayer(*)&quot;&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;],&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;_rule3D&quot; : [&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;&quot;dtMeshGRegionWithBoundaryLayer(*)&quot;&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;],&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;_only&quot; : [],&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;dtMeshOperator&quot; : [&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;name&quot; : &quot;dtMeshFreeGradingGEdge&quot;,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;label&quot; : &quot;dtMeshFreeGradingGEdge&quot;,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;typeTransfinite&quot; : [3],&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;gradingFunctions&quot; : { &quot;analyticFunction&quot; : [&#39;</span>
+<span class="gp">... </span>            <span class="s1">&#39;{&quot;label&quot; : &quot;aF_grading&quot;}&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;]}&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;name&quot; : &quot;dtMeshGFace&quot;,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;label&quot; : &quot;dtMeshGFace&quot;&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;name&quot; : &quot;dtMeshGFaceWithTransfiniteLayer&quot;,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;label&quot; : &quot;dtMeshGFaceWithTransfiniteLayer&quot;,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_nLayers&quot; : [ 10, 0],&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_direction&quot; : 0,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_nSmooth&quot; : 0&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;name&quot; : &quot;dtMeshGRegion&quot;,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;label&quot; : &quot;dtMeshGRegion&quot;,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_minQShapeMetric&quot; : 0.0,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_relax&quot; : 0.1,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_nPyramidOpenSteps&quot; : 10,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_nSmooths&quot; : 3&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;option&quot; : [&#39;</span>
+<span class="gp">... </span>            <span class="s1">&#39;{&quot;name&quot; : &quot;debug&quot;, &quot;value&quot; : &quot;true&quot;}&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;],&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;name&quot; : &quot;dtMeshGRegionWithBoundaryLayer&quot;,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;label&quot; : &quot;dtMeshGRegionWithBoundaryLayer&quot;,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_nSpacingSteps&quot; : [-9],&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_nNormalSmoothingSteps&quot; : 100,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_nGrowingSmoothingSteps&quot; : 100,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_maxGrowingRatePerStep&quot; : 2,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_maxDihedralAngle&quot; : &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mf">360.</span><span class="o">/</span><span class="mf">180.</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_faceLabel&quot; : [&quot;base_0&quot;],&quot;&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;_slidableFaceLabel&quot; : [&quot;*skin_*&quot;],&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;dtMesh3DOperator&quot; : &quot;dtMeshGRegion&quot;,&#39;</span>
+<span class="gp">... </span>          <span class="s1">&#39;&quot;_fixedFaceLabel&quot; : [&quot;top_0&quot;]&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;}&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;]&#39;</span>
+<span class="gp">... </span>    <span class="s1">&#39;}&#39;</span>
+<span class="gp">... </span>  <span class="p">),</span>
+<span class="gp">... </span>  <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">aF</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ref</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ref</span><span class="o">.</span><span class="n">attachBVObserver</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Add the Gmsh mapping to <code class="docutils literal notranslate"><span class="pre">bV</span></code> and create the mesh:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bV</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">ref</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bV</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">makeGrid</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create and initialize an observer to wite the mesh file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bVOWriteMSH</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;{&quot;_filename&quot; : &quot;&quot;, &quot;_saveAll&quot; : true}&#39;</span>
+<span class="gp">... </span>  <span class="p">),</span>
+<span class="gp">... </span>  <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ref</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">postUpdate</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Clear the vector handling object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtOO</span><span class="o">.</span><span class="n">lVHOstateHandler</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</pre></div>
+</div>
 </section>
 </section>
 
