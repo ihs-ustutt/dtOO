@@ -7,9 +7,10 @@ Generate a  mesh of the geometry with a grading on a single edge.
    :width: 600
    :align: center
 
-   The final mesh generated in this test. Visible is the graded edge as well as
-   the surfaces "top" (orange), "skin_1" (yellow) and "skin_5" (green).
-
+   The final mesh generated in this test; visible are the surfaces "top" 
+   (orange), "skin_1" (yellow) and "skin_5" (green); graded edge is located
+   between the green and yellow surface; "base" surface is the opposite surface
+   of "top"
 
 Import ``dtOO`` and ``numpy``:
 
@@ -67,61 +68,38 @@ Create containers for object handling:
 
 Create an array for the corners of the base surface:
 
->>> corner = [[0.00, 0.00, 0.00,],
-...           [2.00, 0.50, 0.50,],
-...           [2.00, 0.25, 1.25,],
-...           [0.10, 0.00, 1.25,],]
+>>> p0 = dtOO.dtPoint3(0.0, 0.0, 0.0)
+>>> p1 = dtOO.dtPoint3(1.0, 0.0, 0.0)
+>>> p2 = dtOO.dtPoint3(1.0, 0.0, 1.0)
+>>> p3 = dtOO.dtPoint3(0.0, 0.0, 1.0)
+>>> p01 = dtOO.dtPoint3(0.5, 0.0, 0.2)
+>>> p12 = dtOO.dtPoint3(0.9, 0.0, 0.5)
+>>> p23 = dtOO.dtPoint3(0.5, 0.0, 0.8)
+>>> p30 = dtOO.dtPoint3(-0.2, 0.0, 0.5)
 
-Create 4 B-Splines connecting the corners:
+Create 4 B-Splines connecting the corners and the intermediate points:
 
 >>> curve01 = dtOO.bSplineCurve_pointConstructOCC(
-...     dtOO.vectorDtPoint3()
-...       << dtOO.dtPoint3(corner[0][0],corner[0][1],corner[0][2])
-...       << dtOO.dtPoint3((corner[0][0]+corner[1][0])/2*0.9,
-...                        (corner[0][1]+corner[1][1])/2*0.9,
-...                        (corner[0][2]+corner[1][2])/2*0.9)
-...       << dtOO.dtPoint3(corner[1][0],corner[1][1],corner[1][2]),
-...     1
+...   dtOO.vectorDtPoint3() << p0 << p01 << p1, 2
 ... ).result()
 
 >>> curve12 = dtOO.bSplineCurve_pointConstructOCC(
-...     dtOO.vectorDtPoint3()
-...       << dtOO.dtPoint3(corner[1][0],corner[1][1],corner[1][2])
-...       << dtOO.dtPoint3((corner[1][0]+corner[2][0])/2*0.9,
-...                        (corner[1][1]+corner[2][1])/2*0.9,
-...                        (corner[1][2]+corner[2][2])/2*0.9)
-...       << dtOO.dtPoint3(corner[2][0],corner[2][1],corner[2][2]),
-...     1
+...   dtOO.vectorDtPoint3() << p1 << p12 << p2, 2
 ... ).result()
 
 >>> curve23 = dtOO.bSplineCurve_pointConstructOCC(
-...     dtOO.vectorDtPoint3()
-...       << dtOO.dtPoint3(corner[2][0],corner[2][1],corner[2][2])
-...       << dtOO.dtPoint3((corner[2][0]+corner[3][0])/2*0.9,
-...                        (corner[2][1]+corner[3][1])/2*0.9,
-...                        (corner[2][2]+corner[3][2])/2*0.9)
-...       << dtOO.dtPoint3(corner[3][0],corner[3][1],corner[3][2]),
-...      1
+...   dtOO.vectorDtPoint3() << p2 << p23 << p3, 2
 ... ).result()
 
 >>> curve30 = dtOO.bSplineCurve_pointConstructOCC(
-...     dtOO.vectorDtPoint3()
-...       << dtOO.dtPoint3(corner[3][0],corner[3][1],corner[3][2])
-...       << dtOO.dtPoint3((corner[3][0]+corner[0][0])/2*0.9,
-...                        (corner[3][1]+corner[0][1])/2*0.9,
-...                        (corner[3][2]+corner[0][2])/2*0.9)
-...       << dtOO.dtPoint3(corner[0][0],corner[0][1],corner[0][2]),
-...      1
+...   dtOO.vectorDtPoint3() << p3 << p30 << p0, 2
 ... ).result()
 
 Create the base surface as a B-Spline surface from the four curves:
 
 >>> surf0 = dtOO.bSplineSurface_bSplineCurveFillConstructOCC(
-...         curve01,
-...         curve12,
-...         curve23,
-...         curve30,
-...         ).result()
+...   curve01, curve12, curve23, curve30,
+... ).result()
 
 Create an analytic surface and label it with the string "base":
     
@@ -133,14 +111,15 @@ Deposit a clone of the surface in ``aG``:
 >>> aG.push_back( base.clone() )
 
 Create the top surface by translating the base surface.
-The command ``geomSurface_surfaceTranslateConstructOCC`` takes a surface and a translation vector as input:
+The command ``geomSurface_surfaceTranslateConstructOCC`` takes a surface and 
+a translation vector as input:
 
 >>> surf1 = dtOO.geomSurface_surfaceTranslateConstructOCC(
-...          base.ptrConstDtSurface(),
-...          dtOO.dtVector3(0,1,0)
-...         ).result()
+...   base.ptrConstDtSurface(), dtOO.dtVector3(0,1,0)
+... ).result()
 
-Create an analytic surface, label it with the string "top" and deposit it in ``aG``:
+Create an analytic surface, label it with the string "top" and deposit it in 
+``aG``:
 
 >>> top = dtOO.analyticSurface(surf1)
 >>> top.setLabel("top")
@@ -153,11 +132,13 @@ Create a vector and fill it with the handles of the "base" and "top" surfaces:
 >>> vhs.push_back( top.ptrConstDtSurface() )
 
 Create surfaces of the cuboid by skinning the base and the top surface.
-The builder ``bSplineSurfaces_bSplineSurfaceSkinConstructOCC`` takes the vector vhs as input:
+The builder ``bSplineSurfaces_bSplineSurfaceSkinConstructOCC`` takes the 
+vector `vhs` as input:
 
 >>> vh = dtOO.bSplineSurfaces_bSplineSurfaceSkinConstructOCC(vhs).result()
 
-Iterate over the skinned surfaces in order to create analytic surfaces. Label and deposit them in the ``aG`` container.
+Iterate over the skinned surfaces in order to create analytic surfaces. Label 
+and deposit them in the ``aG`` container.
 The skinned surfaces are labeled with the string ``skin_`` plus their iterator:
 
 >>> p = 0
@@ -173,7 +154,7 @@ Create and initialize the volume for meshing:
 >>> ref.thisown = False
 >>> ref.jInit(
 ...   dtOO.jsonPrimitive(
-...     '{"label" : "cBoundVol",'
+...     '{"label" : "meshCuboid",'
 ...         '"option" : ['
 ...         '{"name" : "[gmsh]General.Terminal", "value" : "1."},'
 ...         '{"name" : "[gmsh]General.Verbosity", "value" : "100."},'
@@ -190,12 +171,15 @@ Create and initialize the volume for meshing:
 ... )
 
 Add the analytic geometries to the Gmsh model.
-Iterate over all analytic geometries and add them to the model with ``addIfFaceToGmshModel``.
+Iterate over all analytic geometries and add them to the model with 
+``addIfFaceToGmshModel``.
 The sucessfully added geometries are saved in the vector fid:
 
 >>> fid = dtOO.vectorInt()
 >>> for a_i in aG:
-...   tid = ref.getModel().addIfFaceToGmshModel( dtOO.map2dTo3d.MustConstDownCast( a_i ) ) 
+...   tid = ref.getModel().addIfFaceToGmshModel( 
+...     dtOO.map2dTo3d.MustConstDownCast( a_i ) 
+...   ) 
 ...   if tid!=0:                    
 ...     fid.push_back(tid)         
 
@@ -205,10 +189,13 @@ The volume is defined by the geometries in vector fid:
 >>> ref.getModel().addIfRegionToGmshModel(dtOO.infinityMap3dTo3d(), fid)
 1
 
-Define and initialize the mesh boundaries by handing the surface labels to Gmsh.
-"skin_0" and "skin_2" are the same geometries as "base" and "top" and are not handed over.
+Define and initialize the mesh boundaries by handing the surface labels to 
+gmsh.
+"skin_0" and "skin_2" are the same geometries as "base" and "top" and are not 
+handed over.
 The specifier ``_facesPerEntry`` defines how many faces each geometry has. 
-According to the number of faces a indice is added (for example: "base_0" for the first face of "base").:
+According to the number of faces a indice is added (for example: "base_0" for 
+the first face of "base").:
 
 >>> ob = dtOO.bVOAnalyticGeometryToFace() 
 >>> ob.jInit(
@@ -235,35 +222,42 @@ Set the number of elements to 10 on all edges by iterating over them:
 >>> for e in ref.getModel().dtEdges():                                                          
 ...   e.meshTransfiniteWNElements(1,1,10)                                                       
 
-Set the number of elments to 20 on the edges connecting the top and the bottom surface.
-The method ``getDtGmshEdgeTagListByFromToPhysical`` takes two surfaces and returns the tag list of the edges between them.
+Set the number of elments to 20 on the edges connecting the top and the bottom 
+surface.
+The method ``getDtGmshEdgeTagListByFromToPhysical`` takes two surfaces and 
+returns the tag list of the edges between them.
 By iterating through the tag list the number of elements is set on each edge.
 Set the surface meshes on the sides to transfinite:
 
 >>> eID = ref.getModel().getDtGmshEdgeTagListByFromToPhysical("base*","top*")         
 >>> for e in eID:
-...   ref.getModel().getDtGmshEdgeByTag( e ).meshTransfiniteWNElements(1,1.0,20)                
-...   for f in ref.getModel().getDtGmshEdgeByTag( e ).dtFaces():
+...   theEdge = ref.getModel().getDtGmshEdgeByTag(e)
+...   theEdge.meshTransfiniteWNElements(1,1.0,20)                
+...   for f in theEdge.dtFaces():
 ...     f.meshTransfinite()
 
-Make the "base" surface transfinite with ``meshTransfinite`` and recombine it with ``meshRecombine``.
+Make the "base" surface transfinite with ``meshTransfinite`` and recombine 
+it with ``meshRecombine``.
 This will generate hex elements in the transfinite layer.
 
 >>> ref.getModel().getDtGmshFaceByPhysical("base_0").meshTransfinite()  
 >>> ref.getModel().getDtGmshFaceByPhysical("base_0").meshRecombine() 
 
-Set a grading on the edge between "skin_1" and "skin_5". The Edge is found by comparing the tags of the edges of both surfaces.
+Set a grading on the edge between "skin_1" and "skin_5". The Edge is found 
+by comparing the tags of the edges of both surfaces.
 The common edge of both surfaces will have the same absolute value of the tag.
-The grading is set with the command ``setGrading`` the second entry in this command is an identifier:
+The grading is set with the command ``setGrading`` the second entry in this 
+command is an identifier:
 
 >>> edges_1 = ref.getModel().getDtGmshFaceByPhysical("skin_1_0").dtEdges()
 >>> edges_2 = ref.getModel().getDtGmshFaceByPhysical("skin_5_0").dtEdges()
 >>> for e1 in edges_1:
-...     for e2 in edges_2:
-...         if np.abs(e1.tag()) == np.abs(e2.tag()):
-...             e1.setGrading(1.0, 3)
+...   for e2 in edges_2:
+...     if np.abs(e1.tag()) == np.abs(e2.tag()):
+...       e1.setGrading(1.0, 3)
  
-Define the grading function. The method ``scaTanhGradingOneD(c, g, gMin, gMax)`` builds a tanh-function.
+Define the grading function. The method 
+``scaTanhGradingOneD(c, g, gMin, gMax)`` builds a tanh-function.
 The function is defined by the following formula:
 
 .. math::
@@ -272,34 +266,32 @@ The function is defined by the following formula:
 
 
 >>> gradingFun = dtOO.scaTanhGradingOneDCompound(
-...                 dtOO.scaTanhGradingOneD(
-...                     dtOO.vectorReal([0.5, 0.5, -1.0, 2.0]),
-...                                     1.0,
-...                                     1.0, 5.0
-...                     )
-...                 )
+...   dtOO.scaTanhGradingOneD(
+...     dtOO.vectorReal([0.5, 0.5, -1.0, 2.0]), 1.0, 1.0, 5.0
+...   )
+... )
 
 Label the grading function and push it into ``aF``:
 
 >>> gradingFun.setLabel( "aF_grading" )
 >>> aF.push_back( gradingFun.clone() )
 
-Define the grading. The ``_type`` is the identifier specified in ``setGrading``.
-``_firstElementSize`` sets the size of the first element in the grading. The grading function is specified with ``_grading``:
+Define the grading. The ``_type`` is the identifier specified in 
+``setGrading``.
+``_firstElementSize`` sets the size of the first element in the grading. The 
+grading function is specified with ``_grading``:
 
 >>> ob = dtOO.bVOSetPrescribedElementSize()
 >>> ob.thisown = False
 >>> ob.jInit( 
-...     dtOO.jsonPrimitive(
-...         '{'
-...         '"_type": 3,'
-...         '"_firstElementSize": 0.01,'
-...         '"_grading" : {'
-...             '"analyticFunction" : {"label" : "aF_grading"}'
-...           '}'
-...         '}'
-...     ),  
-...     None, None, aF, None, None, ref
+...   dtOO.jsonPrimitive(
+...     '{'
+...       '"_type": 3,'
+...       '"_firstElementSize": 0.005,'
+...       '"_grading" : { "analyticFunction" : {"label" : "aF_grading"} }'
+...     '}'
+...   ),  
+...   None, None, aF, None, None, ref
 ... )         
 >>> ref.attachBVObserver(ob)
 
@@ -311,7 +303,8 @@ The following rules are set:
         
         ``typeTransfinite`` contains an array of all the grading identifiers
         
-        ``gradingFunctions`` contains an array with all the analytic functions of the gradings
+        ``gradingFunctions`` contains an array with all the analytic functions 
+        of the gradings
 
     ``dtMeshGFace``:
         Creates the mesh of the "base" and the "top" surfaces.
@@ -319,28 +312,36 @@ The following rules are set:
     ``dtMeshGFaceWithTransfiniteLayer``:
         Creates the mesh of the other surfaces with transfinite layers.
         
-        ``_nLayers`` specifies the number of layers on the opposing ends of the face.
+        ``_nLayers`` specifies the number of layers on the opposing ends of 
+        the face.
         
-        ``_direction`` specifies the direction of the layers (parametric u or v).
+        ``_direction`` specifies the direction of the layers (parametric u 
+        or v).
         
         ``_nSmooth`` specifies the number of smoothing iterations.
 
     ``dtMeshGRegionWithBoundaryLayer``:
        Creates the mesh of the volume between the surfaces.
        
-       ``_nSpacingSteps`` specifies the layers in the Volume (has to be -1*(``_nLayers``-1)).
+       ``_nSpacingSteps`` specifies the layers in the Volume. The magnitde has 
+       to be (``_nLayers``-1). Additionally, the normals on this surface are 
+       flipped, if the number is negative.
        
        ``_faceLabel`` specifies the face where the layers are.
        
-       ``_slidableFaceLabel`` specifies the faces where the mesh is built adaptively.
+       ``_slidableFaceLabel`` specifies the faces where the mesh is built 
+       adaptively.
        
-       ``dtMesh3DOperator`` specifies the mesh operator used for the transition of the layers to the tetraedral mesh.
+       ``dtMesh3DOperator`` specifies the mesh operator used for the 
+       transition of the layers to the tetraedral mesh.
        
-       ``_fixedFaceLabel`` specifies the face on the opposite side to ``_faceLabel``.
+       ``_fixedFaceLabel`` specifies the face on the opposite side to 
+       ``_faceLabel``.
     
     ``dtMeshGRegion``:
         Creates the volume mesh, 
-        specifically handles the pyramid elements between the hex-layer and the tet-elements.
+        specifically handles the pyramid elements between the hex-layer and 
+        the tet-elements.
 
 
 >>> ob = dtOO.bVOMeshRule()                 
@@ -381,7 +382,7 @@ The following rules are set:
 ...           '"label" : "dtMeshGFaceWithTransfiniteLayer",'
 ...           '"_nLayers" : [ 10, 0],'  
 ...           '"_direction" : 0,'   
-...           '"_nSmooth" : 1000'   
+...           '"_nSmooth" : 0'   
 ...         '},'
 ...         '{'
 ...           '"name" : "dtMeshGRegion",'
@@ -407,7 +408,6 @@ The following rules are set:
 ...           '"dtMesh3DOperator" : "dtMeshGRegion",'
 ...           '"_fixedFaceLabel" : ["top_0"]'
 ...         '}'
-... 
 ...       ']'
 ...     '}'
 ...   ),
@@ -424,7 +424,9 @@ Create and initialize an observer to wite the mesh file:
 
 >>> ob = dtOO.bVOWriteMSH()
 >>> ob.jInit(
-...   dtOO.jsonPrimitive('{"_filename" : "mesh_cuboid.msh", "_saveAll" : true}'),
+...   dtOO.jsonPrimitive(
+...     '{"_filename" : "", "_saveAll" : true}'
+...   ),
 ...   None, None, None, None, None, ref
 ... )
 >>> ob.postUpdate()
