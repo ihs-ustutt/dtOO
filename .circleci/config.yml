@@ -119,7 +119,8 @@ workflows:
                 "tistos",
                 "meshSimpleSurface",
                 "meshPrismBlock",
-                "simpleAxialRunner"
+                "simpleAxialRunner",
+                "meshCuboid"
               ]
               oss: [
                 'ubuntu',
