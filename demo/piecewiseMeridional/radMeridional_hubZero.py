@@ -62,9 +62,9 @@ class radMeridional_hubZero:
             '{"name" : "function_render_resolution_u", "value" : "21"},'
             '{"name" : "function_render_resolution_v", "value" : "21"},'
             '{"name" : "function_render_resolution_w", "value" : "21"},'
-            '{"name" : "geometry_render_resolution_u", "value" : "21"},'
-            '{"name" : "geometry_render_resolution_v", "value" : "21"},'
-            '{"name" : "geometry_render_resolution_w", "value" : "21"},'
+            '{"name" : "geometry_render_resolution_u", "value" : "200"},'
+            '{"name" : "geometry_render_resolution_v", "value" : "200"},'
+            '{"name" : "geometry_render_resolution_w", "value" : "200"},'
             '{"name" : "root_printLevel", "value" : "0"},'		
             '{"name" : "root_maxIterations", "value" : "1000"},'
             '{"name" : "root_maxFunctionCalls", "value" : "1000000"},'
@@ -188,60 +188,24 @@ class radMeridional_hubZero:
         )
       ],
       hub_splits = [ [], [0.5], [], [],],
-      hub_combine = [[], [], [], [], [],],
       shroud_splits = [ [], [], [], []],
-      shroud_combine = [[], [], [], [],],
       layer_thickness = 0.2,
       layer_supports = [0.33, 0.66],
 
-      interface_hub = [[0, 0.8],
-                       [1,0.9],],                # [curve, percent]
+      interface_hub = [[1, 0.2],
+                       #[1, 0.5],
+                       [1, 1],],                # [curve, percent]
       interface_shroud = [[0, 0.8],
+                          #[1, 0.5],
                           [2, 0.8],],
       interface_curvature = [[0.3, 0.5, 1],
+                             #[0.3, 0.5, 1],
                              [0.3, 0.3, -1],],    # [curvature offset percent, hub to shroud percent, direction]
 
 
       #rotVector=dtOO.dtVector3(0,0,-1)
     ).enableDebug()#.buildExtract( container )
     container = radMeridionalContour.buildExtract(container)
-    """
-       self.regChannels_ = []
-        for ii in range(len(interface_hub)):
-
-            vhc = vectorHandlingConstDtCurve()
-
-            print("interface type 1 = ", type(self.interfaces_[ii]))
-            print("interface type 2 = ", type(analyticCurve.MustDownCast(self.interfaces_[ii])))
-            #vhc.push_back(analyticCurve.MustDownCast(self.interfaces_[ii]))
-
-
-            add_hub = 0
-            add_shroud = 0
-
-            if ii > 0:
-                #vhc.push_back(analyticCurve.MustDownCast(self.interfaces_[ii-1]))
-                add_hub = interface_hub[ii-1][0]
-                add_shroud = interface_shroud[ii-1][0]
-
-            for jj in range(interface_hub[ii][0] - add_hub):
-                print("curve type 2 = ", type(analyticCurve.MustDownCast(self.hubCurves_[jj+add_hub])))
-                vhc.push_back(analyticCurve.MustDownCast(self.hubCurves_[jj + add_hub]))
-
-            for jj in range(interface_shroud[ii][0] - add_shroud):
-                print("######### DEBUG ")
-                vhc.push_back(analyticCurve.MustDownCast(self.shroudCurves_[jj + add_shroud]))
-
-                
-            self.regChannels_.append(                                       # iterates over curve list and matches hub and shroud segments 
-                analyticSurface(                                            # seqential matches
-                    bSplineSurface_skinConstructOCC(vhc).result()
-                    #bSplineSurface2d_bSplineCurve2dFillConstructOCC(vhc).result()
-                )
-            )           
-            del vhc
-
-    """
     """
     a = radMeridionalContour.regChannel(1)      # rotating a specific channel 
     a <<= "xyz_channel"                         # renaming it
