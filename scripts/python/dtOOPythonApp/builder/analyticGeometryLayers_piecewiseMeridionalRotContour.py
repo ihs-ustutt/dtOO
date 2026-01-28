@@ -153,8 +153,11 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         # hub_cti and shroud_cti (curve_to_interface) contains a datastructure list
         # Here is mapped which of the newly spilt curves are located upstream of an interface
         # a curve located upstream of an interface is marked with the interface ID the others with None
+
         self.hubCurves_, hub_cti = self.createSplits(self.hubSplits_, hubCurves, "Hub")
+        print("###### CREATING SHROUD SPLITS")
         self.shroudCurves_, shroud_cti = self.createSplits(self.shroudSplits_, shroudCurves, "Shroud")
+        print("CREATED SHROUD SPLITS #####")
         print("len(hub) = ", len(self.hubCurves_))
         print("len(shroud) = ", len(self.shroudCurves_))
         print("hub_cti = ", hub_cti)
@@ -212,56 +215,13 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 # the other regChannels get the previous interface as boundary
                 vhc.push_back(analyticCurve.MustDownCast(self.interfaces_[ii-1]).ptrDtCurve())
             
-            first = 0
-            # iterating over the hubCurves
-            for jj in range(len(self.hubCurves_)):
-                # checking if the interface ID of the current curve matches the current interface
-                if hub_cti[jj] == ii:
-                    # if it matches the curve will be combined with the other matching curves
-                    if first == 0:
-                        regCurveHub = self.hubCurves_[jj]
-                         
-                        first = 1
-                    else:
-                        regCurveHub = analyticCurve(
-                            bSplineCurve_curveConnectConstructOCC(
-                                analyticCurve.MustDownCast(
-                                    regCurveHub
-                                ).ptrDtCurve(),
-                                analyticCurve.MustDownCast(
-                                    self.hubCurves_[jj]
-                                ).ptrDtCurve()
-                            ).result()
-                        )
-            vhc.push_back(analyticCurve.MustDownCast(regCurveHub).ptrDtCurve())
-            #self.appendAnalyticGeometry(
-            #    regCurveHub.clone(),
-            #    "debug_regCurveHub_TEST1_" + str(ii) + "_" + self.label_,
-            #)
-            first = 0
-            # the same is done for the shroud curves
-            for jj in range(len(self.shroudCurves_)):
-                if shroud_cti[jj] == ii:
-                    if first == 0:
-                        regCurveShroud = self.shroudCurves_[jj]
-                         
-                        first = 1
-                    else:
-                        regCurveShroud = analyticCurve(
-                            bSplineCurve_curveConnectConstructOCC(
-                                analyticCurve.MustDownCast(
-                                    regCurveShroud
-                                ).ptrDtCurve(),
-                                analyticCurve.MustDownCast(
-                                    self.shroudCurves_[jj]
-                                ).ptrDtCurve()
-                            ).result()
-                        )
-            vhc.push_back(analyticCurve.MustDownCast(regCurveShroud).ptrDtCurve())
-            #self.appendAnalyticGeometry(
-            #    regCurveShroud.clone(),
-            #    "debug_regCurveShroud_TEST1_" + str(ii) + "_" + self.label_,
-            #)
+            # finding the hub and shroud curves which belong to the interface
+            regCurve = self.findChannelCurves(self.hubCurves_, hub_cti, ii)            
+            vhc.push_back(analyticCurve.MustDownCast(regCurve[0]).ptrDtCurve())
+            
+            print("##### findChannecCurves of shroud")
+            regCurve = self.findChannelCurves(self.shroudCurves_, shroud_cti, ii)            
+            vhc.push_back(analyticCurve.MustDownCast(regCurve[0]).ptrDtCurve())
 
             # generates the regular Channel by filling the four curves in vhc    
             self.regChannels_.append(                                        
@@ -273,161 +233,9 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
             del vhc
         
         logging.info("%d regular channels created." % len(self.regChannels_))
-       
-        self.speRad_ = []
-        self.speRad_.append(self.interfaces_[-1])
-        self.speRad_.append(self.inOutCurves_[1])
-        print("type which works : ",type(self.inOutCurves_[1]))
-        self.speHub_ = []
-        for i in range(len(hub_cti)):
-            if hub_cti[i] == None:
-                rz_0 = self.rz_xyz(self.hubCurves_[i].getPointPercent(0.0))
-                rz_1 = self.rz_xyz(self.hubCurves_[i].getPointPercent(1.0))
-                onRotAxis_0 = analyticGeometry.inXYZTolerance(rz_0[0])
-                onRotAxis_1 = analyticGeometry.inXYZTolerance(rz_1[0])
-                logging.debug(
-                    "speHub: |<- %5.2f --- %5.2f ->|" % (rz_0[0], rz_1[0])
-                )
-                if onRotAxis_0 and onRotAxis_1:                             # speHubLayer is appended with booleans 
-                    #self.speHubLayer_.append(False)                         # False : both points are on rotational axis -> no boundary
-                    self.speRad_[-1] = self.hubCurves_[i]              # overwriting the outlet
-                    break
-                else:
-                    self.speHub_.append(self.hubCurves_[i])
         
-        self.layerNormals_ = []
-        for i in range(len(self.speHub_)+1):
-            # the first layer is the interface
-            if i == 0:
-                 
-                print("speHub[i] : ",type(self.speHub_[i]))
-                base = analyticCurve.MustDownCast(self.speHub_[i]).ptrDtCurve()               # base curve on which layer is added
-                print("base : ",type(base))
-                dc = analyticCurve.MustDownCast(self.speRad_[0]).ptrDtCurve()
-                distance = dtLinearAlgebra.distance(
-                    base.pointPercent(0.0), dc.pointPercent(0.0)
-                )
-                if not analyticGeometry.inXYZTolerance(distance):                   # check if direction of previous curve is correct
-                    logging.debug("Reverse direction. distance = %f" % (distance))  # if not curve is taken in reverse and distance is -1
-                    dc = geomCurve_curveReverseConstructOCC(dc, True).result()
-                    direction = -1.0
-                #print("layerNormals_ : ",type(
-                #    analyticCurve(trimmedCurve_uBounds(
-                #    dc, dc.getUMin(), dc.u_l(layer_thickness)                     # from the previous curve
-                #).result())))
-                
-
-                self.layerNormals_.append(
-                    analyticCurve(
-                        trimmedCurve_uBounds(
-                            dc, dc.getUMin(), dc.u_l(layer_thickness)                     # from the previous curve
-                        ).result()
-                    )
-                )
-
-            elif i == len(self.speHub_):
-                base = analyticCurve.MustDownCast(self.speHub_[i-1]).ptrDtCurve()               # base curve on which layer is added
-                dc = analyticCurve.MustDownCast(self.speRad_[-1]).ptrDtCurve()
-                distance = dtLinearAlgebra.distance(
-                    base.pointPercent(1.0), dc.pointPercent(0.0)
-                )
-                if not analyticGeometry.inXYZTolerance(distance):                  
-                    logging.debug("Reverse direction. distance = %f" % (distance)) 
-                    dc = geomCurve_curveReverseConstructOCC(dc, True).result()
-                    direction = -1.0
-                self.layerNormals_.append(
-                    analyticCurve(
-                        trimmedCurve_uBounds(  
-                            dc, dc.getUMin(), dc.u_l(layer_thickness)          
-                        ).result()
-                    )
-                )
-            
-            else:
-                v0 = analyticCurve.MustDownCast(            
-                    self.speHub_[i-1]                      # previous curve
-                )
-                v1 = analyticCurve.MustDownCast(
-                    self.speHub_[i]                          # current curve
-                )
-                layerVec = dtLinearAlgebra.normalize(
-                    dtLinearAlgebra.normalize(v0.firstDerUPercent(1.0))
-                    + dtLinearAlgebra.normalize(v1.firstDerUPercent(0.0))*(-1)
-                )
-                test_layerVec = analyticCurve(
-                        bSplineCurve_pointConstructOCC(
-                            vectorDtPoint3()
-                            << analyticCurve.MustDownCast(v0).getPointPercent(1)
-                            << analyticCurve.MustDownCast(v0).getPointPercent(1) 
-                               + layerVec,
-                            1
-                        ).result()
-                )
-                self.appendAnalyticGeometry(
-                    test_layerVec.clone(),
-                    "debug_TEST_layerVec_"  + self.label_,
-                )
-                test_v0 = analyticCurve(
-                        bSplineCurve_pointConstructOCC(
-                            vectorDtPoint3()
-                            << analyticCurve.MustDownCast(v0).getPointPercent(1)
-                            << analyticCurve.MustDownCast(v0).getPointPercent(1) 
-                               + dtLinearAlgebra.normalize(v0.firstDerUPercent(1.0))*0.1,
-                            1
-                        ).result()
-                )
-                self.appendAnalyticGeometry(
-                    test_v0.clone(),
-                    "debug_TEST_V0_"  + self.label_,
-                )
-                test_v1 = analyticCurve(
-                        bSplineCurve_pointConstructOCC(
-                            vectorDtPoint3()
-                            << analyticCurve.MustDownCast(v1).getPointPercent(0)
-                            << analyticCurve.MustDownCast(v1).getPointPercent(0) 
-                               + (dtLinearAlgebra.normalize(v1.firstDerUPercent(0.0)))*(-1)*0.1,
-                            1
-                        ).result()
-                )
-                self.appendAnalyticGeometry(
-                    test_v1.clone(),
-                    "debug_TEST_V1_"  + self.label_,
-                )
-
-                test_v0plusv1 = analyticCurve(
-                        bSplineCurve_pointConstructOCC(
-                            vectorDtPoint3()
-                            << analyticCurve.MustDownCast(test_v0).getPointPercent(1)
-                            << analyticCurve.MustDownCast(test_v0).getPointPercent(1)
-                               + (dtLinearAlgebra.normalize(v1.firstDerUPercent(0.0)))*(-1)*0.1,
-                            1
-                        ).result()
-                )
-                self.appendAnalyticGeometry(
-                    test_v0plusv1.clone(),
-                    "debug_TEST_V0PLUSV1_"  + self.label_,
-                )
-
-                print("layerVec : ",type(layerVec))
-                normalVec = dtLinearAlgebra.normalize(
-                    dtLinearAlgebra.crossProduct(
-                        v0.firstDerUPercent(1),self.normalAxis_
-                    )
-                ) * layer_thickness
-                angle = dtLinearAlgebra.angle(layerVec, normalVec)
-                length = dtLinearAlgebra.length(normalVec)/numpy.cos(angle)
-                print("analyticCurve.MustDownCast(v0).getPointPercent(1) : ",type(analyticCurve.MustDownCast(v0).getPointPercent(1)))
-                #print("layerVec * length : ", type(analyticCurve.MustDownCast(layerVec).ptrDtCurve()))
-                self.layerNormals_.append(
-                    analyticCurve(
-                        bSplineCurve_pointConstructOCC(
-                            vectorDtPoint3()
-                            << analyticCurve.MustDownCast(v0).getPointPercent(1)
-                            << analyticCurve.MustDownCast(v0).getPointPercent(1)+(layerVec * length),
-                            1
-                        ).result()
-                    )
-                )
+        self.hubLayerBounds_ = self.createLayerBounds(self.hubCurves_, hub_cti, layer_thickness)
+        self.shroudLayerBounds_ = self.createLayerBounds(self.shroudCurves_, shroud_cti, layer_thickness)
         """                
         self.speHubLayer_ = []
         for hub in self.speHub_:                                        # checking if start and end points are on radius = 0
@@ -706,6 +514,196 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         
         # segments after the last interface remain None
         return result
+    
+    #
+    # will iterate trough the curves and find out which curves belong to wich regular channel
+    #
+    def findChannelCurves(self,
+                          curves,
+                          cti,
+                          ii
+                          ):
+        
+        curve_list = []
+        print("ii = ", ii)
+        print("len(curves) = ", len(curves))
+        print("cti = ", cti)
+        first = 0
+        # iterating over the hubCurves
+        for jj in range(len(curves)):
+            # checking if the interface ID of the current curve matches the current interface
+            if cti[jj] == ii:
+                # if it matches the curve will be combined with the other matching curves
+                if first == 0:
+                    regCurve = curves[jj]
+                     
+                    first = 1
+                else:
+                    regCurve = analyticCurve(
+                        bSplineCurve_curveConnectConstructOCC(
+                            analyticCurve.MustDownCast(
+                                regCurve
+                            ).ptrDtCurve(),
+                            analyticCurve.MustDownCast(
+                                curves[jj]
+                            ).ptrDtCurve()
+                        ).result()
+                    )
+        curve_list.append(regCurve.clone())            
+        return curve_list
+                    
+    def createLayerBounds(self, curves, cti, thickness):
+
+        boundsGlob = []
+        boundsGlob.append(self.interfaces_[-1])
+        boundsGlob.append(self.inOutCurves_[1])
+
+        speCurve = []
+        for i in range(len(cti)):
+            if cti[i] == None:
+                rz_0 = self.rz_xyz(curves[i].getPointPercent(0.0))
+                rz_1 = self.rz_xyz(curves[i].getPointPercent(1.0))
+                onRotAxis_0 = analyticGeometry.inXYZTolerance(rz_0[0])
+                onRotAxis_1 = analyticGeometry.inXYZTolerance(rz_1[0])
+                logging.debug(
+                    "speHub: |<- %5.2f --- %5.2f ->|" % (rz_0[0], rz_1[0])
+                )
+                if onRotAxis_0 and onRotAxis_1:                             # speHubLayer is appended with booleans 
+                    #self.speHubLayer_.append(False)                         # False : both points are on rotational axis -> no boundary
+                    boundsGlob[-1] = curves[i]              # overwriting the outlet
+                    break
+                else:
+                    speCurve.append(curves[i])
+        
+        layerBounds = []
+        for i in range(len(speCurve)+1):
+            # the first layer is the interface
+            if i == 0:
+                 
+                base = analyticCurve.MustDownCast(speCurve[i]).ptrDtCurve()               # base curve on which layer is added
+                dc = analyticCurve.MustDownCast(boundsGlob[0]).ptrDtCurve()
+                distance = dtLinearAlgebra.distance(
+                    base.pointPercent(0.0), dc.pointPercent(0.0)
+                )
+                if not analyticGeometry.inXYZTolerance(distance):                   # check if direction of previous curve is correct
+                    logging.debug("Reverse direction. distance = %f" % (distance))  # if not curve is taken in reverse and distance is -1
+                    dc = geomCurve_curveReverseConstructOCC(dc, True).result()
+                    direction = -1.0          
+
+                layerBounds.append(
+                    analyticCurve(
+                        trimmedCurve_uBounds(
+                            dc, dc.getUMin(), dc.u_l(thickness)                     # from the previous curve
+                        ).result()
+                    )
+                )
+
+            elif i == len(speCurve):
+                base = analyticCurve.MustDownCast(speCurve[i-1]).ptrDtCurve()               # base curve on which layer is added
+                dc = analyticCurve.MustDownCast(boundsGlob[-1]).ptrDtCurve()
+                distance = dtLinearAlgebra.distance(
+                    base.pointPercent(1.0), dc.pointPercent(0.0)
+                )
+                if not analyticGeometry.inXYZTolerance(distance):                  
+                    logging.debug("Reverse direction. distance = %f" % (distance)) 
+                    dc = geomCurve_curveReverseConstructOCC(dc, True).result()
+                    direction = -1.0
+                layerBounds.append(
+                    analyticCurve(
+                        trimmedCurve_uBounds(  
+                            dc, dc.getUMin(), dc.u_l(thickness)          
+                        ).result()
+                    )
+                )
+            
+            else:
+                v0 = analyticCurve.MustDownCast(            
+                    speCurve[i-1]                      # previous curve
+                )
+                v1 = analyticCurve.MustDownCast(
+                    speCurve[i]                          # current curve
+                )
+                layerVec = dtLinearAlgebra.normalize(
+                    dtLinearAlgebra.normalize(v0.firstDerUPercent(1.0))
+                    + dtLinearAlgebra.normalize(v1.firstDerUPercent(0.0))*(-1)
+                )
+                #test_layerVec = analyticCurve(
+                #        bSplineCurve_pointConstructOCC(
+                #            vectorDtPoint3()
+                #            << analyticCurve.MustDownCast(v0).getPointPercent(1)
+                #            << analyticCurve.MustDownCast(v0).getPointPercent(1) 
+                #               + layerVec,
+                #            1
+                #        ).result()
+                #)
+                #self.appendAnalyticGeometry(
+                #    test_layerVec.clone(),
+                #    "debug_TEST_layerVec_"  + self.label_,
+                #)
+                #test_v0 = analyticCurve(
+                #        bSplineCurve_pointConstructOCC(
+                #            vectorDtPoint3()
+                #            << analyticCurve.MustDownCast(v0).getPointPercent(1)
+                #            << analyticCurve.MustDownCast(v0).getPointPercent(1) 
+                #               + dtLinearAlgebra.normalize(v0.firstDerUPercent(1.0))*0.1,
+                #            1
+                #        ).result()
+                #)
+                #self.appendAnalyticGeometry(
+                #    test_v0.clone(),
+                #    "debug_TEST_V0_"  + self.label_,
+                #)
+                #test_v1 = analyticCurve(
+                #        bSplineCurve_pointConstructOCC(
+                #            vectorDtPoint3()
+                #            << analyticCurve.MustDownCast(v1).getPointPercent(0)
+                #            << analyticCurve.MustDownCast(v1).getPointPercent(0) 
+                #               + (dtLinearAlgebra.normalize(v1.firstDerUPercent(0.0)))*(-1)*0.1,
+                #            1
+                #        ).result()
+                #)
+                #self.appendAnalyticGeometry(
+                #    test_v1.clone(),
+                #    "debug_TEST_V1_"  + self.label_,
+                #)
+
+                #test_v0plusv1 = analyticCurve(
+                #        bSplineCurve_pointConstructOCC(
+                #            vectorDtPoint3()
+                #            << analyticCurve.MustDownCast(test_v0).getPointPercent(1)
+                #            << analyticCurve.MustDownCast(test_v0).getPointPercent(1)
+                #               + (dtLinearAlgebra.normalize(v1.firstDerUPercent(0.0)))*(-1)*0.1,
+                #            1
+                #        ).result()
+                #)
+                #self.appendAnalyticGeometry(
+                #    test_v0plusv1.clone(),
+                #    "debug_TEST_V0PLUSV1_"  + self.label_,
+                #)
+
+                #print("layerVec : ",type(layerVec))
+                normalVec = dtLinearAlgebra.normalize(
+                    dtLinearAlgebra.crossProduct(
+                        v0.firstDerUPercent(1), self.normalAxis_
+                    )
+                ) * thickness
+                angle = dtLinearAlgebra.angle(layerVec, normalVec)
+                length = dtLinearAlgebra.length(normalVec)/numpy.cos(angle)
+                print("analyticCurve.MustDownCast(v0).getPointPercent(1) : ",type(analyticCurve.MustDownCast(v0).getPointPercent(1)))
+                #print("layerVec * length : ", type(analyticCurve.MustDownCast(layerVec).ptrDtCurve()))
+                layerBounds.append(
+                    analyticCurve(
+                        bSplineCurve_pointConstructOCC(
+                            vectorDtPoint3()
+                            << analyticCurve.MustDownCast(v0).getPointPercent(1)
+                            << analyticCurve.MustDownCast(v0).getPointPercent(1)+(layerVec * length),
+                            1
+                        ).result()
+                    )
+                )
+        
+        return layerBounds
+
 
     # Generates boundary layers
     # baseFlags : booleans determinig if layer should be made (not for curves with radius of 0)
@@ -832,11 +830,12 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         outCurves = []
         # mapping of all the curves and their corresponding interface IDs
         curve_to_interface = []
+        #print("splits = ", splits)
 
         for cc in range(len(splits)):
             curve = analyticCurve.MustDownCast(inCurves[cc]).ptrDtCurve()
-            
             # if a split is made (splits[cc] contains an entrie)
+            
             if splits[cc]:
                 # makes a list of all the occuring splits in this curve
                 split_pos = [0.0] + [s[0] for s in splits[cc]] + [1.0]
@@ -845,13 +844,20 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 # iterating over the splits on this curve
                 
                 for n in range(len(split_pos)-1):
+                   
                     # exception for when a interface is located on 0 or 100 percent of a curve
                     # doesnt make a split just corrects the cti
                     if split_pos[n] == split_pos[n+1]:
-                        #iface_id = interface_ids[n] if n < len(interface_ids) else None
                         iface_id = interface_ids[n] if n < len(interface_ids) else interface_ids[-1]
-                        curve_to_interface[n-1] = iface_id
+                        curve_to_interface[-1] = iface_id
                     
+                    # exception for if the whole curve is not split but has an interface at 100 percent    
+                    # doesnt make a split but appends outCurves and curve_to_interface
+                    elif (split_pos[n] == 0 and split_pos[n+1] == 1):
+                        outCurves.append(inCurves[cc].clone())                
+                        curve_to_interface.append(None)
+                    
+                    # else the plits are created and the interface IDs added
                     else:
                         # trimms the curves ath the split positions
                         ac = analyticCurve(
@@ -871,6 +877,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                         logging.debug(
                             "Split %s[%d] [%5f, %5f]" % (lab, cc, split_pos[n], split_pos[n+1])
                         )
+        
             # if the curve is not split the whole curve will be copied        
             else:
                 outCurves.append(inCurves[cc].clone())                
@@ -1047,11 +1054,19 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 )
                 ii = ii + 1
             ii = 0
-            for aCurve in self.layerNormals_:
+            for aCurve in self.hubLayerBounds_:
                 print("type that doesnt work : ",type(aCurve))
                 self.appendAnalyticGeometry(
                     aCurve.clone(),
-                    "debug_layerNormal_" + str(ii) + "_" + self.label_,
+                    "debug_hubLayerBounds_" + str(ii) + "_" + self.label_,
+                )
+                ii = ii + 1
+            ii = 0
+            for aCurve in self.shroudLayerBounds_:
+                print("type that doesnt work : ",type(aCurve))
+                self.appendAnalyticGeometry(
+                    aCurve.clone(),
+                    "debug_shroudLayerBounds_" + str(ii) + "_" + self.label_,
                 )
                 ii = ii + 1
             ii = 0
