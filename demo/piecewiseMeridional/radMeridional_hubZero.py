@@ -187,17 +187,17 @@ class radMeridional_hubZero:
           ).result()
         )
       ],
-      hub_splits = [ [], [0.5], [], [],],
-      shroud_splits = [ [], [], [], []],
+      hub_splits = [ [], [0.9], [], [],],         # splits at 0 are allowed splits at 1 not  
+      shroud_splits = [ [], [], [], [0.5]],
       layer_thickness = 0.2,
       layer_supports = [0.33, 0.66],
 
       interface_hub = [[1, 0.2],
                        #[1, 0.5],
-                       [1, 1],],                # [curve, percent]
-      interface_shroud = [[0, 0.8],
+                       [1, 0.8],],                # [curve, percent]
+      interface_shroud = [[0, 0.9],
                           #[1, 0.5],
-                          [2, 0.8],],
+                          [1, 0.8],],
       interface_curvature = [[0.3, 0.5, 1],
                              #[0.3, 0.5, 1],
                              [0.3, 0.3, -1],],    # [curvature offset percent, hub to shroud percent, direction]
