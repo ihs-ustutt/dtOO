@@ -208,26 +208,23 @@ class radMeridional_SucExtend:
       layer_supports = [0.33, 0.66],
 
       # interface settings   
-      interface_hub = [[2, 0.5],
-                       [0, 0.5]],                # [curve, percent]
-      interface_shroud = [[3, 0.5],
-                          [0, 0.5]],
-      interface_curvature = [[0.2, 0.9, 1],
-                             [0.1, 0.5, -1]],    # [curvature offset percent, hub to shroud percent, direction]
+      #interface_hub = [[2, 0.5],
+      #                 [0, 0.5]],                # [curve, percent]
+      #interface_shroud = [[3, 0.5],
+      #                    [0, 0.5]],
+      #interface_curvature = [[0.2, 0.9, 1],
+      #                       [0.1, 0.5, -1]],    # [curvature offset percent, hub to shroud percent, direction]
 
-      #interface_hub = [[3, 0.5],],                # [curve, percent]
-      #interface_shroud = [[2, 0.5],],
-      #interface_curvature = [[0.2, 0.1, 1],],    # [curvature offset percent, hub to shroud percent, direction]
+      interface_hub = [[1, 0.9],],                # [curve, percent]
+      interface_shroud = [[1, 0.9],],
+      interface_curvature = [[0.5, 0.5, 1],],    # [curvature offset percent, hub to shroud percent, direction]
       
-      #interface_hub = [[7, 0.1],],                # [curve, percent]
-      #interface_shroud = [[3, 0.9],],
-      #interface_curvature = [[0.3, 0.2, 1],],    # [curvature offset percent, hub to shroud percent, direction]
 
       #rotVector=dtOO.dtVector3(0,0,-1)
     ).enableDebug()#.buildExtract( container )
     container = radMeridionalContour.buildExtract(container)
     
-
+    """
     a = radMeridionalContour.regChannel(1)      # rotating a specific channel 
     a <<= "xyz_channel"                         # renaming it
     aG.append( a )                              # adding it to the analytic geometry container
@@ -470,7 +467,7 @@ class radMeridional_SucExtend:
     #  )
     #  theAG.setLabel("xyz_"+ii)
     #  aG.push_back( theAG.clone() )
-
+"""
 #    # create mesh's topology
 #    blocks = []
 #    for iNum in aG.getIndices("xyz_meshBlock_*"):
