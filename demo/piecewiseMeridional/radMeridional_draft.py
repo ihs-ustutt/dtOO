@@ -185,23 +185,23 @@ class radMeridional_draft:
           ).result()
         )
       ],
-      hub_splits = [ [], [], [0.2], [], [],],
+      hub_splits = [ [], [], [], [], [],],
       shroud_splits = [ [], [], [], []],
       layer_thickness = 0.2,
       layer_supports = [0.33, 0.66],
 
-      interface_hub = [[2, 0.8],
-                       [0,0.8],],                # [curve, percent]
-      interface_shroud = [[3, 0.02],
-                          [0, 0.7],],
-      interface_curvature = [[0.3, 0.2, -1],
-                             [0.1, 0.5, 1],],    # [curvature offset percent, hub to shroud percent, direction]
+      interface_hub = [[0, 0.8],
+                       [1,1],],                # [curve, percent]
+      interface_shroud = [[0, 0.7],
+                          [1, 1],],
+      interface_curvature = [[0.3, 0.2, 1],
+                             [0.1, 0.5, -1],],    # [curvature offset percent, hub to shroud percent, direction]
       
       #rotVector=dtOO.dtVector3(0,0,-1)
     ).enableDebug()#.buildExtract( container )
     container = radMeridionalContour.buildExtract(container)
     
-
+    """
     a = radMeridionalContour.regChannel(1)      # rotating a specific channel 
     a <<= "xyz_channel"                         # renaming it
     aG.append( a )                              # adding it to the analytic geometry container
@@ -445,7 +445,7 @@ class radMeridional_draft:
     #  )
     #  theAG.setLabel("xyz_"+ii)
     #  aG.push_back( theAG.clone() )
-
+"""
 #    # create mesh's topology
 #    blocks = []
 #    for iNum in aG.getIndices("xyz_meshBlock_*"):
