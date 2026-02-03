@@ -264,15 +264,19 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         #                        ...
         #                      ]
         # the curves are placed in the list so the rectangular domain in meridional view is build in clock wise direction
-        self.hubLayerCurves_ = self.createLayerBounds(
+        # 
+        # self.hubRadZero_ contains booleans which will show true for layers which have a radius of zero
+        #  this is used for meshing later
+        self.hubLayerCurves_, self.hubRadZero_ = self.createLayerBounds(
                 speHub,  
                 speHubCtst, 
                 layer_thickness, 
                 layer_supports,
                 'Hub'
             )
+        
         logging.info("### Creating Shroud Layer Curves")
-        self.shroudLayerCurves_ = self.createLayerBounds(
+        self.shroudLayerCurves_, self.shroudRadZero_ = self.createLayerBounds(
                 speShroud,  
                 speShroudCtst, 
                 layer_thickness,
@@ -293,7 +297,8 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 analyticSurface(                                            
                     bSplineSurface_bSplineCurveFillConstructOCC(layer_vhc).result()
                 )
-            )  
+            ) 
+            print(type(self.hubLayers_[i]))
             del layer_vhc
 
         logging.info("###   Creating Shroud Layer Faces")
@@ -569,6 +574,9 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         layerParallel = []
         # list for return of the boundaries (will be explained later)
         returnBounds = []
+        # list which tracks if the layer will endo on a radius of zero 
+        # will be used for mesh generation later
+        on_rad_zero = []
 
         # iterating over all curves and deciding which curves get Layers
         for i in range(len(layerCurve)):
@@ -586,8 +594,11 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 # overwrites the outlet curve as global boundary
                 boundsGlob[-1] = layerCurve[i]
                 logging.info("Set %s curve no. %i as the global layer boundary" % (lab, i))
+                on_rad_zero[-1] = True
                 del layerCurve[i]
                 break
+            else:
+                on_rad_zero.append(False)
         
         # iterating over curves and deciding between which curves a layerStreamOrtho curve 
         #  should be created and which curves should be combined
@@ -796,7 +807,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 returnBounds.append(newLayer)
                 logging.info("Finished creating %s layer curves" % lab) 
 
-        return returnBounds 
+        return returnBounds, on_rad_zero 
 
     # creates the layer curve parallel to the channel curves
     # the curve is created from the two points at 100 percent of the matching 
@@ -1118,6 +1129,39 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         # rm.thisown = False
         # logging.info("%s" % rm)
         # return rm
+
+
+    def getLayerList(self, 
+                     rotLower: float = 0,
+                     rotUpper: float = 2*numpy.pi):
+        logging.info("Request all Layers on hub and shroud")
+        
+        hubLayer3d = []
+        for layer in self.hubLayers_:
+            hubLayer3d.append(
+                    partRotatingMap2dTo3d(
+                        self.rotVector_, 
+                        layer,
+                        rotLower,
+                        rotUpper,
+                    ).clone()
+                )
+        shroudLayer3d = []
+        for layer in self.shroudLayers_:
+            shroudLayer3d.append(
+                    partRotatingMap2dTo3d(
+                        self.rotVector_, 
+                        layer,
+                        rotLower,
+                        rotUpper,
+                    ).clone()
+                )
+        returnList = [
+                [hubLayer3d, self.hubRadZero_],
+                [shroudLayer3d, self.shroudRadZero_]
+                ]
+        return returnList
+
 
     def addInternals(
         self,
