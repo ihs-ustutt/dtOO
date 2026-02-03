@@ -94,14 +94,17 @@ class radMeridional_hubZero:
     dP = container.cptr_dP() 
 
     #from dtOOPythonApp.builder import (analyticGeometry_piecewiseMeridionalRotContour)
-    
+    print(type(self))
+    print(dir(self))
+
     modname = "dtOOPythonApp.builder.analyticGeometryLayers_piecewiseMeridionalRotContour"
-    if modname in sys.modules: 
-        print(f"reloading: {modname}")
-        module=importlib.reload(sys.modules[modname])
-    else:
-        print(f"loading: {modname}")
-        module=importlib.import_module(modname)
+    module = self.reloadModule(modname)
+    #if modname in sys.modules: 
+    #    print(f"reloading: {modname}")
+    #    module=importlib.reload(sys.modules[modname])
+    #else:
+    #    print(f"loading: {modname}")
+    #    module=importlib.import_module(modname)
 
     radMeridionalContour = module.analyticGeometryLayers_piecewiseMeridionalRotContour(  # same object / class as axial machine
       "radMeridionalContour",
@@ -206,6 +209,24 @@ class radMeridional_hubZero:
       #rotVector=dtOO.dtVector3(0,0,-1)
     ).enableDebug()#.buildExtract( container )
     container = radMeridionalContour.buildExtract(container)
+    
+    # returns layer data in the following nested list:
+    # layers = [[hub layer lists],[shroud layer list]]
+    # with:
+    # [hub layer lists] = [[3d layer domain], [bool list radius zero]]
+       
+    # .getLayerList(lowerSegementRot, upperSegmentRotation)
+    layers = radMeridionalContour.getLayerList(-0.1, 0)    
+
+
+    modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
+    module = self.reloadModule(modname)
+
+    # module.map3dTo3dGmsh_gridFromLayers(layer data, nElementsLayer, firstElementSize, meshSize)
+    layerMesh = module.map3dTo3dGmsh_gridFromLayers(layers, 7, 0.01, 0.05)
+    layerMesh.buildLayerMesh()
+    container = layerMesh.buildExtract(container)
+
     """
     a = radMeridionalContour.regChannel(1)      # rotating a specific channel 
     a <<= "xyz_channel"                         # renaming it
@@ -699,7 +720,17 @@ class radMeridional_hubZero:
 #    ).buildExtract( container )
 
     return container
-  
+
+  def reloadModule(self, modname):  
+    if modname in sys.modules: 
+        print(f"reloading: {modname}")
+        module=importlib.reload(sys.modules[modname])
+    else:
+        print(f"loading: {modname}")
+        module=importlib.import_module(modname)
+            
+    return module
+
 def CreateAndShow( *args, **kwargs ):
   """Create and show machine.
 
