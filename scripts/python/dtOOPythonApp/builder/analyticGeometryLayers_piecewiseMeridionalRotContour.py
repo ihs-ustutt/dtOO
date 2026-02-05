@@ -638,6 +638,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                         v1.ptrDtCurve()
                     ).result()
                 )
+                del on_rad_zero[i]
                 logging.info("Combining curves %i and %i to make one layer" % (i, i+1))
             # else the curves will be appended
             else:
