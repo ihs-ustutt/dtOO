@@ -12,6 +12,48 @@ is added. The machine is created by:
 
 This results in a machine with an outlet angle at the shroud of 40 degree.
 
+>>> from dtOOPythonApp.tools import dtOO2OCC
+>>> dtOO2OCC.WriteSTEP(
+...   dtOO2OCC.TopoDS(
+...     [ 
+...       dtOO2OCC.analyticSurface_analyticGeometry(
+...         bundle.cptr_aG()["xyz_blade"]
+...       ).approx(uInts=np.linspace(0.0, 1.0, 501)),
+...       dtOO2OCC.analyticSurface_analyticGeometry(
+...         dtOO.map3dTo3d.ConstDownCast( 
+...           bundle.cptr_aG()["xyz_gridChannel"] 
+...         ).segmentConstUPercent(0.0)
+...       ).approx(),
+...       dtOO2OCC.analyticSurface_analyticGeometry(
+...         dtOO.map3dTo3d.ConstDownCast( 
+...           bundle.cptr_aG()["xyz_gridChannel"] 
+...         ).segmentConstUPercent(1.0)
+...       ).approx(),
+...       dtOO2OCC.analyticSurface_analyticGeometry(
+...         dtOO.map3dTo3d.ConstDownCast( 
+...           bundle.cptr_aG()["xyz_gridChannel"] 
+...         ).segmentConstVPercent(0.0)
+...       ).approx(),
+...       dtOO2OCC.analyticSurface_analyticGeometry(
+...         dtOO.map3dTo3d.ConstDownCast( 
+...           bundle.cptr_aG()["xyz_gridChannel"] 
+...         ).segmentConstVPercent(1.0)
+...       ).approx(),
+...       dtOO2OCC.analyticSurface_analyticGeometry(
+...         dtOO.map3dTo3d.ConstDownCast( 
+...           bundle.cptr_aG()["xyz_gridChannel"] 
+...         ).segmentConstWPercent(0.0)
+...       ).approx(),
+...       dtOO2OCC.analyticSurface_analyticGeometry(
+...         dtOO.map3dTo3d.ConstDownCast( 
+...           bundle.cptr_aG()["xyz_gridChannel"] 
+...         ).segmentConstWPercent(1.0)
+...       ).approx(),
+...     ]
+...   ), 
+...   "simpleAxialRunner.stp"
+... )
+
 The OpenFOAMCase is created by:
 
 >>> bundle.cptr_dC()["of"].runCurrentState()
