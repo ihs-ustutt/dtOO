@@ -50,6 +50,5 @@ from .dtCaseTools import (
   dtCaseStrategyFactory,
   dtCaseComponent
 )
-from .generalTools import (
-  generalStrategy
-)
+from .generalTools import ( generalStrategy )
+from .dtOO2OCC import ( dtOO2OCC )
