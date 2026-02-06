@@ -210,6 +210,8 @@ namespace dtOO {
 #include <analyticGeometryHeaven/partRotatingMap2dTo3d.h>
 #include <analyticGeometryHeaven/trans6SidedCube.h>
 #include <analyticGeometryHeaven/translatingMap2dTo3d.h>
+#include <analyticGeometryHeaven/multipleBoundedSurface.h>
+#include <analyticGeometryHeaven/multipleBoundedVolume.h>
 #include <analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h>
@@ -1206,6 +1208,8 @@ namespace dtOO {
 %include analyticGeometryHeaven/partRotatingMap2dTo3d.h
 %include analyticGeometryHeaven/trans6SidedCube.h
 %include analyticGeometryHeaven/translatingMap2dTo3d.h
+%include analyticGeometryHeaven/multipleBoundedSurface.h
+%include analyticGeometryHeaven/multipleBoundedVolume.h
 namespace std {
   %template(pairDtRealDtPoint2) pair< ::dtOO::dtReal, ::dtOO::dtPoint2 >;
 }
