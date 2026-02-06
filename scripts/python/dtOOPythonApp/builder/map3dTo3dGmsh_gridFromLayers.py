@@ -44,23 +44,28 @@ import json
 class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
     def __init__(self,
+                 label,
                  layers: List,
                  nLayers: int,
                  firstElement: float,
                  elementSize):
-        super(map3dTo3dGmsh_gridFromLayers, self).__init__()
-        #self._m3dGmsh = None
 
-        print("the class is working")
+        super(map3dTo3dGmsh_gridFromLayers, self).__init__()
+
+        logging.info( "Building %s ..." % ("meshLayers") )
+        
+        # setting global params
+        self.label_ = label
         self.layerList_ = layers
         self.nLayers_ = nLayers
         self.firstElement_ = firstElement
         self.elementSize_ = elementSize
 
-        logMe.initLog('layerMesh.log')
-
+        #logMe.initLog('layerMesh.log')
+        
+        # setting up volume
         self.map3dTo3dGmshJson_ = jsonPrimitive(
-            '{"label" : "meshLayer",'
+            '{"label" : "'+self.label_+'",'
                 '"option" : ['
                 '{"name" : "[gmsh]General.Terminal", "value" : "1."},'
                 '{"name" : "[gmsh]General.Verbosity", "value" : "100."},'
@@ -77,55 +82,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
     def buildLayerMesh(self) -> None:
 
-        logging.info( "Building %s ..." % ("meshLayers") )
-        #print("=== HARD RESET dtOO STATE ===")
-
-        #try:
-        #    print("dtOO.clear()")
-        #    dtOO.clear()
-        #except:
-        #    print("except")
-        #    pass
-        #try:
-        #    print("dtOO.lVHOstateHandler.clear()")
-        #    dtOO.lVHOstateHandler.clear()
-        #except:
-        #    print("except")
-        #    pass
-
-        #try:
-        #    print("dtOO.staticPropertiesHandler.clear()")
-        #    dtOO.staticPropertiesHandler.clear()
-        #except:
-        #    
-        #    print("except")
-        #    pass
-
-        #try:
-        #    print("dtOO.map3dTo3dGmsh.clearGlobalModel()")
-        #    dtOO.map3dTo3dGmsh.clearGlobalModel()
-        #except:
-
-        #    print("except")
-        #    pass
-
-        ##if 'm3dGmsh' in locals():
-        ##    print("del m3dGmsh")
-        ##    del m3dGmsh
-        #if getattr(self, "_m3dGmsh", None):
-        #    try:
-        #        self._m3dGmsh.detachAllObservers()
-        #        self._m3dGmsh.reset()
-        #        print("resetting m3dGmsh")
-        #    except:
-        #        print("failed")
-        #        pass
-        #    self._m3dGmsh = None
-
         m3dGmsh = map3dTo3dGmsh()
-        self._m3dGmsh = m3dGmsh
-
-        #m3dGmsh = map3dTo3dGmsh()
         m3dGmsh.jInit(
           self.map3dTo3dGmshJson_, None, None, None, None, None
         )
@@ -172,356 +129,251 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         bV = container.cptr_bV()
         dP = container.cptr_dP()
         
-        #
-        #   start for loop here
-        #
-        print("hublayers")
-        print(len(self.layerList_[0][0]))
-        print(self.layerList_[0][0])
-        print(len(self.layerList_[0][1]))
-        print(self.layerList_[0][1])
-        print("shroudlayers")
-        print(len(self.layerList_[1][0]))
-        print(self.layerList_[1][0])
-        print(len(self.layerList_[1][1]))
-        print(self.layerList_[1][1])
+        logging.info("Creating Layer Mesh on hub and shroud")
         
-        regionIDs = []
-        fiveSidedLayers = []
+        # self.layerList_ has the following format:
+        # self.layerList_ = [[hub layer lists],[shroud layer list]]
+        # with:
+        # [hub layer lists] = [[3d layer domain], [bool list radius zero]]
+        # [bool list radius zero] tracks which layer se3gment has a radius of zero
+        #  those layers have to be meshed five sided
+        #  the entrie for those layers will be True 
+
+        # iterating over the layers and pushing their respective surfaces
+        # six and five sided layers are treated differently
         for i_hs in range(len(self.layerList_)):
 
             if i_hs == 0:
                 label = "hub"
             else:
                 label = "shroud"
-            print("###########   ",label) 
-            print("self.layerList_[i_hs][1][i_l] = ", self.layerList_[i_hs][1])
+            logging.info("Adding %s Layers. Number of Layers: %i" % (label, len(self.layerList_[i_hs][0])))
             
+            # iterating over the hub and shroud layers
             for i_l in range(len(self.layerList_[i_hs][0])):
                 
-                print("i_l = ", i_l)
-                
+                # current 3d region
                 layer3d = self.layerList_[i_hs][0][i_l]
-            
-                # layers with 6 sides
-                if self.layerList_[i_hs][1][i_l] == False:
                 
-                    ortho0, ortho1 = self.detectFirstAndSecond(layer3d, 2)
-                    periodic0, periodic1 = self.detectFirstAndSecond(layer3d, 1)
-                    channel, parallel = self.detectFirstAndSecond(layer3d, 3)
-                    
-                    ortho0.setLabel("ortho_"+label+str(i_l))
-                    ortho1.setLabel("ortho_"+label+str(i_l+1))
+                # finding the correct surfaces on the region by using the uvw direction
+                # naming of faces:
+                #   ortho    -> faces orthogonal to streamwise direction (connectsing the layers)
+                #   periodic -> periodic faces (extend from channel curve radially inside the channel)
+                #   channel  -> faces on channel side
+                #   parallel -> faces parallel to channel
+                ortho0, ortho1 = self.detectFirstAndSecond(layer3d, 2)
+                periodic0, periodic1 = self.detectFirstAndSecond(layer3d, 1)
+                channel, parallel = self.detectFirstAndSecond(layer3d, 3)
+                
+                # setting labels
+                ortho0.setLabel("ortho_"+label+str(i_l))
+                ortho1.setLabel("ortho_"+label+str(i_l+1))
+                # labelling is different for six and five sided regions
+                #  they have to be treated differently during meshing
+                if self.layerList_[i_hs][1][i_l] == False:
+                    logging.info("%s layer no. %i is six sided" % (label, i_l))
                     periodic0.setLabel("periodic0_"+label+str(i_l))
                     periodic1.setLabel("periodic1_"+label+str(i_l))
                     channel.setLabel("channel_"+label+str(i_l))
                     parallel.setLabel("parallel_"+label+str(i_l))
-                    
-                    self.appendAnalyticGeometry(
-                        analyticSurface(analyticSurface.MustDownCast(ortho0).ptrDtSurface()),
-                        "debug_TEST_ortho0_"+label + str(i_l),
-                    )
-                    self.appendAnalyticGeometry(
-                        analyticSurface(analyticSurface.MustDownCast(ortho1).ptrDtSurface()),
-                        "debug_TEST_ortho1_"+label + str(i_l),
-                    )
-
-                    
-                    print("ortho0.getLabel = ", ortho0.getLabel())
-                    print("ortho1.getLabel = ", ortho1.getLabel())
-
-                    #if i_l == 0:
-                    aG.push_back(ortho0)
-                    if i_l == len(self.layerList_[i_hs][0])-1 and self.layerList_[i_hs][1][i_l] == False:
-                        aG.push_back(ortho1)
-                    aG.push_back(periodic0)
-                    aG.push_back(periodic1)
-                    aG.push_back(channel)
-                    aG.push_back(parallel)
-             
-                    rID = m3dGmsh.getModel().addIfRegionToGmshModel(layer3d)
+                else:
+                    logging.info("%s layer no. %i is five sided" % (label, i_l))
+                    periodic0.setLabel("periodic05s_"+label+str(i_l))
+                    periodic1.setLabel("periodic15s_"+label+str(i_l))
+                    channel.setLabel("channel5s_"+label+str(i_l))
+                    parallel.setLabel("parallel5s_"+label+str(i_l))
+                
+                # pushing back the geometries
+                aG.push_back(ortho0)
+                # ortho1 is only pushed in the last region if it is six sided
+                #  (ortho1 in five sided region is rotated surface with radius of zero)
+                if i_l == len(self.layerList_[i_hs][0])-1 and self.layerList_[i_hs][1][i_l] == False:
+                    aG.push_back(ortho1)
+                aG.push_back(periodic0)
+                aG.push_back(periodic1)
+                aG.push_back(channel)
+                aG.push_back(parallel)
+                
+                # adding the 3d layer as a region
+                rID = m3dGmsh.getModel().addIfRegionToGmshModel(layer3d)
+                # only six sided refions can be meshed completely transfinite
+                if self.layerList_[i_hs][1][i_l] == False:
+                    # Recursive means that all the edges and faces of the region are also tramsfinite
                     m3dGmsh.getModel().getDtGmshRegionByTag( rID ).meshTransfiniteRecursive()
                     m3dGmsh.getModel().getDtGmshRegionByTag( rID ).meshRecombineRecursive()
-                    regionIDs.append((rID, self.layerList_[i_hs][1][i_l]))
-                
-                # layers with 5 sides
-                else:
-                    fiveSidedLayers.append((label, i_l))
-                    
-                    ortho0, ortho1 = self.detectFirstAndSecond(layer3d, 2)
-                    periodic0, periodic1 = self.detectFirstAndSecond(layer3d, 1)
-                    channel, parallel = self.detectFirstAndSecond(layer3d, 3)
                  
-                    ortho0.setLabel("ortho_"+label+str(i_l))
-                    ortho1.setLabel("ortho1FiveSided_"+label+str(i_l))
-                    periodic0.setLabel("periodic0FiveSided_"+label+str(i_l))
-                    periodic1.setLabel("periodic1FiveSided_"+label+str(i_l))
-                    channel.setLabel("channelFiveSided_"+label+str(i_l))
-                    parallel.setLabel("parallelFiveSided_"+label+str(i_l))
-                 
-                    self.appendAnalyticGeometry(
-                        analyticSurface(analyticSurface.MustDownCast(ortho0).ptrDtSurface()),
-                        "debug_TEST_ortho0FiveSided_"+label + str(i_l),
-                    )
-                 
-                    #print("ortho0.getLabel = ", ortho0.getLabel())
-                    #if i_l == 0:
-                    aG.push_back(ortho0)
-                    #aG.push_back(ortho1)
-                    aG.push_back(periodic0)
-                    aG.push_back(periodic1)
-                    aG.push_back(channel)
-                    aG.push_back(parallel)
-          
-                    rID = m3dGmsh.getModel().addIfRegionToGmshModel(layer3d)
-                    regionIDs.append((rID, self.layerList_[i_hs][1][i_l]))
-
-
-                   ## m3dGmsh.getModel().getDtGmshRegionByTag( rID ).dtFaces() -> f.dtEdges()
-                    #m3dGmsh.getModel().getDtGmshRegionByTag( rID ).meshTransfiniteRecursive()
-                    #m3dGmsh.getModel().getDtGmshRegionByTag( rID ).meshRecombineRecursive()
-        
-        #
-        # name regions
-        #
-        
-
+        # initializing region labels
+        #  later it will be iterated over the list in self (region labels are not used here)
         ob = bVONameRegions()
         ob.jInit( jsonPrimitive('{ "_regionLabel" : [] }'), m3dGmsh )
         ob.preUpdate()
-
-                #m3dGmsh.getModel().addIfFaceToGmshModel(ortho0)
-                #m3dGmsh.getModel().addIfFaceToGmshModel(ortho1)
-                #m3dGmsh.getModel().addIfFaceToGmshModel(periodic0)
-                #m3dGmsh.getModel().addIfFaceToGmshModel(periodic1)
-                #m3dGmsh.getModel().addIfFaceToGmshModel(channel)
-                #m3dGmsh.getModel().addIfFaceToGmshModel(parallel)
-
-        analytic_geometry = [
-            {"labels": "ortho_*"},
-            #{"labels": "ortho1_*"},
-            {"labels": "periodic0_*"},
-            {"labels": "periodic1_*"},
-            {"labels": "channel_*"},
-            {"labels": "parallel_*"},
-        ]
-        print(analytic_geometry)
-
-        if fiveSidedLayers:
-            print("FIVESIDEDLAYER EXISTS")
-            analytic_geometry.extend([
-                #{"labels": "ortho0FiveSided_*"},
-                #{"labels": "ortho1FiveSided_*"},
-                {"labels": "periodic0FiveSided_*"},
-                {"labels": "periodic1FiveSided_*"},
-                {"labels": "channelFiveSided_*"},
-                {"labels": "parallelFiveSided_*"},
-            ])
-        print(analytic_geometry)
-        data = {
-            "analyticGeometry": analytic_geometry,
-            "_inc": 10.0,
-            "_facesPerEntry": []
-        }
-
+        
+        # initializing surface labels in gmsh
         ob = bVOAnalyticGeometryToFace()
         ob.jInit(
-            jsonPrimitive(json.dumps(data)),
-            None, None, None, aG, None, m3dGmsh
+          jsonPrimitive(
+            '{'
+              '"analyticGeometry" : ['
+                '{"labels" : "ortho_*"},'
+                '{"labels" : "periodic0*"},'
+                '{"labels" : "periodic1*"},'
+                '{"labels" : "channel*"},'
+                '{"labels" : "parallel*"}'
+              '],'
+              '"_inc" : 10.0,'
+              '"_facesPerEntry" : []'
+            '}'
+          ),
+          None, None, None, aG, None, m3dGmsh
         )
-        ob.preUpdate() 
+        ob.preUpdate()
         
-        channelToParallelLines = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical("channel_*","parallel_*")
+        # meshing the lines orthogonal to the channel lines
+        # these lines connect the faces channel and parallel
+        channelToParallelLines = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical("channel*","parallel*")
         for line in channelToParallelLines:
+            logging.info( "meshing graded Line : ID: %i, number of elements: %i" % (line, self.nLayers_) )
             theEdge = m3dGmsh.getModel().getDtGmshEdgeByTag( line )
+            # meshing the lines with the in self specified number of elements and sets the grading
             theEdge.meshTransfiniteWNElements( 1, 1, self.nLayers_ )
             theEdge.setGrading(1.0, 3)
 
+            self.appendAnalyticGeometry(
+                m3dGmsh.getModel().getDtGmshEdgeByTag(line).getMap1dTo3d(),
+                "debug_layerEdge_channelToParallelLine_"+"_ID"+str(line)
+            )
 
-
+        # list containing the lengths of the mesh lines in circunferential direction
         lChannel_circ = [0, 0]
+
+        # iterating over the hub and shroud layers
+        # here the mesh settings for the edges in streamwise and circumferential directions are set
+        # regions with five sides are specially trated in this loop
         for i_hs in range(len(self.layerList_)):
 
             if i_hs == 0:
                 label = "hub"
             else:
                 label = "shroud"
-            print(label)
-            print("")
+            
+            # iterating over the individual layers in the hub and shroud layer list
             for i_l in range(len(self.layerList_[i_hs][0])):
-                print("i_l = ", i_l)
-                # layers with 6 sides
+                
+                # finds an edge on the channel in streamwise direction
+                edges = self.getCommonEdgesByPhysicalFaces(
+                        m3dGmsh,
+                        "channel*"+label+str(i_l)+"*",
+                        "periodic0*"+label+str(i_l)+"*"
+                    )
+                # calculates the length and number of elements on this line
+                # this number of elements is used for all streamwise lines in this layer region
+                lChannel_sw = edges[0].getMap1dTo3d().length()
+                nE = int(numpy.ceil(lChannel_sw/self.elementSize_))                  
+                logging.info("layer %s%i has a channel length of %.4f, meshing with %i elements" % (
+                    label, i_l, lChannel_sw, nE))
+                
+                # finding all streamwise layer curves for this six sided regions
                 if self.layerList_[i_hs][1][i_l] == False:
-                    edges = self.getCommonEdgesByPhysicalFaces(
-                            m3dGmsh,
-                            "channel_"+label+str(i_l)+"*",
-                            "periodic0_"+label+str(i_l)+"*"
-                        )
-                    lChannel_sw = edges[0].getMap1dTo3d().length()
-                    print("lChannel_sw = ", lChannel_sw)
-                    nE = int(numpy.ceil(lChannel_sw/self.elementSize_))                  
-
+                    # found by searching the connecting lines of the orthogonal faces
                     swLines = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical(
                             "ortho_"+label+str(i_l)+"*",
                             "ortho_"+label+str(i_l+1)+"*")
-                    
-                    for line in swLines:
-                    #for line in channelLines:
-
-                        #print("line ID = ", line)
-                        self.appendAnalyticGeometry(
-                            m3dGmsh.getModel().getDtGmshEdgeByTag(line).getMap1dTo3d(),
-                            "debug_TEST_swLine_"+label+str(i_l)+"_ID"+str(line)
-                        )
-                        logging.info( "meshing streamwise Line : %s%i, ID: %i, number of elements: %i" % (label, i_l, line, nE) )
-                        m3dGmsh.getModel().getDtGmshEdgeByTag(line).meshTransfiniteWNElements(1,1,nE)
-
-                # layers with 6 sides
-                if self.layerList_[i_hs][1][i_l] == False:
-                    
                 
+                # finding streamwise layercurves for five sided regions
+                #  needs special treatment because this region doesnt have a second ortho face
+                elif self.layerList_[i_hs][1][i_l] == True:
+                    # lines have to be found manually as the common lines 
+                    #  between channel/parallel face and the periodic faces
+                    line0 = self.getCommonEdgesByPhysicalFaces(
+                        m3dGmsh,
+                        "channel5s_"+label+str(i_l)+"*",
+                        "periodic05s_"+label+str(i_l)+"*"
+                    )
+                    line1 = self.getCommonEdgesByPhysicalFaces(
+                        m3dGmsh,
+                        "channel5s_"+label+str(i_l)+"*",
+                        "periodic15s_"+label+str(i_l)+"*"
+                    )
+                    line2 = self.getCommonEdgesByPhysicalFaces(
+                        m3dGmsh,
+                        "parallel5s_"+label+str(i_l)+"*",
+                        "periodic05s_"+label+str(i_l)+"*"
+                    )
+                    line3 = self.getCommonEdgesByPhysicalFaces(
+                        m3dGmsh,
+                        "parallel5s_"+label+str(i_l)+"*",
+                        "periodic15s_"+label+str(i_l)+"*"
+                    )
+                    swLines = [line0[0].tag(), line1[0].tag(), line2[0].tag(), line3[0].tag()]
+                    
+                    # setting the orthogonal and the periodic faces of the five sided region as transfinite
+                    m3dGmsh.getModel().getDtGmshFaceByPhysical("ortho_"+label+str(i_l)+"*").meshTransfinite()
+                    m3dGmsh.getModel().getDtGmshFaceByPhysical("ortho_"+label+str(i_l)+"*").meshRecombine()
+                    m3dGmsh.getModel().getDtGmshFaceByPhysical("periodic05s_"+label+str(i_l)+"*").meshTransfinite()
+                    m3dGmsh.getModel().getDtGmshFaceByPhysical("periodic05s_"+label+str(i_l)+"*").meshRecombine()
+                    m3dGmsh.getModel().getDtGmshFaceByPhysical("periodic15s_"+label+str(i_l)+"*").meshTransfinite()
+                    m3dGmsh.getModel().getDtGmshFaceByPhysical("periodic15s_"+label+str(i_l)+"*").meshRecombine()
+                
+                # setting the mesh size of the streamwise layer lines of the region
+                for line in swLines:
+                    self.appendAnalyticGeometry(
+                        m3dGmsh.getModel().getDtGmshEdgeByTag(line).getMap1dTo3d(),
+                        "debug_layerEdge_swLine_"+label+str(i_l)+"_ID"+str(line)
+                    )
+                    logging.info( "meshing streamwise Line : %s%i, ID: %i, number of elements: %i" % (label, i_l, line, nE) )
+                    m3dGmsh.getModel().getDtGmshEdgeByTag(line).meshTransfiniteWNElements(1,1,nE)
+                   
+                # finding the layer curve in circumferential direction 
+                #  as the common edge between the channel and the ortho face
+                edges = self.getCommonEdgesByPhysicalFaces(
+                    m3dGmsh,
+                    "channel*"+label+str(i_l)+"*",
+                    "ortho_"+label+str(i_l)+"*"
+                )
+                # length of circumferential curve
+                l_ortho = numpy.abs(edges[0].getMap1dTo3d().length())
+                logging.info("Circumferential edge : %s%i, ID: %i, length: %.4f" % (label, i_l, edges[0].tag(), l_ortho))
+                # finding the longest circumferential edge in the hub and shroud layers
+                #  based on this length the number of elements in circ direction will be calculated
+                if l_ortho > lChannel_circ[i_hs]:
+                    lChannel_circ[i_hs] = l_ortho
+                
+                # finding the last layer curve in circumferential direction of the last region
+                #  this is only done for six sided regions 
+                #  (the radius of the last circ line of five sided regions is zero)
+                if i_l == len(self.layerList_[i_hs][0])-1 and self.layerList_[i_hs][1][i_l] == False:
                     edges = self.getCommonEdgesByPhysicalFaces(
                         m3dGmsh,
                         "channel_"+label+str(i_l)+"*",
-                        "ortho_"+label+str(i_l)+"*"
+                        "ortho_"+label+str(i_l+1)+"*"
                     )
-                    l_ortho = edges[0].getMap1dTo3d().length()
+                    l_ortho = numpy.abs(edges[0].getMap1dTo3d().length())
+                    logging.info("Circumferential edge : %s%i, ID: %i, length: %.4f" % (label, i_l+1, edges[0].tag(), l_ortho))
                     if l_ortho > lChannel_circ[i_hs]:
-                        lChannel_circ[i_hs] = l_ortho
-                    print("l_ortho = ", l_ortho)
+                        lChannel_circ[i_hs] = l_ortho                
                     
-                    if i_l == len(self.layerList_[i_hs][0])-1 and self.layerList_[i_hs][1][i_l] == False:
-                        edges = self.getCommonEdgesByPhysicalFaces(
-                            m3dGmsh,
-                            "channel_"+label+str(i_l)+"*",
-                            "ortho_"+label+str(i_l+1)+"*"
-                        )
-                        l_ortho = edges[0].getMap1dTo3d().length()
-                        if l_ortho > lChannel_circ[i_hs]:
-                            lChannel_circ[i_hs] = l_ortho
-                        print("l_ortho = ", l_ortho)
-           
+            # calculating the number of elements for the edges in circ direction from the longest edge length
             nE = int(numpy.ceil(lChannel_circ[i_hs]/self.elementSize_))
             
+            # finding all circ edges on hub or shroud
             circLines = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical(
                             "periodic0_"+label+"*",
-                            "periodic1_"+label+"*")
-            print("circLines = ", circLines)
+                            "periodic1_"+label+"*"
+                        ) 
+
+            # setting the number of elements on the circ edges for hub or shroud
+            # number of elements have to be constant for these edges for transfinte meshing
             for line in circLines:
                 self.appendAnalyticGeometry(
                     m3dGmsh.getModel().getDtGmshEdgeByTag(line).getMap1dTo3d(),
-                    "debug_TEST_circLine_"+label+"_ID"+str(line)
+                    "debug_layerEdge_circLine_"+label+"_ID"+str(line)
                 )
 
                 logging.info( "meshing circumferential Line : %s, ID: %i, number of elements: %i" % (label, line, nE) )
                 m3dGmsh.getModel().getDtGmshEdgeByTag(line).meshTransfiniteWNElements(1,1,nE)
 
-        #return
-        """
-        #print("lChannels = ", lChannels)
-        channelToParallelLines = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical("channel_*","parallel_*")
-        channelLines = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical("channel_*","channel_*")
-        parallelLines = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical("parallel_*","parallel_*")
-        
-        channel_faces = m3dGmsh.getModel().getDtGmshFaceListByPhysical("channel_*")
-        i=0
-        for face in channel_faces:
-            self.appendAnalyticGeometry(
-                face.getMap2dTo3d(),
-                "debug_TEST_channelFaces_"+str(i)
-            )
-            i=i+1
-        print("number of channel faces = ", i)
-        parallel_faces = m3dGmsh.getModel().getDtGmshFaceListByPhysical("parallel_*")
-        i=0
-        for face in parallel_faces:
-            self.appendAnalyticGeometry(
-                face.getMap2dTo3d(),
-                "debug_TEST_parallelFaces_"+str(i)
-            )
-            i=i+1
-        print("number of parallel faces = ", i)
-        
-
-        print("type surf")
-        print(channelToParallelLines)
-        print(type(m3dGmsh.getModel().getDtGmshEdgeByTag(channelToParallelLines[0]).getMap1dTo3d()))
-
-        for ii in channelToParallelLines:
-            self.appendAnalyticGeometry(
-                m3dGmsh.getModel().getDtGmshEdgeByTag( ii ).getMap1dTo3d(),
-                "debug_TEST_channelToParallelLine_"+str(ii)
-            )
-
-        for line in channelToParallelLines:
-            theEdge = m3dGmsh.getModel().getDtGmshEdgeByTag( line )
-            theEdge.meshTransfiniteWNElements( 1, 1, self.nLayers_ )
-            theEdge.setGrading(1.0, 3)
-        
-        print("length of sized lines = ", len(channelLines + parallelLines))
-        
-        for line in channelLines + parallelLines:
-        #for line in channelLines:
-        
-            print("line ID = ", line)
-            self.appendAnalyticGeometry(
-                m3dGmsh.getModel().getDtGmshEdgeByTag(line).getMap1dTo3d(),
-                "debug_TEST_sizedLine_"+str(line)
-            )
-
-            theEdge = m3dGmsh.getModel().getDtGmshEdgeByTag( line )
-            eL = theEdge.getMap1dTo3d().length()
-            nE = int(numpy.ceil(eL/self.elementSize_))
-            logging.info( "Layer line %i with %i elements" % (line, nE) )
-            theEdge.meshTransfiniteWNElements(1,1,nE)
-        
-        channelToParallelLines_5s = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical("channelFiveSided_*","parallelFiveSided_*")
-        channelLines_5s = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical("channelFiveSided_*","channelFiveSided_*")
-        parallelLines_5s = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical("parallelFiveSided_*","parallelFiveSided_*")
-        print("should all be 3")
-        print(len(channelToParallelLines_5s))
-        print(len(channelLines_5s))
-        print(len(parallelLines_5s))
-
-        for line in channelToParallelLines_5s:
-            theEdge = m3dGmsh.getModel().getDtGmshEdgeByTag( line )
-            theEdge.meshTransfiniteWNElements( 1, 1, self.nLayers_ )
-            #theEdge.setNElements( 1, 1, self.nLayers_ )
-            theEdge.setGrading(1.0, 3)
-        print("length of sized lines = ", len(channelLines + parallelLines))
-        for line in channelLines_5s + parallelLines_5s:
-        #for line in parallelLines:
-            print("line ID = ", line)
-            self.appendAnalyticGeometry(
-                m3dGmsh.getModel().getDtGmshEdgeByTag(line).getMap1dTo3d(),
-                "debug_TEST_sizedLine_"+str(line)
-            )
-
-            theEdge = m3dGmsh.getModel().getDtGmshEdgeByTag( line )
-            eL = theEdge.getMap1dTo3d().length()
-            #nE = int(numpy.ceil(eL/self.elementSize_))
-            nE = 5
-            logging.info( "Layer line %i with %i elements" % (line, nE) )
-            theEdge.meshTransfiniteWNElements(1,1,nE)
-            #theEdge.setNElements(nE)
-
-        self.appendAnalyticGeometry(
-            m3dGmsh.getModel().getDtGmshFaceByPhysical("ortho1_hub1*").getMap2dTo3d(),
-            "debug_TEST_otrho1_hub1"
-        )
-
-        # test line
-        print("test line")
-        
-        m3dGmsh.getModel().getDtGmshFaceByPhysical("ortho1_hub1*").meshTransfinite()
-        m3dGmsh.getModel().getDtGmshFaceByPhysical("ortho1_hub1*").meshRecombine()
-        m3dGmsh.getModel().getDtGmshFaceByPhysical("periodic0FiveSided_*").meshTransfinite()
-        m3dGmsh.getModel().getDtGmshFaceByPhysical("periodic0FiveSided_*").meshRecombine()
-        m3dGmsh.getModel().getDtGmshFaceByPhysical("periodic1FiveSided_*").meshTransfinite()
-        m3dGmsh.getModel().getDtGmshFaceByPhysical("periodic1FiveSided_*").meshRecombine()
-        """
-        #return
-        # f(x)=c[0]+c[1]*tanh(g*(c[2]+c[3]*x))/tanh(g)
+        # initializing grading 
+        # scaTanhGradingOneD(c, g, gMin, gMax) -> f(x)=c[0]+c[1]*tanh(g*(c[2]+c[3]*x))/tanh(g)
         theRef = scaTanhGradingOneDCompound(
                     scaTanhGradingOneD(
                         vectorReal([1.0, -1.0, 1.0, -1.0]),
@@ -529,10 +381,10 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                                         0.1, 5.0
                         )
                     )
-
         theRef.setLabel( "aF_grading" )
         aF.push_back( theRef.clone() )
-
+        
+        # setting the first element size specified as a class variable 
         ob = bVOSetPrescribedElementSize()
         ob.thisown = False
         ob.jInit(
@@ -540,7 +392,6 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                 '{'
                 '"_type": 3,'
                 '"_firstElementSize": '+str(self.firstElement_)+','
-                #'"_grading": ["aF_grading"]'
                 '"_grading" : {'
                     '"analyticFunction" : {"label" : "aF_grading"}'
                   '}'
@@ -549,8 +400,9 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
             None, None, aF, None, None, m3dGmsh
         )
         m3dGmsh.attachBVObserver(ob)
-
-        ob = bVOMeshRule()                  # mesh rules
+        
+        # setting mesh rules
+        ob = bVOMeshRule()
         ob.thisown = False
         ob.jInit(
           jsonPrimitive(
@@ -559,23 +411,16 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                 '{"name" : "debug", "value" : "true"}'
               '],'
               '"_rule1D" : ['
-                #'"dtMeshGEdge(*)"'                         
                 '"dtMeshFreeGradingGEdge(*)"'
               '],'
               '"_rule2D" : ['
                 '"dtMeshGFace(*)"'
-                #'"dtMeshGFace(surface1_0)",'
-                #'"dtMeshGFaceWithTransfiniteLayer(*)"'
               '],'
               '"_rule3D" : ['
                 '"dtMeshGRegion(*)"'
               '],'
               '"_only" : [],'
               '"dtMeshOperator" : ['
-                #'{'
-                #  '"name" : "dtMeshGEdge",'
-                #  '"label" : "dtMeshGEdge"'
-                #'},'
                 '{'
                   '"name" : "dtMeshFreeGradingGEdge",'
                   '"label" : "dtMeshFreeGradingGEdge",'
@@ -584,47 +429,18 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                     '{"label" : "aF_grading"}'
                   ']}'
                 '},'
-
                 '{'
                   '"name" : "dtMeshGFace",'
                   '"label" : "dtMeshGFace"'
                 '},'
-                #'{'
-                #  '"name" : "dtMeshGFaceWithTransfiniteLayer",'         #setting for mesh face (corresponds to command in _rule2D)
-                #  '"label" : "dtMeshGFaceWithTransfiniteLayer",'
-                #  '"_nLayers" : [ 2, 0],'                              # number of boundary layers on surface ([surf0, surf1])
-                #  '"_direction" : 0,'                                   # direction of layers
-                #  '"_nSmooth" : 1000'                                   # smoothing iterations
-                #'},'
                 '{'
-                  '"name" : "dtMeshGRegion",'                           # dtMeshGRegion -> not used here
+                  '"name" : "dtMeshGRegion",'   
                   '"label" : "dtMeshGRegion",'
                   '"_minQShapeMetric" : 0.0,'
                   '"_relax" : 0.1,'
-                  '"_nPyramidOpenSteps" : 10,'                          # pyramid layer between structured and unstructured mesh
+                  '"_nPyramidOpenSteps" : 10,' 
                   '"_nSmooths" : 3'
                 '}'
-                #'{'
-                #  '"option" : ['
-                #    '{"name" : "debug", "value" : "true"}'
-                #  '],'
-                #  '"name" : "dtMeshGRegionWithBoundaryLayer",'          # mesh settings for the volume 
-                #  '"label" : "dtMeshGRegionWithBoundaryLayer",'
-                #  '"_nSpacingSteps" : [-9],'                            # tied to _nLayers (= _nLayers-1)
-                #  '"_nNormalSmoothingSteps" : 100,'
-                #  '"_nGrowingSmoothingSteps" : 100,'
-                #  '"_maxGrowingRatePerStep" : 2,'
-                #  '"_maxDihedralAngle" : '+str(float(numpy.pi*360./180.))+','
-                #  '"_faceLabel" : ['
-                #    '"channel*"'                                      # face where layers are made
-                #  '],"'
-                #  '_slidableFaceLabel" : ['                             # these layers can be adapted for the benefit of _faceLabel
-                #    '"ortho*", "periodic*"'
-                #  '],'
-                #  '"dtMesh3DOperator" : "dtMeshGRegion",'
-                #  '"_fixedFaceLabel" : ["parallel*"]'                  # the other surface surface1_0 could also be written here
-                #'}'
-
               ']'
             '}'
           ),
@@ -632,17 +448,18 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         )
         m3dGmsh.attachBVObserver(ob)
         
+        # generating the mesh
+        logging.info("Generating the mesh: %s" % self.label_)
         bV.set( m3dGmsh )
-
-        bV[0].makeGrid()                #generates the mesh
+        bV[0].makeGrid()    
 
         ob = bVOWriteMSH()
         ob.jInit(
-          jsonPrimitive('{"_filename" : "layer_mesh.msh", "_saveAll" : true}'),  # specifies how the mesh is saved
+          jsonPrimitive('{"_filename" : "'+self.label_+'.msh", "_saveAll" : true}'),
           None, None, None, None, None, m3dGmsh
         )
         ob.postUpdate()
-
+        logging.info("Mesh generated and Saved in %s.msh" % self.label_)
         bV.set(None)
         del m3dGmsh
         lVHOstateHandler.clear()
@@ -685,7 +502,8 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                                       m3dGmsh,
                                       face0: str,
                                       face1: str):
-        
+        """Returns the common edge between two faces
+        """
         commonEdges = []
         edges0 = m3dGmsh.getModel().getDtGmshFaceByPhysical(face0).dtEdges()
         edges1 = m3dGmsh.getModel().getDtGmshFaceByPhysical(face1).dtEdges()

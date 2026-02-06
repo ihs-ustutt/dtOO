@@ -201,6 +201,21 @@ class radMeridional_draft:
     ).enableDebug()#.buildExtract( container )
     container = radMeridionalContour.buildExtract(container)
     
+    # .getLayerList(lowerSegementRot, upperSegmentRotation)
+    layers = radMeridionalContour.getLayerList(-0.1, 0)
+    # returns layer data in the following nested list:
+    # layers = [[hub layer lists],[shroud layer list]]
+    # with:
+    # [hub layer lists] = [[3d layer domain], [bool list radius zero]]
+
+    modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
+    module = self.reloadModule(modname)
+
+    # module.map3dTo3dGmsh_gridFromLayers(label, layer data, nElementsLayer, firstElementSize, meshSize)
+    layerMesh = module.map3dTo3dGmsh_gridFromLayers("meshLayers_draft", layers, 7, 0.01, 0.05)
+    layerMesh.buildLayerMesh()
+    container = layerMesh.buildExtract(container)
+
     """
     a = radMeridionalContour.regChannel(1)      # rotating a specific channel 
     a <<= "xyz_channel"                         # renaming it
@@ -694,6 +709,17 @@ class radMeridional_draft:
 #    ).buildExtract( container )
 
     return container
+
+  def reloadModule(self, modname):
+    if modname in sys.modules:
+        print(f"reloading: {modname}")
+        module=importlib.reload(sys.modules[modname])
+    else:
+        print(f"loading: {modname}")
+        module=importlib.import_module(modname)
+
+    return module
+
   
 def CreateAndShow( *args, **kwargs ):
   """Create and show machine.
