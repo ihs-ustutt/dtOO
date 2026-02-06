@@ -93,20 +93,10 @@ class radMeridional_hubZero:
     dC = container.cptr_dC() 
     dP = container.cptr_dP() 
 
-    #from dtOOPythonApp.builder import (analyticGeometry_piecewiseMeridionalRotContour)
-    print(type(self))
-    print(dir(self))
-
     modname = "dtOOPythonApp.builder.analyticGeometryLayers_piecewiseMeridionalRotContour"
     module = self.reloadModule(modname)
-    #if modname in sys.modules: 
-    #    print(f"reloading: {modname}")
-    #    module=importlib.reload(sys.modules[modname])
-    #else:
-    #    print(f"loading: {modname}")
-    #    module=importlib.import_module(modname)
 
-    radMeridionalContour = module.analyticGeometryLayers_piecewiseMeridionalRotContour(  # same object / class as axial machine
+    radMeridionalContour = module.analyticGeometryLayers_piecewiseMeridionalRotContour( 
       "radMeridionalContour",
       hubCurves = [
         dtOO.analyticCurve(
@@ -210,20 +200,18 @@ class radMeridional_hubZero:
     ).enableDebug()#.buildExtract( container )
     container = radMeridionalContour.buildExtract(container)
     
+    # .getLayerList(lowerSegementRot, upperSegmentRotation)
+    layers = radMeridionalContour.getLayerList(-0.1, 0)    
     # returns layer data in the following nested list:
     # layers = [[hub layer lists],[shroud layer list]]
     # with:
     # [hub layer lists] = [[3d layer domain], [bool list radius zero]]
-       
-    # .getLayerList(lowerSegementRot, upperSegmentRotation)
-    layers = radMeridionalContour.getLayerList(-0.1, 0)    
-
 
     modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
     module = self.reloadModule(modname)
 
-    # module.map3dTo3dGmsh_gridFromLayers(layer data, nElementsLayer, firstElementSize, meshSize)
-    layerMesh = module.map3dTo3dGmsh_gridFromLayers(layers, 7, 0.01, 0.05)
+    # module.map3dTo3dGmsh_gridFromLayers(label, layer data, nElementsLayer, firstElementSize, meshSize)
+    layerMesh = module.map3dTo3dGmsh_gridFromLayers("meshLayers_hubZero", layers, 7, 0.01, 0.05)
     layerMesh.buildLayerMesh()
     container = layerMesh.buildExtract(container)
 
