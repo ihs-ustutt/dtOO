@@ -24,7 +24,13 @@ Simple Axial Runner ``simpleAxialRunner``
     :members:
 
 Cuboid Mesh ``meshCuboid``
-=========================
+==========================
 
 .. automodule:: dtOO.test.meshCuboid.meshCuboid
+    :members:
+
+Multiple bounded surfaces and volumes ``multipleBounded``
+=========================================================
+
+.. automodule:: dtOO.test.multipleBounded.multipleBounded
     :members:

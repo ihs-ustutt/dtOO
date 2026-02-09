@@ -260,6 +260,21 @@ set_tests_properties(meshCuboid PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST meshCuboid PROPERTY LABELS base-test)
 DTOO_ADDTESTWLABEL("meshCuboid")
 
+#
+# multipleBounded
+#
+add_test(
+  NAME multipleBounded 
+  COMMAND 
+    "${Python3_EXECUTABLE}" 
+    "-m" "doctest" 
+    "multipleBounded.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/multipleBounded
+)
+set_tests_properties(multipleBounded PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+set_property(TEST multipleBounded PROPERTY LABELS base-test)
+DTOO_ADDTESTWLABEL("multipleBounded")
+
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
     IF(IS_DIRECTORY ${dirPath})
