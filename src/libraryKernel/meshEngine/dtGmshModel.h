@@ -63,6 +63,8 @@ public:
   dtGmshFace *getDtGmshFaceByPhysical(std::string const &physical) const;
   std::list<dtGmshFace *>
   getDtGmshFaceListByPhysical(std::string const &physical) const;
+  std::list<dtGmshEdge *>
+  getDtGmshEdgeListByPhysical(std::string const &physical) const;
   dtGmshRegion *getDtGmshRegionByPhysical(std::string const &physical) const;
   std::list<dtGmshRegion *>
   getDtGmshRegionListByPhysical(std::string const &physical) const;
@@ -85,8 +87,8 @@ public:
   static ::GEntity *cast2GEntity(dtGmshEdge *ge);
   static ::GEntity *cast2GEntity(dtGmshVertex *gv);
   static std::list<dtGmshFace *> cast2DtGmshFace(std::list<::GFace *> faces);
-  static std::vector<dtGmshFace *> cast2DtGmshFace(std::vector<::GFace *> faces
-  );
+  static std::vector<dtGmshFace *>
+  cast2DtGmshFace(std::vector<::GFace *> faces);
   static std::list<dtGmshFace *> cast2DtGmshFace(std::list<::GEntity *> faces);
 
   static std::list<dtGmshRegion *>
@@ -95,8 +97,9 @@ public:
   cast2DtGmshRegion(std::list<::GEntity *> regions);
   static dtGmshEdge *cast2DtGmshEdge(::GEntity *ge);
   static std::list<dtGmshEdge *> cast2DtGmshEdge(std::list<::GEdge *> edges);
-  static std::vector<dtGmshEdge *> cast2DtGmshEdge(std::vector<::GEdge *> edges
-  );
+  static std::vector<dtGmshEdge *>
+  cast2DtGmshEdge(std::vector<::GEdge *> edges);
+  static std::list<dtGmshEdge *> cast2DtGmshEdge(std::list<::GEntity *> edges);
   static dtGmshVertex *cast2DtGmshVertex(::GEntity *gv);
   static std::list<dtGmshVertex *>
   cast2DtGmshVertex(std::list<::GVertex *> vertices);
@@ -230,8 +233,8 @@ public:
   dtInt getPhysicalNumber(const dtInt &dim, const std::string &name) const;
   void removeEmptyPhysicals(void);
   std::list<std::string> getFullPhysicalList(::GEntity const *const ent) const;
-  std::list<::GEntity *> getGEntityListByWildCardPhysical(std::string wildStr
-  ) const;
+  std::list<::GEntity *>
+  getGEntityListByWildCardPhysical(std::string wildStr) const;
   bool
   matchWildCardPhysical(std::string wildStr, ::GEntity const *const ge) const;
   void setDebug(std::string const debug);
@@ -270,12 +273,12 @@ private:
   //
   //
   //
-  std::map<dtGmshVertex *, dtGmshVertex *> createVertexTwins(dtInt startTag
-  ) const;
+  std::map<dtGmshVertex *, dtGmshVertex *>
+  createVertexTwins(dtInt startTag) const;
   std::map<dtGmshEdge *, dtGmshEdge *> createEdgeTwins(dtInt startTag) const;
   std::map<dtGmshFace *, dtGmshFace *> createFaceTwins(dtInt startTag) const;
-  std::map<dtGmshRegion *, dtGmshRegion *> createRegionTwins(dtInt startTag
-  ) const;
+  std::map<dtGmshRegion *, dtGmshRegion *>
+  createRegionTwins(dtInt startTag) const;
   void updateAssociations(
     std::map<dtGmshVertex *, dtGmshVertex *> &dim0,
     std::map<dtGmshEdge *, dtGmshEdge *> &dim1,
