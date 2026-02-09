@@ -267,7 +267,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         # 
         # self.hubRadZero_ contains booleans which will show true for layers which have a radius of zero
         #  this is used for meshing later
-        self.hubLayerCurves_, self.hubRadZero_ = self.createLayerBounds(
+        self.hubLayerCurves_, self.hubRadZero_, self.hubUnstructBounds_ = self.createLayerBounds(
                 speHub,  
                 speHubCtst, 
                 layer_thickness, 
@@ -276,13 +276,43 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
             )
         
         logging.info("### Creating Shroud Layer Curves")
-        self.shroudLayerCurves_, self.shroudRadZero_ = self.createLayerBounds(
+        self.shroudLayerCurves_, self.shroudRadZero_, self.shroudUnstructBounds_ = self.createLayerBounds(
                 speShroud,  
                 speShroudCtst, 
                 layer_thickness,
                 layer_supports,
                 'Shroud'
             )
+        
+        # trimming the last interface curve between the layerthicknesses
+        #  will be used as a boundary for the unstructured region
+        interf = analyticCurve.MustDownCast(self.interfaces_[-1]).ptrDtCurve()
+        self.interfaceUnstructBound_ = analyticCurve(
+                trimmedCurve_uBounds(
+                    interf, 
+                    interf.u_l(layer_thickness), 
+                    interf.u_l(interf.length() - layer_thickness)
+                ).result()
+            )
+        
+        # deciding the trimm position of the outlet curve at the hub
+        outlet_trim = layer_thickness
+        # if the outlet curve hub curve at the outlet has a radius of zero
+        #  the following condtion will be fulfilled:
+        if self.hubRadZero_[-1] == True:
+            # sets the trim length to zero
+            outlet_trim = 0
+
+        # trimming the outlet curve for the boundary of the unstructured domain
+        outl = analyticCurve.MustDownCast(self.inOutCurves_[-1]).ptrDtCurve()
+        self.outletUnstructBound_ = analyticCurve(
+                trimmedCurve_uBounds(
+                    outl,
+                    outl.u_l(outlet_trim),
+                    outl.u_l(outl.length() - layer_thickness)
+                ).result()
+            )
+
 
         logging.info("###   Creating Hub Layer Faces")
         # creatig the layer faces from the curves 
@@ -578,6 +608,8 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         # will be used for mesh generation later
         on_rad_zero = []
 
+        unstructOnRotAxis = None
+        #unstructBounds = []
         # iterating over all curves and deciding which curves get Layers
         for i in range(len(layerCurve)):
             # checking if the curve has a radius of zero
@@ -595,6 +627,16 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 boundsGlob[-1] = layerCurve[i]
                 logging.info("Set %s curve no. %i as the global layer boundary" % (lab, i))
                 on_rad_zero[-1] = True
+                
+                # saving the segment of the curve from the thickness to the maximum 
+                #  will later be a curve for the segment of the unstructured mesh
+                lc = analyticCurve.MustDownCast(layerCurve[i]).ptrDtCurve()
+                unstructOnRotAxis = analyticCurve(
+                    trimmedCurve_uBounds(
+                        lc, lc.u_l(thickness), lc.getUMax()
+                    ).result()
+                )
+
                 del layerCurve[i]
                 break
             else:
@@ -800,15 +842,21 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 # appending the curves for return
                 # the curves of one layer are appended in clockwise direction
                 newLayer = [
-                        v0.clone(), 
-                        layerStreamOrtho[i].clone(), 
-                        layerParallel[i-1].clone(), 
-                        layerStreamOrtho[i-1].clone()
+                        v0.clone(),                     # channel segment
+                        layerStreamOrtho[i].clone(),    # ortho0
+                        layerParallel[i-1].clone(),     # parallel to channel
+                        layerStreamOrtho[i-1].clone()   # ortho1
                     ]
                 returnBounds.append(newLayer)
                 logging.info("Finished creating %s layer curves" % lab) 
+            
+        # appending the curve on radius 0 if it exists
+        # the parallel boundaries and the radius 0 curve are needed as boundaries for the
+        #  unstructured mesh
+        if unstructOnRotAxis != None:
+            layerParallel.append(unstructOnRotAxis)
 
-        return returnBounds, on_rad_zero 
+        return returnBounds, on_rad_zero, layerParallel 
 
     # creates the layer curve parallel to the channel curves
     # the curve is created from the two points at 100 percent of the matching 
@@ -1079,6 +1127,31 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                     "debug_hubCurve_" + str(ii) + "_" + self.label_,
                 )
                 ii = ii + 1
+
+            ii = 0
+            for aCurve in self.hubUnstructBounds_:
+                self.appendAnalyticGeometry(
+                    aCurve.clone(),
+                    "debug_hubUnstructBound_" + str(ii) + "_" + self.label_,
+                )
+                ii = ii + 1
+            ii = 0
+            for aCurve in self.shroudUnstructBounds_:
+                self.appendAnalyticGeometry(
+                    aCurve.clone(),
+                    "debug_shroudUnstructBound_" + str(ii) + "_" + self.label_,
+                )
+                ii = ii + 1
+            self.appendAnalyticGeometry(
+                self.interfaceUnstructBound_.clone(),
+                "debug_interfUnstructBound_" + self.label_,
+            )
+            self.appendAnalyticGeometry(
+                self.outletUnstructBound_.clone(),
+                "debug_outletUnstructBound_" + self.label_,
+            )
+
+
             ii = 0
             for k in range(len(self.hubLayerCurves_)):
                 for c in range(len(self.hubLayerCurves_[k])) :
