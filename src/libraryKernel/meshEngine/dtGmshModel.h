@@ -174,6 +174,8 @@ public:
   // add
   //
   void addIfToGmshModel(analyticGeometry const *const aG, dtInt *const tag);
+  // SWIG
+  dtInt addIfToGmshModel(analyticGeometry const *const aG);
   //
   // add general entities
   //

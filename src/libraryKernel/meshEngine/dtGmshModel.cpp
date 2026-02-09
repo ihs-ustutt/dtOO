@@ -678,6 +678,13 @@ void dtGmshModel::addIfToGmshModel(
     dt__throwUnexpected(addIfToGmshModel());
 }
 
+dtInt dtGmshModel::addIfToGmshModel(analyticGeometry const *const aG)
+{
+  dtInt aGId;
+  addIfToGmshModel(aG, &aGId);
+  return aGId;
+}
+
 dtGmshRegion *dtGmshModel::getDtGmshRegionByTag(dtInt const tag) const
 {
   ::GRegion *region = ::GModel::getRegionByTag(abs(tag));
