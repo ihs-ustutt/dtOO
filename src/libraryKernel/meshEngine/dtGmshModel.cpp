@@ -724,8 +724,8 @@ dtGmshFace *dtGmshModel::getDtGmshFaceByTag(dtInt const tag) const
   );
 }
 
-dtGmshEdge *
-dtGmshModel::getDtGmshEdgeByPhysical(std::string const &physical) const
+dtGmshEdge *dtGmshModel::getDtGmshEdgeByPhysical(std::string const &physical
+) const
 {
   if (stringPrimitive::stringContains("->", physical) ||
       stringPrimitive::isWildcard(physical))
@@ -757,8 +757,8 @@ dtGmshModel::getDtGmshEdgeByPhysical(std::string const &physical) const
   }
 }
 
-dtGmshFace *
-dtGmshModel::getDtGmshFaceByPhysical(std::string const &physical) const
+dtGmshFace *dtGmshModel::getDtGmshFaceByPhysical(std::string const &physical
+) const
 {
   if (stringPrimitive::stringContains("->", physical) ||
       stringPrimitive::isWildcard(physical))
@@ -844,8 +844,8 @@ dtGmshModel::getDtGmshEdgeListByPhysical(std::string const &physical) const
   return edgeL;
 }
 
-dtGmshRegion *
-dtGmshModel::getDtGmshRegionByPhysical(std::string const &physical) const
+dtGmshRegion *dtGmshModel::getDtGmshRegionByPhysical(std::string const &physical
+) const
 {
   if (stringPrimitive::stringContains("->", physical) ||
       stringPrimitive::isWildcard(physical))
@@ -911,9 +911,8 @@ dtGmshEdge *dtGmshModel::getDtGmshEdgeByTag(dtInt const tag) const
   return gEdge;
 }
 
-dtInt dtGmshModel::getDtGmshEdgeTagByFromTo(
-  dtInt const from, dtInt const to
-) const
+dtInt dtGmshModel::getDtGmshEdgeTagByFromTo(dtInt const from, dtInt const to)
+  const
 {
   dtGmshVertex *gv = getDtGmshVertexByTag(from);
 
@@ -1795,9 +1794,8 @@ void dtGmshModel::tagPhysical(::GEntity *const ge, std::string const &pName)
   ge->addPhysicalEntity(GModel::setPhysicalName(pName, ge->dim(), 0));
 }
 
-dtInt dtGmshModel::getPhysicalNumber(
-  const dtInt &dim, const std::string &name
-) const
+dtInt dtGmshModel::getPhysicalNumber(const dtInt &dim, const std::string &name)
+  const
 {
   return const_cast<dtGmshModel *>(this)->GModel::getPhysicalNumber(dim, name);
 }
@@ -2085,9 +2083,8 @@ dtGmshModel::getGEntityListByWildCardPhysical(std::string wildStr) const
         //
         if (_facePositionStr.find(physV[1]) != _facePositionStr.end())
         {
-          face.push_back(
-            progHelper::list2Vector(aReg->dtFaces())[_facePositionStr[physV[1]]]
-          );
+          face.push_back(progHelper::list2Vector(aReg->dtFaces()
+          )[_facePositionStr[physV[1]]]);
         }
         else
         {
@@ -2114,10 +2111,8 @@ dtGmshModel::getGEntityListByWildCardPhysical(std::string wildStr) const
           //
           if (_edgePositionStr.find(physV[2]) != _edgePositionStr.end())
           {
-            edge.push_back(
-              progHelper::list2Vector(aFace->dtEdges()
-              )[_edgePositionStr[physV[2]]]
-            );
+            edge.push_back(progHelper::list2Vector(aFace->dtEdges()
+            )[_edgePositionStr[physV[2]]]);
           }
           else
           {
@@ -2136,10 +2131,8 @@ dtGmshModel::getGEntityListByWildCardPhysical(std::string wildStr) const
         {
           dt__forAllRefAuto(edge, aEdge)
           {
-            vertex.push_back(
-              progHelper::list2Vector(aEdge->dtVertices()
-              )[_vertexPositionStr[physV[3]]]
-            );
+            vertex.push_back(progHelper::list2Vector(aEdge->dtVertices()
+            )[_vertexPositionStr[physV[3]]]);
           }
         }
       }
@@ -2317,8 +2310,8 @@ dtGmshModel::createVertexTwins(dtInt startTag) const
   return newOld;
 }
 
-std::map<dtGmshEdge *, dtGmshEdge *>
-dtGmshModel::createEdgeTwins(dtInt startTag) const
+std::map<dtGmshEdge *, dtGmshEdge *> dtGmshModel::createEdgeTwins(dtInt startTag
+) const
 {
   std::map<dtGmshEdge *, dtGmshEdge *> newOld;
 
@@ -2344,8 +2337,8 @@ dtGmshModel::createEdgeTwins(dtInt startTag) const
   return newOld;
 }
 
-std::map<dtGmshFace *, dtGmshFace *>
-dtGmshModel::createFaceTwins(dtInt startTag) const
+std::map<dtGmshFace *, dtGmshFace *> dtGmshModel::createFaceTwins(dtInt startTag
+) const
 {
   std::map<dtGmshFace *, dtGmshFace *> newOld;
 
