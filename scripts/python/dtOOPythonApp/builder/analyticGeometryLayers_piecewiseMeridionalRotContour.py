@@ -21,6 +21,8 @@ from dtOOPythonSWIG import (
     dtLinearAlgebra,
     analyticGeometry,
     map3dTo3d,
+    jsonPrimitive,
+    rotate,
     analyticCurve,
     bSplineSurface_skinConstructOCC,
     bSplineSurface_geomCurveFillConstructOCC,
@@ -34,11 +36,16 @@ from dtOOPythonSWIG import (
     partRotatingMap2dTo3d,
     trimmedCurve_uBounds,
     geomCurve_curveReverseConstructOCC,
+    multipleBoundedVolume,
+    infinityMap3dTo3d,
     curveCurveDist,
     dtCurve,
     gslMinFloatAttr,
     vectorReal,
     vectorHandlingConstDtCurve,
+    vectorHandlingAnalyticGeometry,
+    rectangularTrimmedSurface_curveRotateConstructOCC,
+    multipleBoundedSurface,
     bSplineSurface_bSplineCurveFillConstructOCC,
     bSplineCurve_curveConnectConstructOCC
 )
@@ -267,6 +274,10 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         # 
         # self.hubRadZero_ contains booleans which will show true for layers which have a radius of zero
         #  this is used for meshing later
+        #
+        # self.hubUnstructBounds_ contains all the hub  boundaries of the unstructured region 
+        #  these will be the curves parallel to the channel curves or the channel curves if they are on
+        #  a radius of zero
         self.hubLayerCurves_, self.hubRadZero_, self.hubUnstructBounds_ = self.createLayerBounds(
                 speHub,  
                 speHubCtst, 
@@ -285,7 +296,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
             )
         
         # trimming the last interface curve between the layerthicknesses
-        #  will be used as a boundary for the unstructured region
+        #  this curve will be used as a boundary for the unstructured region
         interf = analyticCurve.MustDownCast(self.interfaces_[-1]).ptrDtCurve()
         self.interfaceUnstructBound_ = analyticCurve(
                 trimmedCurve_uBounds(
@@ -312,7 +323,15 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                     outl.u_l(outl.length() - layer_thickness)
                 ).result()
             )
-
+        
+        # adding the boundary curves of the unstructured regions to a VH
+        self.unstructVH_ = vectorHandlingAnalyticGeometry()
+        for bound in self.hubUnstructBounds_ + self.shroudUnstructBounds_:
+            self.unstructVH_.push_back(bound.clone())
+        
+        self.unstructVH_.push_back(self.outletUnstructBound_.clone())
+        self.unstructVH_.push_back(self.interfaceUnstructBound_.clone())
+        
 
         logging.info("###   Creating Hub Layer Faces")
         # creatig the layer faces from the curves 
@@ -328,7 +347,6 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                     bSplineSurface_bSplineCurveFillConstructOCC(layer_vhc).result()
                 )
             ) 
-            print(type(self.hubLayers_[i]))
             del layer_vhc
 
         logging.info("###   Creating Shroud Layer Faces")
@@ -863,7 +881,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
     #  curves orthogonally to the streamwise direction and offsets from the points 
     #  of the channel curve at the support points
     def layerCurve(self, layerStreamOrtho, i, curve, thickness, supports):
-        logging.info("cerating layer curve no. %i" % i) 
+        logging.info("creating layer curve no. %i" % i) 
         # finding the correct curves for the layer
         # bound is the curve orthogonal to the streamwise direction
         bound0 = analyticCurve.MustDownCast(layerStreamOrtho[i-1]).ptrDtCurve()
@@ -1126,32 +1144,14 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                     aCurve.clone(),
                     "debug_hubCurve_" + str(ii) + "_" + self.label_,
                 )
-                ii = ii + 1
-
+                ii = ii + 1            
             ii = 0
-            for aCurve in self.hubUnstructBounds_:
+            for aCurve in self.unstructVH_:
                 self.appendAnalyticGeometry(
                     aCurve.clone(),
-                    "debug_hubUnstructBound_" + str(ii) + "_" + self.label_,
+                    "debug_unstructBound_" + str(ii) + "_" + self.label_,
                 )
-                ii = ii + 1
-            ii = 0
-            for aCurve in self.shroudUnstructBounds_:
-                self.appendAnalyticGeometry(
-                    aCurve.clone(),
-                    "debug_shroudUnstructBound_" + str(ii) + "_" + self.label_,
-                )
-                ii = ii + 1
-            self.appendAnalyticGeometry(
-                self.interfaceUnstructBound_.clone(),
-                "debug_interfUnstructBound_" + self.label_,
-            )
-            self.appendAnalyticGeometry(
-                self.outletUnstructBound_.clone(),
-                "debug_outletUnstructBound_" + self.label_,
-            )
-
-
+                ii = ii+1
             ii = 0
             for k in range(len(self.hubLayerCurves_)):
                 for c in range(len(self.hubLayerCurves_[k])) :
@@ -1204,20 +1204,22 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         # logging.info("%s" % rm)
         # return rm
 
-
-    def getLayerList(self, 
-                     rotLower: float = 0,
-                     rotUpper: float = 2*numpy.pi):
-        logging.info("Request all Layers on hub and shroud")
+    
+    # returns a list containing the hub and shroud layers as well as information 
+    #  on what kind of layer it is
+    def getLayerList(self, nSlices: int):
+        logging.info("Request Layer Volumes: %i Slices" % nSlices)
         
+        # partRotatingMap2dTo3d takes the rotation angle in %
+        # ofc
         hubLayer3d = []
         for layer in self.hubLayers_:
             hubLayer3d.append(
                     partRotatingMap2dTo3d(
                         self.rotVector_, 
                         layer,
-                        rotLower,
-                        rotUpper,
+                        0.00,
+                        (1/nSlices),
                     ).clone()
                 )
         shroudLayer3d = []
@@ -1226,16 +1228,101 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                     partRotatingMap2dTo3d(
                         self.rotVector_, 
                         layer,
-                        rotLower,
-                        rotUpper,
+                        0.00,
+                        (1/nSlices),
                     ).clone()
                 )
-        returnList = [
+        
+        # returns layer data in the following nested list:
+        # layers = [[hub layer lists],[shroud layer list]]
+        # with:
+        # [hub layer lists] = [[3d layer domain], [bool list radius zero]]
+        layerList = [
                 [hubLayer3d, self.hubRadZero_],
                 [shroudLayer3d, self.shroudRadZero_]
                 ]
-        return returnList
+   
+        return layerList
+    
+    # returns a multiple bounded volume of the unstructured region
+    def getUnstructuredRegion(self, nSlices: int): 
+        logging.info("Request Volume of unstructured Region: %i Slices" % nSlices)
 
+        # rotation angle defined by the number of slices
+        rotAngle = 2*numpy.pi/nSlices
+        
+        vv = vectorDtPoint3()
+        boundSurf = vectorHandlingAnalyticGeometry()
+        # iterating over the boundary curves of the unstructured region
+        #  extracts the start and end points of all curves for a bounding box
+        #  creates surfaces of the boundary curves by rotationg them
+        for bound in self.unstructVH_:
+            # gets start and end points of the boundary curves
+            vv = vv << analyticCurve.MustDownCast(bound).getPointPercent(0.0) \
+                    << analyticCurve.MustDownCast(bound).getPointPercent(1.0)
+            
+            # rotating the boundary curves, pushing them in boundSurf
+            boundSurf.push_back(
+                analyticSurface(
+                    rectangularTrimmedSurface_curveRotateConstructOCC(
+                        analyticCurve.MustDownCast(bound).ptrDtCurve(),
+                        self.origin_,
+                        self.rotVector_,
+                        rotAngle
+                    ).result()
+                ).clone()
+            )
+        
+        # extracting a bounding box of the 2d unstructured region
+        unstructBB = dtLinearAlgebra.boundingBox(vv)
+        BB_dist = unstructBB[0] - unstructBB[1]  
+
+        # creating a rectangular surface which extends over the bounding box by 0.1
+        P0 = dtPoint3(unstructBB[0][0] - 0.1, unstructBB[0][1], unstructBB[0][2] - 0.1)
+        P1 = dtPoint3(P0[0] + BB_dist[0]+0.2, 0.00, P0[2])
+        P2 = dtPoint3(P1[0], 0.00, P1[2] + BB_dist[2]+0.2)
+        P3 = dtPoint3(P0[0], 0.00, P2[2])
+        m2d = analyticSurface(
+                bSplineSurface_bSplineCurveFillConstructOCC(
+                bSplineCurve_pointConstructOCC(P0, P1).result(),
+                bSplineCurve_pointConstructOCC(P1, P2 ).result(),
+                bSplineCurve_pointConstructOCC(P2, P3).result(),
+                bSplineCurve_pointConstructOCC(P3, P0).result()
+            ).result()
+        )
+        
+        # creating the first multi bounded surface on and pushing it into a VH
+        multBoundSurfs = vectorHandlingAnalyticGeometry()
+        multBoundSurfs.push_back( multipleBoundedSurface(m2d, self.unstructVH_).clone())
+        
+        # initializing a rotation dtTransformer
+        cfg = jsonPrimitive()
+        cfg.appendDtPoint3("_origin", self.origin_)
+        cfg.appendDtVector3("_rotVector", self.rotVector_)
+        cfg.appendReal("_angle", rotAngle)
+        
+        # creating transformer object
+        rot = rotate(cfg)
+        
+        # rotating the 2d bounding box
+        m2d_rot = (rot.applyAnalyticGeometry(m2d))
+        
+        # rotating the boundary curves of the unstructured region
+        unstructVH_rot = vectorHandlingAnalyticGeometry()
+        for curve in self.unstructVH_:
+            unstructVH_rot.push_back(rot.applyAnalyticGeometry(curve))
+        
+        # creating the rotated mbs and pushing it
+        multBoundSurfs.push_back( multipleBoundedSurface(m2d_rot, unstructVH_rot).clone())
+        
+        # pushing the boundary surfaces into the same VH as the mbs's
+        for surf in boundSurf:
+            multBoundSurfs.push_back(surf)
+        
+        # generating the multiple bounded volume
+        multBoundedVol = multipleBoundedVolume(infinityMap3dTo3d(), multBoundSurfs)
+
+        return multBoundedVol.clone()
 
     def addInternals(
         self,
