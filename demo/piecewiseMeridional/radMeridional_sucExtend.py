@@ -223,21 +223,46 @@ class radMeridional_SucExtend:
       #rotVector=dtOO.dtVector3(0,0,-1)
     ).enableDebug()#.buildExtract( container )
     container = radMeridionalContour.buildExtract(container)
+    
+    # Number of slices 
+    nSlices = 12
 
-    # .getLayerList(lowerSegementRot, upperSegmentRotation)
-    layers = radMeridionalContour.getLayerList(-0.1, 0)
+    # returning the hub and shroud layers
+    layers = radMeridionalContour.getLayerList(nSlices)
     # returns layer data in the following nested list:
     # layers = [[hub layer lists],[shroud layer list]]
     # with:
     # [hub layer lists] = [[3d layer domain], [bool list radius zero]]
 
+    # returns the unstructured region
+    mv = radMeridionalContour.getUnstructuredRegion(nSlices)
+
+    # returns unstructured domain data as follows:
+    # unstructured = [[bounds at hub], [outlet bound], [bounds at shroud], [interface bound]]
     modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
     module = self.reloadModule(modname)
 
-    # module.map3dTo3dGmsh_gridFromLayers(label, layer data, nElementsLayer, firstElementSize, meshSize)
-    layerMesh = module.map3dTo3dGmsh_gridFromLayers("meshLayers_sucExtend", layers, 7, 0.01, 0.05)
+    # module.map3dTo3dGmsh_gridFromLayers(
+        # label, layer data, nElementsLayer, firstElementSize, meshSizeSW, meshSizeCIRC, unstructRegion
+    # )
+    layerMesh = module.map3dTo3dGmsh_gridFromLayers("meshLayers_sucExtend", layers, 7, 0.01, 0.05, 0.03,  mv)
     layerMesh.buildLayerMesh()
     container = layerMesh.buildExtract(container)
+
+    ## .getLayerList(lowerSegementRot, upperSegmentRotation)
+    #layers = radMeridionalContour.getLayerList(-0.1, 0)
+    ## returns layer data in the following nested list:
+    ## layers = [[hub layer lists],[shroud layer list]]
+    ## with:
+    ## [hub layer lists] = [[3d layer domain], [bool list radius zero]]
+
+    #modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
+    #module = self.reloadModule(modname)
+
+    ## module.map3dTo3dGmsh_gridFromLayers(label, layer data, nElementsLayer, firstElementSize, meshSize)
+    #layerMesh = module.map3dTo3dGmsh_gridFromLayers("meshLayers_sucExtend", layers, 7, 0.01, 0.05)
+    #layerMesh.buildLayerMesh()
+    #container = layerMesh.buildExtract(container)
 
     
     """
