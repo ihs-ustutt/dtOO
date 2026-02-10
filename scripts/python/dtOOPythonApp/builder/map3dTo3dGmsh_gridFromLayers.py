@@ -48,7 +48,9 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                  layers: List,
                  nLayers: int,
                  firstElement: float,
-                 elementSize):
+                 elementSize_sw,
+                 elementSize_circ,
+                 mv):
 
         super(map3dTo3dGmsh_gridFromLayers, self).__init__()
 
@@ -59,7 +61,9 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         self.layerList_ = layers
         self.nLayers_ = nLayers
         self.firstElement_ = firstElement
-        self.elementSize_ = elementSize
+        self.elementSizeSW_ = elementSize_sw
+        self.elementSizeCIRC_ = elementSize_circ
+        self.unstructured_ = mv
 
         #logMe.initLog('layerMesh.log')
         
@@ -131,6 +135,9 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         
         logging.info("Creating Layer Mesh on hub and shroud")
         
+        # adding the unstructured region to the model
+        m3dGmsh.getModel().addIfToGmshModel(self.unstructured_)
+        
         # self.layerList_ has the following format:
         # self.layerList_ = [[hub layer lists],[shroud layer list]]
         # with:
@@ -155,6 +162,11 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                 # current 3d region
                 layer3d = self.layerList_[i_hs][0][i_l]
                 
+                self.appendAnalyticGeometry(
+                    layer3d.clone(),
+                    "debug_layer_"+label+str(i_l)+"_"+self.label_
+                )
+ 
                 # finding the correct surfaces on the region by using the uvw direction
                 # naming of faces:
                 #   ortho    -> faces orthogonal to streamwise direction (connectsing the layers)
@@ -240,7 +252,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
             self.appendAnalyticGeometry(
                 m3dGmsh.getModel().getDtGmshEdgeByTag(line).getMap1dTo3d(),
-                "debug_layerEdge_channelToParallelLine_"+"_ID"+str(line)
+                "debug_layerEdge_channelToParallelLine_"+"_ID"+str(line)+"_"+self.label_
             )
 
         # list containing the lengths of the mesh lines in circunferential direction
@@ -268,7 +280,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                 # calculates the length and number of elements on this line
                 # this number of elements is used for all streamwise lines in this layer region
                 lChannel_sw = edges[0].getMap1dTo3d().length()
-                nE = int(numpy.ceil(lChannel_sw/self.elementSize_))                  
+                nE = int(numpy.ceil(lChannel_sw/self.elementSizeSW_))                  
                 logging.info("layer %s%i has a channel length of %.4f, meshing with %i elements" % (
                     label, i_l, lChannel_sw, nE))
                 
@@ -318,7 +330,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                 for line in swLines:
                     self.appendAnalyticGeometry(
                         m3dGmsh.getModel().getDtGmshEdgeByTag(line).getMap1dTo3d(),
-                        "debug_layerEdge_swLine_"+label+str(i_l)+"_ID"+str(line)
+                        "debug_layerEdge_swLine_"+label+str(i_l)+"_ID"+str(line) +"_"+self.label_
                     )
                     logging.info( "meshing streamwise Line : %s%i, ID: %i, number of elements: %i" % (label, i_l, line, nE) )
                     m3dGmsh.getModel().getDtGmshEdgeByTag(line).meshTransfiniteWNElements(1,1,nE)
@@ -353,7 +365,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                         lChannel_circ[i_hs] = l_ortho                
                     
             # calculating the number of elements for the edges in circ direction from the longest edge length
-            nE = int(numpy.ceil(lChannel_circ[i_hs]/self.elementSize_))
+            nE = int(numpy.ceil(lChannel_circ[i_hs]/self.elementSizeCIRC_))
             
             # finding all circ edges on hub or shroud
             circLines = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical(
@@ -366,7 +378,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
             for line in circLines:
                 self.appendAnalyticGeometry(
                     m3dGmsh.getModel().getDtGmshEdgeByTag(line).getMap1dTo3d(),
-                    "debug_layerEdge_circLine_"+label+"_ID"+str(line)
+                    "debug_layerEdge_circLine_"+label+"_ID"+str(line) +"_"+self.label_
                 )
 
                 logging.info( "meshing circumferential Line : %s, ID: %i, number of elements: %i" % (label, line, nE) )
