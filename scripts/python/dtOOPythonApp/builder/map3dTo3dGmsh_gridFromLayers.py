@@ -5,41 +5,23 @@ from dtOOPythonSWIG import jsonPrimitive
 from dtOOPythonSWIG import staticPropertiesHandler
 from dtOOPythonSWIG import dtBundle
 from dtOOPythonSWIG import lVHOstateHandler
-from dtOOPythonSWIG import analyticSurface
 from dtOOPythonSWIG import bVOMeshRule
-from dtOOPythonSWIG import analyticGeometry
 from dtOOPythonSWIG import map2dTo3d
 from dtOOPythonSWIG import map3dTo3d
 from dtOOPythonSWIG import map3dTo3dGmsh
 from dtOOPythonSWIG import jsonPrimitive
-from dtOOPythonSWIG import logMe
 from dtOOPythonSWIG import bVOWriteMSH
-from dtOOPythonSWIG import bVOReadMSH
 from dtOOPythonSWIG import bVONameRegions
-from dtOOPythonSWIG import bVOOrientCellVolumes
-from dtOOPythonSWIG import bool_map1dTo3dInMap2dTo3d
-from dtOOPythonSWIG import dtPoint3
-from dtOOPythonSWIG import dtVector3
 from dtOOPythonSWIG import bVOAnalyticGeometryToFace
 from dtOOPythonSWIG import labeledVectorHandlingAnalyticGeometry
-from dtOOPythonSWIG import scaOneD
-from dtOOPythonSWIG import bVOFaceToPatchRule
-from dtOOPythonSWIG import vectorInt
-from dtOOPythonSWIG import dtGmshModel
 from dtOOPythonSWIG import vectorReal
 from dtOOPythonSWIG import scaTanhGradingOneD
 from dtOOPythonSWIG import scaTanhGradingOneDCompound
-from dtOOPythonSWIG import sca3PPointsBSplineOneD
-from dtOOPythonSWIG import sca3PPointsBSplineOneDCompound
 from dtOOPythonSWIG import bVOSetPrescribedElementSize
-from dtOOPythonSWIG import bVOSetRotationalPeriodicity
-from dtOOPythonSWIG import xYz_rPhiZ
-from dtOOPythonSWIG import baseContainer
 
 import logging
 import numpy
 from typing import List, Tuple, Union, Dict
-import json
 
 class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 

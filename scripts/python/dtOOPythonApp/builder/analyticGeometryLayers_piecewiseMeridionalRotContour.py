@@ -20,12 +20,9 @@ from dtOOPythonApp.tools.dtBundleTools import dtBundleBuilder
 from dtOOPythonSWIG import (
     dtLinearAlgebra,
     analyticGeometry,
-    map3dTo3d,
     jsonPrimitive,
     rotate,
     analyticCurve,
-    bSplineSurface_skinConstructOCC,
-    bSplineSurface_geomCurveFillConstructOCC,
     bSplineCurve_pointConstructOCC,
     analyticSurface,
     dtPoint2,
@@ -39,7 +36,6 @@ from dtOOPythonSWIG import (
     multipleBoundedVolume,
     infinityMap3dTo3d,
     curveCurveDist,
-    dtCurve,
     gslMinFloatAttr,
     vectorReal,
     vectorHandlingConstDtCurve,
@@ -81,7 +77,6 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         interface_hub: List[float] = [],             # [curve, percent]
         interface_shroud: List[float] = [],
         interface_curvature: List[float] = [],         # [curvature offset, percent]
-        internals: List[analyticGeometry] = [],
         rotVector: dtVector3 = dtVector3(0, 0, 1),
         origin: dtPoint3 = dtPoint3(0, 0, 0),
     ) -> None:
@@ -1323,11 +1318,3 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         multBoundedVol = multipleBoundedVolume(infinityMap3dTo3d(), multBoundSurfs)
 
         return multBoundedVol.clone()
-
-    def addInternals(
-        self,
-        internals: List[analyticGeometry],
-    ) -> None:
-        logging.info("Adding %d internals" % len(internals))
-        for internal in internals:
-            self.internals_.append(map3dTo3d.MustDownCast(internal))

@@ -38,21 +38,6 @@ class radMeridional_draft:
           '"option" : ['
             '{"name" : "reparamOnFace_precision", "value" : "1.e-05"},'
             '{"name" : "reparamInVolume_precision","value" : "1.e-05"},'
-            '{"name" : "reparam_internalRestarts", "value" : "10"},'
-            '{"name" : "reparam_restarts", "value" : "10"},'
-            '{"name" : "reparam_restartIncreasePrecision", "value" : "10."},'
-            '{'
-              '"name" : "reparam_internalRestartDecreasePrecision",'
-              ' "value" : "0.9"'
-            '},'
-            '{'
-              '"name" : "reparamOnFace_minimizer", '
-              '"value" : ":Minuit2::kMigrad:"'
-            '},'		
-            '{'
-              '"name" : "reparamInVolume_minimizer", '
-              '"value" : ":Minuit2::kMigrad:"'
-            '},'				
             '{"name" : "invY_precision", "value" : "1.e-04"},'
             '{"name" : "xyz_resolution", "value" : "1.e-05"},'
             '{"name" : "XYZ_resolution", "value" : "1.e-04"},'
@@ -65,9 +50,6 @@ class radMeridional_draft:
             '{"name" : "geometry_render_resolution_u", "value" : "21"},'
             '{"name" : "geometry_render_resolution_v", "value" : "21"},'
             '{"name" : "geometry_render_resolution_w", "value" : "21"},'
-            '{"name" : "root_printLevel", "value" : "0"},'		
-            '{"name" : "root_maxIterations", "value" : "1000"},'
-            '{"name" : "root_maxFunctionCalls", "value" : "1000000"},'
             '{"name" : "ompNumThreads", "value" : "2"},'
             '{"name" : "map1dTo3d_deltaPer", "value" : "0.01"},'
             '{"name" : "map2dTo3d_deltaPer", "value" : "0.01"},'
@@ -93,17 +75,12 @@ class radMeridional_draft:
     dC = container.cptr_dC() 
     dP = container.cptr_dP() 
 
-    #from dtOOPythonApp.builder import (analyticGeometry_piecewiseMeridionalRotContour)
+    from dtOOPythonApp.builder import (
+      analyticGeometryLayers_piecewiseMeridionalRotContour
+    )
     
-    modname = "dtOOPythonApp.builder.analyticGeometryLayers_piecewiseMeridionalRotContour"
-    if modname in sys.modules: 
-        print(f"reloading: {modname}")
-        module=importlib.reload(sys.modules[modname])
-    else:
-        print(f"loading: {modname}")
-        module=importlib.import_module(modname)
 
-    radMeridionalContour = module.analyticGeometryLayers_piecewiseMeridionalRotContour(  # same object / class as axial machine
+    radMeridionalContour = analyticGeometryLayers_piecewiseMeridionalRotContour(  # same object / class as axial machine
       "radMeridionalContour",
       hubCurves = [
         dtOO.analyticCurve(
@@ -216,13 +193,11 @@ class radMeridional_draft:
 
     # returns unstructured domain data as follows:
     # unstructured = [[bounds at hub], [outlet bound], [bounds at shroud], [interface bound]]
-    modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
-    module = self.reloadModule(modname)
-
     # module.map3dTo3dGmsh_gridFromLayers(
         # label, layer data, nElementsLayer, firstElementSize, meshSizeSW, meshSizeCIRC, unstructRegion
     # )
-    layerMesh = module.map3dTo3dGmsh_gridFromLayers("meshLayers_draft", layers, 7, 0.01, 0.05, 0.03,  mv)
+    from dtOOPythonApp.builder import ( map3dTo3dGmsh_gridFromLayers )
+    layerMesh = map3dTo3dGmsh_gridFromLayers("meshLayers_draft", layers, 7, 0.01, 0.05, 0.03,  mv)
     layerMesh.buildLayerMesh()
     container = layerMesh.buildExtract(container)
 
