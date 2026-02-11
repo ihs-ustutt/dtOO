@@ -72,10 +72,6 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         label: str,
         hubCurves: List[analyticGeometry],
         shroudCurves: List[analyticGeometry],
-        hub_splits: List[List[float]] = [],
-        #hub_combine: List[List[bool]] = [],
-        shroud_splits: List[List[float]] = [],
-        #shroud_combine: List[List[bool]] = [],
         layer_thickness: float = 0,
         layer_supports: List[float] = [],
         interface_hub: List[float] = [],             # [curve, percent]
@@ -132,26 +128,13 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                                                self.normalAxis_)
         
         logging.info("###   Preparing Splits")
-        # Mapping the list of splits
-        # Every split entrie gets a None descriptor 
-        # This will tell the code that it isnt a interface split
-        self.hubSplits_ = []
-        for i in range(len(hub_splits)):
-            splits = []
-            for l in range(len(hub_splits[i])):
-                splits.append((hub_splits[i][l], None))
-            self.hubSplits_.append(splits)
-        
-        self.shroudSplits_ = []
-        for i in range(len(shroud_splits)):
-            splits = []
-            for l in range(len(shroud_splits[i])):
-                splits.append((shroud_splits[i][l], None))
-            self.shroudSplits_.append(splits)
+        self.hubSplits_ = [[] for _ in range(len(hubCurves))] 
+        self.shroudSplits_ = [[] for _ in range(len(shroudCurves))]
         
         # The hub and shroud points of the interfaces are added to the lists of splits
         # they get the ID of the interface i as a descriptor
         # trough this the correct interfaces can be tracked later
+        # the .sort function sorts the splits by their percentage along the curve
         for i in range(len(interface_hub)):
             self.hubSplits_[interface_hub[i][0]].append((interface_hub[i][1],i))
             self.hubSplits_[i].sort()
@@ -163,16 +146,15 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         # hub_cti and shroud_cti (curve_to_interface) contains a datastructure list
         # Here is mapped which of the newly spilt curves are located upstream of an interface
         # a curve located upstream of an interface is marked with the interface ID the others with None
-        # _ctst tracks if a split is made by an interface, different curve segments or a split
        
         # the cti lists will be updated to map all the curves to the regular channels they will be part of
         # every cut curve will be appointed the ID of its respective reg channel defined by its interface
         # None means that the chrve is part of a layer channel
-        self.hubCurves_, hub_cti, hub_ctst = self.createSplits(self.hubSplits_, hubCurves, "Hub")
+        self.hubCurves_, hub_cti = self.createSplits(self.hubSplits_, hubCurves, "Hub")
         hub_cti = self.propagate_interface_ids_next(hub_cti, 'Hub')
         
         logging.info("###   Creating Shroud Splits")
-        self.shroudCurves_, shroud_cti, shroud_ctst = self.createSplits(self.shroudSplits_, shroudCurves, "Shroud")
+        self.shroudCurves_, shroud_cti = self.createSplits(self.shroudSplits_, shroudCurves, "Shroud")
         shroud_cti = self.propagate_interface_ids_next(shroud_cti, 'Shroud')
         
         #
@@ -198,6 +180,11 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
             )
         )
         
+        # Returning if no interfaces are defined
+        if not self.interfaces_:
+            logging.error("NO INTERFACES DEFINED")
+            return
+
         logging.info("###   Creating Regular Channels")        
         # Generating regular channels from the interfaces
         # here all the channels are defined trough the hub and shroud curves and the interface
@@ -238,22 +225,16 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         
         logging.info("###   Preparing Layer Curves")
         # checking in the cti which curves will get a layer and appending them to speHub, 
-        # speHubCtst is appended too, it will be used to check if the curves were
-        #  created by a split or not
         speHub = []
-        speHubCtst = []
         for i in range(len(hub_cti)): 
             # it the cti for the curve is none a layer will be created
             if hub_cti[i] == None:
                 speHub.append(self.hubCurves_[i])
-                speHubCtst.append(hub_ctst[i])
 
         speShroud = []
-        speShroudCtst = []
         for i in range(len(shroud_cti)): 
             if shroud_cti[i] == None:
                 speShroud.append(self.shroudCurves_[i])
-                speShroudCtst.append(shroud_ctst[i])
 
         # calculating the centerpoint of the special curves
         # will be later used in order to make sure the layer boundaries are pointing inside the domain
@@ -279,8 +260,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         #  these will be the curves parallel to the channel curves or the channel curves if they are on
         #  a radius of zero
         self.hubLayerCurves_, self.hubRadZero_, self.hubUnstructBounds_ = self.createLayerBounds(
-                speHub,  
-                speHubCtst, 
+                speHub,   
                 layer_thickness, 
                 layer_supports,
                 'Hub'
@@ -289,7 +269,6 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         logging.info("### Creating Shroud Layer Curves")
         self.shroudLayerCurves_, self.shroudRadZero_, self.shroudUnstructBounds_ = self.createLayerBounds(
                 speShroud,  
-                speShroudCtst, 
                 layer_thickness,
                 layer_supports,
                 'Shroud'
@@ -606,7 +585,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
     #   - calculates the layer boundaries which will be parallel to the channel curves. This is done
     #      trough the end points of the boundaries in streamwise direction and support points on the channel curves
     # the curves are returned in a list
-    def createLayerBounds(self, layerCurve, layerCtst, thickness, supports, lab):
+    def createLayerBounds(self, layerCurve, thickness, supports, lab):
         
         # global layer boundaries 
         # the layers will expand between these two boundaries in streamwise direction
@@ -677,17 +656,9 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
             v1_firstDer = dtLinearAlgebra.normalize(v1.firstDerUPercent(0))
 
             angle = dtLinearAlgebra.angle(v0_firstDer, v1_firstDer)
-
-            # conditions are an angle less or equal than two degrees 
-            #  and both curves are not defined as splits
-            # if these conditions are fulfilled the curves will be combined and create one layer
-            # this is useful for example if two curves were defined with a steady transition
-            # the definition of splits in the ctst list is made in self.CreateSplits()
-            is_steady = (
-                angle <= 2*(numpy.pi/180) and
-                (layerCtst[i] != "split" or
-                layerCtst[i + 1] != "split")
-            )
+            
+            # condition for combining the curves:
+            is_steady = (angle <= 2*(numpy.pi/180))
             
             # if the condition is fulfilled the curves will be combined
             # no splits will be made here
@@ -947,21 +918,16 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         )
         return vv
     
-    # creates the splits of the channel curve
-    # splits can be made by in the class inputs trough the hub_splits and shroud_splits commands
-    # furthermore splits are made by interfaces with interface_hub and interface_shroud
+    # creates the splits of the channel curve 
+    # splits are made by interfaces with interface_hub and interface_shroud
     # this function splits the specified curves at the specified percentages
     # it is possible to make multiple splits on one curve
-    # furthermore it tracks which of the split curves are part of an interface and if the 
-    #  split is made with a split or an interface or if the curve is an unsplit curve segment 
     @staticmethod
     def createSplits(splits, inCurves, lab): 
         # list with the split curves
         outCurves = []
         # mapping of all the curves and their corresponding interface IDs
         curve_to_interface = []
-        # mapping all the curves and what kind of split is made
-        curve_to_splitType = []
         
         # iterating over the curves 
         # (the length of splits has to be the same as the number or curves)
@@ -974,8 +940,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 # appends 0 and 1 at the start and end for the segments
                 split_pos = [0.0] + [s[0] for s in splits[cc]] + [1.0]
                 # makes a list of the IDs the new curves will have
-                # s[1] will contain the interface number if the split is made
-                #  by an interface or None if it is made by a split
+                # s[1] will contain the interface number ot the interface or None
                 interface_ids = [s[1] for s in splits[cc]]
 
                 # iterating over the splits on this curve
@@ -987,21 +952,12 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                         # sets the id of this domain
                         iface_id = interface_ids[n] if n < len(interface_ids) else interface_ids[-1]
                         curve_to_interface[-1] = iface_id
-                        # sets a identifier string if the split is made by an interface or a split
-                        if type(iface_id) == int:
-                            curve_to_splitType[-1] = "interf"
-                        else:
-                            curve_to_splitType[-1] = "split"
 
                     # exception for if the whole curve has a split or interface at 100 percent    
                     # doesnt make a split but appends outCurves and curve_to_interface
                     elif (split_pos[n] == 0 and split_pos[n+1] == 1):
                         outCurves.append(inCurves[cc].clone())                
                         curve_to_interface.append(None)
-                        if type(iface_id) == int:
-                            curve_to_splitType.append("interf")
-                        else:
-                            curve_to_splitType.append("split")
 
                     # else the splits are created and the interface IDs added
                     else:
@@ -1019,19 +975,10 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                         # assigns the interface ID of the *upper bound* of the segment
                         iface_id = interface_ids[n] if n < len(interface_ids) else None
                         curve_to_interface.append(iface_id)
-                        if type(iface_id) == int:
-                            curve_to_splitType.append("interf")
-                        else:
-                            curve_to_splitType.append("split")
-                    
-                    if iface_id == None:
-                        logging.debug(
-                            "Split %s[%d] [%5f, %5f]" % (lab, cc, split_pos[n], split_pos[n+1])
-                        )
-                    else:
-                        logging.debug(
-                            "Interface No. %d, %s[%d] [%5f, %5f]" % (iface_id, lab, cc, split_pos[n], split_pos[n+1])
-                        )
+                    logging.debug(
+                        "Split %s[%d] [%5f, %5f]" % (lab, cc, split_pos[n], split_pos[n+1])
+                    )
+            
             # if the curve is not split the whole curve will be copied        
             else:
                 outCurves.append(inCurves[cc].clone())                
@@ -1039,11 +986,10 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                 # adds none to curve to interface
                 curve_to_interface.append(None)
                 # as string identifier "segm" will be set
-                curve_to_splitType.append('segm')
 
         logging.info("Finished splitting %s curves. %i curves created" % (lab, len(outCurves)))
         # returns the cut curves and the cti    
-        return outCurves, curve_to_interface, curve_to_splitType    
+        return outCurves, curve_to_interface    
     
     #
     # calculate the normal axis of the whole domain 
@@ -1103,93 +1049,125 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         logging.info("Building %s ..." % (self.label_))
 
         if self.debug():
-            ii = 0
-            for regChannel in self.regChannels_:
-                self.appendAnalyticGeometry(
-                    regChannel.clone(),
-                    "debug_regChannel_" + str(ii) + "_" + self.label_,
-                )
-                ii = ii + 1
-            ii = 0
-            for interface in self.interfaces_:
-                self.appendAnalyticGeometry(
-                    interface.clone(),
-                    "debug_interface_" + str(ii) + "_" + self.label_,
-                )
-                ii = ii + 1
-            ii = 0
-            for layer in self.hubLayers_:   
-                self.appendAnalyticGeometry(
-                    layer.clone(),
-                    "debug_hubLayer_" + str(ii) + "_" + self.label_,
-                )
-                ii = ii + 1
-            ii = 0
-            for layer in self.shroudLayers_:
-                self.appendAnalyticGeometry(
-                    layer.clone(),
-                    "debug_shroudLayer_" + str(ii) + "_" + self.label_,
-                )
-                ii = ii + 1
-            ii = 0
-            for aCurve in self.shroudCurves_:
-                self.appendAnalyticGeometry(
-                    aCurve.clone(),
-                    "debug_shroudCurve_" + str(ii) + "_" + self.label_,
-                )
-                ii = ii + 1
-            ii = 0
-            for aCurve in self.hubCurves_:
-                self.appendAnalyticGeometry(
-                    aCurve.clone(),
-                    "debug_hubCurve_" + str(ii) + "_" + self.label_,
-                )
-                ii = ii + 1            
-            ii = 0
-            for aCurve in self.unstructVH_:
-                self.appendAnalyticGeometry(
-                    aCurve.clone(),
-                    "debug_unstructBound_" + str(ii) + "_" + self.label_,
-                )
-                ii = ii+1
-            ii = 0
-            for k in range(len(self.hubLayerCurves_)):
-                for c in range(len(self.hubLayerCurves_[k])) :
+            try:
+                ii = 0
+                for regChannel in self.regChannels_:
                     self.appendAnalyticGeometry(
-                    self.hubLayerCurves_[k][c].clone(),
-                    "debug_hubLayerCurve_" + str(k) + str(c) + "_" + self.label_,
-                )
-
-            for k in range(len(self.shroudLayerCurves_)):
-                for c in range(len(self.shroudLayerCurves_[k])) :
+                        regChannel.clone(),
+                        "debug_regChannel_" + str(ii) + "_" + self.label_,
+                    )
+                    ii = ii + 1
+            except:
+                pass
+            try:
+                ii = 0
+                for interface in self.interfaces_:
                     self.appendAnalyticGeometry(
-                    self.shroudLayerCurves_[k][c].clone(),
-                    "debug_shroudLayerCurve_" + str(k) + str(c) + "_" + self.label_,
-                )
-            for aCurve in self.inOutCurves_:
-                self.appendAnalyticGeometry(
-                    aCurve.clone(),
-                    "debug_inOutCurve_" + str(ii) + "_" + self.label_,
-                )
-                ii = ii + 1
-            ii = 0
-            # defines which channels will be rotatetd for the debug geometries
-            for channel in (                
-                self.regChannels_
-                + self.hubLayers_
-                + self.shroudLayers_
-            ):
-                off = float(ii) * 0.10      # rotational offset of each channel
-                self.appendAnalyticGeometry(
-                    partRotatingMap2dTo3d(
-                        self.rotVector_,
-                        channel,
-                        off - 0.05,         # min segment in radian 
-                        off + 0.05,         # max segment in radian
-                    ).clone(),
-                    "debug_channel_" + str(ii) + "_" + self.label_,
-                )
-                ii = ii + 1
+                        interface.clone(),
+                        "debug_interface_" + str(ii) + "_" + self.label_,
+                    )
+                    ii = ii + 1
+            except:
+                pass
+            try:        
+                ii = 0
+                for layer in self.hubLayers_:   
+                    self.appendAnalyticGeometry(
+                        layer.clone(),
+                        "debug_hubLayer_" + str(ii) + "_" + self.label_,
+                    )
+                    ii = ii + 1
+            except:
+                pass
+            try:
+                ii = 0
+                for layer in self.shroudLayers_:
+                    self.appendAnalyticGeometry(
+                        layer.clone(),
+                        "debug_shroudLayer_" + str(ii) + "_" + self.label_,
+                    )
+                    ii = ii + 1
+            except:
+                pass
+            try:
+                ii = 0
+                for aCurve in self.shroudCurves_:
+                    self.appendAnalyticGeometry(
+                        aCurve.clone(),
+                        "debug_shroudCurve_" + str(ii) + "_" + self.label_,
+                    )
+                    ii = ii + 1
+            except:
+                pass
+            try:
+                ii = 0
+                for aCurve in self.hubCurves_:
+                    self.appendAnalyticGeometry(
+                        aCurve.clone(),
+                        "debug_hubCurve_" + str(ii) + "_" + self.label_,
+                    )
+                    ii = ii + 1            
+            except:
+                pass
+            try:
+                ii = 0
+                for aCurve in self.unstructVH_:
+                    self.appendAnalyticGeometry(
+                        aCurve.clone(),
+                        "debug_unstructBound_" + str(ii) + "_" + self.label_,
+                    )
+                    ii = ii+1
+            except:
+                pass
+            try:
+                for k in range(len(self.hubLayerCurves_)):
+                    for c in range(len(self.hubLayerCurves_[k])) :
+                        self.appendAnalyticGeometry(
+                        self.hubLayerCurves_[k][c].clone(),
+                        "debug_hubLayerCurve_" + str(k) + str(c) + "_" + self.label_,
+                    )
+            except:
+                pass
+            try:
+                for k in range(len(self.shroudLayerCurves_)):
+                    for c in range(len(self.shroudLayerCurves_[k])) :
+                        self.appendAnalyticGeometry(
+                        self.shroudLayerCurves_[k][c].clone(),
+                        "debug_shroudLayerCurve_" + str(k) + str(c) + "_" + self.label_,
+                    )
+            except:
+                pass
+            try:
+                ii = 0
+                for aCurve in self.inOutCurves_:
+                    self.appendAnalyticGeometry(
+                        aCurve.clone(),
+                        "debug_inOutCurve_" + str(ii) + "_" + self.label_,
+                    )
+                    ii = ii + 1
+            except:
+                pass
+            try:
+                ii = 0
+                # defines which channels will be rotatetd for the debug geometries
+                for channel in (                
+                    self.regChannels_
+                    + self.hubLayers_
+                    + self.shroudLayers_
+                ):
+                    off = float(ii) * 0.10      # rotational offset of each channel
+                    self.appendAnalyticGeometry(
+                        partRotatingMap2dTo3d(
+                            self.rotVector_,
+                            channel,
+                            off - 0.05,         # min segment in radian 
+                            off + 0.05,         # max segment in radian
+                        ).clone(),
+                        "debug_channel_" + str(ii) + "_" + self.label_,
+                    )
+                    ii = ii + 1
+            except:
+                pass
         return
     
     #
