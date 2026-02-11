@@ -210,6 +210,8 @@ namespace dtOO {
 #include <analyticGeometryHeaven/partRotatingMap2dTo3d.h>
 #include <analyticGeometryHeaven/trans6SidedCube.h>
 #include <analyticGeometryHeaven/translatingMap2dTo3d.h>
+#include <analyticGeometryHeaven/multipleBoundedSurface.h>
+#include <analyticGeometryHeaven/multipleBoundedVolume.h>
 #include <analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h>
@@ -1206,6 +1208,32 @@ namespace dtOO {
 %include analyticGeometryHeaven/partRotatingMap2dTo3d.h
 %include analyticGeometryHeaven/trans6SidedCube.h
 %include analyticGeometryHeaven/translatingMap2dTo3d.h
+%include analyticGeometryHeaven/multipleBoundedSurface.h
+namespace dtOO {
+  %extend multipleBoundedSurface {
+    multipleBoundedSurface( 
+      analyticGeometry const *const m2d,
+      vectorHandling< analyticGeometry * > const &m1ds
+    ) {
+      ptrVectorHandling<analyticGeometry> m1ds_c;
+      dt__forAllRefAuto(m1ds, m1d) m1ds_c.push_back(m1d->clone());
+      return new multipleBoundedSurface(m2d, m1ds_c);
+    } 
+  }
+}
+%include analyticGeometryHeaven/multipleBoundedVolume.h
+namespace dtOO {
+  %extend multipleBoundedVolume {
+    multipleBoundedVolume( 
+      analyticGeometry const *const m3d,
+      vectorHandling< analyticGeometry * > const &m2ds
+    ) {
+      ptrVectorHandling<analyticGeometry> m2ds_c;
+      dt__forAllRefAuto(m2ds, m2d) m2ds_c.push_back(m2d->clone());
+      return new multipleBoundedVolume(m3d, m2ds_c);
+    } 
+  }
+}
 namespace std {
   %template(pairDtRealDtPoint2) pair< ::dtOO::dtReal, ::dtOO::dtPoint2 >;
 }

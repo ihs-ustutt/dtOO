@@ -678,6 +678,13 @@ void dtGmshModel::addIfToGmshModel(
     dt__throwUnexpected(addIfToGmshModel());
 }
 
+dtInt dtGmshModel::addIfToGmshModel(analyticGeometry const *const aG)
+{
+  dtInt aGId;
+  addIfToGmshModel(aG, &aGId);
+  return aGId;
+}
+
 dtGmshRegion *dtGmshModel::getDtGmshRegionByTag(dtInt const tag) const
 {
   ::GRegion *region = ::GModel::getRegionByTag(abs(tag));
@@ -808,6 +815,33 @@ dtGmshModel::getDtGmshFaceListByPhysical(std::string const &physical) const
   }
 
   return faceL;
+}
+
+std::list<dtGmshEdge *>
+dtGmshModel::getDtGmshEdgeListByPhysical(std::string const &physical) const
+{
+  std::list<dtGmshEdge *> edgeL;
+  if (stringPrimitive::stringContains("->", physical) ||
+      stringPrimitive::isWildcard(physical))
+  {
+    dt__forAllRefAuto(dtEdges(), anEdge)
+    {
+      if (matchWildCardPhysical(physical, anEdge))
+      {
+        edgeL.push_back(anEdge);
+      }
+    }
+  }
+  else
+  {
+    dtInt pN = __caCThis->getPhysicalNumber(1, physical);
+    intGEntityVMap gE_pN;
+    __caCThis->getPhysicalGroups(1, gE_pN);
+
+    edgeL = cast2DtGmshEdge(progHelper::vector2List(gE_pN[pN]));
+  }
+
+  return edgeL;
 }
 
 dtGmshRegion *dtGmshModel::getDtGmshRegionByPhysical(std::string const &physical
@@ -999,12 +1033,9 @@ dtGmshEdge *dtGmshModel::cast2DtGmshEdge(::GEntity *ge)
 
 std::list<dtGmshEdge *> dtGmshModel::cast2DtGmshEdge(std::list<::GEdge *> edges)
 {
-  std::list<dtGmshEdge *> retEdges;
-  dt__forAllIter(std::list<::GEdge *>, edges, it)
-  {
-    retEdges.push_back(cast2DtGmshEdge(*it));
-  }
-  return retEdges;
+  std::list<dtGmshEdge *> ret;
+  dt__forAllRefAuto(edges, anEdge) ret.push_back(cast2DtGmshEdge(anEdge));
+  return ret;
 }
 
 std::vector<dtGmshEdge *>
@@ -1012,7 +1043,14 @@ dtGmshModel::cast2DtGmshEdge(std::vector<::GEdge *> edges)
 {
   std::vector<dtGmshEdge *> ret;
   dt__forAllRefAuto(edges, anEdge) ret.push_back(cast2DtGmshEdge(anEdge));
+  return ret;
+}
 
+std::list<dtGmshEdge *>
+dtGmshModel::cast2DtGmshEdge(std::list<::GEntity *> edges)
+{
+  std::list<dtGmshEdge *> ret;
+  dt__forAllRefAuto(edges, anEdge) ret.push_back(cast2DtGmshEdge(anEdge));
   return ret;
 }
 

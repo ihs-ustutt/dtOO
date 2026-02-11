@@ -63,6 +63,8 @@ public:
   dtGmshFace *getDtGmshFaceByPhysical(std::string const &physical) const;
   std::list<dtGmshFace *>
   getDtGmshFaceListByPhysical(std::string const &physical) const;
+  std::list<dtGmshEdge *>
+  getDtGmshEdgeListByPhysical(std::string const &physical) const;
   dtGmshRegion *getDtGmshRegionByPhysical(std::string const &physical) const;
   std::list<dtGmshRegion *>
   getDtGmshRegionListByPhysical(std::string const &physical) const;
@@ -97,6 +99,7 @@ public:
   static std::list<dtGmshEdge *> cast2DtGmshEdge(std::list<::GEdge *> edges);
   static std::vector<dtGmshEdge *> cast2DtGmshEdge(std::vector<::GEdge *> edges
   );
+  static std::list<dtGmshEdge *> cast2DtGmshEdge(std::list<::GEntity *> edges);
   static dtGmshVertex *cast2DtGmshVertex(::GEntity *gv);
   static std::list<dtGmshVertex *>
   cast2DtGmshVertex(std::list<::GVertex *> vertices);
@@ -174,6 +177,8 @@ public:
   // add
   //
   void addIfToGmshModel(analyticGeometry const *const aG, dtInt *const tag);
+  // SWIG
+  dtInt addIfToGmshModel(analyticGeometry const *const aG);
   //
   // add general entities
   //
