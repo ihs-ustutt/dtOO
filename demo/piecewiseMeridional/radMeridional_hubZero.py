@@ -119,10 +119,12 @@ class radMeridional_hubZero:
         dx_shroud0, dz_shroud0 = self.deltas_LengthAndAngle(angle_shroud0, l_shroud0)
         dx_shroud1, dz_shroud1 = self.deltas_LengthAndAngle(angle_shroud1, l_shroud1)
         
-        modname = "dtOOPythonApp.builder.analyticGeometryLayers_piecewiseMeridionalRotContour"
-        module = self.reloadModule(modname)
-
-        radMeridionalContour = module.analyticGeometryLayers_piecewiseMeridionalRotContour( 
+        #modname = "dtOOPythonApp.builder.analyticGeometryLayers_piecewiseMeridionalRotContour"
+        #module = self.reloadModule(modname)
+        from dtOOPythonApp.builder import (
+            analyticGeometryLayers_piecewiseMeridionalRotContour
+        )
+        radMeridionalContour = analyticGeometryLayers_piecewiseMeridionalRotContour( 
           "radMeridionalContour",
           hubCurves = [
             dtOO.analyticCurve(
@@ -226,7 +228,7 @@ class radMeridional_hubZero:
           #rotVector=dtOO.dtVector3(0,0,-1)
         ).enableDebug()#.buildExtract( container )
         container = radMeridionalContour.buildExtract(container)
-
+        
         # returning the hub and shroud layers
         layers = radMeridionalContour.getLayerList(nBlades)    
         # returns layer data in the following nested list:
@@ -236,19 +238,46 @@ class radMeridional_hubZero:
 
         # returns the unstructured region
         mv = radMeridionalContour.getUnstructuredRegion(nBlades)
-
         # returns unstructured domain data as follows:
         # unstructured = [[bounds at hub], [outlet bound], [bounds at shroud], [interface bound]]
-        modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
-        module = self.reloadModule(modname)
-
+        
+        #modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
+        #module = self.reloadModule(modname)
+        from dtOOPythonApp.builder import ( map3dTo3dGmsh_gridFromLayers )
         # module.map3dTo3dGmsh_gridFromLayers(
             # label, layer data, nElementsLayer, firstElementSize, meshSizeSW, meshSizeCIRC, unstructRegion
         # )
-        layerMesh = module.map3dTo3dGmsh_gridFromLayers("meshLayers_hubZero", layers, 7, 0.01, 0.05, 0.03,  mv)
+        layerMesh = map3dTo3dGmsh_gridFromLayers(
+                "meshLayers_hubZero", 
+                layers, 
+                7, 
+                0.01, 
+                0.05, 
+                0.03,  
+                mv
+            )
         layerMesh.buildLayerMesh()
         container = layerMesh.buildExtract(container)
         
+        #modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromChannel"
+        #module = self.reloadModule(modname)
+        from dtOOPythonApp.builder import ( map3dTo3dGmsh_gridFromChannel )
+        inletMesh = map3dTo3dGmsh_gridFromChannel(
+                "meshInlet_hubZero",                            # label
+                radMeridionalContour.getRegChannel(0, nBlades),    # channel
+                5,                                              # nBoundaryLayers
+                15,                                             # nERadial
+                20,                                             # nECircumferential
+                25,                                             # nEMeridional
+                0.01,                                           # fESHubToShroud
+                0.01,                                            # fESInlet
+                2,
+                -3,
+                1
+
+            ).enableDebug()
+        inletMesh.build()
+        container = inletMesh.buildExtract(container)
         """
         a = radMeridionalContour.regChannel(1)      # rotating a specific channel 
         a <<= "xyz_channel"                         # renaming it
@@ -750,15 +779,6 @@ class radMeridional_hubZero:
 
         return dx, dz
 
-    def reloadModule(self, modname):  
-        if modname in sys.modules: 
-            print(f"reloading: {modname}")
-            module=importlib.reload(sys.modules[modname])
-        else:
-            print(f"loading: {modname}")
-            module=importlib.import_module(modname)
-                
-        return module
 
 def CreateAndShow( *args, **kwargs ):
   """Create and show machine.

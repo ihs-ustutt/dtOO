@@ -1173,11 +1173,20 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
     #
     # returns the rotated segment of the channel number
     #
-    def regChannel(self, pos: int) -> analyticGeometry:
+    def getRegChannel(self, 
+                   pos: int,
+                   nSlices: int
+                   ) -> analyticGeometry:
+
         logging.info("Request regChannel[ %d ]" % pos)
-        return rotatingMap2dTo3d(
-            self.rotVector_, self.regChannels_[pos]
-        ).clone()
+
+        return partRotatingMap2dTo3d(
+                    self.rotVector_, 
+                    self.regChannels_[pos],
+                    0.00,
+                    (1/nSlices),
+                ).clone()
+
         # rm.thisown = False
         # logging.info("%s" % rm)
         # return rm
