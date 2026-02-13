@@ -59,3 +59,7 @@ from .map3dTo3dGmsh_gridFromChannel import (
 from .rotatingMap2dTo3d_splitFitted import (
   rotatingMap2dTo3d_splitFitted
 )
+from .analyticGeometryLayers_piecewiseMeridionalRotContour import (
+  analyticGeometryLayers_piecewiseMeridionalRotContour
+)
+from .map3dTo3dGmsh_gridFromLayers import map3dTo3dGmsh_gridFromLayers
