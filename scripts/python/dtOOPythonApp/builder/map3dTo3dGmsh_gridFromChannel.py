@@ -18,6 +18,8 @@
 from dtOOPythonApp.tools.dtBundleTools import dtBundleBuilder
 
 from dtOOPythonSWIG import jsonPrimitive
+from dtOOPythonSWIG import dtBundle
+from dtOOPythonSWIG import lVHOstateHandler
 from dtOOPythonSWIG import analyticGeometry
 from dtOOPythonSWIG import map2dTo3d
 from dtOOPythonSWIG import map3dTo3d
@@ -216,7 +218,7 @@ class map3dTo3dGmsh_gridFromChannel(dtBundleBuilder):
     self.suction_, self.pressure_ = self.detectFirstAndSecond( 
       self.channel_, self.channelSuctionPressureDir_ 
     )
-
+    
     #
     # label faces
     #
@@ -270,12 +272,11 @@ class map3dTo3dGmsh_gridFromChannel(dtBundleBuilder):
 
     """
     logging.info( "Building %s ..." % (self.label_) )
-
+    
     m3dGmsh = map3dTo3dGmsh()
     m3dGmsh.jInit(
       self.map3dTo3dGmshJson_, None, None, None, None, None
     )
-
     #
     # add hub, shroud and channel faces
     #
@@ -284,9 +285,9 @@ class map3dTo3dGmsh_gridFromChannel(dtBundleBuilder):
       channelId 
     ).meshTransfiniteRecursive()
     nElements = np.zeros(3, int)
-    nElements[self.channelInletOutletDir_-1] = self.nElementsMeridional_
-    nElements[self.channelHubShroudDir_-1] = self.nElementsRadial_
-    nElements[self.channelSuctionPressureDir_-1] = self.nElementsCircumferential_
+    nElements[np.abs(self.channelInletOutletDir_)-1] = self.nElementsMeridional_
+    nElements[np.abs(self.channelHubShroudDir_)-1] = self.nElementsRadial_
+    nElements[np.abs(self.channelSuctionPressureDir_)-1] = self.nElementsCircumferential_
     logging.info(
       "Mesh with nElements = (%d, %d, %d)" 
       % 
@@ -305,6 +306,10 @@ class map3dTo3dGmsh_gridFromChannel(dtBundleBuilder):
     ob = bVONameRegions()
     ob.jInit( jsonPrimitive('{ "_regionLabel" : [] }'), m3dGmsh )
     ob.preUpdate()
+
+    #container = dtBundle()
+    #bV = container.cptr_bV()
+
 
     #
     # create lvh
@@ -371,7 +376,7 @@ class map3dTo3dGmsh_gridFromChannel(dtBundleBuilder):
       m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical( 
         "*inlet*", "*outlet*" 
       )
-
+    
     inletHubToShroudLines = (
         set(inletLines)&set(hubToShroudLines)
       ).union(
@@ -421,6 +426,7 @@ class map3dTo3dGmsh_gridFromChannel(dtBundleBuilder):
         ]
       ):
         for ii in lines:
+          print(m3dGmsh.getModel().getDtGmshEdgeByTag( ii ))  
           self.appendAnalyticGeometry( 
             m3dGmsh.getModel().getDtGmshEdgeByTag( ii ).getMap1dTo3d(),
             "debug_"+self.label_+"_"+lab+"_"+str(ii)
@@ -595,19 +601,23 @@ class map3dTo3dGmsh_gridFromChannel(dtBundleBuilder):
       m3dGmsh 
     )
     m3dGmsh.attachBVObserver(ob)
+   
+    #m3dGmsh.makeGrid()
 
     ob = bVOWriteMSH()
     ob.thisown = False
     ob.jInit(
       jsonPrimitive( 
         '{'
-          '"_filename" : "",'
+          '"_filename" : "'+self.label_+'.msh",'
           '"_saveAll" : true'
         '}' 
       ), 
       m3dGmsh 
     )
     m3dGmsh.attachBVObserver(ob)
+    #ob.postUpdate()
+    logging.info("Mesh generated and Saved in %s.msh" % self.label_)
 
     ob = bVOOrientCellVolumes()
     ob.thisown = False
@@ -618,7 +628,8 @@ class map3dTo3dGmsh_gridFromChannel(dtBundleBuilder):
     m3dGmsh.thisown = False
     
     self.appendBoundedVolume( m3dGmsh )
-
+    
+    #bV.set(None)
     return
 
   @staticmethod
@@ -639,13 +650,13 @@ class map3dTo3dGmsh_gridFromChannel(dtBundleBuilder):
       firstPar = 1.0
       secondPar = 0.0
 
-    if direction == 1:
+    if np.abs(direction) == 1:
       first = channel.segmentConstUPercent(firstPar)
       second = channel.segmentConstUPercent(secondPar)
-    elif direction == 2:
+    elif np.abs(direction) == 2:
       first = channel.segmentConstVPercent(firstPar)
       second = channel.segmentConstVPercent(secondPar)
-    elif direction == 3:
+    elif np.abs(direction) == 3:
       first = channel.segmentConstWPercent(firstPar)
       second = channel.segmentConstWPercent(secondPar)
     else:
