@@ -90,42 +90,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         m3dGmsh.jInit(
           self.map3dTo3dGmshJson_, None, None, None, None, None
         )
-
-        staticPropertiesHandler.getInstance().jInit(
-          jsonPrimitive(
-            '{'
-              '"option" : ['
-                '{"name" : "reparamOnFace_precision", "value" : "1.e-05"},'
-                '{"name" : "reparamInVolume_precision","value" : "1.e-05"},'
-                '{"name" : "invY_precision", "value" : "1.e-04"},'
-                '{"name" : "xyz_resolution", "value" : "1.e-05"},'
-                '{"name" : "XYZ_resolution", "value" : "1.e-04"},'
-                '{"name" : "uvw_resolution", "value" : "1.e-04"},'
-                '{"name" : "point_render_diameter", "value" : "0.005"},'
-                '{"name" : "vector_render_size", "value" : "0.05"},'
-                '{"name" : "function_render_resolution_u", "value" : "21"},'
-                '{"name" : "function_render_resolution_v", "value" : "21"},'
-                '{"name" : "function_render_resolution_w", "value" : "21"},'
-                '{"name" : "geometry_render_resolution_u", "value" : "21"},'
-                '{"name" : "geometry_render_resolution_v", "value" : "21"},'
-                '{"name" : "geometry_render_resolution_w", "value" : "21"},'
-                '{"name" : "ompNumThreads", "value" : "2"},'
-                '{"name" : "map1dTo3d_deltaPer", "value" : "0.01"},'
-                '{"name" : "map2dTo3d_deltaPer", "value" : "0.01"},'
-                '{"name" : "map3dTo3d_deltaPer", "value" : "0.01"},'
-                '{"name" : "logLevel", "value" : "0"},'
-                '{"name" : "isEqualExtendCheck", "value" : "false"}'
-              ']'
-            '}'
-          )
-        )
-
         container = dtBundle()
-        cV = container.cptr_cV()
-
-        lVHOstateHandler.clear()
-        lVHOstateHandler( jsonPrimitive(), cV ).thisown = False
-
         aF = container.cptr_aF()
         #aG = container.cptr_aG()
         aG = labeledVectorHandlingAnalyticGeometry()
@@ -472,10 +437,14 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         )
         ob.postUpdate()
         logging.info("Mesh generated and Saved in %s.msh" % self.label_)
-        bV.set(None)
-        del m3dGmsh
-        lVHOstateHandler.clear()
+
+        self.appendBoundedVolume(m3dGmsh)
+
+        #bV.set(None)
+        #del m3dGmsh
+        #lVHOstateHandler.clear()
         
+        print("A NEW CHANGE IN 3333 map3dTo3dGmsh_gridFromLayers")
         return
 
     def detectFirstAndSecond(self,
