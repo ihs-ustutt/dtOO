@@ -275,6 +275,20 @@ set_tests_properties(multipleBounded PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST multipleBounded PROPERTY LABELS base-test)
 DTOO_ADDTESTWLABEL("multipleBounded")
 
+#
+# multipleBounded
+#
+add_test(
+  NAME labeledVectorHandlingSWIG
+  COMMAND 
+    "${Python3_EXECUTABLE}" 
+    "-m" "doctest" 
+    "labeledVectorHandlingSWIG.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/labeledVectorHandlingSWIG
+)
+set_tests_properties(labeledVectorHandlingSWIG PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+set_property(TEST labeledVectorHandlingSWIG PROPERTY LABELS base-test)
+
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
     IF(IS_DIRECTORY ${dirPath})
