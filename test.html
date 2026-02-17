@@ -61,6 +61,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-dtOO.test.meshCuboid.meshCuboid">Cuboid Mesh <code class="docutils literal notranslate"><span class="pre">meshCuboid</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-dtOO.test.multipleBounded.multipleBounded">Multiple bounded surfaces and volumes <code class="docutils literal notranslate"><span class="pre">multipleBounded</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dtOO.test.labeledVectorHandlingSWIG.labeledVectorHandlingSWIG">labeledVectorHandlingSWIG</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API documentation</a></li>
@@ -1177,6 +1178,67 @@ faces:</p>
 </div>
 <p>Clear the <code class="docutils literal notranslate"><span class="pre">lVHOstateHandler</span></code> object:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lVHOstateHandler</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="module-dtOO.test.labeledVectorHandlingSWIG.labeledVectorHandlingSWIG">
+<span id="labeledvectorhandlingswig"></span><h2>labeledVectorHandlingSWIG<a class="headerlink" href="#module-dtOO.test.labeledVectorHandlingSWIG.labeledVectorHandlingSWIG" title="Link to this heading"></a></h2>
+<p>Import dtOO:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>Create an analyticCurve:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aC</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">dtPoint3</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">dtPoint3</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a labeledVectorHandlingAnalyticGeometry:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lvhAG</span> <span class="o">=</span> <span class="n">labeledVectorHandlingAnalyticGeometry</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Append a clone of the object to the labeledVectorHandlingAnalyticGeometry; the
+overloaded <cite>lshift</cite> operator clones the original object and renames it:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lvhAG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">aC</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;myAnalyticCurve&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Destroy object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">aC</span>
+</pre></div>
+</div>
+<p>Check that object is still in the vector; it is a clone so it has to be still
+there:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lvhAG</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span>
+<span class="go">&#39;myAnalyticCurve&#39;</span>
+</pre></div>
+</div>
+<p>Create a vec3dCurveOneD:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v3d</span> <span class="o">=</span> <span class="n">vec3dCurveOneD</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">dtPoint3</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">dtPoint3</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a labeledVectorHandlingAnalyticFunction:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lvhAF</span> <span class="o">=</span> <span class="n">labeledVectorHandlingAnalyticFunction</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Append a clone:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lvhAF</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">v3d</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;myVec3dCurveOneD&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Destroy object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">v3d</span>
+</pre></div>
+</div>
+<p>Check also for labeledVectorHandlingAnalyticFunction:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lvhAF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span>
+<span class="go">&#39;myVec3dCurveOneD&#39;</span>
 </pre></div>
 </div>
 </section>

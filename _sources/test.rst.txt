@@ -34,3 +34,9 @@ Multiple bounded surfaces and volumes ``multipleBounded``
 
 .. automodule:: dtOO.test.multipleBounded.multipleBounded
     :members:
+
+labeledVectorHandlingSWIG
+=========================
+
+.. automodule:: dtOO.test.labeledVectorHandlingSWIG.labeledVectorHandlingSWIG
+    :members:
