@@ -639,6 +639,15 @@ namespace dtOO {
 }
 %include constValueHeaven/constValue.h
 %include analyticFunctionHeaven/analyticFunction.h
+namespace dtOO {
+  %extend analyticFunction {
+    analyticFunction * __lshift__( std::string const & str ) {
+      analyticFunction * clone = $self->clone();
+      clone->setLabel(str);
+      return clone;
+    } 
+  }
+}
 %include analyticGeometryHeaven/analyticGeometry.h
 namespace dtOO {
   %extend analyticGeometry {
@@ -648,7 +657,6 @@ namespace dtOO {
       return clone;
     } 
   }
- 
 }
 %include bVObserver/bVOInterface.h
 %include bVObserver/bVOSubject.h
