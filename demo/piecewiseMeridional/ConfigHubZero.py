@@ -8,7 +8,7 @@ class ConfigHubZero():
 
     def __init__(self):
 
-        print("")
+        print("Setting up input dictionary")
 
         self.config = {
             "nBlades" : 12,
@@ -54,7 +54,9 @@ class ConfigHubZero():
 
         self.config["hubCurves"] = hubCurves
         self.config["shroudCurves"] = shroudCurves
-    
+        
+        print("Finished")
+
     def buildHubCurves(self):
         
         return [
