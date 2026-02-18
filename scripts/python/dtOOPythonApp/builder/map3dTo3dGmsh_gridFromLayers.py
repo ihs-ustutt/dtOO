@@ -1,45 +1,30 @@
-#import dtOOPythonSWIG as dtOO
 from dtOOPythonApp.tools.dtBundleTools import dtBundleBuilder
 
 from dtOOPythonSWIG import jsonPrimitive
 from dtOOPythonSWIG import staticPropertiesHandler
-from dtOOPythonSWIG import dtBundle
 from dtOOPythonSWIG import lVHOstateHandler
-from dtOOPythonSWIG import analyticSurface
 from dtOOPythonSWIG import bVOMeshRule
 from dtOOPythonSWIG import analyticGeometry
 from dtOOPythonSWIG import map2dTo3d
 from dtOOPythonSWIG import map3dTo3d
 from dtOOPythonSWIG import map3dTo3dGmsh
 from dtOOPythonSWIG import jsonPrimitive
-from dtOOPythonSWIG import logMe
 from dtOOPythonSWIG import bVOWriteMSH
-from dtOOPythonSWIG import bVOReadMSH
 from dtOOPythonSWIG import bVONameRegions
-from dtOOPythonSWIG import bVOOrientCellVolumes
-from dtOOPythonSWIG import bool_map1dTo3dInMap2dTo3d
-from dtOOPythonSWIG import dtPoint3
-from dtOOPythonSWIG import dtVector3
+from dtOOPythonSWIG import bVOFaceToPatchRule
 from dtOOPythonSWIG import bVOAnalyticGeometryToFace
 from dtOOPythonSWIG import labeledVectorHandlingAnalyticGeometry
-from dtOOPythonSWIG import scaOneD
-from dtOOPythonSWIG import bVOFaceToPatchRule
-from dtOOPythonSWIG import vectorInt
-from dtOOPythonSWIG import dtGmshModel
+from dtOOPythonSWIG import labeledVectorHandlingAnalyticFunction
 from dtOOPythonSWIG import vectorReal
 from dtOOPythonSWIG import scaTanhGradingOneD
 from dtOOPythonSWIG import scaTanhGradingOneDCompound
-from dtOOPythonSWIG import sca3PPointsBSplineOneD
-from dtOOPythonSWIG import sca3PPointsBSplineOneDCompound
 from dtOOPythonSWIG import bVOSetPrescribedElementSize
-from dtOOPythonSWIG import bVOSetRotationalPeriodicity
-from dtOOPythonSWIG import xYz_rPhiZ
-from dtOOPythonSWIG import baseContainer
+from dtOOPythonSWIG import bVOOrientCellVolumes
+from dtOOPythonSWIG import multipleBoundedSurface
 
 import logging
 import numpy
 from typing import List, Tuple, Union, Dict
-import json
 
 class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
@@ -50,11 +35,12 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                  firstElement: float,
                  elementSize_sw,
                  elementSize_circ,
-                 mv):
+                 mv,
+                 bs
+        ) -> None :
 
         super(map3dTo3dGmsh_gridFromLayers, self).__init__()
 
-        logging.info( "Building %s ..." % ("meshLayers") )
         
         # setting global params
         self.label_ = label
@@ -64,7 +50,10 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         self.elementSizeSW_ = elementSize_sw
         self.elementSizeCIRC_ = elementSize_circ
         self.unstructured_ = mv
+        self.unstructuredSurfaces_ = bs
 
+        logging.info( "Building %s ..." % (self.label_) )
+        
         #logMe.initLog('layerMesh.log')
         
         # setting up volume
@@ -84,25 +73,22 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
             '}'
         )
 
-    def buildLayerMesh(self) -> None:
+    def build(self) -> None:
 
         m3dGmsh = map3dTo3dGmsh()
         m3dGmsh.jInit(
           self.map3dTo3dGmshJson_, None, None, None, None, None
         )
-        container = dtBundle()
-        aF = container.cptr_aF()
-        #aG = container.cptr_aG()
-        aG = labeledVectorHandlingAnalyticGeometry()
-
-        bV = container.cptr_bV()
-        dP = container.cptr_dP()
         
+        aF = labeledVectorHandlingAnalyticFunction()
+        aG = labeledVectorHandlingAnalyticGeometry()
+        aG_unstruct = labeledVectorHandlingAnalyticGeometry()
         logging.info("Creating Layer Mesh on hub and shroud")
+       
         
         # adding the unstructured region to the model
-        m3dGmsh.getModel().addIfToGmshModel(self.unstructured_)
-        
+        unstruct3d = m3dGmsh.getModel().addIfToGmshModel(self.unstructured_)
+ 
         # self.layerList_ has the following format:
         # self.layerList_ = [[hub layer lists],[shroud layer list]]
         # with:
@@ -183,7 +169,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         #  later it will be iterated over the list in self (region labels are not used here)
         ob = bVONameRegions()
         ob.jInit( jsonPrimitive('{ "_regionLabel" : [] }'), m3dGmsh )
-        ob.preUpdate()
+        ob.preUpdate() 
         
         # initializing surface labels in gmsh
         ob = bVOAnalyticGeometryToFace()
@@ -192,9 +178,9 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
             '{'
               '"analyticGeometry" : ['
                 '{"labels" : "ortho_*"},'
-                '{"labels" : "periodic0*"},'
-                '{"labels" : "periodic1*"},'
                 '{"labels" : "channel*"},'
+                '{"labels" : "periodic1*"},'
+                '{"labels" : "periodic0*"},'
                 '{"labels" : "parallel*"}'
               '],'
               '"_inc" : 10.0,'
@@ -204,7 +190,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
           None, None, None, aG, None, m3dGmsh
         )
         ob.preUpdate()
-        
+ 
         # meshing the lines orthogonal to the channel lines
         # these lines connect the faces channel and parallel
         channelToParallelLines = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical("channel*","parallel*")
@@ -425,26 +411,136 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         )
         m3dGmsh.attachBVObserver(ob)
         
-        # generating the mesh
-        logging.info("Generating the mesh: %s" % self.label_)
-        bV.set( m3dGmsh )
-        bV[0].makeGrid()    
+        # untagging the periodic faces
+        for face in m3dGmsh.getModel().getDtGmshFaceListByPhysical("periodic*"):     
+            m3dGmsh.getModel().untagPhysical(face)
+ 
+        # iterating over the surfaces of the unstructured region
+        # the faces were already labeled in getUnstructuredRegion()
+        for face in self.unstructuredSurfaces_:
+            
+            # the interface and the outlet surfaces as well as the periodic surfaces
+            #  should be added. Not the faces parallel to the hub and shroud curves ("para")
+            if not (face.getLabel().startswith("para")):
+                
+                # the interface and outlet surfaces are not multi bounded
+                if multipleBoundedSurface.ConstDownCast(face) == None:
+                    aG_unstruct.push_back(face.clone())
+                # the periodic faces are multi bounded
+                else:
+                    # surfaceConstPtr returns the rectangular bounding box in which the mbs was created
+                    scp = multipleBoundedSurface.MustDownCast(face).surfaceConstPtr()
+                    scp.setLabel(face.getLabel())
+                    aG_unstruct.push_back(scp.clone()) 
+        
+        # initializing surface labels in gmsh
+        ob = bVOAnalyticGeometryToFace()
+        ob.jInit(
+          jsonPrimitive(
+            '{'
+              '"analyticGeometry" : ['
+                '{"label" : "interface_unstruct"},'
+                '{"label" : "outlet_unstruct"},'
+                '{"label" : "per0_unstruct"},'
+                '{"label" : "per1_unstruct"}'
+              '],'
+              '"_inc" : 10.0,'
+              '"_facesPerEntry" : []'
+            '}'
+          ),
+          None, None, None, aG_unstruct, None, m3dGmsh
+        )
+        #m3dGmsh.attachBVObserver(ob)
+        ob.preUpdate()
+        
+        ## useful debug statement to understand the naming of the layers and vizualize them
+        ##  especially for the bVOFaceToPatchRule
+        #for face in m3dGmsh.getModel().getDtGmshFaceListByPhysical("*"):
+        #    print(face.getPhysicalString())
+        #    self.appendAnalyticGeometry(
+        #        face.getMap2dTo3d(),
+        #        "debug_allLines_"+face.getPhysicalString()
+        #    )
+        #print("lenth hub : ", str(len(self.layerList_[0][0])))
+        #print("lenth shroud : ", str(len(self.layerList_[1][0])))
+
+        # setting bVOFaceToPatchRule, renames all the added faces
+        # this is dne to set boundary conditions in the of case later
+        ob = bVOFaceToPatchRule()
+        ob.thisown = False
+        # if the last hub layer is on radius 0 the unstructured region goes to eadius zero
+        # there is no hub layer on the outlet
+        if self.layerList_[0][1][-1] == True:
+            ob.jInit(
+              jsonPrimitive(
+                '{'
+                  '"_patchRule" : ['
+                    '":*channel*hub*::'+self.label_+'_hub:",'
+                    '":*channel*shroud*::'+self.label_+'_shroud:",'
+                    '":*ortho_*0_*::'+self.label_+'_inlet:",'
+                    '":*interface_unstruct*::'+self.label_+'_inlet:",'
+                    # outlet part of last layer
+                    '":*ortho_shroud'+str(len(self.layerList_[1][0]))+'*::'+self.label_+'_outlet:",'
+                    '":*outlet_unstruct*::'+self.label_+'_outlet:",'
+                    '":*per0*::'+self.label_+'_periodic0:",'
+                    '":*per1*::'+self.label_+'_periodic1:"'
+                  '],'
+                  '"_regRule" : ['
+                    '":*::'+self.label_+':"'
+                  ']'
+                '}'
+              ),
+              m3dGmsh
+            )
+        # if the radius is not zero in the last hub layer the last ortho segment
+        #  of the hub is also part of the outlet bondary
+        else:
+            ob.jInit(
+              jsonPrimitive(
+                '{'
+                  '"_patchRule" : ['
+                    '":*channel*_hub*::'+self.label_+'_hub:",'
+                    '":*channel*_shroud*::'+self.label_+'_shroud:",'
+                    '":*ortho_*0_*::'+self.label_+'_inlet:",'
+                    '":*interface_unstruct*::'+self.label_+'_inlet:",'
+                    '":*ortho_shroud'+str(len(self.layerList_[1][0]))+'*::'+self.label_+'_outlet:",'
+                    '":*ortho_hub'+str(len(self.layerList_[0][0]))+'*::'+self.label_+'_outlet:",'
+                    '":*outlet_unstruct*::'+self.label_+'_outlet:",'
+                    '":*per0*::'+self.label_+'_periodic0:",'
+                    '":*per1*::'+self.label_+'_periodic1:"'
+                  '],'
+                  '"_regRule" : ['
+                    '":*::'+self.label_+':"'
+                  ']'
+                '}'
+              ),
+              m3dGmsh
+            )
+
+        m3dGmsh.attachBVObserver(ob)
+ 
+        #m3dGmsh.makeGrid()    
 
         ob = bVOWriteMSH()
+        ob.thisown = False
         ob.jInit(
-          jsonPrimitive('{"_filename" : "'+self.label_+'.msh", "_saveAll" : true}'),
+          jsonPrimitive('{"_filename" : "", "_saveAll" : true}'),
           None, None, None, None, None, m3dGmsh
         )
-        ob.postUpdate()
-        logging.info("Mesh generated and Saved in %s.msh" % self.label_)
+        m3dGmsh.attachBVObserver(ob)
+        #ob.postUpdate()
+
+        ob = bVOOrientCellVolumes()
+        ob.thisown = False
+        ob.jInit(
+            jsonPrimitive('{"_positive" : true}'), m3dGmsh
+        )
+        m3dGmsh.attachBVObserver(ob)
+        
+        m3dGmsh.thisown = False
 
         self.appendBoundedVolume(m3dGmsh)
 
-        #bV.set(None)
-        #del m3dGmsh
-        #lVHOstateHandler.clear()
-        
-        print("A NEW CHANGE IN 3333 map3dTo3dGmsh_gridFromLayers")
         return
 
     def detectFirstAndSecond(self,
