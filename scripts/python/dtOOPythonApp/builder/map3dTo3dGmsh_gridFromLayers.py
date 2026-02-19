@@ -459,7 +459,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         #    print(face.getPhysicalString())
         #    self.appendAnalyticGeometry(
         #        face.getMap2dTo3d(),
-        #        "debug_allLines_"+face.getPhysicalString()
+        #        "debug_allFaces_"+face.getPhysicalString()
         #    )
         #print("lenth hub : ", str(len(self.layerList_[0][0])))
         #print("lenth shroud : ", str(len(self.layerList_[1][0])))

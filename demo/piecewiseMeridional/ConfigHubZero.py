@@ -39,7 +39,7 @@ class ConfigHubZero():
             "interface_shroud" : [[0, 1.0],
                                   [1, 1.0],],
             "interface_curvature" : [[0.0, 0.5, 1],
-                                     [0.2, 0.4, -1],]
+                                     [0.2, 0.4, -1],],
         }
         for key, value in self.config.items():
             setattr(self, key, value)
