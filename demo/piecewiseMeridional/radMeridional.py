@@ -67,7 +67,10 @@ class radMeridional:
         # Init baseContainer and labeledVectorHandlings
         bC = container.cptr_bC()
         cV = container.cptr_cV()
-
+        
+        cV.push_back(
+            dtOO.sliderFloatParam("QIn", 0.5, 0.0, 1.0).clone()
+        )
         # clearing prevents segmentation fault
         dtOO.lVHOstateHandler.clear()
         dtOO.lVHOstateHandler( dtOO.jsonPrimitive(), cV ).thisown = False
@@ -165,8 +168,12 @@ class radMeridional:
           dictRule = \
               ofOpenFOAMCase_setupWrapper.controlDict(
                 application = "simpleFoam",
-                endTime = 200,
-                QPatches = ['meshInlet_inlet','meshLayers_outlet',],
+                endTime = 2000,
+                # Patches where Q and PT is tracked
+                QPatches = ['meshInlet_inlet', 
+                            'meshInlet_outlet', 'meshChannel_inlet', 
+                            'meshChannel_outlet','meshLayers_inlet', 
+                            'meshLayers_outlet',],
                 PTPatches = ['meshInlet_inlet', 'meshLayers_outlet',],
                 #FPatches = ['mesh_blade',],
                 libs = [
@@ -235,7 +242,7 @@ class radMeridional:
                 ["U", "p", "k", "omega",],
                 axis = dtOO.dtVector3(0,0,1),
                 origin = dtOO.dtPoint3(0,0,0),
-                stackAxis = "R"
+                stackAxis = "Z"
               ),
               # mesh Channel
               ofOpenFOAMCase_setupWrapper.wallRuleString(
@@ -275,6 +282,13 @@ class radMeridional:
 
         ).buildExtract( container )
         
+        dC["of"].runCurrentState()
+        
+        cDir = dC["of"].getDirectory(
+            dtOO.lVHOstateHandler().commonState()
+        )
+        print(cDir)
+
         return container  
 
     def reloadModule(self, modname):  
