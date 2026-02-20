@@ -895,28 +895,24 @@ class ofOpenFOAMCase_setupWrapper:
     str
       Cyclic AMI rule string.
     """
-   
+    if rotAxis == None or rotCentre == None:
+        transformStr = "    transform       noOrdering;"
+    else: 
+        transformStr = str( 
+                           "    transform       rotational;"
+                           "    rotationAxis    ("
+                                   +str(rotAxis[0])+" "+str(rotAxis[1])+" "+str(rotAxis[2])
+                                +");"
+                           "    rotationCentre  ("
+                                   +str(rotCentre[0])+" "+str(rotCentre[1])+" "+str(rotCentre[2])
+                                +");"
+                           )
+
     retStr = ":ofOpenFOAMCyclicAmiRule::"+patchOne+","+patchTwo+":"
     retStr += str(
       ":"
-      "  "+patchOne+"("
-      "    transform       rotational;"
-      "    rotationAxis    ("
-             +str(rotAxis[0])+" "+str(rotAxis[1])+" "+str(rotAxis[2])
-           +");"
-      "    rotationCentre  ("
-             +str(rotCentre[0])+" "+str(rotCentre[1])+" "+str(rotCentre[2])
-           +");"
-      "  ),"
-      "  "+patchTwo+"("
-      "    transform       rotational;"
-      "    rotationAxis    ("
-             +str(rotAxis[0])+" "+str(rotAxis[1])+" "+str(rotAxis[2])
-           +");"
-      "    rotationCentre  ("
-             +str(rotCentre[0])+" "+str(rotCentre[1])+" "+str(rotCentre[2])
-           +");"
-      "  )"
+      "  "+patchOne+"("+transformStr+"  ),"
+      "  "+patchTwo+"("+transformStr+"  )"
       ":"
     )
     return retStr
