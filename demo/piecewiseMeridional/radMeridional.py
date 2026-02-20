@@ -17,6 +17,7 @@ import dtOOPythonSWIG as dtOO
 import numpy as np
 import sys
 import importlib
+#import foamlib
 
 class radMeridional:
 
@@ -237,6 +238,11 @@ class radMeridional:
                 "meshInlet_suction", "meshInlet_pressure"
               ),
               # mixing plane?
+              #ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+              #  "meshInlet_outlet", "meshChannel_inlet",
+              #  rotAxis = None,
+              #  rotCentre = None
+              #),
               ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
                 "meshInlet_outlet", "meshChannel_inlet",
                 ["U", "p", "k", "omega",],
@@ -256,6 +262,11 @@ class radMeridional:
               ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
                 "meshChannel_suction", "meshChannel_pressure"
               ),
+              #ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+              #  "meshChannel_outlet", "meshLayers_inlet",
+              #  rotAxis = None,
+              #  rotCentre = None
+              #),
               ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
                 "meshChannel_outlet", "meshLayers_inlet",
                 ["U", "p", "k", "omega",],
@@ -287,8 +298,13 @@ class radMeridional:
         cDir = dC["of"].getDirectory(
             dtOO.lVHOstateHandler().commonState()
         )
-        print(cDir)
-
+        
+        """        
+        fc = foamlib.FoamCase( cDir )
+        fc.control_dict['writeInterval'] = 50
+        fc.control_dict['endTime'] = 1000
+        fc.turbulence_properties["laminar"]["turbulence"] = False
+        """
         return container  
 
     def reloadModule(self, modname):  
