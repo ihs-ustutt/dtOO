@@ -232,12 +232,24 @@ void dtGmshFace::setMap2dTo3d(map2dTo3d const *const base)
     vertices_uv.push_back(_mm->reparamOnFace(dtGmshModel::extractPosition(vertex
     )));
   }
+  dt__forAllIterAuto(edgeLoops[0], it)
+  {
+    verticesOrdered_uv.push_back(
+      _mm->reparamOnFace(dtGmshModel::extractPosition(it->getBeginVertex()))
+    );
+  }
 }
 
 std::vector<dtPoint2> const &dtGmshFace::getVerticesUV(void) const
 {
   dt__throwIf(vertices_uv.empty(), getVerticesUV());
   return vertices_uv;
+}
+
+std::vector<dtPoint2> const &dtGmshFace::getVerticesOrderedUV(void) const
+{
+  dt__throwIf(verticesOrdered_uv.empty(), getVerticesOrderedUV());
+  return verticesOrdered_uv;
 }
 
 map2dTo3d const *dtGmshFace::getMap2dTo3d(void) const { return _mm.get(); }
