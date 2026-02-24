@@ -22,7 +22,6 @@ License
 
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/ptrVectorHandling.h>
-#include <string>
 
 #define dt__vH(name) vectorHandling<name>
 #define dt__pH(name) ptrHandling<name>
@@ -62,12 +61,44 @@ License
   {                                                                            \
     return boost::dynamic_pointer_cast<name, castFrom>(obj);                   \
   }                                                                            \
-  static dt__pVH(name) PointerVectorDownCast(dt__pVH(castFrom) obj)            \
+  static dt__pVH(name) PointerVectorCloneCast(dt__pVH(castFrom) const &obj)    \
   {                                                                            \
+    dt__pVH(castFrom) clone = obj;                                             \
     dt__pVH(name) ret;                                                         \
-    while (!obj.empty())                                                       \
+    while (!clone.empty())                                                     \
     {                                                                          \
-      ret.push_back(dynamic_cast<name *>(obj.pop_back().release()));           \
+      name *ptr = dynamic_cast<name *>(clone.pop_back().release());            \
+      if (ptr)                                                                 \
+      {                                                                        \
+        ret.push_back(ptr);                                                    \
+      }                                                                        \
+      else                                                                     \
+      {                                                                        \
+        dt__warningNoClass(                                                    \
+          PointerVectorCloneCast(), << "Null Object returned!"                 \
+        );                                                                     \
+      }                                                                        \
+    }                                                                          \
+    std::reverse(ret.base().begin(), ret.base().end());                        \
+    return ret;                                                                \
+  }                                                                            \
+  static dt__pVH(name) PointerVectorMustCloneCast(dt__pVH(castFrom) obj)       \
+  {                                                                            \
+    dt__pVH(castFrom) clone = obj;                                             \
+    dt__pVH(name) ret;                                                         \
+    while (!clone.empty())                                                     \
+    {                                                                          \
+      name *ptr = dynamic_cast<name *>(clone.pop_back().release());            \
+      if (ptr)                                                                 \
+      {                                                                        \
+        ret.push_back(ptr);                                                    \
+      }                                                                        \
+      else                                                                     \
+      {                                                                        \
+        dt__throwNoClass(                                                      \
+          PointerVectorMustCloneCast(), << "Null Object returned!"             \
+        );                                                                     \
+      }                                                                        \
     }                                                                          \
     std::reverse(ret.base().begin(), ret.base().end());                        \
     return ret;                                                                \
@@ -115,10 +146,26 @@ License
     }                                                                          \
     return ret;                                                                \
   }                                                                            \
+  static bool RefIs(const castFrom &obj)                                       \
+  {                                                                            \
+    return (dynamic_cast<name const *const>(&obj) == NULL ? false : true);     \
+  }                                                                            \
   static name &RefCast(castFrom &obj) { return static_cast<name &>(obj); }     \
   static const name &ConstRefCast(const castFrom &obj)                         \
   {                                                                            \
     return static_cast<const name &>(obj);                                     \
+  }                                                                            \
+  static name &MustRefCast(castFrom &obj)                                      \
+  {                                                                            \
+    name *const ptr = dynamic_cast<name *const>(&obj);                         \
+    dt__throwIfNoClass(!ptr, MustRefCast());                                   \
+    return static_cast<name &>(obj);                                           \
+  }                                                                            \
+  static const name &MustConstRefCast(const castFrom &obj)                     \
+  {                                                                            \
+    name const *const ptr = dynamic_cast<name const *const>(&obj);             \
+    dt__throwIfNoClass(!ptr, MustConstRefCast());                              \
+    return static_cast<name const &>(obj);                                     \
   }
 
 #define dt__handling(name) typedef labeledVectorHandling<name *> ptrVec
@@ -143,6 +190,8 @@ License
   for (type::const_iterator iter = (vector).begin(); iter != (vector).end();   \
        ++iter)
 #define dt__forAllRefAuto(vector, iterator) for (auto &iterator : vector)
+#define dt__forAllIterAuto(vector, iterator)                                   \
+  for (auto iterator = vector.begin(); iterator != vector.end(); ++iterator)
 #define dt__forFromToIter(iterator_type, from, to, iter)                       \
   for (iterator_type iter = from; iter != to; ++iter)
 #define dt__mustCast(object, type, result)                                     \

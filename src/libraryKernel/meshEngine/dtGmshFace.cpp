@@ -234,7 +234,7 @@ void dtGmshFace::setMap2dTo3d(map2dTo3d const *const base)
   }
 }
 
-std::vector<dtPoint2> const &dtGmshFace::getVerticesUV(void)
+std::vector<dtPoint2> const &dtGmshFace::getVerticesUV(void) const
 {
   dt__throwIf(vertices_uv.empty(), getVerticesUV());
   return vertices_uv;

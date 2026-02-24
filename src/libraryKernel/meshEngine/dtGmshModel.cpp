@@ -62,12 +62,26 @@ License
   dt__throw(__cgnsCheck(), << dt__eval(cg_get_error()))
 
 namespace dtOO {
-std::map<std::string, dtInt>
-  dtGmshModel::_facePositionStr =
-    ::boost::
-      assign::map_list_of("SOUTH", 0)("south", 0)("0", 0)("S", 0)("s", 0)("NORTH", 1)("north", 1)("1", 1)("N", 1)("n", 1)("FRONT", 2)("front", 2)("2", 2)("F", 2)("f", 2)("BACK", 3)("back", 3)("3", 3)("B", 3)("b", 3)("WEST", 4)("west", 4)("4", 4)("W", 4)("w", 4)("EAST", 5)("east", 5)("5", 5)("E", 5)("e", 5)("6", 6)("7", 7)("8", 8)("9", 9)("10", 10)("11", 11)("12", 12)("13", 13)(
-        "14", 14
-      );
+// clang-format off
+std::map<std::string, dtInt> dtGmshModel::_facePositionStr = ::boost::
+      assign::map_list_of
+        ("SOUTH", 0)("south", 0)("0", 0)("S", 0)("s", 0)
+        ("NORTH", 1)("north", 1)("1", 1)("N", 1)("n", 1)
+        ("FRONT", 2)("front", 2)("2", 2)("F", 2)("f", 2)
+        ("BACK", 3)("back", 3)("3", 3)("B", 3)("b", 3)
+        ("WEST", 4)("west", 4)("4", 4)("W", 4)("w", 4)
+        ("EAST", 5)("east", 5)("5", 5)("E", 5)("e", 5)
+        ("6", 6)
+        ("7", 7)
+        ("8", 8)
+        ("9", 9)
+        ("10", 10)
+        ("11", 11)
+        ("12", 12)
+        ("13", 13)
+        ("14", 14)
+      ;
+// clang-format on
 std::map< int, std::vector< std::string > > dtGmshModel::_positionStrFace
     =
     ::boost::assign::map_list_of
@@ -184,16 +198,28 @@ std::map< int, std::vector< std::string > > dtGmshModel::_positionStrEdge
         ::boost::assign::list_of
           ("3").convert_to_container< std::vector< std::string > >()
       );
-std::map<std::string, dtInt> dtGmshModel::_vertexPositionStr = ::boost::assign::
-  map_list_of("0", 0)("START", 0)("start", 0)("S", 0)("s", 0)("1", 1)("END", 1)("end", 1)("E", 1)(
-    "e", 1
-  );
-std::map<int, std::vector<std::string>> dtGmshModel::_positionStrVertex = ::boost::assign::
-  map_list_of(0, ::boost::assign::list_of("0")("START")("start")("S")("s").convert_to_container<std::vector<std::string>>())(
-    1,
-    ::boost::assign::list_of("1")("END")("end")("E")("e")
-      .convert_to_container<std::vector<std::string>>()
-  );
+// clang-format off
+std::map<std::string, dtInt> dtGmshModel::_vertexPositionStr 
+= 
+::boost::assign::
+  map_list_of
+  ("0", 0)("START", 0)("start", 0)("S", 0)("s", 0)
+  ("1", 1)("END", 1)("end", 1)("E", 1)("e", 1)
+;
+std::map<int, std::vector<std::string>> dtGmshModel::_positionStrVertex 
+= 
+::boost::assign::map_list_of
+(
+  0, 
+  ::boost::assign::list_of("0")("START")("start")("S")("s")
+    .convert_to_container<std::vector<std::string>>()
+)
+(
+  1,
+  ::boost::assign::list_of("1")("END")("end")("E")("e")
+    .convert_to_container<std::vector<std::string>>()
+);
+// clang-format on
 dtGmshModel::dtGmshModel(std::string name) : GModel(name)
 {
   _debug = "";
@@ -596,7 +622,7 @@ void dtGmshModel::addIfToGmshModel(
     //
     std::list<::GEdge *> edges;
     std::vector<dtInt> ori;
-    dt__pVH(analyticGeometry) const &bounds = mbs->boundsVectorConstRef();
+    dt__pVH(analyticGeometry) const bounds = mbs->boundsPointerVectorConst();
     dt__forAllIndex(bounds, ii)
     {
       dtInt tmpTag;
