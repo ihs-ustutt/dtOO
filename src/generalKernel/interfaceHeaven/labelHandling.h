@@ -32,6 +32,7 @@ public:
   labelHandling();
   labelHandling(const labelHandling &orig);
   labelHandling(std::string const &label);
+  virtual labelHandling *clone(void) const;
   void jInit(jsonPrimitive const &jE);
   virtual ~labelHandling();
   void setLabel(std::string const label);
@@ -40,5 +41,6 @@ public:
 private:
   std::string _label;
 };
+dt__H_addCloneForpVH(labelHandling);
 } // namespace dtOO
 #endif /* LABELHANDLING_H */
