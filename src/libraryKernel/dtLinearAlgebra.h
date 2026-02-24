@@ -184,6 +184,7 @@ public:
   );
   static std::vector<dtReal> unitGrid(int const &nU);
   static twoDArrayHandling<dtPoint2> unitGrid(dtInt const &nU, dtInt const &nV);
+  static dtPoint2 centerPoint(std::vector<dtPoint2> const &points);
 };
 } // namespace dtOO
 #endif /* DTLINEARALGEBRA_H */
