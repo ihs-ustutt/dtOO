@@ -48,7 +48,8 @@ labelHandling::~labelHandling() { _label.clear(); }
 void labelHandling::setLabel(std::string const label) { _label = label; }
 
 std::string labelHandling::getLabel(void) const { return _label; }
-labelHandling * labelHandling::clone(void) const { 
+labelHandling *labelHandling::clone(void) const
+{
   dt__throwUnexpected(clone());
   return NULL;
 }
