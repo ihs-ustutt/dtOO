@@ -208,4 +208,5 @@ std::string dtSurface2d::dumpToString(void) const
 
   return ss.str();
 }
+dt__C_addCloneForpVH(dtSurface2d);
 } // namespace dtOO
