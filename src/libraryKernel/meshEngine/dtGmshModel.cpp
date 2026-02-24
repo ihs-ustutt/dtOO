@@ -1756,34 +1756,32 @@ std::list<dtGmshRegion *> dtGmshModel::dtRegions(void) const
 
 void dtGmshModel::untagPhysical(::GEntity *const ge)
 {
-  dt__throwIfWithMessage(
-    ge->physicals.size() > 1,
-    untagPhysical(),
-    << "physicalName = " << getPhysicalNames(ge->dim(), ge->physicals)
-    << std::endl
-    << "ge->physicals = [ " << ge->physicals << " ]"
-  );
-
   if (ge->physicals.empty())
     return;
 
-  dtInt pNum = ge->physicals[0];
-  ge->physicals.clear();
-  std::vector<::GEntity *> ent;
-  this->getEntities(ent, ge->dim());
-  bool found = false;
-  dt__forAllRefAuto(ent, anEnt)
+  dt__forAllRefAuto(ge->physicals, pNum)
   {
-    if (std::find(anEnt->physicals.begin(), anEnt->physicals.end(), pNum) !=
-        anEnt->physicals.end())
+    std::vector<::GEntity *> ent;
+    this->getEntities(ent, ge->dim());
+    bool found = false;
+    dt__forAllRefAuto(ent, anEnt)
     {
-      found = true;
+      if (std::find(anEnt->physicals.begin(), anEnt->physicals.end(), pNum) !=
+          anEnt->physicals.end())
+      {
+        found = true;
+      }
+    }
+    if (!found)
+    {
+      dt__debug(
+        untagPhysical(),
+        << "Remove physical: " << this->getPhysicalName(ge->dim(), pNum)
+      );
+      this->removePhysicalName(this->getPhysicalName(ge->dim(), pNum));
     }
   }
-  if (!found)
-  {
-    this->removePhysicalName(this->getPhysicalName(ge->dim(), pNum));
-  }
+  ge->physicals.clear();
 }
 
 std::vector<std::string>
@@ -1900,7 +1898,10 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
     //
     // add label
     //
-    fullList.push_back(reg->getPhysicalString());
+    dt__forAllRefAuto(this->getPhysicalStrings(reg), pStr)
+    {
+      fullList.push_back(pStr);
+    }
 
     //
     // add number in vector
@@ -1924,8 +1925,10 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
     //
     // add label
     //
-    fullList.push_back(face->getPhysicalString());
-    std::string faceStr = face->getPhysicalString();
+    dt__forAllRefAuto(this->getPhysicalStrings(face), pStr)
+    {
+      fullList.push_back(pStr);
+    }
     //
     // region iterate
     //
@@ -1936,7 +1939,11 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
       //
       dt__forAllRefAuto(getFullPhysicalList(aReg), aPrefix)
       {
-        fullList.push_back(aPrefix + "->" + faceStr);
+
+        dt__forAllRefAuto(this->getPhysicalStrings(face), faceStr)
+        {
+          fullList.push_back(aPrefix + "->" + faceStr);
+        }
         //
         // get position index
         //
@@ -1967,8 +1974,10 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
     //
     // add label
     //
-    fullList.push_back(edge->getPhysicalString());
-    std::string edgeStr = edge->getPhysicalString();
+    dt__forAllRefAuto(this->getPhysicalStrings(edge), pStr)
+    {
+      fullList.push_back(pStr);
+    }
     //
     // region iterate
     //
@@ -1979,7 +1988,10 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
       //
       dt__forAllRefAuto(getFullPhysicalList(aFace), aPrefix)
       {
-        fullList.push_back(aPrefix + "->" + edgeStr);
+        dt__forAllRefAuto(this->getPhysicalStrings(edge), edgeStr)
+        {
+          fullList.push_back(aPrefix + "->" + edgeStr);
+        }
         //
         // get position index
         //
@@ -2002,8 +2014,10 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
     //
     // add label
     //
-    fullList.push_back(vertex->getPhysicalString());
-    std::string vertexStr = vertex->getPhysicalString();
+    dt__forAllRefAuto(this->getPhysicalStrings(vertex), vertexStr)
+    {
+      fullList.push_back(vertexStr);
+    }
     //
     // edge iterate
     //
@@ -2014,7 +2028,10 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
       //
       dt__forAllRefAuto(getFullPhysicalList(aEdge), aPrefix)
       {
-        fullList.push_back(aPrefix + "->" + vertexStr);
+        dt__forAllRefAuto(this->getPhysicalStrings(vertex), vertexStr)
+        {
+          fullList.push_back(aPrefix + "->" + vertexStr);
+        }
         //
         // get position index
         //
