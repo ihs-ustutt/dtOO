@@ -934,4 +934,15 @@ dtLinearAlgebra::unitGrid(dtInt const &nU, dtInt const &nV)
 
   return grid;
 }
+dtPoint2 dtLinearAlgebra::centerPoint(std::vector<dtPoint2> const &points)
+{
+  dtReal uu = 0.0;
+  dtReal vv = 0.0;
+  dt__forAllRefAuto(points, point)
+  {
+    uu = uu + point.x();
+    vv = vv + point.y();
+  }
+  return dtPoint2(uu / points.size(), vv / points.size());
+}
 } // namespace dtOO
