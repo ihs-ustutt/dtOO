@@ -160,6 +160,8 @@ public:
     dtPoint3 const &p011,
     dtPoint3 const &p111
   );
+  static bool
+  isInsidePolygon(dtPoint2 const &pt, std::vector<dtPoint2> const &points);
   static dtReal area(
     dtPoint3 const &p0,
     dtPoint3 const &p1,
