@@ -19,7 +19,6 @@ License
 #include "map1dTo3d.h"
 #include "map2dTo3d.h"
 #include <analyticGeometryHeaven/aGBuilder/map1dTo3d_orderLoop.h>
-//#include <dtTransformerHeaven/dtTransformer.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logContainer.h>
 #include <logMe/logMe.h>

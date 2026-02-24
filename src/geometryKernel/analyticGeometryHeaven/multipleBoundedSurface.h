@@ -21,8 +21,6 @@ License
 #include <dtOOTypeDef.h>
 
 #include "analyticGeometry.h"
-#include "map1dTo3d.h"
-#include "map2dTo3d.h"
 #include <dtLinearAlgebra.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <logMe/dtMacros.h>
