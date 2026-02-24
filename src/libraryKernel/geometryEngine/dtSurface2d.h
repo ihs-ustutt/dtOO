@@ -94,5 +94,6 @@ public:
   ) const;
   dtPoint2 reparamPercent(dtPoint2 const point) const;
 };
+dt__H_addCloneForpVH(dtSurface2d);
 } // namespace dtOO
 #endif /* DTSURFACE2D_H */
