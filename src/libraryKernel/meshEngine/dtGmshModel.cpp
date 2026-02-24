@@ -1786,21 +1786,34 @@ void dtGmshModel::untagPhysical(::GEntity *const ge)
   }
 }
 
+std::vector<std::string>
+dtGmshModel::getPhysicalStrings(::GEntity const *const ge) const
+{
+  std::vector<dtInt> pInts = const_cast<::GEntity *>(ge)->getPhysicalEntities();
+
+  std::vector<std::string> ret;
+  if (pInts.size() > 0)
+  {
+    dt__forAllRefAuto(pInts, pInt)
+    {
+      ret.push_back(::GModel::getPhysicalName(ge->dim(), pInt));
+    }
+  }
+  return ret;
+}
+
 std::string dtGmshModel::getPhysicalString(::GEntity const *const ge) const
 {
-  std::vector<dtInt> pInt = const_cast<::GEntity *>(ge)->getPhysicalEntities();
+  std::vector<std::string> physicals = getPhysicalStrings(ge);
 
-  if (pInt.size() == 0)
+  if (physicals.empty())
     return std::string("");
 
   dt__throwIfWithMessage(
-    pInt.size() != 1,
-    getPhysicalString(),
-    << dt__eval(pInt) << std::endl
-    << dt__eval(getPhysicalNames(ge->dim(), pInt))
+    physicals.size() != 1, getPhysicalString(), << dt__eval(physicals)
   );
 
-  return ::GModel::getPhysicalName(ge->dim(), pInt[0]);
+  return physicals[0];
 }
 
 std::vector<std::string> dtGmshModel::getPhysicalNames(
