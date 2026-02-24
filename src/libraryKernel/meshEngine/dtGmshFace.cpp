@@ -227,16 +227,30 @@ void dtGmshFace::setMap2dTo3d(map2dTo3d const *const base)
   dt__throwIf(!vertices_uv.empty(), setMap2dTo3d());
   _geomType = ::GEntity::GeomType::ParametricSurface;
   _mm.reset(base->clone());
+
   dt__forAllRefAuto(this->vertices(), vertex)
   {
     vertices_uv.push_back(_mm->reparamOnFace(dtGmshModel::extractPosition(vertex
     )));
   }
-  dt__forAllIterAuto(edgeLoops[0], it)
+  if (edgeLoops.size() > 0)
   {
-    verticesOrdered_uv.push_back(
-      _mm->reparamOnFace(dtGmshModel::extractPosition(it->getBeginVertex()))
-    );
+    dt__forAllIterAuto(edgeLoops[0], it)
+    {
+      //
+      // this if condition is necessary, because there are ugly faces created 
+      // in dtMeshGFaceWithTransfiniteLayer; those faces have no vertices 
+      // returned from vertices()-function, but do have an edgeLoop
+      //
+      if (it->getBeginVertex() != NULL)
+      {
+        verticesOrdered_uv.push_back(
+          _mm->reparamOnFace(dtGmshModel::extractPosition(it->getBeginVertex()))
+        );
+      }
+      else
+        dt__warning(setMap2dTo3d(), << dt__eval(it->getBeginVertex()));
+    }
   }
 }
 
