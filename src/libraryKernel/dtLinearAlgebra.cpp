@@ -865,6 +865,16 @@ bool dtLinearAlgebra::isInsidePolygon(
   return true;
 }
 
+bool dtLinearAlgebra::isSimplePolygon(std::vector<dtPoint2> const &points)
+{
+  return dtPolygon2(points.begin(), points.end()).is_simple();
+}
+
+bool dtLinearAlgebra::isConvexPolygon(std::vector<dtPoint2> const &points)
+{
+  return dtPolygon2(points.begin(), points.end()).is_convex();
+}
+
 dtReal dtLinearAlgebra::area(
   dtPoint3 const &p0, dtPoint3 const &p1, dtPoint3 const &p2, dtPoint3 const &p3
 )

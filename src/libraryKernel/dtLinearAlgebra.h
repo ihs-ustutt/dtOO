@@ -28,6 +28,7 @@ License
 #include <CGAL/Linear_algebraCd.h>
 #include <CGAL/Origin.h>
 #include <CGAL/Point_3.h>
+#include <CGAL/Polygon_2.h>
 #include <CGAL/Segment_3.h>
 #include <CGAL/Tetrahedron_3.h>
 #include <CGAL/Triangle_3.h>
@@ -49,6 +50,7 @@ typedef ::CGAL::Aff_transformation_2<dtKernel> dtAffTransformation2;
 typedef ::CGAL::Translation dtAffTranslation;
 typedef ::CGAL::Line_3<dtKernel> dtLine3;
 typedef ::CGAL::Line_2<dtKernel> dtLine2;
+typedef ::CGAL::Polygon_2<dtKernel> dtPolygon2;
 typedef ::CGAL::Triangle_3<dtKernel> dtTriangle3;
 typedef ::CGAL::Segment_3<dtKernel> dtSegment3;
 typedef ::CGAL::Tetrahedron_3<dtKernel> dtTetrahedron3;
@@ -162,6 +164,8 @@ public:
   );
   static bool
   isInsidePolygon(dtPoint2 const &pt, std::vector<dtPoint2> const &points);
+  static bool isSimplePolygon(std::vector<dtPoint2> const &points);
+  static bool isConvexPolygon(std::vector<dtPoint2> const &points);
   static dtReal area(
     dtPoint3 const &p0,
     dtPoint3 const &p1,
