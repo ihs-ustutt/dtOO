@@ -226,6 +226,7 @@ public:
   // physical handling
   //
   void untagPhysical(::GEntity *const ge);
+  std::vector<std::string> getPhysicalStrings(::GEntity const *const ge) const;
   std::string getPhysicalString(::GEntity const *const ge) const;
   std::vector<std::string>
   getPhysicalNames(dtInt const &dim, std::vector<dtInt> const &number) const;
