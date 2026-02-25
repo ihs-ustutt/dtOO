@@ -28,32 +28,62 @@ License
 
 namespace dtOO {
 uv_map2dTo3dClosestPointToPoint::uv_map2dTo3dClosestPointToPoint(
-  map2dTo3d const *const m2d, dtPoint3 const &pXYZ
+  map2dTo3d const *const m2d,
+  dtPoint3 const &pXYZ,
+  std::vector<dtPoint2> const &guesses,
+  dtInt const &maxIterations
 )
 {
   gslMinFloatAttr md(
     dt__pH(pointGeometryDist)(new pointGeometryDist(pXYZ, m2d)),
-    // clang-format off
-    ::std::vector<dtPoint2>(
-      ::boost::assign::list_of
-        (dtPoint2(0.50, 0.50))
-        (dtPoint2(0.75, 0.50))
-        (dtPoint2(0.25, 0.50))
-        (dtPoint2(0.50, 0.75))
-        (dtPoint2(0.75, 0.75))
-        (dtPoint2(0.25, 0.75))
-        (dtPoint2(0.50, 0.25))
-        (dtPoint2(0.75, 0.25))
-        (dtPoint2(0.25, 0.25))
-    ),
-    // clang-format on
+    guesses,
     dtPoint2(0.001, 0.001),
-    staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
+    staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
+    maxIterations
   );
   md.extraInfo(m2d->getLabel());
   md.perform();
   _closestUV = m2d->uv_percent(dtPoint2(md.result()[0], md.result()[1]));
   _distance = dtLinearAlgebra::distance(m2d->getPoint(_closestUV), pXYZ);
+}
+
+uv_map2dTo3dClosestPointToPoint::uv_map2dTo3dClosestPointToPoint(
+  map2dTo3d const *const m2d, dtPoint3 const &pXYZ
+)
+  : uv_map2dTo3dClosestPointToPoint(
+      m2d,
+      pXYZ,
+      // clang-format off
+      ::std::vector<dtPoint2>(
+        ::boost::assign::list_of
+          (dtPoint2(0.50, 0.50))
+          (dtPoint2(0.75, 0.50))
+          (dtPoint2(0.25, 0.50))
+          (dtPoint2(0.50, 0.75))
+          (dtPoint2(0.75, 0.75))
+          (dtPoint2(0.25, 0.75))
+          (dtPoint2(0.50, 0.25))
+          (dtPoint2(0.75, 0.25))
+          (dtPoint2(0.25, 0.25))
+      )
+      // clang-format on
+    )
+{
+}
+
+uv_map2dTo3dClosestPointToPoint::uv_map2dTo3dClosestPointToPoint(
+  map2dTo3d const *const m2d,
+  dtPoint3 const &pXYZ,
+  dtPoint2 const &guess,
+  dtInt const &maxIterations
+)
+  : uv_map2dTo3dClosestPointToPoint(
+      m2d,
+      pXYZ,
+      ::std::vector<dtPoint2>(::boost::assign::list_of(guess)),
+      maxIterations
+    )
+{
 }
 
 uv_map2dTo3dClosestPointToPoint::~uv_map2dTo3dClosestPointToPoint() {}
