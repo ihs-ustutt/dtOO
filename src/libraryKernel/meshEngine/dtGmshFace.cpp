@@ -238,8 +238,8 @@ void dtGmshFace::setMap2dTo3d(map2dTo3d const *const base)
     dt__forAllIterAuto(edgeLoops[0], it)
     {
       //
-      // this if condition is necessary, because there are ugly faces created 
-      // in dtMeshGFaceWithTransfiniteLayer; those faces have no vertices 
+      // this if condition is necessary, because there are ugly faces created
+      // in dtMeshGFaceWithTransfiniteLayer; those faces have no vertices
       // returned from vertices()-function, but do have an edgeLoop
       //
       if (it->getBeginVertex() != NULL)
