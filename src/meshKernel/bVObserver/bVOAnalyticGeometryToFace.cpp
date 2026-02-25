@@ -20,6 +20,7 @@ License
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
+#include <analyticGeometryHeaven/multipleBoundedSurface.h>
 #include <boundedVolume.h>
 #include <constValueHeaven/constValue.h>
 #include <logMe/logMe.h>
@@ -54,10 +55,7 @@ void bVOAnalyticGeometryToFace::jInit(
 )
 {
   bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
-
-  _m2d = map2dTo3d::PointerVectorMustCloneCast(
-    jE.lookupVecClone<analyticGeometry>("", aG)
-  );
+  _aG = jE.lookupVecClone<analyticGeometry>("", aG);
 }
 
 void bVOAnalyticGeometryToFace::init(
@@ -131,29 +129,47 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
     config().lookup<::std::vector<dtInt>>("_facesPerEntry");
   logContainer<bVOAnalyticGeometryToFace> logC(logINFO, "preUpdate()");
 
-  // dt__forAllRefAuto(_m2d, aM2d)
-  dt__forAllIndex(_m2d, i)
+  dt__forAllIndex(_aG, i)
   {
-    map2dTo3d const &aM2d = _m2d[i];
-    dtInt tagged = 0;
-    logC() << aM2d.getLabel() << std::endl;
+    map2dTo3d const *m2d = NULL;
+    multipleBoundedSurface const *mBS = NULL;
+    bool isMultiBounded = false;
+    if (map2dTo3d::Is(&_aG[i]))
+    {
+      logC() << "Handling map2dTo3d " << _aG[i].getLabel() << ".\n";
+      m2d = map2dTo3d::ConstDownCast(&_aG[i]);
+    }
+    else if (multipleBoundedSurface::Is(&_aG[i]))
+    {
+      logC() << "Handling multipleBoundedSurface " << _aG[i].getLabel()
+             << ".\n";
+      isMultiBounded = true;
+      mBS = multipleBoundedSurface::DownCast(&_aG[i]);
+      m2d = map2dTo3d::MustConstDownCast(mBS->surfaceConstPtr());
+    }
+    else
+    {
+      logC() << "Type not handled. Ignoring " << _aG[i].getLabel() << ".\n";
+    }
 
-    //
+    dtInt tagged = 0;
+
     // local counter to prevent equal tags
-    //
     dtInt localCounter = 0;
 
-    //
     // initialize min distance to max float
-    //
     dtReal minDistAv = std::numeric_limits<dtReal>::max();
+
+    // loop through all faces of gmsh model
+    //   Note: face is a face of the gmsh model; m2d is the face of the
+    //         observer that was defined within the json file.
     dt__forAllRefAuto(gm->dtFaces(), aFace)
     {
       dtInt inTol = 0;
       dtReal distAv = 0.;
 
       //
-      // define mid point and its distance
+      // define face's mid point and its distance
       //
       std::vector<dtPoint2> const &vertUVs = aFace->getVerticesUV();
       std::pair<dtPoint2, dtPoint2> uvBound =
@@ -163,11 +179,23 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
         uvBound.first[1] + 0.5 * (uvBound.second[1] - uvBound.first[1])
       );
       dtPoint3 const midPoint = aFace->getMap2dTo3d()->getPoint(midPointUV);
+      // calculate distance of face's midpoint to m2d
       dtReal const midDist =
-        uv_map2dTo3dClosestPointToPoint(&(aM2d), midPoint).distance();
-      bool const midIsOnFace = analyticGeometry::inXYZTolerance(
+        uv_map2dTo3dClosestPointToPoint(m2d, midPoint).distance();
+      bool midIsOnFace = analyticGeometry::inXYZTolerance(
         midDist, config().lookupDef<dtReal>("_inc", 1.0)
       );
+      // for multipleBoundedSurface objects the midpoint has to be on m2d
+      // and, additionally, has to be inside of the polygon; the polygon is
+      // formed by the edges
+      if (isMultiBounded)
+      {
+        bool const insidePolygon = mBS->insideInternalPolygon(midPointUV);
+        midIsOnFace = midIsOnFace && insidePolygon;
+        logC() << "    + midPoint of " << _aG[i].getLabel()
+               << " : insidePolygon = " << insidePolygon
+               << " -> midIsOnFace = " << midIsOnFace << std::endl;
+      }
 
       dt__debug(
         preUpdate(),
@@ -177,7 +205,7 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
                            "    1: (%f %f)  2: (%f %f)\n"
                            "    3: (%f %f)  4: (%f %f)\n"
                            "  MidPoint (UV) -> (XYZ) :(%f, %f) -> (%f, %f, %f)"
-           ) % aM2d.getLabel() %
+           ) % m2d->getLabel() %
                uvBound.first[0] % uvBound.first[1] % uvBound.second[0] %
                uvBound.second[1] % midPointUV[0] % midPointUV[1] % midPoint[0] %
                midPoint[1] % midPoint[2] % vertUVs[0][0] % vertUVs[0][1] %
@@ -189,33 +217,7 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       // define check points; prevent checking directly the corner points
       // (face vertices) as this is very unstable
       //
-      dtReal const distanceCheckPoints =
-        config().lookupDef<dtReal>("_distanceCheckPoints", 0.1);
-      std::vector<dtPoint3> ckPoints;
-      ckPoints.push_back(aFace->getMap2dTo3d()->getPoint(dtPoint2(
-        uvBound.first[0] +
-          distanceCheckPoints * (uvBound.second[0] - uvBound.first[0]),
-        uvBound.first[1] +
-          distanceCheckPoints * (uvBound.second[1] - uvBound.first[1])
-      )));
-      ckPoints.push_back(aFace->getMap2dTo3d()->getPoint(dtPoint2(
-        uvBound.first[0] +
-          (1.0 - distanceCheckPoints) * (uvBound.second[0] - uvBound.first[0]),
-        uvBound.first[1] +
-          distanceCheckPoints * (uvBound.second[1] - uvBound.first[1])
-      )));
-      ckPoints.push_back(aFace->getMap2dTo3d()->getPoint(dtPoint2(
-        uvBound.first[0] +
-          (1.0 - distanceCheckPoints) * (uvBound.second[0] - uvBound.first[0]),
-        uvBound.first[1] +
-          (1.0 - distanceCheckPoints) * (uvBound.second[1] - uvBound.first[1])
-      )));
-      ckPoints.push_back(aFace->getMap2dTo3d()->getPoint(dtPoint2(
-        uvBound.first[0] +
-          distanceCheckPoints * (uvBound.second[0] - uvBound.first[0]),
-        uvBound.first[1] +
-          (1.0 - distanceCheckPoints) * (uvBound.second[1] - uvBound.first[1])
-      )));
+      std::vector<dtPoint3> ckPoints = calcCheckPoints(aFace);
 
       // check internal check points only if the mid point is on the surface
       // and the check is not disabled
@@ -223,28 +225,43 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       {
         dt__forAllRefAuto(ckPoints, ckPoint)
         {
-          dtReal dist =
-            uv_map2dTo3dClosestPointToPoint(&(aM2d), ckPoint).distance();
+          uv_map2dTo3dClosestPointToPoint distAlgo(m2d, ckPoint);
+          dtReal dist = distAlgo.distance();
+          bool inTolerance = analyticGeometry::inXYZTolerance(
+            dist, config().lookupDef<dtReal>("_inc", 1.0)
+          );
 
-          //
-          // summerize distances
-          //
+          // give a second chance to points with midIsOnFace; use first guess
+          // and increase number of iterations
+          if (midIsOnFace && !inTolerance)
+          {
+            dt__info(
+              preUpdate(),
+              << "First reparameterization fails. Best solution found was ("
+              << distAlgo.result().x() << ", " << distAlgo.result().y()
+              << ") with distance " << dist << std::endl
+            );
+            distAlgo = uv_map2dTo3dClosestPointToPoint(
+              m2d, ckPoint, distAlgo.result() //, 500
+            );
+            dist = distAlgo.distance();
+            inTolerance = analyticGeometry::inXYZTolerance(
+              dist, config().lookupDef<dtReal>("_inc", 1.0)
+            );
+          }
+
+          // summarize distances
           distAv = distAv + dist;
 
-          //
           // increase if in precision
-          //
-          if (analyticGeometry::inXYZTolerance(
-                dist, config().lookupDef<dtReal>("_inc", 1.0)
-              ))
+          if (inTolerance)
           {
             inTol++;
           }
-          // break if at least one point is not on the surface
+          // break if at least one point is not on the surface, but NOT
+          // midIsOnFace
           else
-          {
             break;
-          }
         }
       }
 
@@ -267,13 +284,20 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
           << logMe::dtFormat("Accept: midDist = %f, midIsOnFace = %d, %d == "
                              "%d, distAv = %f, label = %s") %
                  midDist % midIsOnFace % inTol % ckPoints.size() % distAv %
-                 aM2d.getLabel()
+                 m2d->getLabel()
         );
 
         tagged = tagged + 1;
         std::string tagString(
-          aM2d.getLabel() + "_" + stringPrimitive::intToString(localCounter)
+          m2d->getLabel() + "_" + stringPrimitive::intToString(localCounter)
         );
+        if (isMultiBounded)
+        {
+          logC() << "    + Adjust tag of mBS > " << m2d->getLabel() << " -> "
+                 << mBS->getLabel() << std::endl;
+          tagString =
+            mBS->getLabel() + "_" + stringPrimitive::intToString(localCounter);
+        }
         logC() << "  > " << tagString << " ( " << distAv << " ) " << std::endl;
         gm->tagPhysical(aFace, tagString);
         localCounter++;
@@ -285,7 +309,7 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
           << logMe::dtFormat("Skip: midDist = %f, midIsOnFace = %d, %d == %d, "
                              "distAv = %f, label = %s") %
                  midDist % midIsOnFace % inTol % ckPoints.size() % distAv %
-                 aM2d.getLabel()
+                 m2d->getLabel()
         );
       }
     }
@@ -297,9 +321,41 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
         preUpdate(),
         << "tagged = " << tagged << std::endl
         << "facesPerEntry = " << facesPerEntry[i] << std::endl
-        << "aM2d = " << aM2d.getLabel() << std::endl
+        << "aM2d = " << m2d->getLabel() << std::endl
       );
     }
   }
 }
+
+std::vector<dtPoint3>
+bVOAnalyticGeometryToFace::calcCheckPoints(dtGmshFace const *const aFace) const
+{
+  std::vector<dtPoint2> const &vertUVs = aFace->getVerticesOrderedUV();
+  dtPoint2 centerPoint = dtLinearAlgebra::centerPoint(vertUVs);
+
+  dtReal const dd = config().lookupDef<dtReal>("_distanceCheckPoints", 0.1);
+
+  std::vector<dtPoint3> ckPoints;
+  if (dtLinearAlgebra::isConvexPolygon(vertUVs))
+  {
+    dt__forAllRefAuto(vertUVs, vertUV)
+    {
+      dtPoint2 const ckPoint = vertUV + dd * (centerPoint - vertUV);
+      dt__throwIf(
+        !dtLinearAlgebra::isInsidePolygon(ckPoint, vertUVs), calcCheckPoints()
+      );
+      ckPoints.push_back(aFace->getMap2dTo3d()->getPoint(ckPoint));
+      dt__debug(
+        calcCheckPoints(),
+        << "Add check point of convex polygon: (" << ckPoints.back()[0] << ", "
+        << ckPoints.back()[1] << ")"
+      );
+    }
+  }
+  else
+    dt__throwUnexpected(calcCheckPoints());
+
+  return ckPoints;
+}
+
 } // namespace dtOO
