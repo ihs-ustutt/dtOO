@@ -17,6 +17,8 @@ License
 
 #include "uv_map2dTo3dClosestPointToPoint.h"
 #include "dtLinearAlgebra.h"
+#include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <attributionHeaven/pointGeometryDist.h>
@@ -34,9 +36,16 @@ uv_map2dTo3dClosestPointToPoint::uv_map2dTo3dClosestPointToPoint(
   dtInt const &maxIterations
 )
 {
+  dt__warnIf(m2d->isClosedU(), uv_map2dTo3dClosestPointToPoint());
+  dt__warnIf(m2d->isClosedV(), uv_map2dTo3dClosestPointToPoint());
+  std::vector<dtPoint2> guessesPercent;
+  dt__forAllRefAuto(guesses, guess)
+  {
+    guessesPercent.push_back(m2d->percent_uv(guess));
+  }
   gslMinFloatAttr md(
     dt__pH(pointGeometryDist)(new pointGeometryDist(pXYZ, m2d)),
-    guesses,
+    guessesPercent,
     dtPoint2(0.001, 0.001),
     staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
     maxIterations
