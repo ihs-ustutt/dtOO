@@ -1023,15 +1023,16 @@ edges:</p>
 </pre></div>
 </div>
 <p>Create an empty vector of <code class="docutils literal notranslate"><span class="pre">analyticGeometry</span></code> objects:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m2ds</span> <span class="o">=</span> <span class="n">vectorHandlingAnalyticGeometry</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m2ds</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_aG</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Create two objects of <code class="docutils literal notranslate"><span class="pre">multipleBoundedSurface</span></code>; the surfaces are bounded by
 five edges; the first argument holds the surface information; it is important
 to keep in mind, that the edge and face is not coupled outside of the
-<code class="docutils literal notranslate"><span class="pre">multipleBoundedSurface</span></code>-object:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m2ds</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">multipleBoundedSurface</span><span class="p">(</span><span class="n">m2d0</span><span class="p">,</span> <span class="n">m1ds0</span><span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m2ds</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">multipleBoundedSurface</span><span class="p">(</span><span class="n">m2d1</span><span class="p">,</span> <span class="n">m1ds1</span><span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+<code class="docutils literal notranslate"><span class="pre">multipleBoundedSurface</span></code>-object; the <code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code>-operator clones the object and
+sets a new label:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m2ds</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">multipleBoundedSurface</span><span class="p">(</span><span class="n">m2d0</span><span class="p">,</span> <span class="n">m1ds0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;mBS_0&quot;</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m2ds</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">multipleBoundedSurface</span><span class="p">(</span><span class="n">m2d1</span><span class="p">,</span> <span class="n">m1ds1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;mBS_1&quot;</span> <span class="p">)</span>
 </pre></div>
 </div>
 <p>Loop through all edges of a face and create a skin surface with the two edges;
@@ -1099,7 +1100,17 @@ all possible face labels:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">aFace</span> <span class="ow">in</span> <span class="n">gm</span><span class="o">.</span><span class="n">getDtGmshFaceListByPhysical</span><span class="p">(</span><span class="s2">&quot;mbv-&gt;*&quot;</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="n">gm</span><span class="o">.</span><span class="n">tagPhysical</span><span class="p">(</span> <span class="n">aFace</span><span class="p">,</span> <span class="s2">&quot;f_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">... </span>  <span class="n">gm</span><span class="o">.</span><span class="n">tagPhysical</span><span class="p">(</span> <span class="n">aFace</span><span class="p">,</span> <span class="s2">&quot;F_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="p">)</span>
 <span class="gp">... </span>  <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Faces were tagged with <code class="docutils literal notranslate"><span class="pre">f_*</span></code> and <code class="docutils literal notranslate"><span class="pre">F_*</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gm</span><span class="o">.</span><span class="n">getPhysicalStrings</span><span class="p">(</span> <span class="n">gm</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">&quot;F_0&quot;</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">(&#39;f_0&#39;, &#39;F_0&#39;)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">aFace</span> <span class="ow">in</span> <span class="n">gm</span><span class="o">.</span><span class="n">getDtGmshFaceListByPhysical</span><span class="p">(</span><span class="s2">&quot;mbv-&gt;*&quot;</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="n">gm</span><span class="o">.</span><span class="n">untagPhysical</span><span class="p">(</span> <span class="n">aFace</span> <span class="p">)</span>
 </pre></div>
 </div>
 <p>Another example of setting tags to edges:</p>
@@ -1113,6 +1124,23 @@ all possible face labels:</p>
 found in the generated log file:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span> <span class="o">=</span> <span class="n">bVODumpModel</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span> <span class="n">jsonPrimitive</span><span class="p">(),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ref</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">preUpdate</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span> <span class="o">=</span> <span class="n">bVOAnalyticGeometryToFace</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">jsonPrimitive</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;{&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;analyticGeometry&quot; : [&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;label&quot; : &quot;mBS_0&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;label&quot; : &quot;mBS_1&quot;}&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;],&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;_inc&quot; : 10.0,&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;_facesPerEntry&quot; : [1,1]&#39;</span>
+<span class="gp">... </span>    <span class="s1">&#39;}&#39;</span>
+<span class="gp">... </span>  <span class="p">),</span>
+<span class="gp">... </span>  <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m2ds</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ref</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">preUpdate</span><span class="p">()</span>
 </pre></div>
 </div>
