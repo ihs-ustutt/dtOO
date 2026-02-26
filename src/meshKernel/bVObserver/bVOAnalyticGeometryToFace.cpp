@@ -283,9 +283,9 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       minDistAv = std::min(distAv, minDistAv);
 
       // tag entity if in tolerance
-      // condition for match is relaxed; only mid point and two additional
+      // condition for match is relaxed; only mid point or all other additional
       // points have to be on the face
-      if (inTol > 2)
+      if ((inTol == ckPoints.size()) || midIsOnFace)
       {
         dt__debug(
           preUpdate(),
