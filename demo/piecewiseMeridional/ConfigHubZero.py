@@ -17,29 +17,29 @@ class ConfigHubZero():
             "d_outHub" : 0.4,
             "d_outShroud" : 1.865,
 
-            "l_hub0" : 0.4,
+            "l_hub0" : 0.38,
             "angle_hub0" : 0 * np.pi/180,
-            "l_hub1" : 0.4,
-            "angle_hub1" : 70 * np.pi/180,
+            "l_hub1" : 0.38,
+            "angle_hub1" : 65 * np.pi/180,
 
-            "l_shroud0" : 0.2,
+            "l_shroud0" : 0.13,
             "angle_shroud0" : 0 * np.pi/180,
-            "l_shroud1" : 0.2,
+            "l_shroud1" : 0.18,
             "angle_shroud1" : 90 * np.pi/180,
 
             "h_inlet" : 0.36,
-            "h_hub" : 0.70,
+            "h_hub" : 0.68,
             "h_shroud" : 0.38,
             
             "label" : "radMeridionalContour",
             "layer_thickness" : 0.2,
             "layer_supports" : [0.33, 0.66],
-            "interface_hub" : [[0, 1.0],
-                               [1, 0.9],],                # [curve, percent]
-            "interface_shroud" : [[0, 1.0],
-                                  [1, 1.0],],
+            "interface_hub" : [[0, 0.9],
+                               [1, 0.7],],                # [curve, percent]
+            "interface_shroud" : [[0, 0.9],
+                                  [2, 0.5],],
             "interface_curvature" : [[0.0, 0.5, 1],
-                                     [0.2, 0.4, -1],],
+                                     [0.4, 0.5, -1],],
         }
         for key, value in self.config.items():
             setattr(self, key, value)
@@ -143,7 +143,6 @@ class ConfigHubZero():
         return dx, dz
 
     def run(self):
-        
         importlib.reload(radMeridional)
         cc = radMeridional.radMeridional(self.config).create()
         rr = dtOOInParaVIEW( cc )
