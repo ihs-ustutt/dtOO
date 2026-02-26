@@ -21,15 +21,10 @@ License
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/analyticFunctionTransformed.h>
 #include <analyticFunctionHeaven/vec2dMultiBiLinearTwoD.h>
-#include <analyticFunctionHeaven/vec3dCurveOneD.h>
-#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
-#include <analyticFunctionHeaven/vec3dThickedTwoD.h>
-#include <analyticFunctionHeaven/vec3dTransVolThreeD.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
 #include <logMe/dtMacros.h>
-#include <logMe/logContainer.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {
@@ -246,13 +241,8 @@ dtReal uVw_phirMs::s_uSVS(dtReal const &uu, dtReal const &vv) const
   return m1d->lPercent_u(vv);
 }
 
-dtReal uVw_phirMs::uV_phirVVWV(
-  dtReal const &phir, dtReal const &vv, dtReal const &ww
-) const
+dtReal uVw_phirMs::calcRadius(dtReal const &vv, dtReal const &ww) const
 {
-  //
-  // radius
-  //
   dtVector3 vXYZ =
     _rM2d->origin() - _rM2d->constRefMap2dTo3d().getPoint(vv, ww);
   dtVector3 pointOnRotAx =
@@ -260,7 +250,20 @@ dtReal uVw_phirMs::uV_phirVVWV(
     dtLinearAlgebra::dotProduct(_rM2d->rotationAxis(), vXYZ);
   dtVector3 rr = vXYZ - pointOnRotAx;
 
-  return (phir / dtLinearAlgebra::length(rr)) / (2. * M_PI);
+  return dtLinearAlgebra::length(rr);
+}
+
+dtReal uVw_phirMs::uV_phirVVWV(
+  dtReal const &phir, dtReal const &vv, dtReal const &ww
+) const
+{
+  dtReal lengthRadius = 1.0;
+  if (config().lookupDef<bool>("_adjustRadius", true))
+  {
+    lengthRadius = calcRadius(vv, ww);
+  }
+
+  return (phir / lengthRadius) / (2. * M_PI);
 }
 
 dtReal uVw_phirMs::vV_ms(dtReal const &mm, dtReal const &ss) const
@@ -283,16 +286,11 @@ dtReal uVw_phirMs::phir_uVvVwV(
   dtReal const &uu, dtReal const &vv, dtReal const &ww
 ) const
 {
-  //
-  // radius
-  //
-  dtVector3 vXYZ =
-    _rM2d->origin() - _rM2d->constRefMap2dTo3d().getPoint(vv, ww);
-  dtVector3 pointOnRotAx =
-    _rM2d->rotationAxis() *
-    dtLinearAlgebra::dotProduct(_rM2d->rotationAxis(), vXYZ);
-  dtVector3 rr = vXYZ - pointOnRotAx;
-
-  return uu * dtLinearAlgebra::length(rr) * (2. * M_PI);
+  dtReal lengthRadius = 1.0;
+  if (config().lookupDef<bool>("_adjustRadius", true))
+  {
+    lengthRadius = calcRadius(vv, ww);
+  }
+  return uu * lengthRadius * (2. * M_PI);
 }
 } // namespace dtOO

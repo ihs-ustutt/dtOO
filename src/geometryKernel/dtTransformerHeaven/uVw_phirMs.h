@@ -79,6 +79,7 @@ private:
   dtReal wV_ms(dtReal const &mm, dtReal const &ss) const;
   dtReal
   phir_uVvVwV(dtReal const &uu, dtReal const &vv, dtReal const &ww) const;
+  dtReal calcRadius(dtReal const &vv, dtReal const &ww) const;
 
 private:
   dt__pH(rotatingMap2dTo3d const) _rM2d;
