@@ -252,6 +252,12 @@ void dtGmshFace::setMap2dTo3d(map2dTo3d const *const base)
         dt__warning(setMap2dTo3d(), << dt__eval(it->getBeginVertex()));
     }
   }
+  dt__throwIf(vertices_uv.size() != verticesOrdered_uv.size(), setMap2dTo3d());
+  dt__debug(
+    setMap2dTo3d(),
+    << dt__eval(vertices_uv) << std::endl
+    << dt__eval(verticesOrdered_uv)
+  );
 }
 
 std::vector<dtPoint2> const &dtGmshFace::getVerticesUV(void) const
