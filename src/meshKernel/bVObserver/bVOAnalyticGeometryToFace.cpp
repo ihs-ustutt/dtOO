@@ -171,12 +171,12 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       //
       // define face's mid point and its distance
       //
-      std::vector<dtPoint2> const &vertUVs = aFace->getVerticesUV();
+      std::vector<dtPoint2> const &vertUVs = aFace->getVerticesOrderedUV();
       std::pair<dtPoint2, dtPoint2> uvBound =
         dtLinearAlgebra::boundingBox(vertUVs);
-      dtPoint2 const midPointUV = dtPoint2(
-        uvBound.first[0] + 0.5 * (uvBound.second[0] - uvBound.first[0]),
-        uvBound.first[1] + 0.5 * (uvBound.second[1] - uvBound.first[1])
+      dtPoint2 const midPointUV = dtLinearAlgebra::centerPoint(vertUVs);
+      dt__throwIf(
+        !dtLinearAlgebra::isInsidePolygon(midPointUV, vertUVs), preUpdate()
       );
       dtPoint3 const midPoint = aFace->getMap2dTo3d()->getPoint(midPointUV);
       // calculate distance of face's midpoint to m2d
@@ -235,19 +235,27 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
           // and increase number of iterations
           if (midIsOnFace && !inTolerance)
           {
-            dt__info(
-              preUpdate(),
-              << "First reparameterization fails. Best solution found was ("
-              << distAlgo.result().x() << ", " << distAlgo.result().y()
-              << ") with distance " << dist << std::endl
-            );
-            distAlgo = uv_map2dTo3dClosestPointToPoint(
-              m2d, ckPoint, distAlgo.result() //, 500
-            );
-            dist = distAlgo.distance();
-            inTolerance = analyticGeometry::inXYZTolerance(
-              dist, config().lookupDef<dtReal>("_inc", 1.0)
-            );
+            dt__forFromToIndex(0, 3, repCounter)
+            {
+              dt__info(
+                preUpdate(),
+                << "Reparameterization [" << repCounter
+                << "] fails. Best solution found was ("
+                << m2d->percent_u(distAlgo.result().x()) << ", "
+                << m2d->percent_v(distAlgo.result().y()) << ") with distance "
+                << dist << std::endl
+              );
+              distAlgo = uv_map2dTo3dClosestPointToPoint(
+                m2d, ckPoint, m2d->percent_uv(distAlgo.result()), 500
+              );
+              dist = distAlgo.distance();
+              inTolerance = analyticGeometry::inXYZTolerance(
+                dist, config().lookupDef<dtReal>("_inc", 1.0)
+              );
+              if (inTolerance)
+                break;
+              dt__info(preUpdate(), << "The saga continues ...");
+            }
           }
 
           // summarize distances
@@ -260,7 +268,7 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
           }
           // break if at least one point is not on the surface, but NOT
           // midIsOnFace
-          else
+          else if (!midIsOnFace)
             break;
         }
       }
@@ -274,10 +282,10 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       //
       minDistAv = std::min(distAv, minDistAv);
 
-      //
       // tag entity if in tolerance
-      //
-      if (inTol == ckPoints.size())
+      // condition for match is relaxed; only mid point and two additional
+      // points have to be on the face
+      if (inTol > 2)
       {
         dt__debug(
           preUpdate(),
@@ -345,11 +353,17 @@ bVOAnalyticGeometryToFace::calcCheckPoints(dtGmshFace const *const aFace) const
         !dtLinearAlgebra::isInsidePolygon(ckPoint, vertUVs), calcCheckPoints()
       );
       ckPoints.push_back(aFace->getMap2dTo3d()->getPoint(ckPoint));
+      // clang-format off
       dt__debug(
         calcCheckPoints(),
-        << "Add check point of convex polygon: (" << ckPoints.back()[0] << ", "
-        << ckPoints.back()[1] << ")"
+        << logMe::dtFormat(
+          "Add check point of convex polygon\n"
+          "( %5.2e, %5.2e ) -> (%5.2e, %5.2e, %5.2e)"
+        ) 
+        % ckPoint[0] % ckPoint[1] 
+        % ckPoints.back()[0] % ckPoints.back()[1] % ckPoints.back()[2]
       );
+      // clang-format on
     }
   }
   else
