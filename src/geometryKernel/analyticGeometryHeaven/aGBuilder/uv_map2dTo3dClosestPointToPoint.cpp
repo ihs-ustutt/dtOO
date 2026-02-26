@@ -38,14 +38,9 @@ uv_map2dTo3dClosestPointToPoint::uv_map2dTo3dClosestPointToPoint(
 {
   dt__warnIf(m2d->isClosedU(), uv_map2dTo3dClosestPointToPoint());
   dt__warnIf(m2d->isClosedV(), uv_map2dTo3dClosestPointToPoint());
-  std::vector<dtPoint2> guessesPercent;
-  dt__forAllRefAuto(guesses, guess)
-  {
-    guessesPercent.push_back(m2d->percent_uv(guess));
-  }
   gslMinFloatAttr md(
     dt__pH(pointGeometryDist)(new pointGeometryDist(pXYZ, m2d)),
-    guessesPercent,
+    guesses,
     dtPoint2(0.001, 0.001),
     staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
     maxIterations
