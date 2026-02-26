@@ -16,15 +16,11 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "uVw_phiMs.h"
+
 #include "dtTransformerFactory.h"
-#include "interfaceHeaven/systemHandling.h"
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/analyticFunctionTransformed.h>
 #include <analyticFunctionHeaven/vec2dMultiBiLinearTwoD.h>
-#include <analyticFunctionHeaven/vec3dCurveOneD.h>
-#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
-#include <analyticFunctionHeaven/vec3dThickedTwoD.h>
-#include <analyticFunctionHeaven/vec3dTransVolThreeD.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
@@ -35,20 +31,17 @@ namespace dtOO {
 bool uVw_phiMs::_registrated =
   dtTransformerFactory::registrate(dt__tmpPtr(uVw_phiMs, new uVw_phiMs()));
 
-uVw_phiMs::uVw_phiMs() : dtTransformer()
-{
-  _ss = dtVector3(1., 1., 1.);
-  _nV = 11;
-  _nW = 11;
-}
+uVw_phiMs::uVw_phiMs() : dtTransformer() {}
 
 uVw_phiMs::uVw_phiMs(uVw_phiMs const &orig) : dtTransformer(orig)
 {
   _rM2d.reset(orig._rM2d->clone());
-  _ss = orig._ss;
   _ms_uSPercentVSPercent.reset(orig._ms_uSPercentVSPercent->clone());
-  _nV = orig._nV;
-  _nW = orig._nW;
+}
+
+uVw_phiMs::uVw_phiMs(jsonPrimitive const &jE) : dtTransformer(jE)
+{
+  this->jInit(jE, NULL, NULL, NULL, NULL);
 }
 
 uVw_phiMs::~uVw_phiMs() {}
@@ -77,11 +70,12 @@ std::vector<dtPoint3>
 uVw_phiMs::apply(std::vector<dtPoint3> const *const toTrans) const
 {
   std::vector<dtPoint3> retVec;
+  dtVector3 scale = config().lookupDef("_ss", dtVector3(1.0, 1.0, 1.0));
   dt__forAllIndex(*toTrans, ii)
   {
-    dtReal phir = toTrans->at(ii).x() * _ss.x();
-    dtReal mm = std::max(toTrans->at(ii).y() * _ss.y(), 0.);
-    dtReal ss = toTrans->at(ii).z() * _ss.z();
+    dtReal phir = toTrans->at(ii).x() * scale.x();
+    dtReal mm = std::max(toTrans->at(ii).y() * scale.y(), 0.);
+    dtReal ss = toTrans->at(ii).z() * scale.z();
     dt__solution(ss > 1., ss = 1.);
     dt__solution(ss < 0., ss = 0.);
 
@@ -99,11 +93,12 @@ std::vector<dtPoint3>
 uVw_phiMs::retract(std::vector<dtPoint3> const *const toRetract) const
 {
   std::vector<dtPoint3> retVec;
+  dtVector3 scale = config().lookupDef("_ss", dtVector3(1.0, 1.0, 1.0));
   dt__forAllIndex(*toRetract, ii)
   {
-    dtReal uu = toRetract->at(ii).x() / _ss.x();
-    dtReal vv = toRetract->at(ii).y() / _ss.y();
-    dtReal ww = toRetract->at(ii).z() / _ss.z();
+    dtReal uu = toRetract->at(ii).x() / scale.x();
+    dtReal vv = toRetract->at(ii).y() / scale.y();
+    dtReal ww = toRetract->at(ii).z() / scale.z();
 
     dtReal phir = phir_uVvVwV(uu, vv, ww);
     aFY ms = _ms_uSPercentVSPercent->Y(analyticFunction::aFXTwoD(
@@ -130,53 +125,34 @@ uVw_phiMs::retract(std::vector<dtPoint3> const *const toRetract) const
 
 bool uVw_phiMs::isNecessary(void) const { return true; }
 
-void uVw_phiMs::init(
-  ::QDomElement const *tE,
+void uVw_phiMs::jInit(
+  jsonPrimitive const &jE,
   baseContainer *const bC,
   lvH_constValue const *const cV,
   lvH_analyticFunction const *const aF,
   lvH_analyticGeometry const *const aG
 )
 {
-  dtTransformer::init(tE, bC, cV, aF, aG);
+  dtTransformer::jInit(jE, bC, cV, aF, aG);
 
-  if (dtXmlParserBase::hasChild("Vector_3", *tE))
-  {
-    ::QDomElement v3El = dtXmlParserBase::getChild("Vector_3", *tE);
-    _ss = dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG);
-  }
+  dt__throwIf(!config().contains("_rM2d"), jInit());
 
-  dt__ptrAss(
-    rotatingMap2dTo3d const *const rM2d,
-    rotatingMap2dTo3d::ConstDownCast(
-      aG->get(dtXmlParserBase::getAttributeStr("part_label", *tE))
-    )
+  _rM2d = rotatingMap2dTo3d::PointerDownCast(
+    config().lookupClone<analyticGeometry>("_rM2d", aG)
   );
-  _rM2d.reset(rM2d->clone());
-
-  if (dtXmlParserBase::hasAttribute("number_points_two", *tE))
-  {
-    _nW =
-      dtXmlParserBase::getAttributeIntMuParse("number_points_two", *tE, cV, aF);
-  }
-
-  if (dtXmlParserBase::hasAttribute("number_points_three", *tE))
-  {
-    _nW = dtXmlParserBase::getAttributeIntMuParse(
-      "number_points_three", *tE, cV, aF
-    );
-  }
+  int nV = config().lookupDef<int>("_nV", 11);
+  int nW = config().lookupDef<int>("_nW", 11);
 
   //
   // create piecewise bilinear mapping
   //
-  twoDArrayHandling<dtPoint2> ms(_nW, _nW);
+  twoDArrayHandling<dtPoint2> ms(nV, nW);
   dt__forAllIndex(ms, ii)
   {
     dt__forAllIndex(ms[ii], jj)
     {
-      dtReal uPercent = static_cast<dtReal>(ii) / (_nW - 1);
-      dtReal vPercent = static_cast<dtReal>(jj) / (_nW - 1);
+      dtReal uPercent = static_cast<dtReal>(ii) / (nV - 1);
+      dtReal vPercent = static_cast<dtReal>(jj) / (nW - 1);
       ms[ii][jj] = dtPoint2(
         m_uSVS(
           _rM2d->constRefMap2dTo3d().u_percent(uPercent),
@@ -208,45 +184,49 @@ void uVw_phiMs::init(
   );
 }
 
-//  void uVw_phiMs::handleAnalyticGeometry(
-//    std::string const name, analyticGeometry const * value
-//  ) {
-//    if (name == "part_label") {
-//      dt__ptrAss(
-//        rotatingMap2dTo3d const * const m3d,
-//        rotatingMap2dTo3d::ConstDownCast(value)
-//      );
-//			_rM2d.reset( m3d->clone() );
-//      return;
-//    }
-//    dtTransformer::handleAnalyticGeometry(name, value);
-//  }
-//
-//  void uVw_phiMs::handleDtVector3(
-//    std::string const name, dtVector3 const value
-//  ) {
-//    if (name == "Vector_3") {
-//      _ss = value;
-//      return;
-//    }
-//    dtTransformer::handleDtVector3(name, value);
-//  }
-//
-//  void uVw_phiMs::handleInt(std::string const name, dtInt const value) {
-//    dt__info(handleInt(),
-//      << dt__eval(name) << std::endl
-//      << dt__eval(value)
-//    );
-//    if (name == "number_points_two") {
-//      _nV = value;
-//      return;
-//    }
-//    else if (name == "number_points_three") {
-//      _nW = value;
-//      return;
-//    }
-//    dtTransformer::handleInt(name, value);
-//  }
+void uVw_phiMs::init(
+  ::QDomElement const *tE,
+  baseContainer *const bC,
+  lvH_constValue const *const cV,
+  lvH_analyticFunction const *const aF,
+  lvH_analyticGeometry const *const aG
+)
+{
+  dtTransformer::init(tE, bC, cV, aF, aG);
+
+  jsonPrimitive config;
+
+  if (dtXmlParserBase::hasChild("Vector_3", *tE))
+  {
+    ::QDomElement v3El = dtXmlParserBase::getChild("Vector_3", *tE);
+    config.append<dtVector3>(
+      "_ss", dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG)
+    );
+  }
+
+  config.append<analyticGeometry const *>(
+    "_rM2d", aG->get(dtXmlParserBase::getAttributeStr("part_label", *tE))
+  );
+
+  if (dtXmlParserBase::hasAttribute("number_points_two", *tE))
+  {
+    config.append<int>(
+      "_nV",
+      dtXmlParserBase::getAttributeIntMuParse("number_points_two", *tE, cV, aF)
+    );
+  }
+
+  if (dtXmlParserBase::hasAttribute("number_points_three", *tE))
+  {
+    config.append<int>(
+      "_nW",
+      dtXmlParserBase::getAttributeIntMuParse(
+        "number_points_three", *tE, cV, aF
+      )
+    );
+  }
+  jInit(config, bC, cV, aF, aG);
+}
 
 dtReal uVw_phiMs::m_uSVS(dtReal const &uu, dtReal const &vv) const
 {
@@ -265,25 +245,6 @@ dtReal uVw_phiMs::uV_phirVVWV(
   dtReal const &phir, dtReal const &vv, dtReal const &ww
 ) const
 {
-  //    //
-  //		// get radius
-  //		//
-  //    dtVector3 vXYZ
-  //    =
-  //    _rM2d->origin()
-  //    -
-  ////    dtLinearAlgebra::toDtVector3(
-  //      _rM2d->constRefMap2dTo3d().getPoint(vv, ww)
-  ////    );
-  //      ;
-  //    dtVector3 pointOnRotAx
-  //    =
-  //    _rM2d->rotationAxis()
-  //    *
-  //    dtLinearAlgebra::dotProduct(_rM2d->rotationAxis(), vXYZ);
-  //
-  //    dtVector3 rr = vXYZ - pointOnRotAx;
-
   return phir / (2. * M_PI);
 }
 
@@ -307,29 +268,6 @@ dtReal uVw_phiMs::phir_uVvVwV(
   dtReal const &uu, dtReal const &vv, dtReal const &ww
 ) const
 {
-  //    dtVector3 vXYZ
-  //    =
-  //    _rM2d->origin() -
-  ////    dtLinearAlgebra::toDtVector3(
-  //      _rM2d->constRefMap2dTo3d().getPoint(vv, ww)
-  ////    );
-  //      ;
-  //    dtVector3 pointOnRotAx
-  //    =
-  //    _rM2d->rotationAxis()
-  //    *
-  //    dtLinearAlgebra::dotProduct(_rM2d->rotationAxis(), vXYZ);
-  //    dtVector3 rr = vXYZ - pointOnRotAx;
-
   return uu * (2. * M_PI);
 }
-
-//  dtReal uVw_phiMs::m_vVs(dtReal const & vv, dtReal const & ss) const {
-//    aFX xx
-//    =
-//    analyticFunction::aFXTwoD( _rM2d->constRefMap2dTo3d().u_percent(vv), ss );
-//    aFY yy = _ms_uSPercentVSPercent->Y(xx);
-//
-//    return _rM2d->constRefMap2dTo3d().percent_u(yy[0]);
-//  }
 } // namespace dtOO

@@ -44,10 +44,18 @@ public:
   dt__classOnlyName(uVw_phiMs);
   uVw_phiMs();
   uVw_phiMs(uVw_phiMs const &orig);
+  uVw_phiMs(jsonPrimitive const &jE);
   virtual ~uVw_phiMs();
   virtual dtTransformer *clone(void) const;
   virtual dtTransformer *create(void) const;
   virtual bool isNecessary(void) const;
+  virtual void jInit(
+    jsonPrimitive const &jE,
+    baseContainer *const bC,
+    lvH_constValue const *const cV,
+    lvH_analyticFunction const *const aF,
+    lvH_analyticGeometry const *const aG
+  );
   void init(
     ::QDomElement const *tE,
     baseContainer *const bC,
