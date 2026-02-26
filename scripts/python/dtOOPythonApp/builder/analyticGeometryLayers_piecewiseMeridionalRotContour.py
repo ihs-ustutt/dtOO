@@ -1182,13 +1182,21 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
                    ) -> analyticGeometry:
 
         logging.info("Request regChannel[ %d ]" % pos)
-
-        return partRotatingMap2dTo3d(
-                    self.rotVector_, 
-                    self.regChannels_[pos],
-                    0.00,
-                    (1/nSlices),
-                ).clone()
+        
+        # whole rotational domain
+        if nSlices == 1:
+            return rotatingMap2dTo3d(
+                        self.rotVector_,
+                        self.regChannels_[pos],
+                    ).clone()
+        # segment
+        else:
+            return partRotatingMap2dTo3d(
+                        self.rotVector_, 
+                        self.regChannels_[pos],
+                        0.00,
+                        (1/nSlices),
+                    ).clone()
 
     
     # returns a list containing the hub and shroud layers as well as information 
