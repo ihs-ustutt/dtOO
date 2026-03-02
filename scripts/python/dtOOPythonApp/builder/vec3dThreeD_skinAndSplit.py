@@ -224,13 +224,13 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
                     # segPercent specifies the u direction where the trailing edge is located on the faces,
                     #  this is different for the first and last blocks because the u direction "wraps"
                     #  around the blade
-                    bladeCurve0, blockCurve0, bladeOffset0, blockOffset0 = self.teBlockCurves_vec3dSurfaceTwoD(
+                    bladeCurve0, blockCurve0, bladeOffset0, blockOffset0 = self.teOffsetCurves_vec3dSurfaceTwoD(
                             bladeSurf, blockSurf, 0, self.thickness_
                         )
 
                 if cc == (len(self.splits_)-1):
                     logging.info("Extracting trailing-edge and block curves from mesh block %d" % (cc+1))
-                    bladeCurve1, blockCurve1, bladeOffset1, blockOffset1 = self.teBlockCurves_vec3dSurfaceTwoD(
+                    bladeCurve1, blockCurve1, bladeOffset1, blockOffset1 = self.teOffsetCurves_vec3dSurfaceTwoD(
                             bladeSurf, blockSurf, 1, self.thickness_
                         )  
 
@@ -289,7 +289,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
     # Extracts the necessary curves and their offsets for the generation of the trailing edge meshBlocks
     # segPercent is 0 for the first and 1 for the last mesh blocks 
     #
-    def teBlockCurves_vec3dSurfaceTwoD(self, bladeSurf, blockSurf, segPercent, blockThickness):
+    def teOffsetCurves_vec3dSurfaceTwoD(self, bladeSurf, blockSurf, segPercent, blockThickness):
         
         # changing type of the faces from aF to aS
         bladeSurf = analyticSurface(bladeSurf.constPtrDtSurface())

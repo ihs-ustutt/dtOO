@@ -96,7 +96,7 @@ class radMeridional:
           self.interface_curvature,
         ).enableDebug()#.buildExtract( container )
         container = radMeridionalContour.buildExtract(container)
-        """
+        
         # guide vane
         gvLabel = "gv"
 
@@ -104,16 +104,16 @@ class radMeridional:
             radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
         )
         spanwiseCuts = [0.00, 1.00,]
-        gv_alpha_1 = [(np.pi/180.) * 90.]
-        gv_alpha_2 = [(np.pi/180.) * 45.]
-        gv_ratioX = [0.5]
-        gv_deltaY = [0.25]
-        gv_offX = [0.0]
-        gv_offY = [0.1]
+        gv_alpha_1 = [(np.pi/180.) * -22.5]
+        gv_alpha_2 = gv_alpha_1
+        gv_ratioX = [1]
+        gv_deltaY = [0.151]
+        gv_offX = [-0.05]
+        gv_offY = [0.062]
         
-        gv_t_le = [0.03]
+        gv_t_le = [0.02]
         gv_u_le = [0.00]
-        gv_t_mid = [0.05]
+        gv_t_mid = [0.03]
         gv_u_mid = [0.50]
         gv_t_te = [0.02]
         gv_u_te = [0.80]
@@ -121,78 +121,82 @@ class radMeridional:
         self.buildBlade(
                 container,
                 gvLabel,
+                self.nGvBlades, False,
                 spanwiseCuts, gv_alpha_1, gv_alpha_2, gv_ratioX, gv_deltaY, gv_offX, gv_offY,
                 spanwiseCuts, gv_t_le, gv_u_le, gv_t_mid, gv_u_mid, gv_t_te, gv_u_te,
-            )
-        """
-        # runner
-        ruLabel = "ru"
-        self.aG.push_back( 
-            radMeridionalContour.getRegChannel(1, 1) << "xyz_"+ruLabel+"_channel" 
-        )
-        spanwiseCuts_mp = [0.00, 0.33,  0.66, 1.00,]
-        ru_alpha_1 = [
-                (np.pi/180.) * 90.,
-                (np.pi/180.) * 75.,
-                (np.pi/180.) * 52.
-                ]
-        ru_alpha_2 = [
-                (np.pi/180.) * 45., 
-                (np.pi/180.) * 31., 
-                (np.pi/180.) * 32., 
-                (np.pi/180.) * 10.
-                ]
-        ru_ratioX = [
-                0.65,
-                #0.35,
-                0.70,
-                0.35,
-                0.22
-                ]
-        ru_deltaY = [
-                0.80,
-                0.55,
-                0.90,
-                0.55
-                ]
-        ru_offX = [
-                0.125,
-                0.125,
-                0.0
-                ]
-        ru_offY = [
-                0.11,
-                0.13,
-                0.08
-                ]
+            ) 
+        #self.bV[gvLabel+"_mesh"].makeGrid() 
         
-        spanwiseCuts_td = [0.00, 1.00,]
-        ru_t_le = [0.020,
-                   0.018]
-        ru_u_le = [0.00]
-        ru_t_mid = [0.04,
-                    0.03]
-        ru_u_mid = [0.50]
-        ru_t_te = [0.02]
-        ru_u_te = [0.80]
+        ## runner
+        #ruLabel = "ru"
+        #self.aG.push_back( 
+        #    radMeridionalContour.getRegChannel(1, 1) << "xyz_"+ruLabel+"_channel" 
+        #)
+        #spanwiseCuts_mp = [0.00, 0.33,  0.66, 1.00,]
+        #ru_alpha_1 = [
+        #        (np.pi/180.) * 90.,
+        #        (np.pi/180.) * 75.,
+        #        (np.pi/180.) * 52.
+        #        ]
+        #ru_alpha_2 = [
+        #        (np.pi/180.) * 45., 
+        #        (np.pi/180.) * 31., 
+        #        (np.pi/180.) * 32., 
+        #        (np.pi/180.) * 10.
+        #        ]
+        #ru_ratioX = [
+        #        0.65,
+        #        #0.35,
+        #        0.70,
+        #        0.35,
+        #        0.22
+        #        ]
+        #ru_deltaY = [
+        #        0.80,
+        #        0.55,
+        #        0.90,
+        #        0.55
+        #        ]
+        #ru_offX = [
+        #        0.125,
+        #        0.125,
+        #        0.0
+        #        ]
+        #ru_offY = [
+        #        0.065,
+        #        0.085,
+        #        0.035
+        #        ]
+        #
+        #spanwiseCuts_td = [0.00, 1.00,]
+        #ru_t_le = [0.020,
+        #           0.018]
+        #ru_u_le = [0.00]
+        #ru_t_mid = [0.04,
+        #            0.03]
+        #ru_u_mid = [0.50]
+        #ru_t_te = [0.02]
+        #ru_u_te = [0.80]
 
-        self.buildBlade(
-                container,
-                ruLabel,
-                spanwiseCuts_mp, ru_alpha_1, ru_alpha_2, ru_ratioX, ru_deltaY, ru_offX, ru_offY,
-                spanwiseCuts_td, ru_t_le, ru_u_le, ru_t_mid, ru_u_mid, ru_t_te, ru_u_te,
-            )
+        #self.buildBlade(
+        #        container,
+        #        ruLabel,
+        #        self.nRuBlades, True,
+        #        spanwiseCuts_mp, ru_alpha_1, ru_alpha_2, ru_ratioX, ru_deltaY, ru_offX, ru_offY,
+        #        spanwiseCuts_td, ru_t_le, ru_u_le, ru_t_mid, ru_u_mid, ru_t_te, ru_u_te,
+        #    )
+        #self.bV[ruLabel+"_mesh"].makeGrid() 
 
         """ 
         # returning the hub and shroud layers
-        layers = radMeridionalContour.getLayerList(self.nBlades)    
+        layers = radMeridionalContour.getLayerList(self.nRuBlades)    
         # returns layer data in the following nested list:
         # layers = [[hub layer lists],[shroud layer list]]
         # with:
         # [hub layer lists] = [[3d layer domain], [bool list radius zero]]
 
         # returns the unstructured region and its surfaces
-        mv, bs = radMeridionalContour.getUnstructuredRegion(self.nBlades)
+        mv, bs = radMeridionalContour.getUnstructuredRegion(self.nRuBlades)
         
         modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
         module = self.reloadModule(modname)
@@ -220,7 +224,7 @@ class radMeridional:
 
         container = module.map3dTo3dGmsh_gridFromChannel(
                 "meshInlet",                                            # label
-                radMeridionalContour.getRegChannel(0, self.nBlades),    # channel
+                radMeridionalContour.getRegChannel(0, self.nRuBlades),    # channel
                 5,                                                      # nBoundaryLayersH2S
                 15,                                                     # nEHubToShroud
                 20,                                                     # nECircumferential
@@ -232,7 +236,7 @@ class radMeridional:
 
         container = module.map3dTo3dGmsh_gridFromChannel(
                 "meshChannel",                            
-                radMeridionalContour.getRegChannel(1, self.nBlades),
+                radMeridionalContour.getRegChannel(1, self.nRuBlades),
                 5,                                              
                 15,                                             
                 20,                                             
@@ -396,7 +400,8 @@ class radMeridional:
     
     def buildBlade(self,
                    container,
-                   label, 
+                   label,
+                   nBlades, adjustRadius,
                    spanwiseCuts_mp, alpha_1, alpha_2, ratioX, deltaY, offX, offY, 
                    spanwiseCuts_td, t_le, u_le, t_mid, u_mid, t_te, u_te):
         #
@@ -488,6 +493,7 @@ class radMeridional:
             .appendStr("label", "uVw_phirMs")\
             .appendInt("_nV", 31)\
             .appendInt("_nW", 11)\
+            .appendBool("_adjustRadius", False)\
             .appendAnalyticGeometry(\
               "_rM2d", \
               self.aG.get("xyz_" + label + "_channel")\
@@ -508,7 +514,7 @@ class radMeridional:
           )
           self.aG.push_back( theAG << "xyz_"+str(ii) )
         """
-        meshBlock_thickness = 0.03 
+        meshBlock_thickness = 0.015 
         # mesh block
         fRef = dtOO.vec3dMuParserTwoD(
           "1.0*"+str(meshBlock_thickness)+", xx, yy", "xx", "yy"
@@ -555,6 +561,7 @@ class radMeridional:
             [0.90, 1.00],
           ],
           tEMeshBlockThickness = meshBlock_thickness
+          #tEMeshBlockThickness = None
         ).buildExtract(container)
         #
         # do conformal mapping
@@ -588,7 +595,7 @@ class radMeridional:
           )
           theAG.setLabel("xyz_"+ii)
           self.aG.push_back( theAG.clone() )
-        """
+         
         ## create mesh's topology
         #blocks = []
         #for iNum in self.aG.getIndices("xyz_"+label+"_meshBlock_*"):
@@ -606,7 +613,7 @@ class radMeridional:
         #  deltaPer = 0.05
         #).enableDebug().buildExtract( container )
         
-        # fe_meanplane
+        #i fe_meanplane
         from dtOOPythonApp.builder import (
           vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane
         )
@@ -647,29 +654,45 @@ class radMeridional:
         container = rotatingMap2dTo3d_gridChannel(
           label = "xyz_"+label+"_gridChannel", 
           channelSide = self.aG["xyz_fe_"+label+"_meanplane"], 
-          numberOfSections = self.nBlades,
+          numberOfSections = nBlades,
           rotVector = dtOO.dtVector3(0, 0, -1)
         ).buildExtract( container )
-
+         
         # create mesh's topology
         blocks = []
         for iNum in self.aG.getIndices("xyz_"+label+"_meshBlock_*"):
-          blocks.append( self.aG[ self.aG.getLabel( iNum ) ] )
+            blocks.append( self.aG[ self.aG.getLabel( iNum ) ] )
+        # sorting the blocks by number
+        blocks.sort(key=lambda x: int(x.getLabel().split('_')[-1]))
+        
+        nBlocksMP = 3
         couplingFaces = []
         couplingFaces.append( 
           dtOO.map3dTo3d.MustDownCast( blocks[0] ).segmentConstUPercent( 0.0 )
         )
-        for block in blocks:
+        for i, block in enumerate(blocks):
           couplingFaces.append( 
             dtOO.map3dTo3d.MustDownCast( block ).segmentConstWPercent( 1.0 )
           )
+
+          if i == nBlocksMP:
+              MPfaces = couplingFaces.clone()
+              MPfaces.append( 
+                dtOO.map3dTo3d.MustDownCast(block).segmentConstUPercent( 1.0 ).clone()
+              )
+
         couplingFaces.append( 
           dtOO.map3dTo3d.MustDownCast( blocks[-1] ).segmentConstUPercent( 1.0 )
         )
-        from dtOOPythonApp.builder import (
-          map3dTo3dGmsh_gridFromChannelAndBlocks
-        )
-        container = map3dTo3dGmsh_gridFromChannelAndBlocks(
+
+        
+        modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromChannelAndBlocks"
+        module = self.reloadModule(modname)
+
+        #from dtOOPythonApp.builder import (
+        #  map3dTo3dGmsh_gridFromChannelAndBlocks
+        #)
+        container = module.map3dTo3dGmsh_gridFromChannelAndBlocks(
           label = label+"_mesh",
           channel = self.aG["xyz_"+label+"_gridChannel"],
           blocks = blocks,
@@ -677,9 +700,9 @@ class radMeridional:
           couplingFaces = couplingFaces,
           nBoundaryLayers = 6,
           nElementsSpanwise = 30,
-          nElementsNormal = 10,
+          nElementsNormal = 5,
           firstElementSizeHubToShroud = 0.005,
-          firstElementSizeNormalBlade = 0.005,
+          firstElementSizeNormalBlade = 0.001,
           bladeHubElementSize = scaOneD_scaCurve2dOneDPointConstruct(
             [
               dtOO.dtPoint2(0.00, 0.010),  
@@ -693,10 +716,10 @@ class radMeridional:
           channelInletOutletDir = 2,
           channelHubShroudDir = 3,
           charLengthMax=0.05,
-          charLengthMin=0.025
+          charLengthMin=0.025,
+          meshTEBlocks = True,
         ).enableDebug().buildExtract( container )
-        #self.bV[label+"_mesh"].makeGrid() 
-        """
+        
     #
     # returns a list with dtPoint2 types and spline orders
     #  with spanwise cut percentage and blade input parameters
