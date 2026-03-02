@@ -11,9 +11,10 @@ class ConfigHubZero():
         print("Setting up input dictionary")
 
         self.config = {
-            "nBlades" : 12,
+            "nRuBlades" : 15,
+            "nGvBlades" : 24,
             "d_inlet" : 2.58,
-            "l_inExt" : 0.50,
+            "l_inExt" : 0.27,
             "d_outHub" : 0.4,
             "d_outShroud" : 1.865,
 
@@ -34,9 +35,9 @@ class ConfigHubZero():
             "label" : "radMeridionalContour",
             "layer_thickness" : 0.2,
             "layer_supports" : [0.33, 0.66],
-            "interface_hub" : [[0, 0.9],
+            "interface_hub" : [[1, 0.00],
                                [1, 0.7],],                # [curve, percent]
-            "interface_shroud" : [[0, 0.9],
+            "interface_shroud" : [[1, 0.00],
                                   [2, 0.5],],
             "interface_curvature" : [[0.0, 0.5, 1],
                                      [0.4, 0.5, -1],],
