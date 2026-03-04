@@ -127,64 +127,64 @@ class radMeridional:
             ) 
         #self.bV[gvLabel+"_mesh"].makeGrid() 
         
-        ## runner
-        #ruLabel = "ru"
-        #self.aG.push_back( 
-        #    radMeridionalContour.getRegChannel(1, 1) << "xyz_"+ruLabel+"_channel" 
-        #)
-        #spanwiseCuts_mp = [0.00, 0.33,  0.66, 1.00,]
-        #ru_alpha_1 = [
-        #        (np.pi/180.) * 90.,
-        #        (np.pi/180.) * 75.,
-        #        (np.pi/180.) * 52.
-        #        ]
-        #ru_alpha_2 = [
-        #        (np.pi/180.) * 45., 
-        #        (np.pi/180.) * 31., 
-        #        (np.pi/180.) * 32., 
-        #        (np.pi/180.) * 10.
-        #        ]
-        #ru_ratioX = [
-        #        0.65,
-        #        #0.35,
-        #        0.70,
-        #        0.35,
-        #        0.22
-        #        ]
-        #ru_deltaY = [
-        #        0.80,
-        #        0.55,
-        #        0.90,
-        #        0.55
-        #        ]
-        #ru_offX = [
-        #        0.125,
-        #        0.125,
-        #        0.0
-        #        ]
-        #ru_offY = [
-        #        0.065,
-        #        0.085,
-        #        0.035
-        #        ]
-        #
-        #spanwiseCuts_td = [0.00, 1.00,]
-        #ru_t_le = [0.020,
-        #           0.018]
-        #ru_u_le = [0.00]
-        #ru_t_mid = [0.04,
-        #            0.03]
-        #ru_u_mid = [0.50]
-        #ru_t_te = [0.02]
-        #ru_u_te = [0.80]
+        # runner
+        ruLabel = "ru"
+        self.aG.push_back( 
+            radMeridionalContour.getRegChannel(1, 1) << "xyz_"+ruLabel+"_channel" 
+        )
+        spanwiseCuts_mp = [0.00, 0.33,  0.66, 1.00,]
+        ru_alpha_1 = [
+                (np.pi/180.) * 90.,
+                (np.pi/180.) * 75.,
+                (np.pi/180.) * 52.
+                ]
+        ru_alpha_2 = [
+                (np.pi/180.) * 45., 
+                (np.pi/180.) * 31., 
+                (np.pi/180.) * 32., 
+                (np.pi/180.) * 10.
+                ]
+        ru_ratioX = [
+                0.65,
+                #0.35,
+                0.70,
+                0.35,
+                0.22
+                ]
+        ru_deltaY = [
+                0.80,
+                0.55,
+                0.90,
+                0.55
+                ]
+        ru_offX = [
+                0.125,
+                0.125,
+                0.0
+                ]
+        ru_offY = [
+                0.065,
+                0.085,
+                0.035
+                ]
+        
+        spanwiseCuts_td = [0.00, 1.00,]
+        ru_t_le = [0.020,
+                   0.018]
+        ru_u_le = [0.00]
+        ru_t_mid = [0.04,
+                    0.03]
+        ru_u_mid = [0.50]
+        ru_t_te = [0.02]
+        ru_u_te = [0.80]
 
-        #self.buildBlade(
-        #        container,
-        #        ruLabel,
-        #        self.nRuBlades, True,
-        #        spanwiseCuts_mp, ru_alpha_1, ru_alpha_2, ru_ratioX, ru_deltaY, ru_offX, ru_offY,
-        #        spanwiseCuts_td, ru_t_le, ru_u_le, ru_t_mid, ru_u_mid, ru_t_te, ru_u_te,
-        #    )
+        self.buildBlade(
+                container,
+                ruLabel,
+                self.nRuBlades, True,
+                spanwiseCuts_mp, ru_alpha_1, ru_alpha_2, ru_ratioX, ru_deltaY, ru_offX, ru_offY,
+                spanwiseCuts_td, ru_t_le, ru_u_le, ru_t_mid, ru_u_mid, ru_t_te, ru_u_te,
+            )
         #self.bV[ruLabel+"_mesh"].makeGrid() 
 
         """ 
@@ -541,12 +541,11 @@ class radMeridional:
         self.aF.push_back( theAF.clone() )
         
         # split mesh block
-        #modname = "dtOOPythonApp.builder.vec3dThreeD_meshBlocks"
-        #module = self.reloadModule(modname)
+        modname = "dtOOPythonApp.builder.vec3dThreeD_skinAndSplit"
+        module = self.reloadModule(modname)
 
-        from dtOOPythonApp.builder import vec3dThreeD_skinAndSplit
-        container = vec3dThreeD_skinAndSplit(
-        #container = module.vec3dThreeD_meshBlocks(
+        #from dtOOPythonApp.builder import vec3dThreeD_skinAndSplit
+        container = module.vec3dThreeD_skinAndSplit(
           label =label+"_meshBlock",
           aFOne = self.aF[label+"_blade"],
           aFTwo = self.aF[label+"_meshBlock"],
@@ -570,11 +569,6 @@ class radMeridional:
           theAG = dtOO.vec3dTwoDInMap3dTo3d(
             dtOO.vec3dTwoD.MustConstDownCast(
               conMap.applyAnalyticFunction(self.aF[ii].clone())
-              #self.bC.ptrTransformerContainer().get(
-              #  "uVw_phirMs"
-              #).applyAnalyticFunction(
-              #  self.aF[ii].clone()
-              #)
             ),
             dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
           )
@@ -585,35 +579,15 @@ class radMeridional:
           theAG = dtOO.vec3dThreeDInMap3dTo3d(
             dtOO.vec3dThreeD.MustConstDownCast(
               conMap.applyAnalyticFunction(self.aF[ii].clone())
-              #self.bC.ptrTransformerContainer().get(
-              #  "uVw_phirMs"
-              #).applyAnalyticFunction(
-              #  self.aF[ii].clone()
-              #)
             ),
             dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
           )
           theAG.setLabel("xyz_"+ii)
           self.aG.push_back( theAG.clone() )
-         
-        ## create mesh's topology
-        #blocks = []
-        #for iNum in self.aG.getIndices("xyz_"+label+"_meshBlock_*"):
-        #  blocks.append( self.aG[ self.aG.getLabel( iNum ) ] )
-        #from dtOOPythonApp.builder import (
-        #  rotatingMap2dTo3d_splitFitted
-        #)
-        #container = rotatingMap2dTo3d_splitFitted(
-        #  label = "xyz_"+label+"_fitChannel", 
-        #  channel = self.aG["xyz_"+label+"_channel"], 
-        #  internals = blocks, #[aG["xyz_"+label+"_meshBlock"],], 
-        #  splitDir = 1,
-        #  segmentDir = 2,
-        #  segments = [0.0, 0.25, 0.50, 0.75, 1.0],
-        #  deltaPer = 0.05
-        #).enableDebug().buildExtract( container )
         
-        #i fe_meanplane
+
+        """
+        # fe_meanplane
         from dtOOPythonApp.builder import (
           vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane
         )
@@ -657,7 +631,7 @@ class radMeridional:
           numberOfSections = nBlades,
           rotVector = dtOO.dtVector3(0, 0, -1)
         ).buildExtract( container )
-         
+        """ 
         # create mesh's topology
         blocks = []
         for iNum in self.aG.getIndices("xyz_"+label+"_meshBlock_*"):
@@ -667,6 +641,7 @@ class radMeridional:
         
         nBlocksMP = 3
         couplingFaces = []
+        MPblocks = []
         couplingFaces.append( 
           dtOO.map3dTo3d.MustDownCast( blocks[0] ).segmentConstUPercent( 0.0 )
         )
@@ -674,18 +649,29 @@ class radMeridional:
           couplingFaces.append( 
             dtOO.map3dTo3d.MustDownCast( block ).segmentConstWPercent( 1.0 )
           )
-
+            
+          if i <= nBlocksMP:
+              MPblocks.append(block.clone())
           if i == nBlocksMP:
-              MPfaces = couplingFaces.clone()
+
+              MPfaces = couplingFaces.copy()
+              del MPfaces[0]
               MPfaces.append( 
-                dtOO.map3dTo3d.MustDownCast(block).segmentConstUPercent( 1.0 ).clone()
+                dtOO.map3dTo3d.MustDownCast(block).segmentConstUPercent( 1.0 )
               )
 
         couplingFaces.append( 
           dtOO.map3dTo3d.MustDownCast( blocks[-1] ).segmentConstUPercent( 1.0 )
         )
 
-        
+        modname = "dtOOPythonApp.builder.vec3dTwoDInMap3dTo3d_channelMeanplaneFromBlockFaces"
+        module = self.reloadModule(modname)
+        container = module.vec3dTwoDInMap3dTo3d_channelMeanplaneFromBlockFaces(
+            label = "xyz_fe_"+label+"_meanplane",
+            channel = self.aG["xyz_"+label+"_channel"],
+            mpFaces = MPfaces
+        ).buildExtract(container)
+        """
         modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromChannelAndBlocks"
         module = self.reloadModule(modname)
 
@@ -719,7 +705,7 @@ class radMeridional:
           charLengthMin=0.025,
           meshTEBlocks = True,
         ).enableDebug().buildExtract( container )
-        
+        """    
     #
     # returns a list with dtPoint2 types and spline orders
     #  with spanwise cut percentage and blade input parameters

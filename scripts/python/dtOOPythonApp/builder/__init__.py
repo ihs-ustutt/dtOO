@@ -50,6 +50,9 @@ from .vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution import (
 from .vec3dThreeD_skinAndSplit import (
   vec3dThreeD_skinAndSplit
 )
+from .vec3dTwoDInMap3dTo3d_channelMeanplaneFromBlockFaces import (
+  vec3dTwoDInMap3dTo3d_channelMeanplaneFromBlockFaces
+)
 from .vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane import (
   vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane
 )
