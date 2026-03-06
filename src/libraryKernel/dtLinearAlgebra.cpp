@@ -18,7 +18,6 @@ License
 #include "dtLinearAlgebra.h"
 
 #include "dtGaussLegendreIntegration.h"
-#include "logMe/dtMacros.h"
 #include <CGAL/Polygon_2_algorithms.h>
 #include <CGAL/bounding_box.h>
 #include <CGAL/intersections.h>
@@ -31,6 +30,7 @@ License
 #include <gsl/gsl_permutation.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_vector_double.h>
+#include <logMe/logContainer.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {
@@ -837,6 +837,44 @@ bool dtLinearAlgebra::isInsideHexahedron(
   return false;
 }
 
+bool dtLinearAlgebra::isInsidePolygon(
+  dtPoint2 const &pt, std::vector<dtPoint2> const &points
+)
+{
+  logContainer<dtLinearAlgebra> logC(logDEBUG, "isInsidePolygon()");
+  dt__forAllIndex(points, ii)
+  {
+    logC() << logMe::dtFormat("Point %3d : %5.2f %5.2f") % ii % points[ii][0] %
+                points[ii][1]
+           << std::endl;
+  }
+  logC() << logMe::dtFormat("ChkPoint: %5.2f %5.2f") % pt[0] % pt[1]
+         << std::endl;
+  switch (::CGAL::bounded_side_2(points.begin(), points.end(), pt))
+  {
+  case CGAL::ON_BOUNDED_SIDE:
+    logC() << "> Inside" << std::endl;
+    break;
+  case CGAL::ON_BOUNDARY:
+    logC() << "> On Boundary" << std::endl;
+    break;
+  case CGAL::ON_UNBOUNDED_SIDE:
+    logC() << "> Outside" << std::endl;
+    return false;
+  }
+  return true;
+}
+
+bool dtLinearAlgebra::isSimplePolygon(std::vector<dtPoint2> const &points)
+{
+  return dtPolygon2(points.begin(), points.end()).is_simple();
+}
+
+bool dtLinearAlgebra::isConvexPolygon(std::vector<dtPoint2> const &points)
+{
+  return dtPolygon2(points.begin(), points.end()).is_convex();
+}
+
 dtReal dtLinearAlgebra::area(
   dtPoint3 const &p0, dtPoint3 const &p1, dtPoint3 const &p2, dtPoint3 const &p3
 )
@@ -895,5 +933,16 @@ dtLinearAlgebra::unitGrid(dtInt const &nU, dtInt const &nV)
   }
 
   return grid;
+}
+dtPoint2 dtLinearAlgebra::centerPoint(std::vector<dtPoint2> const &points)
+{
+  dtReal uu = 0.0;
+  dtReal vv = 0.0;
+  dt__forAllRefAuto(points, point)
+  {
+    uu = uu + point.x();
+    vv = vv + point.y();
+  }
+  return dtPoint2(uu / points.size(), vv / points.size());
 }
 } // namespace dtOO

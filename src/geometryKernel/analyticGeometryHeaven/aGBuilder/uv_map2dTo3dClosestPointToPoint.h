@@ -32,6 +32,18 @@ public:
   uv_map2dTo3dClosestPointToPoint(
     map2dTo3d const *const m2d, dtPoint3 const &pXYZ
   );
+  uv_map2dTo3dClosestPointToPoint(
+    map2dTo3d const *const m2d,
+    dtPoint3 const &pXYZ,
+    std::vector<dtPoint2> const &guesses,
+    dtInt const &maxIterations = 100
+  );
+  uv_map2dTo3dClosestPointToPoint(
+    map2dTo3d const *const m2d,
+    dtPoint3 const &pXYZ,
+    dtPoint2 const &guess,
+    dtInt const &maxIterations = 100
+  );
   virtual ~uv_map2dTo3dClosestPointToPoint();
   dtPoint2 result(void);
   dtReal distance(void);

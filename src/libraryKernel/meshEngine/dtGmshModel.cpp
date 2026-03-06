@@ -62,12 +62,26 @@ License
   dt__throw(__cgnsCheck(), << dt__eval(cg_get_error()))
 
 namespace dtOO {
-std::map<std::string, dtInt>
-  dtGmshModel::_facePositionStr =
-    ::boost::
-      assign::map_list_of("SOUTH", 0)("south", 0)("0", 0)("S", 0)("s", 0)("NORTH", 1)("north", 1)("1", 1)("N", 1)("n", 1)("FRONT", 2)("front", 2)("2", 2)("F", 2)("f", 2)("BACK", 3)("back", 3)("3", 3)("B", 3)("b", 3)("WEST", 4)("west", 4)("4", 4)("W", 4)("w", 4)("EAST", 5)("east", 5)("5", 5)("E", 5)("e", 5)("6", 6)("7", 7)("8", 8)("9", 9)("10", 10)("11", 11)("12", 12)("13", 13)(
-        "14", 14
-      );
+// clang-format off
+std::map<std::string, dtInt> dtGmshModel::_facePositionStr = ::boost::
+      assign::map_list_of
+        ("SOUTH", 0)("south", 0)("0", 0)("S", 0)("s", 0)
+        ("NORTH", 1)("north", 1)("1", 1)("N", 1)("n", 1)
+        ("FRONT", 2)("front", 2)("2", 2)("F", 2)("f", 2)
+        ("BACK", 3)("back", 3)("3", 3)("B", 3)("b", 3)
+        ("WEST", 4)("west", 4)("4", 4)("W", 4)("w", 4)
+        ("EAST", 5)("east", 5)("5", 5)("E", 5)("e", 5)
+        ("6", 6)
+        ("7", 7)
+        ("8", 8)
+        ("9", 9)
+        ("10", 10)
+        ("11", 11)
+        ("12", 12)
+        ("13", 13)
+        ("14", 14)
+      ;
+// clang-format on
 std::map< int, std::vector< std::string > > dtGmshModel::_positionStrFace
     =
     ::boost::assign::map_list_of
@@ -184,16 +198,28 @@ std::map< int, std::vector< std::string > > dtGmshModel::_positionStrEdge
         ::boost::assign::list_of
           ("3").convert_to_container< std::vector< std::string > >()
       );
-std::map<std::string, dtInt> dtGmshModel::_vertexPositionStr = ::boost::assign::
-  map_list_of("0", 0)("START", 0)("start", 0)("S", 0)("s", 0)("1", 1)("END", 1)("end", 1)("E", 1)(
-    "e", 1
-  );
-std::map<int, std::vector<std::string>> dtGmshModel::_positionStrVertex = ::boost::assign::
-  map_list_of(0, ::boost::assign::list_of("0")("START")("start")("S")("s").convert_to_container<std::vector<std::string>>())(
-    1,
-    ::boost::assign::list_of("1")("END")("end")("E")("e")
-      .convert_to_container<std::vector<std::string>>()
-  );
+// clang-format off
+std::map<std::string, dtInt> dtGmshModel::_vertexPositionStr 
+= 
+::boost::assign::
+  map_list_of
+  ("0", 0)("START", 0)("start", 0)("S", 0)("s", 0)
+  ("1", 1)("END", 1)("end", 1)("E", 1)("e", 1)
+;
+std::map<int, std::vector<std::string>> dtGmshModel::_positionStrVertex 
+= 
+::boost::assign::map_list_of
+(
+  0, 
+  ::boost::assign::list_of("0")("START")("start")("S")("s")
+    .convert_to_container<std::vector<std::string>>()
+)
+(
+  1,
+  ::boost::assign::list_of("1")("END")("end")("E")("e")
+    .convert_to_container<std::vector<std::string>>()
+);
+// clang-format on
 dtGmshModel::dtGmshModel(std::string name) : GModel(name)
 {
   _debug = "";
@@ -596,7 +622,7 @@ void dtGmshModel::addIfToGmshModel(
     //
     std::list<::GEdge *> edges;
     std::vector<dtInt> ori;
-    dt__pVH(analyticGeometry) const &bounds = mbs->boundsVectorConstRef();
+    dt__pVH(analyticGeometry) const bounds = mbs->boundsPointerVectorConst();
     dt__forAllIndex(bounds, ii)
     {
       dtInt tmpTag;
@@ -1730,51 +1756,62 @@ std::list<dtGmshRegion *> dtGmshModel::dtRegions(void) const
 
 void dtGmshModel::untagPhysical(::GEntity *const ge)
 {
-  dt__throwIfWithMessage(
-    ge->physicals.size() > 1,
-    untagPhysical(),
-    << "physicalName = " << getPhysicalNames(ge->dim(), ge->physicals)
-    << std::endl
-    << "ge->physicals = [ " << ge->physicals << " ]"
-  );
-
   if (ge->physicals.empty())
     return;
 
-  dtInt pNum = ge->physicals[0];
-  ge->physicals.clear();
-  std::vector<::GEntity *> ent;
-  this->getEntities(ent, ge->dim());
-  bool found = false;
-  dt__forAllRefAuto(ent, anEnt)
+  dt__forAllRefAuto(ge->physicals, pNum)
   {
-    if (std::find(anEnt->physicals.begin(), anEnt->physicals.end(), pNum) !=
-        anEnt->physicals.end())
+    std::vector<::GEntity *> ent;
+    this->getEntities(ent, ge->dim());
+    bool found = false;
+    dt__forAllRefAuto(ent, anEnt)
     {
-      found = true;
+      if (std::find(anEnt->physicals.begin(), anEnt->physicals.end(), pNum) !=
+          anEnt->physicals.end())
+      {
+        found = true;
+      }
+    }
+    if (!found)
+    {
+      dt__debug(
+        untagPhysical(),
+        << "Remove physical: " << this->getPhysicalName(ge->dim(), pNum)
+      );
+      this->removePhysicalName(this->getPhysicalName(ge->dim(), pNum));
     }
   }
-  if (!found)
+  ge->physicals.clear();
+}
+
+std::vector<std::string>
+dtGmshModel::getPhysicalStrings(::GEntity const *const ge) const
+{
+  std::vector<dtInt> pInts = const_cast<::GEntity *>(ge)->getPhysicalEntities();
+
+  std::vector<std::string> ret;
+  if (pInts.size() > 0)
   {
-    this->removePhysicalName(this->getPhysicalName(ge->dim(), pNum));
+    dt__forAllRefAuto(pInts, pInt)
+    {
+      ret.push_back(::GModel::getPhysicalName(ge->dim(), pInt));
+    }
   }
+  return ret;
 }
 
 std::string dtGmshModel::getPhysicalString(::GEntity const *const ge) const
 {
-  std::vector<dtInt> pInt = const_cast<::GEntity *>(ge)->getPhysicalEntities();
+  std::vector<std::string> physicals = getPhysicalStrings(ge);
 
-  if (pInt.size() == 0)
+  if (physicals.empty())
     return std::string("");
 
   dt__throwIfWithMessage(
-    pInt.size() != 1,
-    getPhysicalString(),
-    << dt__eval(pInt) << std::endl
-    << dt__eval(getPhysicalNames(ge->dim(), pInt))
+    physicals.size() != 1, getPhysicalString(), << dt__eval(physicals)
   );
 
-  return ::GModel::getPhysicalName(ge->dim(), pInt[0]);
+  return physicals[0];
 }
 
 std::vector<std::string> dtGmshModel::getPhysicalNames(
@@ -1861,7 +1898,10 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
     //
     // add label
     //
-    fullList.push_back(reg->getPhysicalString());
+    dt__forAllRefAuto(this->getPhysicalStrings(reg), pStr)
+    {
+      fullList.push_back(pStr);
+    }
 
     //
     // add number in vector
@@ -1885,8 +1925,10 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
     //
     // add label
     //
-    fullList.push_back(face->getPhysicalString());
-    std::string faceStr = face->getPhysicalString();
+    dt__forAllRefAuto(this->getPhysicalStrings(face), pStr)
+    {
+      fullList.push_back(pStr);
+    }
     //
     // region iterate
     //
@@ -1897,7 +1939,11 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
       //
       dt__forAllRefAuto(getFullPhysicalList(aReg), aPrefix)
       {
-        fullList.push_back(aPrefix + "->" + faceStr);
+
+        dt__forAllRefAuto(this->getPhysicalStrings(face), faceStr)
+        {
+          fullList.push_back(aPrefix + "->" + faceStr);
+        }
         //
         // get position index
         //
@@ -1928,8 +1974,10 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
     //
     // add label
     //
-    fullList.push_back(edge->getPhysicalString());
-    std::string edgeStr = edge->getPhysicalString();
+    dt__forAllRefAuto(this->getPhysicalStrings(edge), pStr)
+    {
+      fullList.push_back(pStr);
+    }
     //
     // region iterate
     //
@@ -1940,7 +1988,10 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
       //
       dt__forAllRefAuto(getFullPhysicalList(aFace), aPrefix)
       {
-        fullList.push_back(aPrefix + "->" + edgeStr);
+        dt__forAllRefAuto(this->getPhysicalStrings(edge), edgeStr)
+        {
+          fullList.push_back(aPrefix + "->" + edgeStr);
+        }
         //
         // get position index
         //
@@ -1963,8 +2014,10 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
     //
     // add label
     //
-    fullList.push_back(vertex->getPhysicalString());
-    std::string vertexStr = vertex->getPhysicalString();
+    dt__forAllRefAuto(this->getPhysicalStrings(vertex), vertexStr)
+    {
+      fullList.push_back(vertexStr);
+    }
     //
     // edge iterate
     //
@@ -1975,7 +2028,10 @@ dtGmshModel::getFullPhysicalList(::GEntity const *const ent) const
       //
       dt__forAllRefAuto(getFullPhysicalList(aEdge), aPrefix)
       {
-        fullList.push_back(aPrefix + "->" + vertexStr);
+        dt__forAllRefAuto(this->getPhysicalStrings(vertex), vertexStr)
+        {
+          fullList.push_back(aPrefix + "->" + vertexStr);
+        }
         //
         // get position index
         //
