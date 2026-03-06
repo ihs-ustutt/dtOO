@@ -142,7 +142,6 @@ SET(HEADERS
   dtTransformerHeaven/pickLengthPercentRange.h
   dtTransformerHeaven/uVw_phirMs.h
   dtTransformerHeaven/uVw_skewPhirMs.h
-  dtTransformerHeaven/uVw_phiMs.h
   dtTransformerHeaven/uVw_deltaMs.h
   dtTransformerHeaven/averagePoints.h
   dtTransformerHeaven/projectOnSurface.h
@@ -279,7 +278,6 @@ SET(SOURCES
   dtTransformerHeaven/pickLengthPercentRange.cpp
   dtTransformerHeaven/uVw_phirMs.cpp
   dtTransformerHeaven/uVw_skewPhirMs.cpp
-  dtTransformerHeaven/uVw_phiMs.cpp
   dtTransformerHeaven/uVw_deltaMs.cpp
   dtTransformerHeaven/averagePoints.cpp
   dtTransformerHeaven/projectOnSurface.cpp

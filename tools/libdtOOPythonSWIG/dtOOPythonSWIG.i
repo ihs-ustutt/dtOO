@@ -175,7 +175,6 @@ namespace dtOO {
 #include <dtTransformerHeaven/pickLengthPercentRange.h>
 #include <dtTransformerHeaven/uVw_phirMs.h>
 #include <dtTransformerHeaven/uVw_skewPhirMs.h>
-#include <dtTransformerHeaven/uVw_phiMs.h>
 #include <dtTransformerHeaven/uVw_deltaMs.h>
 #include <dtTransformerHeaven/averagePoints.h>
 #include <dtTransformerHeaven/projectOnSurface.h>
@@ -1172,7 +1171,6 @@ namespace dtOO {
 %include dtTransformerHeaven/pickLengthPercentRange.h
 %include dtTransformerHeaven/uVw_phirMs.h
 %include dtTransformerHeaven/uVw_skewPhirMs.h
-%include dtTransformerHeaven/uVw_phiMs.h
 %include dtTransformerHeaven/uVw_deltaMs.h
 %include dtTransformerHeaven/averagePoints.h
 %include dtTransformerHeaven/projectOnSurface.h
