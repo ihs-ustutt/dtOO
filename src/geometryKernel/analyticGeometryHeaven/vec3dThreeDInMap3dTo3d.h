@@ -49,6 +49,8 @@ public:
   virtual bool isClosed(dtInt const &dir) const;
   virtual dtReal getMin(dtInt const &dir) const;
   virtual dtReal getMax(dtInt const &dir) const;
+  vec3dThreeD const *refToVec3dThreeD(void) const;
+  map3dTo3d const *refToMap3dTo3d(void) const;
 
 private:
   ptrHandling<vec3dThreeD> _v3d;
