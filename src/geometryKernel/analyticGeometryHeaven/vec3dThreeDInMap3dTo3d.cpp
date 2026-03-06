@@ -96,4 +96,15 @@ vec3dThreeDInMap3dTo3d::cloneTransformed(dtTransformer const *const dtT) const
 {
   return new map3dTo3dTransformed<vec3dThreeDInMap3dTo3d>(*this, dtT);
 }
+
+vec3dThreeD const *vec3dThreeDInMap3dTo3d::refToVec3dThreeD(void) const
+{
+  return _v3d.get();
+}
+
+map3dTo3d const *vec3dThreeDInMap3dTo3d::refToMap3dTo3d(void) const
+{
+  return _m3d.get();
+}
+
 } // namespace dtOO
