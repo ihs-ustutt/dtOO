@@ -227,17 +227,49 @@ void dtGmshFace::setMap2dTo3d(map2dTo3d const *const base)
   dt__throwIf(!vertices_uv.empty(), setMap2dTo3d());
   _geomType = ::GEntity::GeomType::ParametricSurface;
   _mm.reset(base->clone());
+
   dt__forAllRefAuto(this->vertices(), vertex)
   {
     vertices_uv.push_back(_mm->reparamOnFace(dtGmshModel::extractPosition(vertex
     )));
   }
+  if (edgeLoops.size() > 0)
+  {
+    dt__forAllIterAuto(edgeLoops[0], it)
+    {
+      //
+      // this if condition is necessary, because there are ugly faces created
+      // in dtMeshGFaceWithTransfiniteLayer; those faces have no vertices
+      // returned from vertices()-function, but do have an edgeLoop
+      //
+      if (it->getBeginVertex() != NULL)
+      {
+        verticesOrdered_uv.push_back(
+          _mm->reparamOnFace(dtGmshModel::extractPosition(it->getBeginVertex()))
+        );
+      }
+      else
+        dt__warning(setMap2dTo3d(), << dt__eval(it->getBeginVertex()));
+    }
+  }
+  dt__throwIf(vertices_uv.size() != verticesOrdered_uv.size(), setMap2dTo3d());
+  dt__debug(
+    setMap2dTo3d(),
+    << dt__eval(vertices_uv) << std::endl
+    << dt__eval(verticesOrdered_uv)
+  );
 }
 
-std::vector<dtPoint2> const &dtGmshFace::getVerticesUV(void)
+std::vector<dtPoint2> const &dtGmshFace::getVerticesUV(void) const
 {
   dt__throwIf(vertices_uv.empty(), getVerticesUV());
   return vertices_uv;
+}
+
+std::vector<dtPoint2> const &dtGmshFace::getVerticesOrderedUV(void) const
+{
+  dt__throwIf(verticesOrdered_uv.empty(), getVerticesOrderedUV());
+  return verticesOrdered_uv;
 }
 
 map2dTo3d const *dtGmshFace::getMap2dTo3d(void) const { return _mm.get(); }

@@ -18,8 +18,9 @@ License
 #include "multipleBoundedSurface.h"
 #include "map1dTo3d.h"
 #include "map2dTo3d.h"
-#include <dtTransformerHeaven/dtTransformer.h>
-#include <geometryEngine/dtSurface.h>
+#include <analyticGeometryHeaven/aGBuilder/map1dTo3d_orderLoop.h>
+#include <logMe/dtMacros.h>
+#include <logMe/logContainer.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {
@@ -32,6 +33,8 @@ multipleBoundedSurface::multipleBoundedSurface(
 {
   _m2d.reset(orig._m2d->clone());
   dt__forAllIndex(orig._m1d, ii) _m1d.push_back(orig._m1d[ii].clone());
+  dt__forAllRefAuto(orig._polygon_0, pp) _polygon_0.push_back(pp);
+  dt__forAllRefAuto(orig._polygon_1, pp) _polygon_1.push_back(pp);
 }
 
 multipleBoundedSurface::~multipleBoundedSurface() {}
@@ -41,12 +44,12 @@ multipleBoundedSurface::multipleBoundedSurface(
   ptrVectorHandling<analyticGeometry> const &m1d
 )
 {
-  dt__throwIf(m2d->dim() != 2, multipleBoundedSurface());
-  _m2d.reset(m2d->clone());
-  dt__forAllIndex(m1d, ii)
+  _m2d.reset(map2dTo3d::DownCast(m2d->clone()));
+  _m1d = map1dTo3d_orderLoop(map1dTo3d::PointerVectorCloneCast(m1d)).result();
+  dt__forAllIndex(_m1d, ii)
   {
-    dt__throwIf(m1d[ii].dim() != 1, multipleBoundedSurface());
-    _m1d.push_back(m1d[ii].clone());
+    _polygon_0.push_back(_m2d->reparamOnFace(_m1d[ii].getPointPercent(0.0)));
+    _polygon_1.push_back(_m2d->reparamOnFace(_m1d[ii].getPointPercent(1.0)));
   }
 }
 
@@ -123,15 +126,20 @@ vectorHandling<renderInterface *> multipleBoundedSurface::getRender(void) const
   return rV;
 }
 
-ptrVectorHandling<analyticGeometry> const &
-multipleBoundedSurface::boundsVectorConstRef(void) const
+ptrVectorHandling<analyticGeometry> const
+multipleBoundedSurface::boundsPointerVectorConst(void) const
 {
-  return _m1d;
+  return analyticGeometry::PointerVectorCloneCast(_m1d);
 }
 
 analyticGeometry const *const multipleBoundedSurface::surfaceConstPtr(void
 ) const
 {
   return _m2d.get();
+}
+
+bool multipleBoundedSurface::insideInternalPolygon(dtPoint2 const &ppUV) const
+{
+  return dtLinearAlgebra::isInsidePolygon(_polygon_0[0], _polygon_0);
 }
 } // namespace dtOO

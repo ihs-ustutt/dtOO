@@ -69,15 +69,16 @@ Call the function twice at two different positions of ``zz``:
 
 Create an empty vector of ``analyticGeometry`` objects:
     
->>> m2ds = vectorHandlingAnalyticGeometry()
+>>> m2ds = container.cptr_aG()
 
 Create two objects of ``multipleBoundedSurface``; the surfaces are bounded by
 five edges; the first argument holds the surface information; it is important 
 to keep in mind, that the edge and face is not coupled outside of the 
-``multipleBoundedSurface``-object:
+``multipleBoundedSurface``-object; the ``<<``-operator clones the object and 
+sets a new label:
 
->>> m2ds.push_back( multipleBoundedSurface(m2d0, m1ds0).clone() )
->>> m2ds.push_back( multipleBoundedSurface(m2d1, m1ds1).clone() )
+>>> m2ds.push_back( multipleBoundedSurface(m2d0, m1ds0) << "mBS_0" )
+>>> m2ds.push_back( multipleBoundedSurface(m2d1, m1ds1) << "mBS_1" )
 
 Loop through all edges of a face and create a skin surface with the two edges;
 these faces are the *side* faces of the whole volume:
@@ -145,7 +146,16 @@ all possible face labels:
 >>> ii = 0
 >>> for aFace in gm.getDtGmshFaceListByPhysical("mbv->*"):
 ...   gm.tagPhysical( aFace, "f_"+str(ii) )
+...   gm.tagPhysical( aFace, "F_"+str(ii) )
 ...   ii = ii + 1
+
+Faces were tagged with ``f_*`` and ``F_*``:
+
+>>> gm.getPhysicalStrings( gm.getDtGmshFaceByPhysical("F_0") )
+('f_0', 'F_0')
+
+>>> for aFace in gm.getDtGmshFaceListByPhysical("mbv->*"):
+...   gm.untagPhysical( aFace )
 
 Another example of setting tags to edges:
 
@@ -159,6 +169,22 @@ found in the generated log file:
 
 >>> ob = bVODumpModel()
 >>> ob.jInit( jsonPrimitive(), None, None, None, None, None, ref )
+>>> ob.preUpdate()
+
+>>> ob = bVOAnalyticGeometryToFace()
+>>> ob.jInit( 
+...   jsonPrimitive(
+...     '{'
+...       '"analyticGeometry" : ['
+...         '{"label" : "mBS_0"},'
+...         '{"label" : "mBS_1"}'
+...       '],'
+...       '"_inc" : 10.0,'
+...       '"_facesPerEntry" : [1,1]'
+...     '}'
+...   ), 
+...   None, None, None, m2ds, None, ref
+... )
 >>> ob.preUpdate()
 
 Create a mesh rule; give different operators for meshing vertices, edges, and 
