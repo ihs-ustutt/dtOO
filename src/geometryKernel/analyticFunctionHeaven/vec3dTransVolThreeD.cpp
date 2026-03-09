@@ -16,6 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "vec3dTransVolThreeD.h"
+#include "analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h"
 #include "dtLinearAlgebra.h"
 #include "vec3dTwoD.h"
 #include <interfaceHeaven/staticPropertiesHandler.h>
@@ -170,6 +171,18 @@ vec3dTransVolThreeD::cloneTransformed(dtTransformer const *const dtT) const
 vec3dTransVolThreeD *vec3dTransVolThreeD::create(void) const
 {
   return new vec3dTransVolThreeD();
+}
+
+ptrVectorHandling<vec3dTwoD> const &vec3dTransVolThreeD::refVec3dTwoD(void
+) const
+{
+  return _v3dTwoD;
+}
+
+vec3dTwoD const *const vec3dTransVolThreeD::constPtrVec3dTwoD(dtInt const ii
+) const
+{
+  return &(_v3dTwoD[ii]);
 }
 
 /**

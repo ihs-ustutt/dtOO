@@ -51,6 +51,8 @@ public:
   virtual ~vec3dTransVolThreeD();
   virtual aFY Y(aFX const &xx) const;
   virtual bool closed(dtInt const &dir) const;
+  ptrVectorHandling<vec3dTwoD> const &refVec3dTwoD(void) const;
+  vec3dTwoD const *const constPtrVec3dTwoD(dtInt const ii) const;
 
 private:
   ptrVectorHandling<vec3dTwoD> _v3dTwoD;
