@@ -17,12 +17,13 @@
 
 from dtOOPythonApp.tools.dtBundleTools import dtBundleBuilder
 
-from dtOOPythonSWIG import analyticCurve
 from dtOOPythonSWIG import bSplineCurve_pointConstructOCC
 from dtOOPythonSWIG import bSplineSurface_bSplineCurveFillConstructOCC 
 from dtOOPythonSWIG import bSplineSurface_exchangeSurfaceConstructOCC 
 from dtOOPythonSWIG import vectorDtPoint3 
 from dtOOPythonSWIG import dtPoint3 
+from dtOOPythonSWIG import dtVector3 
+from dtOOPythonSWIG import vec3dCurveOneD 
 
 from dtOOPythonSWIG import analyticCurve
 from dtOOPythonSWIG import analyticFunction
@@ -36,6 +37,8 @@ from dtOOPythonSWIG import vec3dSurfaceTwoD
 from dtOOPythonSWIG import vec3dTransVolThreeD
 from dtOOPythonSWIG import bSplineSurface_bSplineSurfaceSplitConstructOCC
 from dtOOPythonSWIG import bSplineSurface_skinConstructOCC
+from dtOOPythonSWIG import dtOCCBSplineCurve
+from dtOOPythonSWIG import dtOCCBSplineSurface 
 
 from typing import List, Optional
 import logging
@@ -47,17 +50,25 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
     Attributes
     ----------
     label_: str
-    Label.
+      Label.
     aFOne_: vec3dSurfaceTwoD
-    First BSpline surface.
+      First BSpline surface.
     aFTwo_: vec3dSurfaceTwoD
-    Second BSpline surface.
+      Second BSpline surface.
     splitDim_: int
-    Dimension where surface is splitted before skinned.
+      Dimension where surface is splitted before skinned.
     splits_: List[List[float]]
-    Positions for splitting.
+      Positions for splitting.
     tEMeshBlockThickness: Optional[float] = None
-    thickness of the Trailing Edge Mesh Blocks, if not None
+      thickness of the Trailing Edge Mesh Blocks, if not None
+    meanplaneFromBlocks: bool = False
+      activates creation of meanplane curve
+    meanplaneExtOut: Optional[float] = 0.01,
+      extention of meanplane curve towards outlet
+    meanplaneExtIn: Optional[float] = 0.01,
+      extention of meanplane curve towards inlet
+    nMeanplaneBlocks: Optional[int] = 3
+      number of block faces used for the meanplane
 
     Examples
     --------
@@ -114,7 +125,11 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
         aFTwo: analyticFunction,
         splitDim: int = 0,
         splits: List[List[float]] = [[]],
-        tEMeshBlockThickness: Optional[float] = None
+        tEMeshBlockThickness: Optional[float] = None,
+        meanplaneFromBlocks: bool = False,
+        meanplaneExtOut: Optional[float] = 0.01,
+        meanplaneExtIn: Optional[float] = 0.01,
+        nMeanplaneBlocks: Optional[int] = 3
     ) -> None:
         """Constructor.
       
@@ -132,7 +147,15 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
           Positions for splitting.
         tEMeshBlockThickness: Optional[float] = None
           thickness of the Trailing Edge Mesh Blocks, if not None
-      
+        meanplaneFromBlocks: bool = False
+          activates creation of meanplane curve
+        meanplaneExtOut: Optional[float] = 0.01,
+          extention of meanplane curve towards outlet
+        meanplaneExtIn: Optional[float] = 0.01,
+          extention of meanplane curve towards inlet
+        nMeanplaneBlocks: Optional[int] = 3
+          number of block faces used for the meanplane
+
         Returns
         -------
         None
@@ -145,7 +168,15 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
         self.aFTwo_ = vec3dSurfaceTwoD.MustDownCast( aFTwo )
         self.splitDim_ = splitDim
         self.splits_ = splits
+        
         self.thickness_ = tEMeshBlockThickness
+        self.meanplaneFromBlocks_ = meanplaneFromBlocks
+        self.meanplaneExtOut_ = meanplaneExtOut
+        self.meanplaneExtIn_ = meanplaneExtIn
+        self.nMeanplaneBlocks_ = nMeanplaneBlocks
+        if self.thickness_ != None:
+            self.nMeanplaneBlocks_ = self.nMeanplaneBlocks_ - 1
+        
         # adjust splits to corresponding parameter space
         if splits != [[]]:
           for split in self.splits_:
@@ -181,6 +212,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
         else:
           cc = 0
           for split in self.splits_:
+            print("meshBlock nr : ", cc)
             logging.info( 
               "Split between %f <--> %f in direction %d" 
               % 
@@ -211,7 +243,34 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
             theRef = vec3dTransVolThreeD_skinBSplineSurfaces( vh_aF ).result()
             theRef.setLabel( self.label_+"_"+str(cc + 1) )
             self.appendAnalyticFunction( theRef )
-           
+            
+            # generates the meanplaneextiention in sequence to the last defined
+            #  meanplane block
+            if (self.meanplaneFromBlocks_ == True and cc == self.nMeanplaneBlocks_):
+                
+                # face 3 of the mesh block is the one normal to the blade
+                face = vec3dSurfaceTwoD.DownCast(
+                    theRef.constPtrVec3dTwoD( 3 )
+                )
+                
+                ## debug statement to plot analytical face
+                #plotFace = vec3dSurfaceTwoD.DownCast(
+                #        theRef.constPtrVec3dTwoD(
+                #           3 
+                #        )
+                #    )
+                #plotFace.setLabel("TEST_"+self.label_+"_plotFace")
+                #self.appendAnalyticFunction(plotFace)
+                
+                # calculationg the curve tangentially offset curve
+                mPBlockCurve, mPBlockOffset = self.teOffsetCurves_vec3dSurfaceTwoD(
+                        face, 1, (self.meanplaneExtIn_), 1
+                    ) 
+                # creating the curve from a vectorDtPoint3 and appending AF
+                mPBlockOffsetCurve = bSplineCurve_pointConstructOCC(mPBlockOffset,2).result()
+                self.appendAnalyticFunction(vec3dCurveOneD( mPBlockOffsetCurve ) << self.label_ + "Curve_in1")
+                self.appendAnalyticFunction(vec3dCurveOneD( mPBlockCurve ) << self.label_ + "Curve_in0")
+
             # generation of trailing edge mesh block, only done, if tEMeshBlockThickness is defined
             if self.thickness_ != None:
                 
@@ -224,15 +283,50 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
                     # segPercent specifies the u direction where the trailing edge is located on the faces,
                     #  this is different for the first and last blocks because the u direction "wraps"
                     #  around the blade
-                    bladeCurve0, blockCurve0, bladeOffset0, blockOffset0 = self.teOffsetCurves_vec3dSurfaceTwoD(
-                            bladeSurf, blockSurf, 0, self.thickness_
+                    # offset curves for block and blade are calculated in two function calls
+                    bladeCurve0, bladeOffset0 = self.teOffsetCurves_vec3dSurfaceTwoD(
+                            bladeSurf, 0, self.thickness_, 0
                         )
+                    blockCurve0, blockOffset0 = self.teOffsetCurves_vec3dSurfaceTwoD(
+                            blockSurf, 0, self.thickness_, 0
+                        )
+                    
+                    # special treatment if trailing edge mesh blocks exist
+                    if self.meanplaneFromBlocks_ == True:
+                        # the meanplane offset curve is calculated from the same blockSurf which was used
+                        #  for the trailing edge mesh block
+                        # the offset distance is (self.thickness_+self.meanplaneExtOut_)
+                        mPBlockCurve, mPBlockOffset = self.teOffsetCurves_vec3dSurfaceTwoD(
+                            blockSurf, 0, (self.thickness_+self.meanplaneExtOut_), 0
+                        )
+                        # mPBlockCurve is overwritten with blockOfsset of the trailing edge mesh block
+                        mPBlockCurve = bSplineCurve_pointConstructOCC(blockOffset0,2).result()
+                        # creating the curve from a vectorDtPoint3 and appending AF
+                        mPBlockOffsetCurve = bSplineCurve_pointConstructOCC(mPBlockOffset,2).result()
+                        self.appendAnalyticFunction(vec3dCurveOneD( mPBlockOffsetCurve ) << self.label_ + "Curve_out1")
+                        self.appendAnalyticFunction(vec3dCurveOneD( mPBlockCurve ) << self.label_ + "Curve_out0")
 
                 if cc == (len(self.splits_)-1):
                     logging.info("Extracting trailing-edge and block curves from mesh block %d" % (cc+1))
-                    bladeCurve1, blockCurve1, bladeOffset1, blockOffset1 = self.teOffsetCurves_vec3dSurfaceTwoD(
-                            bladeSurf, blockSurf, 1, self.thickness_
+                    bladeCurve1, bladeOffset1, = self.teOffsetCurves_vec3dSurfaceTwoD(
+                            bladeSurf, 1, self.thickness_, 0
                         )  
+                    blockCurve1, blockOffset1 = self.teOffsetCurves_vec3dSurfaceTwoD(
+                            blockSurf, 1, self.thickness_, 0
+                        )  
+
+            # first meamplane offset curve if no trailing edge mesh blocks exist
+            if (self.thickness_ == None and self.meanplaneFromBlocks_ == True):
+                if cc == 0:
+                    # calculating offset curve
+                    mPBlockCurve, mPBlockOffset = self.teOffsetCurves_vec3dSurfaceTwoD(
+                        blockSurf, 0, (self.meanplaneExtOut_), 0
+                    )
+                    # creating the curve from a vectorDtPoint3 and appending AF
+                    mPBlockOffsetCurve = bSplineCurve_pointConstructOCC(mPBlockOffset,2).result()
+                    self.appendAnalyticFunction(vec3dCurveOneD( mPBlockOffsetCurve ) << self.label_ + "Curve_out1")
+                    self.appendAnalyticFunction(vec3dCurveOneD( mPBlockCurve ) << self.label_ + "Curve_out0")
+
 
             cc = cc + 1
         
@@ -287,75 +381,95 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
 
     #
     # Extracts the necessary curves and their offsets for the generation of the trailing edge meshBlocks
+    #  and the generation of the meanplane curves
     # segPercent is 0 for the first and 1 for the last mesh blocks 
     #
-    def teOffsetCurves_vec3dSurfaceTwoD(self, bladeSurf, blockSurf, segPercent, blockThickness):
+    def teOffsetCurves_vec3dSurfaceTwoD(self, surf, segPercent, blockThickness, splitDim):
         
-        # changing type of the faces from aF to aS
-        bladeSurf = analyticSurface(bladeSurf.constPtrDtSurface())
-        blockSurf = analyticSurface(blockSurf.constPtrDtSurface())
-        
-        # setting the directions for the tangents
-        # the first blocks u direction is oriented away from the trailing edge
-        # the second blocks u direction is oriented to the trailing edge
+        # direction of the offset is controlled by f
         if segPercent == 0:
             f = -1
         elif segPercent == 1:
             f = 1
         
-        # trailing edge mesh blocks are only possible for the splitDim 0
-        if self.splitDim_ == 0:
+        # changing type of the faces from aF to aS
+        surf = analyticSurface(surf.constPtrDtSurface()) 
+        
+        # surface directions:
+        #   splitDim = 0:
+        #     v-direction is the hub-to-shroud direction 
+        #     u-direction is along the blade contour
+        #   splitDim = 1:
+        #     v-direction is the blade skin to block skin direction
+        #     u-direction is the hub to shroud direction
 
+        # according to the split dimension which is set the curve is cut out
+        #  and segPercent set on uu or vv
+        if splitDim == 0:
             # extracting the curves of the blade and the block at the trailing edge
             #  segPercent is needed because of the different directions
-            bladeCurve = analyticCurve.MustDownCast(
-                    bladeSurf.segmentConstUPercent(segPercent)
+            curve = analyticCurve.MustDownCast(
+                    surf.segmentConstUPercent(segPercent)
                 ).ptrConstDtCurve()
-            blockCurve = analyticCurve.MustDownCast(
-                    blockSurf.segmentConstUPercent(segPercent)
-                ).ptrConstDtCurve()
-            
-            # initializing Point vectors for the offset curves 
-            bladeOffsetPoints = vectorDtPoint3()
-            blockOffsetPoints = vectorDtPoint3()
-            
-            # the offset curves will be created from the offsets at those support points
-            supports = [0.00, 0.33, 0.66, 1.00]
-            for vv in supports:
-                # v-direction is the hub-to-shroud direction with splitDim = 0 
-                # u-direction is along the blade contour
+            uu = segPercent
 
+        elif splitDim == 1:
+            curve = analyticCurve.MustDownCast(
+                    surf.segmentConstVPercent(segPercent)
+                ).ptrConstDtCurve()
+            vv = segPercent
+        
+        # getting number of control points of the curve 
+        bsc_curve = dtOCCBSplineCurve.MustDownCast(curve)
+        n = bsc_curve.nControlPoints()
+
+        # initializing Point vectors for the offset curves 
+        offsetPoints = vectorDtPoint3()
+        
+        # iterating over control points
+        for i in range(n):
+            
+            # calculating the percentual vv or uu position by normalizing the number of
+            #  controlpoints
+            # calculating the tangential directions of the faces at the support points
+            if splitDim == 0:    
+                vv = i/(n-1)
                 # tangential direction of the blade at the trailing edge
-                bladeTangent = dtLinearAlgebra.normalize(
-                        bladeSurf.firstDerU(bladeSurf.u_percent(segPercent), vv)
+                tangent = dtLinearAlgebra.normalize(
+                        surf.firstDerU(surf.u_percent(uu), surf.v_percent(vv))
                     )
-                # appending the blade point offset in tangential direction
-                #  the offset will have the specified thickness, f sets the direction
-                bladeOffsetPoints.append(
-                        bladeSurf.getPoint(
-                            bladeSurf.u_percent(segPercent), vv
-                        ) + bladeTangent * blockThickness*f
+            elif splitDim == 1:
+                uu = i/(n-1)
+                # tangential direction of the face normal between blade and thickness faces
+                tangent = dtLinearAlgebra.normalize(
+                        surf.firstDerV(surf.u_percent(uu), surf.v_percent(vv))
                     )
-                
-                # doint the same for the block
-                blockTangent = dtLinearAlgebra.normalize(
-                        blockSurf.firstDerU(blockSurf.u_percent(segPercent), vv)
-                    )
-                blockOffsetPoints.append(
-                        blockSurf.getPoint(
-                            blockSurf.u_percent(segPercent), vv
-                        ) + blockTangent * blockThickness*f
-                    )
-        
-        # for splitDim_ = 1 not implimented
-        else:
-            raise ValueError("Not yet implemented")
-        
-        # returns the curves and the vectors with the offset points
-        #  the points and not offset curves are returned, 
-        #  because a mean offset has to be calculated for the blade
-        return bladeCurve, blockCurve, bladeOffsetPoints, blockOffsetPoints
+            
+            # appending the blade point offset in tangential direction
+            #  the offset will have the specified thickness, f sets the direction
+            offsetPoints.append(
+                    surf.getPoint(
+                        surf.u_percent(uu), surf.v_percent(vv)
+                    ) + tangent * blockThickness*f
+                )
+            
+            ## Debug statement to plot tangents
+            #tangentCurve = bSplineCurve_pointConstructOCC(
+            #    vectorDtPoint3()
+            #      << surf.getPoint(surf.u_percent(uu), surf.v_percent(vv))
+            #      << surf.getPoint(surf.u_percent(uu), surf.v_percent(vv)) + tangent * blockThickness*f,
+            #    1
+            #).result()
 
+            #tang = (vec3dCurveOneD( tangentCurve ) << self.label_ + "Curve_te"+str(uu)+"_"+str(i))
+            #self.appendAnalyticFunction(tang)
+                 
+        
+        # returns the curve on the surface and the vector with the offset points
+        #  the offset points and not the offset curves are returned, because a 
+        #  mean offset has to be calculated for trailing edge at the blade
+        return curve, offsetPoints
+    
     #
     # creating the faces for the trailing edge meshBlocks
     #

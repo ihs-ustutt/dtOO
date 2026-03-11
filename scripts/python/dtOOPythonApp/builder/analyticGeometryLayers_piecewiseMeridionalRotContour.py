@@ -53,14 +53,121 @@ import numpy
 
 
 class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
-    """Create a grid channel.
+    """Create grid channels from hub and shroud curves.
+    
+    By defining interfaces the domain is split into six sided domains,
+    and into a multi bounded volume with mesh layers on it's walls.
+    The first six sided channel consists of the flow domain from the 
+    inlet to the first interface. The following channels are between 
+    the interfaces.
+    After the last interface the multi bounded volume is created.
 
-    The grid channel is created by rotating the channelSide in the range:
+    The six sided channel is returned by the following method: 
+        getRegChannel(pos, nSlices) -> analyticGeoemetry
+        
+        The input pos is the number of the channel to be returned starting with 0.
 
-        $[ -0.5*2*pi/numberOfSections, 0.5*2*pi/numberOfSections ]$
+    The multi bounded volume and its boundaries are returned by: 
+        getUnstructuredRegion(nSlices) -> analyticGeometry, List[analyticGeometry]
 
-    The grid channel is then represented as a rotatingMap2dTo3d within the
-    predefined angle.
+    The wall layers are returned by the methods:
+        getLayerList(nSlices)  -> List[List[List[analyticGeometry] | List[bool]]]
+    
+        The List returned by getLayerList has the following format:
+          layers = [[hub layer lists],[shroud layer list]]
+          with:
+          [layer lists] = [[3d layer domain], [bool list radius zero]]
+    
+    The inputs nSlices signifies the number of slices in which the whole 360° domain 
+    will be segmented. The resulting angle of the returned segment is as follows:
+        $[ rotAngle = 2*numpy.pi/nSlices ]$
+
+    Attributes
+    ----------
+    label: str
+      Label.
+    hubCurves: List[analyticGeometry]
+      Channel side of the grid channel.
+    shroudCurves: List[analyticGeometry]
+      Channel side of the grid channel.
+    layer_thickness: float
+      Thichnes of mesh layers in unstructured domain.
+    layer_supports: List[float]
+      Number position of support points on channel curves for layer creation.
+    interface_hub: List[Tuple[int, float]]             
+      Interface position on hub curves.
+      interface_hub[i] = number of interface curve
+      interface_hub[i][0] = curveNo, int (starts with 0)
+      interface_hub[i][1] = percentage on curve (0 to 1)
+    interface_shroud: List[Tuple[int, float]]
+      Interface position on hub curves.
+      Same input logic as interface_hub.
+    interface_curvature: List[Tuple[float, float, int]]
+      Curvature of the interface curve from hub to shroud.
+      interface_curvature[i] = number of interface curve
+      interface_curvature[i][0] = curvature offset point [%] from hub to shroud
+      interface_curvature[i][1] = curvature in % of length of connection line
+      interface_curvature[i][2] = curvature direction
+    rotVector: dtVector3
+      Rotation vector.
+    origin: dtPoint3
+      Origin.
+
+    Examples
+    --------
+    >>> import dtOOPythonSWIG as dtOO
+    
+    Define list of hub curves
+    >>> hubCurves = [
+    ...      dtOO.analyticCurve(
+    ...        dtOO.bSplineCurve_pointConstructOCC(
+    ...          dtOO.vectorDtPoint3()
+    ...            << dtOO.dtPoint3(+0.50, +0.00, 1.00)
+    ...            << dtOO.dtPoint3(+0.00, +0.00, 0.50),
+    ...            1
+    ...        ).result()
+    ...      ),
+    ...      dtOO.analyticCurve(
+    ...        dtOO.bSplineCurve_pointConstructOCC(
+    ...          dtOO.vectorDtPoint3()
+    ...            << dtOO.dtPoint3(+0.00, +0.00, 0.50)
+    ...            << dtOO.dtPoint3(+0.00, +0.00, 0.00),
+    ...            1
+    ...        ).result()
+    ...      )
+    ...    ]
+    
+    Define list of shroud curves
+    >>> shroudCurves = [
+    ...      dtOO.analyticCurve(
+    ...        dtOO.bSplineCurve_pointConstructOCC(
+    ...          dtOO.vectorDtPoint3()
+    ...            << dtOO.dtPoint3(+1.00, +0.00, 1.00)
+    ...            << dtOO.dtPoint3(+1.00, +0.00, 0.00),
+    ...            1
+    ...        ).result()
+    ...      )
+    ...    ]
+    
+    Initialize builder:
+    >>> builder = analyticGeometryLayers_piecewiseMeridionalRotContour(
+    ...  label = "channel",
+    ...  hubCurves = hubCurves, 
+    ...  shroudCurves = shroudCurves,
+    ...  layer_thickness = 0.2,
+    ...  layer_supports = [0.33, 0.66],
+    ...  interface_hub = [[0, 0.7]],
+    ...  interface_shroud = [[0, 0.3]],
+    ...  interface_curvature = [[0.5, 0.2, -1]],
+    ... )
+    
+    Build volume:
+    >>> builder.build()
+
+    Return the six sided domain and check type:
+    >>> builder.getRegChannel(0, 12).virtualClassName()
+    'partRotatingMap2dTo3d'
+
     """
 
     def __init__(
@@ -70,9 +177,9 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         shroudCurves: List[analyticGeometry],
         layer_thickness: float = 0,
         layer_supports: List[float] = [],
-        interface_hub: List[float] = [],             # [curve, percent]
-        interface_shroud: List[float] = [],
-        interface_curvature: List[float] = [],         # [curvature offset, percent]
+        interface_hub: List[Tuple[int, float]] = [],             # [curve, percent]
+        interface_shroud: List[Tuple[int, float]] = [],
+        interface_curvature: List[Tuple[float, float, int]] = [],   # [curvature offset, percent, direction]
         rotVector: dtVector3 = dtVector3(0, 0, 1),
         origin: dtPoint3 = dtPoint3(0, 0, 0),
     ) -> None:
@@ -85,9 +192,25 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         hubCurves: List[analyticGeometry]
           Channel side of the grid channel.
         shroudCurves: List[analyticGeometry]
-          Number of periodic sections.
-        internals: List[analyticGeometry]
-          Internal objects.
+          Channel side of the grid channel.
+        layer_thickness: float
+          Thichnes of mesh layers in unstructured domain.
+        layer_supports: List[float]
+          Number position of support points on channel curves for layer creation.
+        interface_hub: List[Tuple[int, float]]             
+          Interface position on hub curves.
+          interface_hub[i] = number of interface curve
+          interface_hub[i][0] = curveNo, int (starts with 0)
+          interface_hub[i][1] = percentage on curve (0 to 1)
+        interface_shroud: List[Tuple[int, float]]
+          Interface position on hub curves.
+          Same input logic as interface_hub.
+        interface_curvature: List[Tuple[float, float, int]]
+          Curvature of the interface curve from hub to shroud.
+          interface_curvature[i] = number of interface curve
+          interface_curvature[i][0] = curvature offset point [%] from hub to shroud
+          interface_curvature[i][1] = curvature in % of length of connection line
+          interface_curvature[i][2] = curvature direction
         rotVector: dtVector3
           Rotation vector.
         origin: dtPoint3
@@ -1201,8 +1324,17 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
     
     # returns a list containing the hub and shroud layers as well as information 
     #  on what kind of layer it is
-    def getLayerList(self, nSlices: int):
+    def getLayerList(
+            self, 
+            nSlices: int
+        ) -> List[
+                List[
+                    List[analyticGeometry] | List[bool]
+                ]
+            ]:      
+
         logging.info("Request Layer Volumes: %i Slices" % nSlices)
+
         
         # partRotatingMap2dTo3d takes the rotation angle in %
         # ofc
@@ -1239,7 +1371,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         return layerList
     
     # returns a multiple bounded volume of the unstructured region
-    def getUnstructuredRegion(self, nSlices: int): 
+    def getUnstructuredRegion(self, nSlices: int) -> Tuple[analyticGeometry, List[analyticGeometry]]: 
         logging.info("Request Volume of unstructured Region: %i Slices" % nSlices)
 
         # rotation angle defined by the number of slices
@@ -1273,7 +1405,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
 
             ib = ib + 1
         
-        # building g a bounding box surface for the 2d unstructured region
+        # building a bounding box surface for the 2d unstructured region
         # using the bounding box of the special hub and shroud curves
         unstructBB = self.speBb_
         BB_dist = unstructBB[0] - unstructBB[1]  
