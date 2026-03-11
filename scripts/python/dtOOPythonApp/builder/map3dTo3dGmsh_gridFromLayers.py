@@ -27,20 +27,146 @@ import numpy
 from typing import List, Tuple, Union, Dict
 
 class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
+    """Create mesh's topology as map3dTo3dGmsh.
 
+    The topology of the mesh of from the channel reigion with Layers is build. 
+    The channel consists of of a multi bounded volume and a the layer volumes.
+    
+    The naming of the mesh regions is as follows:
+        
+        - unstruct3d    : multi bounded volume
+        - layer3d       : layer faces
+    
+    The multi bounded volume is meshed unstructured. The number of elements in this
+    region is deternined by the element counts of the surrounding layers.
+    The six sided layer volumes are meshed as transfinite regions in addition with 
+    recombining recursively.
+    If the layer volumes are five sided (the slice ends on a radius of zero) they are
+    meshed unstructured.
+    The layer volumes are differentiated in hub layers and shroud layers.
+    By looping over the layer list the layer regions can be added as volumes.
+    The layer list has the following format:
+    
+          layers = [[hub layer lists],[shroud layer list]]
+          with:
+          [layer lists] = [[3d layer domain], [bool list radius zero]]
+    
+          - List[3d layer domain]         : contains the layer volumes
+          - List[bool list radius zero]   : contains info if the volume is five sided
+
+    The layer faces for six sided layers are labeled as follows:
+    
+        - "periodic0_"+label+str(i_l)   : 1st peridoic face  
+        - "periodic1_"+label+str(i_l)   : 2nd periodic face
+        - "channel_"+label+str(i_l)     : channel wall face
+        - "parallel_"+label+str(i_l))   : face parallel to channel wall
+        - "ortho_"+label+str(i_l)       : face orthogonal to streamwise direction
+
+    The variable <label> is here correspondingly "hub" or "shroud". The iterator 
+    <i_l> corrseponds to the layer number in the layer list.
+    
+    The layer faces for five sided layers have the appendix "5s" to their name ie:
+
+        - "channel5s_"+label+str(i_l)     : channel wall face (five sided domain)
+
+    If the last layer of the hub or shroud layers are six sided the last orthogonal 
+    face will be named:
+
+        - "ortho_"+label+str(i_l + 1)   
+
+    In order to set the number of nodes and to apply a specific grading to an
+    edge of the layer volumes, the following groups of edges are extracted:
+    
+        - channelToParallelLines    : edges from channel face to parallel face, 
+                                      grading is applied
+        - swLines                   : edges extending in streamwise direction 
+                                      along channel and parallel faces
+        - circLines                 : edges extending in circunferential direction
+                                      along channel and parallel faces
+
+    If debug is enabled all edges are attached with prefix "debug_".
+
+    A grading is defined on channelToParallelLines with the number of elements of 
+    <nLayers> and a first element size of <firstElement>.
+    
+    The number of nodes on swLines and circLines is defined trough the mesh sizes
+    elementSize_sw and elementSize_circ. 
+    The number on elements in streamwise direction is calculated from the length
+    of a swLine on the channel wall and <elementSize_sw>.
+    To keep the element count in circumferential direction consistent on the 
+    hub and the shroud layers the number of elements is calculated from the longest
+    circLine of the hub and the shroud layer volumes.
+    Resulting of this meshing strategy the imput variables <elementSize_sw> and 
+    <elementSize_circ> represent the maximal mesh size on the channel surfaces.
+    
+    Added observers:
+
+        - bVOFaceToPatchRule
+
+        - bVOWriteMSH
+
+        - bVOOrientCellVolumes
+
+    Attributes
+    ----------
+    label_: str
+      Label.
+    layers: List[List[List[analyticGeometry] | List[bool]]]
+      Layer lists for hub and shroud with 3d regions and bool list.
+    nLayers_: int
+      Number of elements in grading.
+    firstElement: float
+      size of first element in grading.
+    elementSize_sw: float
+      Element size in streamwise direction
+    elementSize_circ: float
+      Element size in circumferential direction
+    mv: analyticGeometry
+      Multi bounded volume of the unstructured region
+    bs: List[analyticGeometry]
+      Bounding faces of the mult bounded voulume
+
+    Examples
+    --------
+
+    """
     def __init__(self,
-                 label,
-                 layers: List,
+                 label: str,
+                 layers: List[List[List[analyticGeometry] | List[bool]]],
                  nLayers: int,
                  firstElement: float,
-                 elementSize_sw,
-                 elementSize_circ,
-                 mv,
-                 bs
+                 elementSize_sw: float,
+                 elementSize_circ: float,
+                 mv: analyticGeometry, 
+                 bs: List[analyticGeometry]
         ) -> None :
+        
+        """Constructor
 
+        Parameters
+        ----------
+        label_: str
+          Label.
+        layers: List[List[List[analyticGeometry] | List[bool]]]
+          Layer lists for hub and shroud with 3d regions and bool list.
+        nLayers_: int
+          Number of elements in grading.
+        firstElement: float
+          size of first element in grading.
+        elementSize_sw: float
+          Element size in streamwise direction
+        elementSize_circ: float
+          Element size in circumferential direction
+        mv: analyticGeometry
+          Multi bounded volume of the unstructured region
+        bs: List[analyticGeometry]
+          Bounding faces of the mult bounded voulume
+        
+        Returns
+        -------
+        None
+        """
         super(map3dTo3dGmsh_gridFromLayers, self).__init__()
-
         
         # setting global params
         self.label_ = label
@@ -74,6 +200,17 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         )
 
     def build(self) -> None:
+        """Build part.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
 
         m3dGmsh = map3dTo3dGmsh()
         m3dGmsh.jInit(
@@ -579,7 +716,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                                       m3dGmsh,
                                       face0: str,
                                       face1: str):
-        """Returns the common edge between two faces
+        """Returns the common edges between two faces
         """
         commonEdges = []
         edges0 = m3dGmsh.getModel().getDtGmshFaceByPhysical(face0).dtEdges()

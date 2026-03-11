@@ -153,6 +153,9 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
   element sizes, between consecutive edges the "angentialBlade_*" grading is 
   adjusted for start and end vertex.
 
+  If trailing edge mesh blocks exist they can be meshed by setting 
+  meshTEBlocks to true. 
+
   Added observers:
 
     - bVOReadMSH
@@ -217,6 +220,8 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     Parameter direction in channel from suction to pressure side.
   map3dTo3dGmshJson_: jsonPrimitive
     JSON structure for map3dTo3dGmsh.
+  meshTEblocks: float
+    generates Mesh on the Treailing Edge blocks if True.
 
   Examples
   --------
@@ -404,10 +409,18 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     hubId = m3dGmsh.getModel().addIfFaceToGmshModel( self.hub_ )
     shroudId = m3dGmsh.getModel().addIfFaceToGmshModel( self.shroud_ )
     channelId = m3dGmsh.getModel().addIfRegionToGmshModel( self.channel_ )
+    print("shuld be 10 = ",len(self.couplingFaces_))
+    ii =0 
     for couplingFace in self.couplingFaces_:
       fid = m3dGmsh.getModel().addIfFaceToGmshModel( couplingFace )
       m3dGmsh.getModel().getDtGmshRegionByTag( channelId ).addFace( fid, 1 )
-  
+      
+      self.appendAnalyticGeometry(
+            m3dGmsh.getModel().getDtGmshFaceByTag( fid ).getMap2dTo3d(),
+            "TEST_COUPLING"+str(ii)
+          )
+      ii = ii+1
+    return
     #
     # detect edges that lie in hub and shroud
     #
