@@ -97,7 +97,7 @@ class radMeridional:
           self.interface_curvature,
         ).enableDebug()#.buildExtract( container )
         container = radMeridionalContour.buildExtract(container)
-        
+         
         # guide vane
         gvLabel = "gv"
 
@@ -641,27 +641,100 @@ class radMeridional:
         # sorting the blocks by number
         blocks.sort(key=lambda x: int(x.getLabel().split('_')[-1]))
         
-        # organizing faces used for meanplane
+        # adding coupling faces between mesh blocks and grid channels
         couplingFaces = []
-        couplingFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_out1"]))
-        couplingFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_out0"]))
-        for i in range(nMeanplaneBlocks+1):
-          couplingFaces.append( 
-            dtOO.map3dTo3d.MustDownCast( blocks[i] ).segmentConstWPercent( 1.0 )
-          )
-        couplingFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_in0"]))
-        couplingFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_in1"]))
-        
+        couplingFaces.append(dtOO.map3dTo3d.MustDownCast( blocks[0] ).segmentConstUPercent( 0.0 ))
+        # organizing faces used for meanplane
+        meanplaneFaces = []
+        meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_out1"]))
+        meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_out0"]))
 
+        for i, block in enumerate(blocks):
+          face = dtOO.map3dTo3d.MustDownCast( block ).segmentConstWPercent( 1.0 )
+          couplingFaces.append(face)
+          
+          # appending the specified meanplane faces on the mesh blocks 
+          if i <= nMeanplaneBlocks:
+            meanplaneFaces.append(face)
+
+        couplingFaces.append(dtOO.map3dTo3d.MustDownCast( blocks[-1] ).segmentConstUPercent( 1.0 ))
+
+        meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_in0"]))
+        meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_in1"]))
+        
+        """
+        # adding coupling faces between mesh blocks and grid channels
+        couplingFaces = []
+        couplingFaces.append(dtOO.map3dTo3d.MustDownCast( blocks[0] ).segmentConstUPercent( 0.0 ))
+        # organizing faces used for meanplane
+        meanplaneFaces = []
+        meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_in1"]))
+        meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_in0"]))
+
+        for i, block in enumerate(blocks):
+          face = dtOO.map3dTo3d.MustDownCast( block ).segmentConstWPercent( 1.0 )
+          couplingFaces.append(face)
+          
+          # appending the specified meanplane faces on the mesh blocks 
+          if i > nMeanplaneBlocks:
+            meanplaneFaces.append(face)
+
+        couplingFaces.append(dtOO.map3dTo3d.MustDownCast( blocks[-1] ).segmentConstUPercent( 1.0 ))
+        
+        meanplaneFaces.append(dtOO.map3dTo3d.MustDownCast( blocks[-1] ).segmentConstUPercent( 1.0 ))
+        meanplaneFaces.append(dtOO.map3dTo3d.MustDownCast( blocks[0] ).segmentConstUPercent( 0.0 ))
+        meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_out0"]))
+        meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_out1"]))
+        """
+        # creating grid channel
         modname = "dtOOPythonApp.builder.multipleBoundedVolume_gridChannel"
         module = self.reloadModule(modname)
-        container = module.multipleBoundedVolume_gridChannel(
+        gridChannel = module.multipleBoundedVolume_gridChannel(
             label = label,
-            faces = couplingFaces,
+            channel = self.aG["xyz_"+label+"_channel"],
+            faces = meanplaneFaces,
             nBlades = nBlades
-        ).buildExtract(container)
-
-
+        ).enableDebug()
+        container = gridChannel.buildExtract(container)
+        
+        gc, gcFaces = gridChannel.getGridChannel()
+        self.aG.push_back(
+            gc << "xyz_"+label+"_gridChannel"
+        )
+         
+        modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromChannelAndBlocks"
+        module = self.reloadModule(modname)
+        #from dtOOPythonApp.builder import (
+        #  map3dTo3dGmsh_gridFromChannelAndBlocks
+        #)
+        container = module.map3dTo3dGmsh_gridFromChannelAndBlocks(
+          label = label+"_mesh",
+          channel = self.aG["xyz_"+label+"_gridChannel"],
+          blocks = blocks,
+          blade = self.aG["xyz_"+label+"_blade"],
+          couplingFaces = couplingFaces,
+          nBoundaryLayers = 6,
+          nElementsSpanwise = 30,
+          nElementsNormal = 5,
+          firstElementSizeHubToShroud = 0.005,
+          firstElementSizeNormalBlade = 0.001,
+          bladeHubElementSize = scaOneD_scaCurve2dOneDPointConstruct(
+            [
+              dtOO.dtPoint2(0.00, 0.010),  
+              dtOO.dtPoint2(0.45, 0.007),  
+              dtOO.dtPoint2(0.50, 0.007),  
+              dtOO.dtPoint2(0.55, 0.007),  
+              dtOO.dtPoint2(1.00, 0.010),
+            ], 1
+          )(),
+          bladeHubElementScale = 0.10,
+          channelInletOutletDir = 2,
+          channelHubShroudDir = 3,
+          charLengthMax=0.05,
+          charLengthMin=0.025,
+          meshTEBlocks = True,
+          channelFaces = gcFaces,
+        ).enableDebug().buildExtract( container )
         """
         # fe_meanplane
         from dtOOPythonApp.builder import (

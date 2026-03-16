@@ -35,6 +35,9 @@ from .ofOpenFOAMCase_setupWrapper import (
 from .ofOpenFOAMCase_turboMachine import (
   ofOpenFOAMCase_turboMachine
 )
+from .multipleBoundedVolume_gridChannel import (
+  multipleBoundedVolume_gridChannel
+)
 from .rotatingMap2dTo3d_gridChannel import (
   rotatingMap2dTo3d_gridChannel
 )

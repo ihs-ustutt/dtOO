@@ -260,7 +260,7 @@ class rotatingMap2dTo3d_splitFitted(dtBundleBuilder):
             )
             self.appendAnalyticGeometry(deb_0, self.label_ + "_debug_0")
             self.appendAnalyticGeometry(deb_1, self.label_ + "_debug_1")
-
+        
         if (self.segmentDir_ == 2) and (self.splitDir_ == 1):
             ccs_0 = vectorHandlingConstDtCurve()
             ccs_1 = vectorHandlingConstDtCurve()

@@ -21,6 +21,7 @@ from dtOOPythonSWIG import jsonPrimitive
 from dtOOPythonSWIG import analyticGeometry
 from dtOOPythonSWIG import map2dTo3d
 from dtOOPythonSWIG import map3dTo3d
+from dtOOPythonSWIG import multipleBoundedVolume
 from dtOOPythonSWIG import map3dTo3dGmsh
 from dtOOPythonSWIG import bVOMeshRule
 from dtOOPythonSWIG import bVOWriteMSH
@@ -248,7 +249,8 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     channelSuctionPressureDir: int = 1,
     charLengthMin: float = 0.05,
     charLengthMax: float = 0.10,
-    meshTEBlocks: bool = False
+    meshTEBlocks: bool = False,
+    channelFaces: labeledVectorHandlingAnalyticGeometry = None,
   ) -> None:
     """Constructor.
   
@@ -305,7 +307,12 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     logging.info( "Initializing %s ..." % (label) )
     super(map3dTo3dGmsh_gridFromChannelAndBlocks, self).__init__()
     self.label_ = label
-    self.channel_ = map3dTo3d.MustDownCast( channel.clone() ) 
+    print(type(channel))
+    print(channel.virtualClassName())
+    if channel.virtualClassName() == "multipleBoundedVolume":
+        self.channel_ = multipleBoundedVolume.MustDownCast( channel.clone() )
+    else:
+        self.channel_ = map3dTo3d.MustDownCast( channel.clone() ) 
     self.blocks_ = []
     for block in blocks:
       self.blocks_.append( map3dTo3d.MustDownCast(block.clone()) )
@@ -315,6 +322,8 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
       self.couplingFaces_.append( 
         map2dTo3d.MustDownCast( couplingFace.clone()  ) 
       )
+    self.channelFaces_ = channelFaces
+
     self.nBoundaryLayers_ = nBoundaryLayers
     self.nElementsSpanwise_ = nElementsSpanwise
     self.nElementsNormal_ = nElementsNormal
@@ -329,27 +338,49 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     self.channelSuctionPressureDir_ = channelSuctionPressureDir
     
     self.meshTEBlocks_ = meshTEBlocks
-
-    self.hub_, self.shroud_ = self.detectFirstAndSecond( 
-      self.channel_, self.channelHubShroudDir_ 
-    )
-    self.inlet_, self.outlet_ = self.detectFirstAndSecond( 
-      self.channel_, self.channelInletOutletDir_ 
-    )
-    self.suction_, self.pressure_ = self.detectFirstAndSecond( 
-      self.channel_, self.channelSuctionPressureDir_ 
-    )
     
-    #
-    # label faces
-    #
-    self.hub_.setLabel( "hub" )
-    self.shroud_.setLabel( "shroud" )
-    self.inlet_.setLabel( "inlet" )
-    self.outlet_.setLabel( "outlet" )
-    self.suction_.setLabel( "suction" )
-    self.pressure_.setLabel( "pressure" )
+    if self.channel_.virtualClassName() != "multipleBoundedVolume":
+        self.hub_, self.shroud_ = self.detectFirstAndSecond( 
+          self.channel_, self.channelHubShroudDir_ 
+        )
+        self.inlet_, self.outlet_ = self.detectFirstAndSecond( 
+          self.channel_, self.channelInletOutletDir_ 
+        )
+        self.suction_, self.pressure_ = self.detectFirstAndSecond( 
+          self.channel_, self.channelSuctionPressureDir_ 
+        )
+    
+        #
+        # label faces
+        #
+        self.suction_.setLabel( "suction" )
+        self.pressure_.setLabel( "pressure" )
+        self.hub_.setLabel( "hub" )
+        self.shroud_.setLabel( "shroud" )
+        self.inlet_.setLabel( "inlet" )
+        self.outlet_.setLabel( "outlet" )
+    
+    # adding the named faces of the multiple bounded volume trough the
+    #  face list
+    else:
+        self.hub_ = map2dTo3d.MustDownCast(self.channelFaces_["hub"])
+        self.shroud_ = map2dTo3d.MustDownCast(self.channelFaces_["shroud"])
+
+        self.inlet_ = map2dTo3d.MustDownCast(self.channelFaces_["inlet"])
+        self.outlet_ = map2dTo3d.MustDownCast(self.channelFaces_["outlet"])
+        
+        self.pressure_ = []
+        for iNum in self.channelFaces_.getIndices("pressure_*"):
+            ii = self.channelFaces_.getLabel( iNum )
+            self.pressure_.append(map2dTo3d.MustDownCast(self.channelFaces_[ii]))
+            
+        self.suction_ = []
+        for iNum in self.channelFaces_.getIndices("suction_*"):
+            ii = self.channelFaces_.getLabel( iNum )
+            self.suction_.append(map2dTo3d.MustDownCast(self.channelFaces_[ii]))
+
     self.blade_.setLabel( "blade" )
+    
     cc = 0
     for couplingFace in self.couplingFaces_:
       couplingFace.setLabel("coupling_"+str(cc))
@@ -406,32 +437,48 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     #
     # add hub, shroud, channel and coupling faces
     #
+    print("type(self.channel_) = ", type(self.channel_))
+    print(self.channel_.virtualClassName())
+
     hubId = m3dGmsh.getModel().addIfFaceToGmshModel( self.hub_ )
     shroudId = m3dGmsh.getModel().addIfFaceToGmshModel( self.shroud_ )
-    channelId = m3dGmsh.getModel().addIfRegionToGmshModel( self.channel_ )
-    print("shuld be 10 = ",len(self.couplingFaces_))
-    ii =0 
+    if self.channel_.virtualClassName() != "multipleBoundedVolume":
+        channelId = m3dGmsh.getModel().addIfRegionToGmshModel( self.channel_ )
+    else:
+        channelId = m3dGmsh.getModel().addIfToGmshModel( self.channel_ )
     for couplingFace in self.couplingFaces_:
       fid = m3dGmsh.getModel().addIfFaceToGmshModel( couplingFace )
       m3dGmsh.getModel().getDtGmshRegionByTag( channelId ).addFace( fid, 1 )
       
-      self.appendAnalyticGeometry(
-            m3dGmsh.getModel().getDtGmshFaceByTag( fid ).getMap2dTo3d(),
-            "TEST_COUPLING"+str(ii)
-          )
-      ii = ii+1
-    return
     #
     # detect edges that lie in hub and shroud
     #
     hubEdges, shroudEdges = self.extractEdgesInFirstAndSecond(
       m3dGmsh.getModel(), self.couplingFaces_, self.hub_, self.shroud_
     )
+    jj = 0 
+    for edge in hubEdges + shroudEdges:
+        self.appendAnalyticGeometry(
+                m3dGmsh.getModel().getDtGmshEdgeByTag( edge ).getMap1dTo3d(),
+                "TEST_"+self.label_+"_hsEdge_"+str(jj))
+        jj = jj+1
+    print("")
+    print(self.label_)
+    print(hubId)
+    face = m3dGmsh.getModel().getFaceByTag( hubId )
+    print(face)
+    self.appendAnalyticGeometry(
+            self.hub_,
+            "TEST_selfHub_"
+        )
     
+    #return
     #
     # add hub and shroud edges as internal line loop to hub and shroud
     #
+    print("edge loop at hub")
     m3dGmsh.getModel().getDtGmshFaceByTag( hubId ).addEdgeLoop( hubEdges )
+    print("edge loop at shroud")
     m3dGmsh.getModel().getDtGmshFaceByTag( shroudId ).addEdgeLoop( shroudEdges )
     
     #
@@ -470,8 +517,12 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     aG.push_back( self.shroud_ )
     aG.push_back( self.inlet_ )
     aG.push_back( self.outlet_ )
-    aG.push_back( self.suction_ )
-    aG.push_back( self.pressure_ )
+    if self.channel_.virtualClassName() != "multipleBoundedVolume":
+        aG.push_back( self.suction_ )
+        aG.push_back( self.pressure_ )
+    else:
+        for face in self.suction_ + self.pressure_:
+            aG.push_back( face )
     aG.push_back( self.blade_ )
     for couplingFace in self.couplingFaces_:
       aG.push_back( couplingFace )
@@ -479,26 +530,55 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     #
     # name faces
     #
-    ob = bVOAnalyticGeometryToFace()
-    ob.jInit( 
-      jsonPrimitive(
+    cfg = jsonPrimitive(
         '{'
           '"analyticGeometry" : ['
             '{"label" : "hub"},'
             '{"label" : "shroud"},'
             '{"label" : "inlet"},'
             '{"label" : "outlet"},'
-            '{"label" : "suction"},'
-            '{"label" : "pressure"},'
+            #'{"label" : "suction"},'
+            #'{"label" : "pressure"},'
             '{"label" : "blade"},'
             '{"labels" : "coupling_*"}'
           '],'
           '"_inc" : 10.0,'
           '"_facesPerEntry" : []'
         '}'
-      ), 
+       )
+    if self.channel_.virtualClassName() != "multipleBoundedVolume":
+        cfg.appendStr("label", "suction")
+        cfg.appendStr("label", "pressure")
+    else:
+        cfg.appendStr("labels", "suction_*")
+        cfg.appendStr("labels", "pressure_*")
+
+    ob = bVOAnalyticGeometryToFace()
+    ob.jInit( 
+      cfg,
       None, None, None, aG, None, m3dGmsh 
     )
+
+    #ob = bVOAnalyticGeometryToFace()
+    #ob.jInit( 
+    #  jsonPrimitive(
+    #    '{'
+    #      '"analyticGeometry" : ['
+    #        '{"label" : "hub"},'
+    #        '{"label" : "shroud"},'
+    #        '{"label" : "inlet"},'
+    #        '{"label" : "outlet"},'
+    #        '{"label" : "suction"},'
+    #        '{"label" : "pressure"},'
+    #        '{"label" : "blade"},'
+    #        '{"labels" : "coupling_*"}'
+    #      '],'
+    #      '"_inc" : 10.0,'
+    #      '"_facesPerEntry" : []'
+    #    '}'
+    #  ), 
+    #  None, None, None, aG, None, m3dGmsh 
+    #)
     ob.preUpdate()
     #
     # extract edges for specification of number of elements and gradings
@@ -579,14 +659,24 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     # add debug faces and lines
     #
     if self.debug():
-      for face in [
-        self.hub_, self.shroud_, 
-        self.inlet_, self.outlet_, 
-        self.suction_, self.pressure_,
-      ] + self.couplingFaces_:
-        self.appendAnalyticGeometry( 
-          face, "debug_"+self.label_+"_"+face.getLabel() 
-        )
+      if self.channel_.virtualClassName() != "multipleBoundedVolume":
+          for face in [
+            self.hub_, self.shroud_, 
+            self.inlet_, self.outlet_, 
+            self.suction_, self.pressure_,
+          ] + self.couplingFaces_:
+            self.appendAnalyticGeometry( 
+              face, "debug_"+self.label_+"_"+face.getLabel() 
+            )
+      else:
+          for face in [
+            self.hub_, self.shroud_,
+            self.inlet_, self.outlet_, 
+          ] + self.suction_ + self.pressure_ + self.couplingFaces_:
+            self.appendAnalyticGeometry(
+              face, "debug_"+self.label_+"_"+face.getLabel()
+            )
+
 
       for lab, lines in zip(
         [
@@ -770,7 +860,7 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
                       e1.setNElements( self.nElementsNormal_ )
                       e1.setGrading( tEFaces[i][1], gradings["normalBlade"][0] )
                       
-        
+    return    
 
     ob = bVOReadMSH()
     ob.thisown = False
