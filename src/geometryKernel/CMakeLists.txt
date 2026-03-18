@@ -56,6 +56,7 @@ SET(HEADERS
   analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h
   analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h
   analyticGeometryHeaven/aGBuilder/bool_map1dTo3dInMap2dTo3d.h
+  analyticGeometryHeaven/aGBuilder/map1dTo3d_orderLoop.h
   baseContainerHeaven/baseContainer.h
   baseContainerHeaven/pointContainer.h
   baseContainerHeaven/vectorContainer.h
@@ -198,6 +199,7 @@ SET(SOURCES
   analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.cpp
   analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.cpp
   analyticGeometryHeaven/aGBuilder/bool_map1dTo3dInMap2dTo3d.cpp
+  analyticGeometryHeaven/aGBuilder/map1dTo3d_orderLoop.cpp
   baseContainerHeaven/baseContainer.cpp
   baseContainerHeaven/pointContainer.cpp
   baseContainerHeaven/vectorContainer.cpp

@@ -55,9 +55,9 @@ void bVOAnalyticGeometryToFace::jInit(
 {
   bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
 
-  _m2d =
-    map2dTo3d::PointerVectorDownCast(jE.lookupVecClone<analyticGeometry>("", aG)
-    );
+  _m2d = map2dTo3d::PointerVectorMustCloneCast(
+    jE.lookupVecClone<analyticGeometry>("", aG)
+  );
 }
 
 void bVOAnalyticGeometryToFace::init(

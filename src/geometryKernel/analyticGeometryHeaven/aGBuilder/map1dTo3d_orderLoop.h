@@ -15,32 +15,25 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef LABELHANDLING_H
-#define LABELHANDLING_H
+#ifndef map1dTo3d_orderLoop_H
+#define map1dTo3d_orderLoop_H
 
 #include <dtOOTypeDef.h>
 
 #include <logMe/dtMacros.h>
-#include <string>
 
 namespace dtOO {
-class jsonPrimitive;
+class map1dTo3d;
 
-class labelHandling {
+class map1dTo3d_orderLoop {
 public:
-  dt__classOnlyName(labelHandling);
-  labelHandling();
-  labelHandling(const labelHandling &orig);
-  labelHandling(std::string const &label);
-  virtual labelHandling *clone(void) const;
-  void jInit(jsonPrimitive const &jE);
-  virtual ~labelHandling();
-  void setLabel(std::string const label);
-  std::string getLabel(void) const;
+  dt__classOnlyName(map1dTo3d_orderLoop);
+  map1dTo3d_orderLoop(dt__pVH(map1dTo3d) const &m1ds);
+  virtual ~map1dTo3d_orderLoop();
+  dt__pVH(map1dTo3d) result(void);
 
 private:
-  std::string _label;
+  dt__pVH(map1dTo3d) _m1ds;
 };
-dt__H_addCloneForpVH(labelHandling);
 } // namespace dtOO
-#endif /* LABELHANDLING_H */
+#endif /* map1dTo3d_orderLoop_H */

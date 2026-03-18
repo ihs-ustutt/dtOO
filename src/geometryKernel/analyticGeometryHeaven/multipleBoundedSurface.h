@@ -26,6 +26,9 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+class map1dTo3d;
+class map2dTo3d;
+
 class multipleBoundedSurface : public analyticGeometry {
 public:
   dt__class(multipleBoundedSurface, analyticGeometry);
@@ -36,7 +39,6 @@ public:
     analyticGeometry const *const m2d,
     ptrVectorHandling<analyticGeometry> const &m1d
   );
-
   virtual multipleBoundedSurface *create(void) const;
   virtual multipleBoundedSurface *clone(void) const;
   virtual dtInt dim(void) const;
@@ -46,12 +48,16 @@ public:
   virtual dtPoint3 getPoint(dtReal const *const uvw) const;
   virtual ::std::vector<dtVector3> firstDer(dtReal const *const uvw) const;
   vectorHandling<renderInterface *> getRender(void) const;
-  ptrVectorHandling<analyticGeometry> const &boundsVectorConstRef(void) const;
+  ptrVectorHandling<analyticGeometry> const boundsPointerVectorConst(void
+  ) const;
   analyticGeometry const *const surfaceConstPtr(void) const;
+  bool insideInternalPolygon(dtPoint2 const &ppUV) const;
 
 private:
-  ptrHandling<analyticGeometry> _m2d;
-  ptrVectorHandling<analyticGeometry> _m1d;
+  ptrHandling<map2dTo3d> _m2d;
+  ptrVectorHandling<map1dTo3d> _m1d;
+  vectorHandling<dtPoint2> _polygon_0;
+  vectorHandling<dtPoint2> _polygon_1;
 };
 } // namespace dtOO
 #endif /* multipleBoundedSurface_H */

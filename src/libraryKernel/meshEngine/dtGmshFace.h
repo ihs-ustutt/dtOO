@@ -69,7 +69,8 @@ public:
   virtual GPoint
   closestPoint(const SPoint3 &queryPoint, const double initialGuess[2]) const;
   virtual void setMap2dTo3d(map2dTo3d const *const base);
-  std::vector<dtPoint2> const &getVerticesUV(void);
+  std::vector<dtPoint2> const &getVerticesUV(void) const;
+  std::vector<dtPoint2> const &getVerticesOrderedUV(void) const;
   virtual map2dTo3d const *getMap2dTo3d(void) const;
   void addEdge(::GEdge *edge, dtInt const ori);
   dtInt edgeOrientation(::GEdge *edge) const;
@@ -116,6 +117,7 @@ private:
 private:
   dt__pH(map2dTo3d) _mm;
   std::vector<dtPoint2> vertices_uv;
+  std::vector<dtPoint2> verticesOrdered_uv;
   ::GEntity::GeomType _geomType;
 };
 } // namespace dtOO
