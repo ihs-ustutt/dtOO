@@ -195,7 +195,7 @@ bool optionHandling::optionTrue(std::string const name) const
       }
     }
   }
-  dt__warning(
+  dt__debug(
     optionTrue(), << "Option " << dt__eval(name) << " not found. Set to false."
   );
 
