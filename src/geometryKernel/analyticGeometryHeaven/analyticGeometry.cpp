@@ -166,103 +166,114 @@ dtReal analyticGeometry::boundingBoxValue(void) const
 
 void analyticGeometry::updateBoundingBox(void) const
 {
-  //
-  // 1D
-  //
+  dtReal uvwPoints[64][3] = {
+    {0.00, 0.00, 0.00}, {0.30, 0.00, 0.00}, {0.60, 0.00, 0.00},
+    {1.00, 0.00, 0.00}, {0.00, 0.30, 0.00}, {0.30, 0.30, 0.00},
+    {0.60, 0.30, 0.00}, {1.00, 0.30, 0.00}, {0.00, 0.60, 0.00},
+    {0.30, 0.60, 0.00}, {0.60, 0.60, 0.00}, {1.00, 0.60, 0.00},
+    {0.00, 1.00, 0.00}, {0.30, 1.00, 0.00}, {0.60, 1.00, 0.00},
+    {1.00, 1.00, 0.00}, //
+    {0.00, 0.00, 0.30}, {0.30, 0.00, 0.30}, {0.60, 0.00, 0.30},
+    {1.00, 0.00, 0.30}, {0.00, 0.30, 0.30}, {0.30, 0.30, 0.30},
+    {0.60, 0.30, 0.30}, {1.00, 0.30, 0.30}, {0.00, 0.60, 0.30},
+    {0.30, 0.60, 0.30}, {0.60, 0.60, 0.30}, {1.00, 0.60, 0.30},
+    {0.00, 1.00, 0.30}, {0.30, 1.00, 0.30}, {0.60, 1.00, 0.30},
+    {1.00, 1.00, 0.30}, //
+    {0.00, 0.00, 0.60}, {0.30, 0.00, 0.60}, {0.60, 0.00, 0.60},
+    {1.00, 0.00, 0.60}, {0.00, 0.30, 0.60}, {0.30, 0.30, 0.60},
+    {0.60, 0.30, 0.60}, {1.00, 0.30, 0.60}, {0.00, 0.60, 0.60},
+    {0.30, 0.60, 0.60}, {0.60, 0.60, 0.60}, {1.00, 0.60, 0.60},
+    {0.00, 1.00, 0.60}, {0.30, 1.00, 0.60}, {0.60, 1.00, 0.60},
+    {1.00, 1.00, 0.60}, //
+    {0.00, 0.00, 1.00}, {0.30, 0.00, 1.00}, {0.60, 0.00, 1.00},
+    {1.00, 0.00, 1.00}, {0.00, 0.30, 1.00}, {0.30, 0.30, 1.00},
+    {0.60, 0.30, 1.00}, {1.00, 0.30, 1.00}, {0.00, 0.60, 1.00},
+    {0.30, 0.60, 1.00}, {0.60, 0.60, 1.00}, {1.00, 0.60, 1.00},
+    {0.00, 1.00, 1.00}, {0.30, 1.00, 1.00}, {0.60, 1.00, 1.00},
+    {1.00, 1.00, 1.00}
+  };
+
   if (dim() == 1)
   {
-    dtInt nOne = 3;
-    dtReal uvwOne[3] = {0.00, 0.50, 1.00};
-
-    std::vector<dtPoint3> bb(nOne);
-    dt__forFromToIndex(0, nOne, ii)
+    dtInt const nPoints = 4;
+    std::vector<dtPoint3> bb(nPoints);
+    dt__forFromToIndex(0, nPoints, ii)
     {
-      bb[ii] = getPointPercent((dtReal *)&(uvwOne[ii]));
+      bb[ii] = getPointPercent(uvwPoints[ii]);
     }
     _boundingBox = dtLinearAlgebra::boundingBox(bb);
     _boundingBoxValue = dtLinearAlgebra::distance(bb[1], bb[0]) +
-                        dtLinearAlgebra::distance(bb[2], bb[1]);
+                        dtLinearAlgebra::distance(bb[2], bb[1]) +
+                        dtLinearAlgebra::distance(bb[3], bb[2]);
   }
-  //
-  // 2D
-  //
   else if (dim() == 2)
   {
-    dtInt nTwo = 9;
-    dtReal uvwTwo[9][2] = {
-      {0.00, 0.00},
-      {0.00, 0.50},
-      {0.00, 1.00},
-      {0.50, 0.00},
-      {0.50, 0.50},
-      {0.50, 1.00},
-      {1.00, 0.00},
-      {1.00, 0.50},
-      {1.00, 1.00}
-    };
-
-    std::vector<dtPoint3> bb(nTwo);
-    dt__forFromToIndex(0, nTwo, ii)
+    dtInt const nPoints = 16;
+    std::vector<dtPoint3> bb(nPoints);
+    dt__forFromToIndex(0, nPoints, ii)
     {
-      bb[ii] = getPointPercent((dtReal *)&(uvwTwo[ii]));
+      bb[ii] = getPointPercent(uvwPoints[ii]);
     }
     _boundingBox = dtLinearAlgebra::boundingBox(bb);
 
-    _boundingBoxValue = dtLinearAlgebra::area(bb[0], bb[3], bb[4], bb[1]) +
-                        dtLinearAlgebra::area(bb[3], bb[6], bb[7], bb[4]) +
-                        dtLinearAlgebra::area(bb[4], bb[7], bb[8], bb[5]) +
-                        dtLinearAlgebra::area(bb[1], bb[4], bb[5], bb[2]);
+    dtInt const I = 4;
+    dtInt const J = 4;
+    _boundingBoxValue = 0.0;
+    dt__forFromToIndex(0, I - 1, ii)
+    {
+      dt__forFromToIndex(0, J - 1, jj)
+      {
+        dtInt const at0 = ii * J + jj;
+        dtInt const at1 = (ii + 1) * J + jj;
+        dtInt const at2 = ii * J + (jj + 1);
+        dtInt const at3 = (ii + 1) * J + jj;
+        _boundingBoxValue =
+          _boundingBoxValue +
+          dtLinearAlgebra::area(bb[at0], bb[at1], bb[at2], bb[at3]);
+      }
+    }
   }
-  //
-  // 3D
-  //
   else if (dim() == 3)
   {
-    dtInt nThree = 27;
-    dtReal uvwThree[27][3] = {
-      {0.00, 0.00, 0.00}, {0.00, 0.00, 0.50}, {0.00, 0.00, 1.00},
-      {0.00, 0.50, 0.00}, {0.00, 0.50, 0.50}, {0.00, 0.50, 1.00},
-      {0.00, 1.00, 0.00}, {0.00, 1.00, 0.50}, {0.00, 1.00, 1.00},
-      {0.50, 0.00, 0.00}, {0.50, 0.00, 0.50}, {0.50, 0.00, 1.00},
-      {0.50, 0.50, 0.00}, {0.50, 0.50, 0.50}, {0.50, 0.50, 1.00},
-      {0.50, 1.00, 0.00}, {0.50, 1.00, 0.50}, {0.50, 1.00, 1.00},
-      {1.00, 0.00, 0.00}, {1.00, 0.00, 0.50}, {1.00, 0.00, 1.00},
-      {1.00, 0.50, 0.00}, {1.00, 0.50, 0.50}, {1.00, 0.50, 1.00},
-      {1.00, 1.00, 0.00}, {1.00, 1.00, 0.50}, {1.00, 1.00, 1.00}
-    };
-
-    std::vector<dtPoint3> bb(nThree);
-    dt__forFromToIndex(0, nThree, ii)
+    dtInt const nPoints = 64;
+    std::vector<dtPoint3> bb(nPoints);
+    dt__forFromToIndex(0, nPoints, ii)
     {
-      bb[ii] = getPointPercent((dtReal *)&(uvwThree[ii]));
+      bb[ii] = getPointPercent(uvwPoints[ii]);
     }
     _boundingBox = dtLinearAlgebra::boundingBox(bb);
 
-    _boundingBoxValue =
-      dtLinearAlgebra::volume(
-        bb[0], bb[9], bb[3], bb[12], bb[1], bb[10], bb[4], bb[13]
-      ) +
-      dtLinearAlgebra::volume(
-        bb[1], bb[10], bb[4], bb[13], bb[2], bb[11], bb[5], bb[14]
-      ) +
-      dtLinearAlgebra::volume(
-        bb[3], bb[12], bb[6], bb[15], bb[4], bb[13], bb[7], bb[16]
-      ) +
-      dtLinearAlgebra::volume(
-        bb[4], bb[13], bb[7], bb[16], bb[5], bb[14], bb[8], bb[17]
-      ) +
-      dtLinearAlgebra::volume(
-        bb[9], bb[18], bb[12], bb[21], bb[10], bb[19], bb[13], bb[22]
-      ) +
-      dtLinearAlgebra::volume(
-        bb[10], bb[19], bb[13], bb[22], bb[11], bb[20], bb[14], bb[23]
-      ) +
-      dtLinearAlgebra::volume(
-        bb[12], bb[21], bb[15], bb[24], bb[13], bb[22], bb[16], bb[25]
-      ) +
-      dtLinearAlgebra::volume(
-        bb[13], bb[22], bb[16], bb[25], bb[14], bb[23], bb[17], bb[26]
-      );
+    dtInt const I = 4;
+    dtInt const J = 4;
+    dtInt const K = 4;
+    _boundingBoxValue = 0.0;
+    dt__forFromToIndex(0, I - 1, ii)
+    {
+      dt__forFromToIndex(0, J - 1, jj)
+      {
+        dt__forFromToIndex(0, K - 1, kk)
+        {
+          dtInt const at0 = ii * J * K + jj * K + kk;
+          dtInt const at1 = (ii + 1) * J * K + jj * K + kk;
+          dtInt const at2 = ii * J * K + (jj + 1) * K + kk;
+          dtInt const at3 = (ii + 1) * J * K + (jj + 1) * K + kk;
+          dtInt const at4 = ii * J * K + jj * K + (kk + 1);
+          dtInt const at5 = (ii + 1) * J * K + jj * K + (kk + 1);
+          dtInt const at6 = ii * J * K + (jj + 1) * K + (kk + 1);
+          dtInt const at7 = (ii + 1) * J * K + (jj + 1) * K + (kk + 1);
+          _boundingBoxValue = _boundingBoxValue + dtLinearAlgebra::volume(
+                                                    bb[at0],
+                                                    bb[at1],
+                                                    bb[at2],
+                                                    bb[at3],
+                                                    bb[at4],
+                                                    bb[at5],
+                                                    bb[at6],
+                                                    bb[at7]
+                                                  );
+        }
+      }
+    }
   }
   else
     dt__throwUnexpected(updateBoundingBox());
