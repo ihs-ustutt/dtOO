@@ -103,9 +103,9 @@ workflows:
           matrix: 
             parameters:
               tregs: [
-                "baseSWIG", 
-                "transformerSWIG", 
-                "analyticGeometrySWIG", 
+                "baseSWIG",
+                "transformerSWIG",
+                "analyticGeometrySWIG",
                 "constValueSWIG",
                 "canadaLight",
                 "dtClusteredSingletonState",
@@ -120,7 +120,10 @@ workflows:
                 "meshSimpleSurface",
                 "meshPrismBlock",
                 "simpleAxialRunner",
-                "meshCuboid"
+                "meshCuboid",
+                "multipleBounded",
+                "labeledVectorHandlingSWIG",
+                "trans4SidedFace"
               ]
               oss: [
                 'ubuntu',
