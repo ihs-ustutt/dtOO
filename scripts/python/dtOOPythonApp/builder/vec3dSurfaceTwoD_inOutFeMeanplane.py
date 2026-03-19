@@ -78,7 +78,7 @@ class vec3dSurfaceTwoD_inOutFeMeanplane(dtBundleBuilder):
                 vInterf = np.floor(meanLineLength * 1e5) / 1e5 * mpCurveList[oc][1]
          
                 p1 = offC.YdtPoint3Percent(uu)
-           
+                print(p1.x(),", ",p1.y(),", ",p1.z())           
                 interfacePoints.append(
                     dtPoint3(
                         p1.x(),

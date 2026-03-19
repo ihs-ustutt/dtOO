@@ -46,7 +46,7 @@ class radMeridional:
                 '{"name" : "invY_precision", "value" : "1.e-04"},'
                 '{"name" : "xyz_resolution", "value" : "1.e-05"},'
                 '{"name" : "XYZ_resolution", "value" : "1.e-04"},'
-                '{"name" : "uvw_resolution", "value" : "1.e-04"},'
+                '{"name" : "uvw_resolution", "value" : "1.e-03"},'
                 '{"name" : "point_render_diameter", "value" : "0.005"},'
                 '{"name" : "vector_render_size", "value" : "0.05"},'
                 '{"name" : "function_render_resolution_u", "value" : "50"},'
@@ -60,7 +60,7 @@ class radMeridional:
                 '{"name" : "map2dTo3d_deltaPer", "value" : "0.01"},'
                 '{"name" : "map3dTo3d_deltaPer", "value" : "0.01"},'
                 '{"name" : "logLevel", "value" : "99"},'
-                '{"name" : "isEqualExtendCheck", "value" : "false"}'
+                '{"name" : "isEqualExtendCheck", "value" : "true"}'
               ']'
             '}'
           )
@@ -127,67 +127,67 @@ class radMeridional:
                 spanwiseCuts, gv_alpha_1, gv_alpha_2, gv_ratioX, gv_deltaY, gv_offX, gv_offY,
                 spanwiseCuts, gv_t_le, gv_u_le, gv_t_mid, gv_u_mid, gv_t_te, gv_u_te,
             ) 
-        #self.bV[gvLabel+"_mesh"].makeGrid() 
+        self.bV[gvLabel+"_mesh"].makeGrid() 
         
-        # runner
-        ruLabel = "ru"
-        self.aG.push_back( 
-            radMeridionalContour.getRegChannel(1, 1) << "xyz_"+ruLabel+"_channel" 
-        )
-        spanwiseCuts_mp = [0.00, 0.33,  0.66, 1.00,]
-        ru_alpha_1 = [
-                (np.pi/180.) * 90.,
-                (np.pi/180.) * 75.,
-                (np.pi/180.) * 52.
-                ]
-        ru_alpha_2 = [
-                (np.pi/180.) * 45., 
-                (np.pi/180.) * 31., 
-                (np.pi/180.) * 32., 
-                (np.pi/180.) * 10.
-                ]
-        ru_ratioX = [
-                0.65,
-                #0.35,
-                0.70,
-                0.35,
-                0.22
-                ]
-        ru_deltaY = [
-                0.80,
-                0.55,
-                0.90,
-                0.55
-                ]
-        ru_offX = [
-                0.125,
-                0.125,
-                0.0
-                ]
-        ru_offY = [
-                0.065,
-                0.085,
-                0.035
-                ]
-        
-        spanwiseCuts_td = [0.00, 1.00,]
-        ru_t_le = [0.020,
-                   0.018]
-        ru_u_le = [0.00]
-        ru_t_mid = [0.04,
-                    0.03]
-        ru_u_mid = [0.50]
-        ru_t_te = [0.02]
-        ru_u_te = [0.80]
-        
-        print("runner")
-        self.buildBlade(
-                container,
-                ruLabel,
-                self.nRuBlades, True,
-                spanwiseCuts_mp, ru_alpha_1, ru_alpha_2, ru_ratioX, ru_deltaY, ru_offX, ru_offY,
-                spanwiseCuts_td, ru_t_le, ru_u_le, ru_t_mid, ru_u_mid, ru_t_te, ru_u_te,
-            )
+        ## runner
+        #ruLabel = "ru"
+        #self.aG.push_back( 
+        #    radMeridionalContour.getRegChannel(1, 1) << "xyz_"+ruLabel+"_channel" 
+        #)
+        #spanwiseCuts_mp = [0.00, 0.33,  0.66, 1.00,]
+        #ru_alpha_1 = [
+        #        (np.pi/180.) * 90.,
+        #        (np.pi/180.) * 75.,
+        #        (np.pi/180.) * 52.
+        #        ]
+        #ru_alpha_2 = [
+        #        (np.pi/180.) * 45., 
+        #        (np.pi/180.) * 31., 
+        #        (np.pi/180.) * 32., 
+        #        (np.pi/180.) * 10.
+        #        ]
+        #ru_ratioX = [
+        #        0.65,
+        #        #0.35,
+        #        0.70,
+        #        0.35,
+        #        0.22
+        #        ]
+        #ru_deltaY = [
+        #        0.80,
+        #        0.55,
+        #        0.90,
+        #        0.55
+        #        ]
+        #ru_offX = [
+        #        0.125,
+        #        0.125,
+        #        0.0
+        #        ]
+        #ru_offY = [
+        #        0.065,
+        #        0.085,
+        #        0.035
+        #        ]
+        #
+        #spanwiseCuts_td = [0.00, 1.00,]
+        #ru_t_le = [0.020,
+        #           0.018]
+        #ru_u_le = [0.00]
+        #ru_t_mid = [0.04,
+        #            0.03]
+        #ru_u_mid = [0.50]
+        #ru_t_te = [0.02]
+        #ru_u_te = [0.80]
+        #
+        #print("runner")
+        #self.buildBlade(
+        #        container,
+        #        ruLabel,
+        #        self.nRuBlades, True,
+        #        spanwiseCuts_mp, ru_alpha_1, ru_alpha_2, ru_ratioX, ru_deltaY, ru_offX, ru_offY,
+        #        spanwiseCuts_td, ru_t_le, ru_u_le, ru_t_mid, ru_u_mid, ru_t_te, ru_u_te,
+        #    )
         #self.bV[ruLabel+"_mesh"].makeGrid() 
 
         """
@@ -504,21 +504,23 @@ class radMeridional:
           None, None, None, self.aG \
         )
         self.bC.dtTransformer().add( conMap.clone() )
-        """ 
+         
+        ##
+        ## depiction in 3d Space of blade and meanplane
+        ##
+        #for ii in [label+"_meanplane", label+"_blade",]:         
+        #  theAG = dtOO.vec3dTwoDInMap3dTo3d(
+        #    dtOO.vec3dTwoD.MustConstDownCast(
+        #      conMap.applyAnalyticFunction(self.aF[ii].clone())
+        #    ),
+        #    dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )   
+        #  )
+        #  self.aG.push_back( theAG << "xyz_"+str(ii) )
+       
         #
-        # depiction in 3d Space
-        #
-        for ii in [label+"_meanplane", label+"_blade",]:         
-          theAG = dtOO.vec3dTwoDInMap3dTo3d(
-            dtOO.vec3dTwoD.MustConstDownCast(
-              conMap.applyAnalyticFunction(self.aF[ii].clone())
-            ),
-            dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )   
-          )
-          self.aG.push_back( theAG << "xyz_"+str(ii) )
-        """
-        meshBlock_thickness = 0.015 
         # mesh block
+        #
+        meshBlock_thickness = 0.03 
         fRef = dtOO.vec3dMuParserTwoD(
           "1.0*"+str(meshBlock_thickness)+", xx, yy", "xx", "yy"
         )
@@ -543,12 +545,17 @@ class radMeridional:
         theAF.setLabel(label+"_meshBlock")
         self.aF.push_back( theAF.clone() )
         
+        #
+        # split mesh block
+        #
+
+        # number of mesh block faces which will be part of the meanplane
+        #  starts from 0
         nMeanplaneBlocks = 3
 
         # split mesh block and create curves for meanplane
         modname = "dtOOPythonApp.builder.vec3dThreeD_skinAndSplit"
         module = self.reloadModule(modname)
-
         #from dtOOPythonApp.builder import vec3dThreeD_skinAndSplit
         container = module.vec3dThreeD_skinAndSplit(
           label =label+"_meshBlock",
@@ -566,19 +573,21 @@ class radMeridional:
           ],
           tEMeshBlockThickness = meshBlock_thickness,
           meanplaneFromBlocks = True,
-          meanplaneExtOut = 0.05,
+          meanplaneExtOut = 0.02,
           meanplaneExtIn = 0.03,
           nMeanplaneBlocks = nMeanplaneBlocks
         ).buildExtract(container)
         
         # collecting the curves for the meanplane
+        # mesh block curves extend form hub to shroud and are tangentially 
+        #  offset from the specified mesh block faces
         meshBlockCurves = dtOO.labeledVectorHandlingAnalyticFunction()
         for iNum in self.aF.getIndices(label+"_meshBlockCurve_*"):
             ii = self.aF.getLabel( iNum )
             meshBlockCurves.push_back(self.aF[ii].clone())
         
-        # creating the meanplane surfaces extending from the blocks to the 
-        #  channel interfaces
+        # creating the meanplane surfaces extending from the blocks over
+        # the mesh block curves to the channel interfaces
         modname = "dtOOPythonApp.builder.vec3dSurfaceTwoD_inOutFeMeanplane"
         module = self.reloadModule(modname)
         container = module.vec3dSurfaceTwoD_inOutFeMeanplane(
@@ -622,77 +631,68 @@ class radMeridional:
           )
           theAG.setLabel("xyz_"+ii)
           self.aG.push_back( theAG.clone() )
-        #  mapping multiple curves (meshBlockCurves)
-        for iNum in self.aF.getIndices(label+"_meshBlockCurve_*"):
-          ii = self.aF.getLabel( iNum )
-          theAG = dtOO.vec3dOneDInMap3dTo3d(
-            dtOO.vec3dOneD.MustConstDownCast(
-              conMap.applyAnalyticFunction(self.aF[ii].clone())
-            ),
-            dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
-          )
-          theAG.setLabel("xyz_"+ii)
-          self.aG.push_back( theAG.clone() )
-          
-        # organizing mesh blocks
+        ##  mapping multiple curves (meshBlockCurves)
+        #for iNum in self.aF.getIndices(label+"_meshBlockCurve_*"):
+        #  ii = self.aF.getLabel( iNum )
+        #  theAG = dtOO.vec3dOneDInMap3dTo3d(
+        #    dtOO.vec3dOneD.MustConstDownCast(
+        #      conMap.applyAnalyticFunction(self.aF[ii].clone())
+        #    ),
+        #    dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
+        #  )
+        #  theAG.setLabel("xyz_"+ii)
+        #  self.aG.push_back( theAG.clone() )
+        
+        #
+        # ordering geometries for meshing
+        #
+
+        # collecting and organizing mesh blocks
         blocks = []
         for iNum in self.aG.getIndices("xyz_"+label+"_meshBlock_*"):
             blocks.append( self.aG[ self.aG.getLabel( iNum ) ] )
         # sorting the blocks by number
         blocks.sort(key=lambda x: int(x.getLabel().split('_')[-1]))
         
-        # adding coupling faces between mesh blocks and grid channels
+        # collecting relavant faces
+        # couplingFaces contains the faces which will connect the
+        #   mesh block to the grid channel
+        # meanplaneFaces are the faces which will form the periodic
+        #   boundaries of the grid
         couplingFaces = []
-        couplingFaces.append(dtOO.map3dTo3d.MustDownCast( blocks[0] ).segmentConstUPercent( 0.0 ))
-        # organizing faces used for meanplane
         meanplaneFaces = []
+
+        # faces extending from outlet to the mesh block trailing edge 
         meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_out1"]))
         meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_out0"]))
 
         for i, block in enumerate(blocks):
           face = dtOO.map3dTo3d.MustDownCast( block ).segmentConstWPercent( 1.0 )
-          couplingFaces.append(face)
           
-          # appending the specified meanplane faces on the mesh blocks 
+          # appending the specified meanplane and coupling faces on the mesh blocks 
           if i <= nMeanplaneBlocks:
             meanplaneFaces.append(face)
-
-        couplingFaces.append(dtOO.map3dTo3d.MustDownCast( blocks[-1] ).segmentConstUPercent( 1.0 ))
-
+          else:
+            couplingFaces.append(face)
+        
+        # faces extending from the mesh block leading edge area to the inlet
         meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_in0"]))
         meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_in1"]))
         
-        """
-        # adding coupling faces between mesh blocks and grid channels
-        couplingFaces = []
-        couplingFaces.append(dtOO.map3dTo3d.MustDownCast( blocks[0] ).segmentConstUPercent( 0.0 ))
-        # organizing faces used for meanplane
-        meanplaneFaces = []
-        meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_in1"]))
-        meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_in0"]))
-
-        for i, block in enumerate(blocks):
-          face = dtOO.map3dTo3d.MustDownCast( block ).segmentConstWPercent( 1.0 )
-          couplingFaces.append(face)
-          
-          # appending the specified meanplane faces on the mesh blocks 
-          if i > nMeanplaneBlocks:
-            meanplaneFaces.append(face)
-
-        couplingFaces.append(dtOO.map3dTo3d.MustDownCast( blocks[-1] ).segmentConstUPercent( 1.0 ))
+        # last two coupling faces at trailing edge
+        couplingFaces.append(dtOO.map3dTo3d.MustDownCast(blocks[-1]).segmentConstUPercent( 1.0 ))
+        couplingFaces.append(dtOO.map3dTo3d.MustDownCast(blocks[0]).segmentConstUPercent( 0.0 ))
         
-        meanplaneFaces.append(dtOO.map3dTo3d.MustDownCast( blocks[-1] ).segmentConstUPercent( 1.0 ))
-        meanplaneFaces.append(dtOO.map3dTo3d.MustDownCast( blocks[0] ).segmentConstUPercent( 0.0 ))
-        meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_out0"]))
-        meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_out1"]))
-        """
-        # creating grid channel
+        #
+        # create grid channel
+        #
         modname = "dtOOPythonApp.builder.multipleBoundedVolume_gridChannel"
         module = self.reloadModule(modname)
         gridChannel = module.multipleBoundedVolume_gridChannel(
             label = label,
             channel = self.aG["xyz_"+label+"_channel"],
-            faces = meanplaneFaces,
+            meanplanes = meanplaneFaces,
+            couplings = couplingFaces,
             nBlades = nBlades
         ).enableDebug()
         container = gridChannel.buildExtract(container)
@@ -701,119 +701,22 @@ class radMeridional:
         self.aG.push_back(
             gc << "xyz_"+label+"_gridChannel"
         )
-         
-        modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromChannelAndBlocks"
+        
+        #
+        # generating mesh
+        #
+        modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks"
         module = self.reloadModule(modname)
         #from dtOOPythonApp.builder import (
-        #  map3dTo3dGmsh_gridFromChannelAndBlocks
+        #  map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks
         #)
-        container = module.map3dTo3dGmsh_gridFromChannelAndBlocks(
+        container = module.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(
           label = label+"_mesh",
           channel = self.aG["xyz_"+label+"_gridChannel"],
-          blocks = blocks,
-          blade = self.aG["xyz_"+label+"_blade"],
-          couplingFaces = couplingFaces,
-          nBoundaryLayers = 6,
-          nElementsSpanwise = 30,
-          nElementsNormal = 5,
-          firstElementSizeHubToShroud = 0.005,
-          firstElementSizeNormalBlade = 0.001,
-          bladeHubElementSize = scaOneD_scaCurve2dOneDPointConstruct(
-            [
-              dtOO.dtPoint2(0.00, 0.010),  
-              dtOO.dtPoint2(0.45, 0.007),  
-              dtOO.dtPoint2(0.50, 0.007),  
-              dtOO.dtPoint2(0.55, 0.007),  
-              dtOO.dtPoint2(1.00, 0.010),
-            ], 1
-          )(),
-          bladeHubElementScale = 0.10,
-          channelInletOutletDir = 2,
-          channelHubShroudDir = 3,
-          charLengthMax=0.05,
-          charLengthMin=0.025,
-          meshTEBlocks = True,
           channelFaces = gcFaces,
-        ).enableDebug().buildExtract( container )
-        """
-        # fe_meanplane
-        from dtOOPythonApp.builder import (
-          vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane
-        )
-        container = vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane( 
-          label = "xyz_fe_"+label+"_meanplane",
-          channel = self.aG["xyz_"+label+"_channel"],
-          meanplane = self.aG["xyz_"+label+"_meanplane"],
-          ratioIn = scaOneD_scaCurve2dOneDPointConstruct(
-            [
-              dtOO.dtPoint2(0.00, 0.00),
-              dtOO.dtPoint2(1.00, 0.00)
-            ],
-            1
-          )(),
-          ratioOut = scaOneD_scaCurve2dOneDPointConstruct(
-            [
-              dtOO.dtPoint2(0.00, 0.00),
-              dtOO.dtPoint2(1.00, 0.00)
-            ],
-            1
-          )(),
-           ratioBladeExt = scaOneD_scaCurve2dOneDPointConstruct(
-            [
-              dtOO.dtPoint2(0.00, 0.50),
-              dtOO.dtPoint2(1.00, 0.50)
-            ],
-            1
-          )(),
-          segUs = [0.0, 0.1, 0.5, 0.9, 1.0, ],
-          segVs = [0.0, 0.5, 1.0, ],
-          intermediatePoints = True,
-        ).buildExtract( container )
-
-        # grid channel
-        from dtOOPythonApp.builder import (
-          rotatingMap2dTo3d_gridChannel
-        )
-        container = rotatingMap2dTo3d_gridChannel(
-          label = "xyz_"+label+"_gridChannel", 
-          channelSide = self.aG["xyz_fe_"+label+"_meanplane"], 
-          numberOfSections = nBlades,
-          rotVector = dtOO.dtVector3(0, 0, -1)
-        ).buildExtract( container )
-         
-        # create mesh's topology
-        blocks = []
-        for iNum in self.aG.getIndices("xyz_"+label+"_meshBlock_*"):
-            blocks.append( self.aG[ self.aG.getLabel( iNum ) ] )
-        # sorting the blocks by number
-        blocks.sort(key=lambda x: int(x.getLabel().split('_')[-1]))
-        
-        couplingFaces = []
-        couplingFaces.append( 
-          dtOO.map3dTo3d.MustDownCast( blocks[0] ).segmentConstUPercent( 0.0 )
-        )
-        for i, block in enumerate(blocks):
-          couplingFaces.append( 
-            dtOO.map3dTo3d.MustDownCast( block ).segmentConstWPercent( 1.0 )
-          )
-            
-        couplingFaces.append( 
-          dtOO.map3dTo3d.MustDownCast( blocks[-1] ).segmentConstUPercent( 1.0 )
-        )
-
-        
-        modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromChannelAndBlocks"
-        module = self.reloadModule(modname)
-
-        #from dtOOPythonApp.builder import (
-        #  map3dTo3dGmsh_gridFromChannelAndBlocks
-        #)
-        container = module.map3dTo3dGmsh_gridFromChannelAndBlocks(
-          label = label+"_mesh",
-          channel = self.aG["xyz_"+label+"_gridChannel"],
           blocks = blocks,
+          nMeanplaneBlocks = nMeanplaneBlocks,
           blade = self.aG["xyz_"+label+"_blade"],
-          couplingFaces = couplingFaces,
           nBoundaryLayers = 6,
           nElementsSpanwise = 30,
           nElementsNormal = 5,
@@ -835,7 +738,7 @@ class radMeridional:
           charLengthMin=0.025,
           meshTEBlocks = True,
         ).enableDebug().buildExtract( container )
-        """    
+        
     #
     # returns a list with dtPoint2 types and spline orders
     #  with spanwise cut percentage and blade input parameters
