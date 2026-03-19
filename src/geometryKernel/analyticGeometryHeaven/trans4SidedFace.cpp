@@ -19,10 +19,10 @@ License
 
 #include "aGBuilder/map1dTo3d_orderLoop.h"
 #include "dtLinearAlgebra.h"
-#include <logMe/dtMacros.h>
 #include "map1dTo3d.h"
 #include "map2dTo3dTransformed.h"
 #include <dtTransformerHeaven/dtTransformer.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {
