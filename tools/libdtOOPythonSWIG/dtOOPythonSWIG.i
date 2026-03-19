@@ -208,6 +208,7 @@ namespace dtOO {
 #include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
 #include <analyticGeometryHeaven/partRotatingMap2dTo3d.h>
 #include <analyticGeometryHeaven/trans6SidedCube.h>
+#include <analyticGeometryHeaven/trans4SidedFace.h>
 #include <analyticGeometryHeaven/translatingMap2dTo3d.h>
 #include <analyticGeometryHeaven/multipleBoundedSurface.h>
 #include <analyticGeometryHeaven/multipleBoundedVolume.h>
@@ -1213,6 +1214,7 @@ namespace dtOO {
 %include analyticGeometryHeaven/rotatingMap2dTo3d.h
 %include analyticGeometryHeaven/partRotatingMap2dTo3d.h
 %include analyticGeometryHeaven/trans6SidedCube.h
+%include analyticGeometryHeaven/trans4SidedFace.h
 %include analyticGeometryHeaven/translatingMap2dTo3d.h
 %include analyticGeometryHeaven/multipleBoundedSurface.h
 namespace dtOO {
