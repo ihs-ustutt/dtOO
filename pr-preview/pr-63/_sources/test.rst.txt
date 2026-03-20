@@ -40,3 +40,9 @@ labeledVectorHandlingSWIG
 
 .. automodule:: dtOO.test.labeledVectorHandlingSWIG.labeledVectorHandlingSWIG
     :members:
+
+trans4SidedFace
+===============
+
+.. automodule:: dtOO.test.trans4SidedFace.trans4SidedFace
+    :members:

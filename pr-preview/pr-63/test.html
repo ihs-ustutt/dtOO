@@ -62,6 +62,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-dtOO.test.meshCuboid.meshCuboid">Cuboid Mesh <code class="docutils literal notranslate"><span class="pre">meshCuboid</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-dtOO.test.multipleBounded.multipleBounded">Multiple bounded surfaces and volumes <code class="docutils literal notranslate"><span class="pre">multipleBounded</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-dtOO.test.labeledVectorHandlingSWIG.labeledVectorHandlingSWIG">labeledVectorHandlingSWIG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dtOO.test.trans4SidedFace.trans4SidedFace">trans4SidedFace</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API documentation</a></li>
@@ -1127,23 +1128,6 @@ found in the generated log file:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">preUpdate</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span> <span class="o">=</span> <span class="n">bVOAnalyticGeometryToFace</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
-<span class="gp">... </span>  <span class="n">jsonPrimitive</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="s1">&#39;{&#39;</span>
-<span class="gp">... </span>      <span class="s1">&#39;&quot;analyticGeometry&quot; : [&#39;</span>
-<span class="gp">... </span>        <span class="s1">&#39;{&quot;label&quot; : &quot;mBS_0&quot;},&#39;</span>
-<span class="gp">... </span>        <span class="s1">&#39;{&quot;label&quot; : &quot;mBS_1&quot;}&#39;</span>
-<span class="gp">... </span>      <span class="s1">&#39;],&#39;</span>
-<span class="gp">... </span>      <span class="s1">&#39;&quot;_inc&quot; : 10.0,&#39;</span>
-<span class="gp">... </span>      <span class="s1">&#39;&quot;_facesPerEntry&quot; : [1,1]&#39;</span>
-<span class="gp">... </span>    <span class="s1">&#39;}&#39;</span>
-<span class="gp">... </span>  <span class="p">),</span>
-<span class="gp">... </span>  <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m2ds</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ref</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">preUpdate</span><span class="p">()</span>
-</pre></div>
-</div>
 <p>Create a mesh rule; give different operators for meshing vertices, edges, and
 faces:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span> <span class="o">=</span> <span class="n">bVOMeshRule</span><span class="p">()</span>
@@ -1267,6 +1251,130 @@ there:</p>
 <p>Check also for labeledVectorHandlingAnalyticFunction:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lvhAF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span>
 <span class="go">&#39;myVec3dCurveOneD&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="module-dtOO.test.trans4SidedFace.trans4SidedFace">
+<span id="trans4sidedface"></span><h2>trans4SidedFace<a class="headerlink" href="#module-dtOO.test.trans4SidedFace.trans4SidedFace" title="Link to this heading"></a></h2>
+<p>Create a four sided face with a transfinite interpolation of the interior
+face.</p>
+<p>Import <cite>dtOO</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>Create a log file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logMe</span><span class="o">.</span><span class="n">initLog</span><span class="p">(</span><span class="s2">&quot;trans4SidedFace.log&quot;</span><span class="p">)</span>
+<span class="go">&#39;trans4SidedFace.log&#39;</span>
+</pre></div>
+</div>
+<p>Define <cite>staticProperties</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">staticPropertiesHandler</span><span class="o">.</span><span class="n">getInstance</span><span class="p">()</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">jsonPrimitive</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;{&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;option&quot; : [&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;reparamOnFace_precision&quot;, &quot;value&quot; : &quot;1.e-05&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;reparamInVolume_precision&quot;,&quot;value&quot; : &quot;1.e-05&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;invY_precision&quot;, &quot;value&quot; : &quot;1.e-04&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;xyz_resolution&quot;, &quot;value&quot; : &quot;1.e-05&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;XYZ_resolution&quot;, &quot;value&quot; : &quot;1.e-04&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;uvw_resolution&quot;, &quot;value&quot; : &quot;1.e-04&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;point_render_diameter&quot;, &quot;value&quot; : &quot;0.0025&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;vector_render_size&quot;, &quot;value&quot; : &quot;0.0030&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;function_render_resolution_u&quot;, &quot;value&quot; : &quot;201&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;function_render_resolution_v&quot;, &quot;value&quot; : &quot;201&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;function_render_resolution_w&quot;, &quot;value&quot; : &quot;201&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;geometry_render_resolution_u&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;geometry_render_resolution_v&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;geometry_render_resolution_w&quot;, &quot;value&quot; : &quot;21&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;ompNumThreads&quot;, &quot;value&quot; : &quot;2&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;map1dTo3d_deltaPer&quot;, &quot;value&quot; : &quot;0.01&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;map2dTo3d_deltaPer&quot;, &quot;value&quot; : &quot;0.01&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;map3dTo3d_deltaPer&quot;, &quot;value&quot; : &quot;0.01&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;logLevel&quot;, &quot;value&quot; : &quot;99&quot;}&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;]&#39;</span>
+<span class="gp">... </span>    <span class="s1">&#39;}&#39;</span>
+<span class="gp">... </span>  <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a <cite>dtBundle</cite> object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container</span> <span class="o">=</span> <span class="n">dtBundle</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Reference to <cite>analyticGeometry</cite> container:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aG</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">cptr_aG</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create first curve as a B-Spline curve with order 2; the curve is labeled as
+<cite>s3_0</cite> and a clone is appended to the vector:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aG</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">analyticCurve</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>      <span class="n">vectorDtPoint3</span><span class="p">()</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtPoint3</span><span class="p">(</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span> <span class="p">)</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtPoint3</span><span class="p">(</span> <span class="o">+</span><span class="mf">0.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.30</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span> <span class="p">)</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtPoint3</span><span class="p">(</span> <span class="o">+</span><span class="mf">1.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span> <span class="p">),</span>
+<span class="gp">... </span>      <span class="mi">2</span>
+<span class="gp">... </span>    <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;s3_0&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a <cite>muParser</cite> function as second curve:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mup</span> <span class="o">=</span> <span class="n">vec3dMuParserOneD</span><span class="p">(</span><span class="s2">&quot;1,alpha,0&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set minimum and maximum parametric coordinate value for <cite>alpha</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mup</span><span class="o">.</span><span class="n">setMin</span><span class="p">(</span><span class="mf">0.0</span><span class="p">);</span> <span class="n">mup</span><span class="o">.</span><span class="n">setMax</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Append curve to container:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aG</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">vec3dOneDInMap3dTo3d</span><span class="p">(</span><span class="n">mup</span><span class="p">,</span> <span class="n">infinityMap3dTo3d</span><span class="p">())</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;s3_1&quot;</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Append third B-Spline curve:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aG</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">analyticCurve</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>      <span class="n">vectorDtPoint3</span><span class="p">()</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtPoint3</span><span class="p">(</span> <span class="o">+</span><span class="mf">1.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span> <span class="p">)</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtPoint3</span><span class="p">(</span> <span class="o">+</span><span class="mf">0.50</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.90</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span> <span class="p">)</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtPoint3</span><span class="p">(</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span> <span class="p">),</span>
+<span class="gp">... </span>      <span class="mi">2</span>
+<span class="gp">... </span>    <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;s3_2&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Append fourth B-Spline curve:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aG</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">analyticCurve</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">bSplineCurve_poleWeightKnotMultOrderConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>      <span class="n">vectorDtPoint3</span><span class="p">()</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtPoint3</span><span class="p">(</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span> <span class="p">)</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtPoint3</span><span class="p">(</span> <span class="o">+</span><span class="mf">0.30</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.80</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span> <span class="p">)</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtPoint3</span><span class="p">(</span> <span class="o">-</span><span class="mf">0.30</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.25</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span> <span class="p">)</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtPoint3</span><span class="p">(</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span> <span class="p">),</span>
+<span class="gp">... </span>      <span class="n">vectorReal</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]),</span>
+<span class="gp">... </span>      <span class="n">vectorReal</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]),</span>
+<span class="gp">... </span>      <span class="n">vectorInt</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]),</span> <span class="c1"># [k+1, ... , k+1]</span>
+<span class="gp">... </span>      <span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="kc">False</span>
+<span class="gp">... </span>    <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;s3_3&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create object of <cite>trans4SidedFace</cite>; the internal of the face is interpolated
+by a transfinite interpolation based on the four bounding curves:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aG</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">trans4SidedFace</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">map1dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="n">aG</span><span class="p">[</span><span class="s2">&quot;s3_0&quot;</span><span class="p">]</span> <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">map1dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="n">aG</span><span class="p">[</span><span class="s2">&quot;s3_1&quot;</span><span class="p">]</span> <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">map1dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="n">aG</span><span class="p">[</span><span class="s2">&quot;s3_2&quot;</span><span class="p">]</span> <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">map1dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="n">aG</span><span class="p">[</span><span class="s2">&quot;s3_3&quot;</span><span class="p">]</span> <span class="p">)</span>
+<span class="gp">... </span>  <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;aS_0&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
