@@ -105,12 +105,12 @@ class radMeridional:
             radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
         )
         spanwiseCuts = [0.00, 1.00,]
-        gv_alpha_1 = [(np.pi/180.) * -30.0]
-        gv_alpha_2 = [(np.pi/180.) * -0.1]
-        gv_ratioX = [0.999]
+        gv_alpha_1 = [(np.pi/180.) * -55.0]
+        gv_alpha_2 = [(np.pi/180.) * -16.0]
+        gv_ratioX = [0.5]
         gv_deltaY = [0.12]
-        gv_offX = [-0.047]
-        gv_offY = [0.075]
+        gv_offX = [-0.046]
+        gv_offY = [0.077]
         
         gv_t_le = [0.01]
         gv_u_le = [0.00]
@@ -210,14 +210,14 @@ class radMeridional:
         
         # creating the mesh of the suction area with wall layers and the unstructured region
         container = module.map3dTo3dGmsh_gridFromLayers(
-                "meshLayers",       # label 
-                layers,             # layer data
-                7,                  # number of elements in layer
-                0.01,               # first element size in layer
-                0.05,               # element size streamwise
-                0.03,               # element size circumferential
-                mv,                 # multi bounded volume of unstructured region
-                bs                  # surfaces of unstructured region
+                label = "meshLayers",   
+                layers = layers,        
+                nElementsLayer = 7,     
+                firstelement = 0.01,    
+                elementSize_sw = 0.05,  
+                elementSize_circ = 0.03,
+                mv = mv,                
+                bs = bs                  
             ).buildExtract(container)
         self.bV["meshLayers"].makeGrid()
         
@@ -516,7 +516,7 @@ class radMeridional:
         #    dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )   
         #  )
         #  self.aG.push_back( theAG << "xyz_"+str(ii) )
-       
+        
         #
         # mesh block
         #
