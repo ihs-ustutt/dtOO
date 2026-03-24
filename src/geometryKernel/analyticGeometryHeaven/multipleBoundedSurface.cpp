@@ -56,8 +56,8 @@ multipleBoundedSurface::multipleBoundedSurface(
     }
     else
     {
-      points[0] = _m1d[oInd].getPointPercent(1.0);
-      points[1] = _m1d[oInd].getPointPercent(0.0);
+      points[0] = _m1d[abs(oInd)].getPointPercent(1.0);
+      points[1] = _m1d[abs(oInd)].getPointPercent(0.0);
     }
     _polygon_0.push_back(_m2d->reparamOnFace(points[0]));
     _polygon_1.push_back(_m2d->reparamOnFace(points[1]));
