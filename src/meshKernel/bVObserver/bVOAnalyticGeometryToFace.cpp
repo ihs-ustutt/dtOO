@@ -174,10 +174,7 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       std::vector<dtPoint2> const &vertUVs = aFace->getVerticesOrderedUV();
       std::pair<dtPoint2, dtPoint2> uvBound =
         dtLinearAlgebra::boundingBox(vertUVs);
-      dtPoint2 const midPointUV = dtLinearAlgebra::centerPoint(vertUVs);
-      dt__throwIf(
-        !dtLinearAlgebra::isInsidePolygon(midPointUV, vertUVs), preUpdate()
-      );
+      dtPoint2 const midPointUV = findPointInside(vertUVs);
       dtPoint3 const midPoint = aFace->getMap2dTo3d()->getPoint(midPointUV);
       // calculate distance of face's midpoint to m2d
       dtReal const midDist =
@@ -367,9 +364,38 @@ bVOAnalyticGeometryToFace::calcCheckPoints(dtGmshFace const *const aFace) const
     }
   }
   else
-    dt__throwUnexpected(calcCheckPoints());
-
+  {
+    dt__warning(
+      calcCheckPoints(),
+      << "Polygon is not convex. No additional check points used."
+    );
+    ckPoints.push_back(aFace->getMap2dTo3d()->getPoint(findPointInside(vertUVs))
+    );
+  }
   return ckPoints;
 }
 
+dtPoint2
+bVOAnalyticGeometryToFace::findPointInside(std::vector<dtPoint2> const &points)
+{
+  // get center point and check if inside
+  dtPoint2 pointInside = dtLinearAlgebra::centerPoint(points);
+  if (dtLinearAlgebra::isInsidePolygon(pointInside, points))
+  {
+    return pointInside;
+  }
+  else
+  {
+    dt__debug(findPointInside(), << "Brut-forcing point inside.");
+    dt__forFromToIndex(2, points.size(), ii)
+    {
+      pointInside = points[0] + 0.5 * (points[ii] - points[0]);
+      if (dtLinearAlgebra::isInsidePolygon(pointInside, points))
+      {
+        return pointInside;
+      }
+    }
+    dt__throw(findPointInside(), << "No point inside the polygon found.");
+  }
+}
 } // namespace dtOO

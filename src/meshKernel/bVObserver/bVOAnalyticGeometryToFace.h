@@ -58,6 +58,7 @@ public:
 
 private:
   std::vector<dtPoint3> calcCheckPoints(dtGmshFace const *const aFace) const;
+  static dtPoint2 findPointInside(std::vector<dtPoint2> const &points);
 
 private:
   dt__pVH(analyticGeometry) _aG;
