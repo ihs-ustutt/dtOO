@@ -289,7 +289,7 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
       Sets gmsh attribute `Mesh.CharacteristicLengthMin`.
     charLengthMax: float
       Sets gmsh attribute `Mesh.CharacteristicLengthMax`.
-    meshTEblocks: float
+    meshTEblocks: Bool
       generates Mesh on the Treailing Edge blocks if True.
 
     Returns

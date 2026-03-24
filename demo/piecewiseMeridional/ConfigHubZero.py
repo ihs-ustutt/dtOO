@@ -34,7 +34,7 @@ class ConfigHubZero():
             
             "label" : "radMeridionalContour",
             "layer_thickness" : 0.2,
-            "layer_supports" : [0.33, 0.66],
+            "layer_supports" : [0.5],
             "interface_hub" : [[1, 0.00],
                                [1, 0.7],],                # [curve, percent]
             "interface_shroud" : [[1, 0.00],

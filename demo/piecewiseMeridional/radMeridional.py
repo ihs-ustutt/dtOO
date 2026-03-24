@@ -84,50 +84,63 @@ class radMeridional:
         self.dP = container.cptr_dP() 
         
         # creating the meridional contour
-        modname = "dtOOPythonApp.builder.analyticGeometryLayers_piecewiseMeridionalRotContour"
+        modname = "dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour"
         module = self.reloadModule(modname)
-        radMeridionalContour = module.analyticGeometryLayers_piecewiseMeridionalRotContour( 
+        radMeridionalContour = module.analyticGeometry_piecewiseMeridionalRotContour( 
           self.label,
           self.hubCurves,
           self.shroudCurves,
-          self.layer_thickness,
-          self.layer_supports,
           self.interface_hub,
           self.interface_shroud,
           self.interface_curvature,
         ).enableDebug()#.buildExtract( container )
         container = radMeridionalContour.buildExtract(container)
-         
-        # guide vane
-        gvLabel = "gv"
+        
+        speHub, speShroud, inOutCurves = radMeridionalContour.getLayerRegionCurves()
 
-        self.aG.push_back( 
-            radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
-        )
-        spanwiseCuts = [0.00, 1.00,]
-        gv_alpha_1 = [(np.pi/180.) * -55.0]
-        gv_alpha_2 = [(np.pi/180.) * -16.0]
-        gv_ratioX = [0.5]
-        gv_deltaY = [0.12]
-        gv_offX = [-0.046]
-        gv_offY = [0.077]
-        
-        gv_t_le = [0.01]
-        gv_u_le = [0.00]
-        gv_t_mid = [0.03]
-        gv_u_mid = [0.20]
-        gv_t_te = [0.01]
-        gv_u_te = [0.80]
-        
-        print("guide vane")
-        self.buildBlade(
-                container,
-                gvLabel,
-                self.nGvBlades, False,
-                spanwiseCuts, gv_alpha_1, gv_alpha_2, gv_ratioX, gv_deltaY, gv_offX, gv_offY,
-                spanwiseCuts, gv_t_le, gv_u_le, gv_t_mid, gv_u_mid, gv_t_te, gv_u_te,
-            ) 
-        self.bV[gvLabel+"_mesh"].makeGrid() 
+        # creating the layer region object
+        modname = "dtOOPythonApp.builder.analyticGeometry_layerRegion"
+        module = self.reloadModule(modname)
+        layerRegion = module.analyticGeometry_layerRegion( 
+          self.label,
+          speHub,
+          speShroud,
+          inOutCurves,
+          self.layer_thickness,
+          self.layer_supports,
+        ).enableDebug()#.buildExtract( container )
+        container = layerRegion.buildExtract(container)
+         
+        ## guide vane
+        #gvLabel = "gv"
+
+        #self.aG.push_back( 
+        #    radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
+        #)
+        #spanwiseCuts = [0.00, 1.00,]
+        #gv_alpha_1 = [(np.pi/180.) * -55.0]
+        #gv_alpha_2 = [(np.pi/180.) * -16.0]
+        #gv_ratioX = [0.5]
+        #gv_deltaY = [0.12]
+        #gv_offX = [-0.046]
+        #gv_offY = [0.077]
+        #
+        #gv_t_le = [0.01]
+        #gv_u_le = [0.00]
+        #gv_t_mid = [0.03]
+        #gv_u_mid = [0.20]
+        #gv_t_te = [0.01]
+        #gv_u_te = [0.80]
+        #
+        #print("guide vane")
+        #self.buildBlade(
+        #        container,
+        #        gvLabel,
+        #        self.nGvBlades, False,
+        #        spanwiseCuts, gv_alpha_1, gv_alpha_2, gv_ratioX, gv_deltaY, gv_offX, gv_offY,
+        #        spanwiseCuts, gv_t_le, gv_u_le, gv_t_mid, gv_u_mid, gv_t_te, gv_u_te,
+        #    ) 
+        #self.bV[gvLabel+"_mesh"].makeGrid() 
         
         ## runner
         #ruLabel = "ru"
@@ -190,16 +203,18 @@ class radMeridional:
         #    )
         #self.bV[ruLabel+"_mesh"].makeGrid() 
 
-        """
+        #
+        # Meshing of layer region
+        #
         # returning the hub and shroud layers
-        layers = radMeridionalContour.getLayerList(self.nRuBlades)    
+        layers = layerRegion.getLayerList(self.nRuBlades)    
         # returns layer data in the following nested list:
         # layers = [[hub layer lists],[shroud layer list]]
         # with:
         # [hub layer lists] = [[3d layer domain], [bool list radius zero]]
 
         # returns the unstructured region and its surfaces
-        mv, bs = radMeridionalContour.getUnstructuredRegion(self.nRuBlades)
+        mv, bs = layerRegion.getUnstructuredRegion(self.nRuBlades)
         
         modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
         module = self.reloadModule(modname)
@@ -213,14 +228,14 @@ class radMeridional:
                 label = "meshLayers",   
                 layers = layers,        
                 nElementsLayer = 7,     
-                firstelement = 0.01,    
+                firstElement = 0.01,    
                 elementSize_sw = 0.05,  
                 elementSize_circ = 0.03,
                 mv = mv,                
                 bs = bs                  
             ).buildExtract(container)
         self.bV["meshLayers"].makeGrid()
-        
+        """
         modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromChannel"
         module = self.reloadModule(modname)
         #from dtOOPythonApp.builder import ( map3dTo3dGmsh_gridFromChannel )
@@ -732,8 +747,6 @@ class radMeridional:
             ], 1
           )(),
           bladeHubElementScale = 0.10,
-          channelInletOutletDir = 2,
-          channelHubShroudDir = 3,
           charLengthMax=0.05,
           charLengthMin=0.025,
           meshTEBlocks = True,
