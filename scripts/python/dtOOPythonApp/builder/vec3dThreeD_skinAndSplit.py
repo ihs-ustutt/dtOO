@@ -59,15 +59,15 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
       Dimension where surface is splitted before skinned.
     splits_: List[List[float]]
       Positions for splitting.
-    tEMeshBlockThickness: Optional[float] = None
+    thickness_: Optional[float] = None
       thickness of the Trailing Edge Mesh Blocks, if not None
-    meanplaneFromBlocks: bool = False
+    meanplaneFromBlocks_: bool = False
       activates creation of meanplane curve
-    meanplaneExtOut: Optional[float] = 0.01,
+    meanplaneExtOut_: Optional[float] = 0.01,
       extention of meanplane curve towards outlet
-    meanplaneExtIn: Optional[float] = 0.01,
+    meanplaneExtIn_: Optional[float] = 0.01,
       extention of meanplane curve towards inlet
-    nMeanplaneBlocks: Optional[int] = 3
+    nMeanplaneBlocks_: Optional[int] = 3
       number of block faces used for the meanplane
 
     Examples
@@ -385,7 +385,29 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
     # segPercent is 0 for the first and 1 for the last mesh blocks 
     #
     def teOffsetCurves_vec3dSurfaceTwoD(self, surf, segPercent, blockThickness, splitDim):
-        
+        """Extracts a curve on the face and one which is an offset of this curve in 
+        tangential direction od the face.
+
+        Parameters
+        ----------
+        surf: analyticGeometry
+          Surface
+        segPercent: float
+          percentage where the curve is cut from the face
+        blockThickness: float
+          offset length of the tangential curve
+        splitDim: int
+          Dimension in which the curve is cut (u or v)
+
+        Returns
+        -------
+        curve: analyticGeometry
+          Curve on the face at segPercent in splitDim direction
+        offsetPoints: vectorDtPoint3
+          Vector with points of the curve which is tangentially offset to the face
+
+        """
+   
         # direction of the offset is controlled by f
         if segPercent == 0:
             f = -1
@@ -474,6 +496,20 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
     # creating the faces for the trailing edge meshBlocks
     #
     def createBlockFaces(self, curves):
+        """Build part.
+
+        Parameters
+        ----------
+        curves: List[List[analyticGeometry]]
+          List of curves which will be skinned with each other
+
+        Returns
+        -------
+        vh_aF: vectorHandlingConstAnalyticFunction
+          Analytic fuctions of the skinned surfaces
+
+        """
+
         # curves is a list in the following format:
         #  curves = [
         #       [curves0_0, curves0_1],

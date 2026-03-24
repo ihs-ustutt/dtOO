@@ -26,11 +26,70 @@ import logging
 import numpy as np
 
 class multipleBoundedVolume_gridChannel(dtBundleBuilder):
-    """
+    """ Create the grid channel as a multiple bounded volume
     
+    The grid channel is build from the part of the mesh which
+    will be meshed unstructured.
+    The bounding faces of the multiple bounded volume are built 
+    by the rotation of the meanplane- and coupling faces.
+    
+    The angle of rotation is defined trough the number of blades
+    in the 360° channel.
+
+    The following faces are the bounding faces:
+        
+        - inlet: inlet boundary
+
+        - outlet: outlet boundary
+
+        - suction_tri_(n) : suction boundary build from 
+                            meanplane faces
+
+        - coupling_(n) : boundary connecting to the blades'
+                         mesh block
+        
+        - pressure_tri_(n) : pressure boundary build from 
+                             rotated meanplane faces
+        
+        - pressure_quad_(n) : pressure boundary build from 
+                              rotated meanplane faces
+
+        - hub: multiple bounded surface of hub curves of the 
+               other boundary faces.
+        
+        - shroud: multiple bounded surface of shroud curves 
+                  of the other boundary faces.
+    
+    The marker "tri" and "quad" in the naming of pressure and
+    suction boundaries are used during meshing to identify which
+    faces are meshed unstructured with boundary layers or 
+    transfinite.
+    
+    The method getGridChannel() returns the grid channel with
+    the type multipleBoundedVolume and a list of the bounding 
+    faces.
+
+    Attributes
+    ----------
+    label_: str
+      Label.
+    channel_: analyticGeometry
+      360° rotated channel domain
+    meanplanes_: List[analyticGeometry]
+      List of meanplane faces
+    couplings_: List[analyticGeometry]
+      List of coupling faces
+    nBlades_: int
+      Number of blades
+    nInOutSurfSuction_: int
+      Number of meanplane faces extending from the mesh blocks
+      to the inlet and outlet each
+    rotVector_: dtVector3
+      Rotation vector of the grid channel
+
+
     Examples
     --------
-
     >>> import dtOOPythonSWIG as dtOO
     
     Build channel geometry
@@ -68,29 +127,37 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
 
     Define meanplane curves
     >>> c_mp0 = dtOO.bSplineCurve_pointConstructOCC(
-    ...           dtOO.vectorDtPoint3()
-    ...             << dtOO.dtPoint3(+0.50, +0.00, 0.00)
-    ...             << dtOO.dtPoint3(+0.50, +0.00, 0.50),
-    ...             1
-    ...         ).result()
+    ...     dtOO.vectorDtPoint3()
+    ...       << dtOO.dtPoint3(+0.50, +0.00, 0.00)
+    ...       << dtOO.dtPoint3(+0.50, +0.00, 0.50),
+    ...     1
+    ... ).result()
     >>> c_mp1 = dtOO.bSplineCurve_pointConstructOCC(
-    ...           dtOO.vectorDtPoint3()
-    ...             << dtOO.dtPoint3(+0.60, +0.10, 0.00)
-    ...             << dtOO.dtPoint3(+0.60, +0.20, 0.50),
-    ...             1
-    ...         ).result()
+    ...     dtOO.vectorDtPoint3()
+    ...       << dtOO.dtPoint3(+0.60, +0.10, 0.00)
+    ...       << dtOO.dtPoint3(+0.55, +0.10, 0.50),
+    ...     1
+    ... ).result()
     >>> c_mp2 = dtOO.bSplineCurve_pointConstructOCC(
-    ...           dtOO.vectorDtPoint3()
-    ...             << dtOO.dtPoint3(+0.80, +0.20, 0.00)
-    ...             << dtOO.dtPoint3(+0.70, +0.10, 0.50),
-    ...             1
-    ...         ).result()
+    ...     dtOO.vectorDtPoint3()
+    ...       << dtOO.dtPoint3(+0.95, +0.10, 0.00)
+    ...       << dtOO.dtPoint3(+0.90, +0.10, 0.50),
+    ...     1
+    ... ).result()
     >>> c_mp3 = dtOO.bSplineCurve_pointConstructOCC(
-    ...           dtOO.vectorDtPoint3()
-    ...             << dtOO.dtPoint3(+1.00, +0.00, 0.00)
-    ...             << dtOO.dtPoint3(+1.00, +0.00, 0.50),
-    ...             1
-    ...         ).result()
+    ...     dtOO.vectorDtPoint3()
+    ...       << dtOO.dtPoint3(+1.00, +0.00, 0.00)
+    ...       << dtOO.dtPoint3(+1.00, +0.00, 0.50),
+    ...     1
+    ... ).result()
+    
+    Define copling curve
+    >>> c_coup = dtOO.bSplineCurve_pointConstructOCC(
+    ...     dtOO.vectorDtPoint3()
+    ...       << dtOO.dtPoint3(+0.85, +0.25, 0.00)
+    ...       << dtOO.dtPoint3(+0.85, +0.15, 0.50),
+    ...     1
+    ... ).result()
 
     Create meanplane faces in the channel from the curves
     >>> mp0 = dtOO.analyticSurface(
@@ -115,20 +182,43 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     ...         ).result()
     ...     )
     
+    Create coupling faces from meanplane curves and coupling curve 
+    >>> coup0 = dtOO.analyticSurface(
+    ...             dtOO.bSplineSurface_exchangeSurfaceConstructOCC(
+    ...                 dtOO.bSplineSurface_skinConstructOCC(
+    ...                     c_mp2, c_coup
+    ...                 ).result()
+    ...             ).result()
+    ...         )
+    >>> coup1 = dtOO.analyticSurface(
+    ...         dtOO.bSplineSurface_exchangeSurfaceConstructOCC(
+    ...             dtOO.bSplineSurface_skinConstructOCC(
+    ...                 c_coup, c_mp1
+    ...             ).result()
+    ...         ).result()
+    ...     )
+
     Make a list containing the meanplane faces
     >>> meanplaneFaces = [
     ...        dtOO.map2dTo3d.MustDownCast(mp0),
     ...        dtOO.map2dTo3d.MustDownCast(mp1),
     ...        dtOO.map2dTo3d.MustDownCast(mp2),
     ...    ]
+    
+    >>> couplingFaces = [
+    ...         dtOO.map2dTo3d.MustDownCast(coup0),
+    ...         dtOO.map2dTo3d.MustDownCast(coup1),
+    ...     ]
 
     create the grid channel
     >>> from dtOOPythonApp.builder import multipleBoundedVolume_gridChannel
     >>> gridChannel = multipleBoundedVolume_gridChannel(
     ...     label = "test",
     ...     channel = channel,
-    ...     faces = meanplaneFaces,
-    ...     nBlades = 12
+    ...     meanplanes = meanplaneFaces,
+    ...     couplings = couplingFaces,
+    ...     nBlades = 12,
+    ...     nInOutSurfSuction = 1
     ... )
     >>> gridChannel.build()
     
@@ -147,10 +237,29 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         meanplanes: List[analyticGeometry],
         couplings: List[analyticGeometry],
         nBlades: int,
+        nInOutSurfSuction: int = 2,
         rotVector: dtVector3 = dtVector3(0, 0, 1),
 
       ) -> None:
-
+        """
+        Parameters
+        ----------
+        label_: str
+          Label.
+        channel_: analyticGeometry
+          360° rotated channel domain
+        meanplanes_: List[analyticGeometry]
+          List of meanplane faces
+        couplings_: List[analyticGeometry]
+          List of coupling faces
+        nBlades_: int
+          Number of blades
+        nInOutSurfSuction_: int
+          Number of meanplane faces extending from the mesh blocks
+          to the inlet and outlet each
+        rotVector_: dtVector3
+          Rotation vector of the grid channel
+        """
         super(
           multipleBoundedVolume_gridChannel, self
         ).__init__()
@@ -161,11 +270,22 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         self.meanplanes_ = meanplanes
         self.couplings_ = couplings
         self.nBlades_ = nBlades
+        self.nInOutSurf_ = nInOutSurfSuction
         self.rotVector_ = dtLinearAlgebra.normalize(rotVector)
 
     def build(self) -> None:
-        
-        # vetcor handler for boundary surfaces
+        """Build part.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """ 
+        # vector handler for boundary surfaces
         self.boundSurf_ = labeledVectorHandlingAnalyticGeometry()
         
         # vector handlers for multiple bounded surfaces of hub and shroud
@@ -238,7 +358,9 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
             # special treatment for suction boundaries
             #  only the first two and last two faces are taken from the meanplane
             #  the other faces are the coupling faces
-            if i <= 1 or i >= len(self.meanplanes_)-2:
+            # self.nInOutSurf_ specifies how many extention faces are defined between 
+            #  the mesh blocks and inlet or outlet
+            if i < self.nInOutSurf_ or i >= len(self.meanplanes_)-self.nInOutSurf_:
                 
                 # label "tri" for faces which have to be meshed triangular
                 #  (faces with rotational periodicity to suction and pressure)
@@ -312,4 +434,17 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     # return method for grid channel and its faces
     #
     def getGridChannel(self) -> Tuple[analyticGeometry, List[analyticGeometry]]:
+        """return method.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        gridChannel_: analyticGeometry
+          Multiple bounded volume of the grid channel
+        boundSurf_: List[analyticGeometry]
+          List of bounding faces
+        """
         return self.gridChannel_, self.boundSurf_ 

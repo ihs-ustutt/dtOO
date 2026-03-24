@@ -111,20 +111,22 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
     ----------
     label_: str
       Label.
-    layers: List[List[List[analyticGeometry] | List[bool]]]
+    layerList_: List[List[List[analyticGeometry] | List[bool]]]
       Layer lists for hub and shroud with 3d regions and bool list.
     nLayers_: int
       Number of elements in grading.
-    firstElement: float
+    firstElement_: float
       size of first element in grading.
-    elementSize_sw: float
+    elementSizeSw_: float
       Element size in streamwise direction
-    elementSize_circ: float
+    elementSizeCirc_: float
       Element size in circumferential direction
-    mv: analyticGeometry
+    unstructured_: analyticGeometry
       Multi bounded volume of the unstructured region
-    bs: List[analyticGeometry]
+    unstructuredSurfaces_: List[analyticGeometry]
       Bounding faces of the mult bounded voulume
+    map3dTo3dGmshJson_: jsonPrimitive
+      JSON structure for map3dTo3dGmsh.
 
     Examples
     --------
@@ -133,7 +135,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
     def __init__(self,
                  label: str,
                  layers: List[List[List[analyticGeometry] | List[bool]]],
-                 nLayers: int,
+                 nElementsLayer: int,
                  firstElement: float,
                  elementSize_sw: float,
                  elementSize_circ: float,
@@ -145,11 +147,11 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
         Parameters
         ----------
-        label_: str
+        label: str
           Label.
         layers: List[List[List[analyticGeometry] | List[bool]]]
           Layer lists for hub and shroud with 3d regions and bool list.
-        nLayers_: int
+        nElementLayer: int
           Number of elements in grading.
         firstElement: float
           size of first element in grading.
@@ -160,7 +162,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         mv: analyticGeometry
           Multi bounded volume of the unstructured region
         bs: List[analyticGeometry]
-          Bounding faces of the mult bounded voulume
+          Bounding faces of the mult bounded volume
         
         Returns
         -------
@@ -171,7 +173,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         # setting global params
         self.label_ = label
         self.layerList_ = layers
-        self.nLayers_ = nLayers
+        self.nLayers_ = nElementsLayer
         self.firstElement_ = firstElement
         self.elementSizeSW_ = elementSize_sw
         self.elementSizeCIRC_ = elementSize_circ
@@ -258,7 +260,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
  
                 # finding the correct surfaces on the region by using the uvw direction
                 # naming of faces:
-                #   ortho    -> faces orthogonal to streamwise direction (connectsing the layers)
+                #   ortho    -> faces orthogonal to streamwise direction (connecting the layers)
                 #   periodic -> periodic faces (extend from channel curve radially inside the channel)
                 #   channel  -> faces on channel side
                 #   parallel -> faces parallel to channel
@@ -344,12 +346,12 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                 "debug_layerEdge_channelToParallelLine_"+"_ID"+str(line)+"_"+self.label_
             )
 
-        # list containing the lengths of the mesh lines in circunferential direction
+        # list containing the lengths of the mesh lines in circumferential direction
         lChannel_circ = [0, 0]
 
         # iterating over the hub and shroud layers
         # here the mesh settings for the edges in streamwise and circumferential directions are set
-        # regions with five sides are specially trated in this loop
+        # regions with five sides are specially treated in this loop
         for i_hs in range(len(self.layerList_)):
 
             if i_hs == 0:
@@ -606,7 +608,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         # this is dne to set boundary conditions in the of case later
         ob = bVOFaceToPatchRule()
         ob.thisown = False
-        # if the last hub layer is on radius 0 the unstructured region goes to eadius zero
+        # if the last hub layer is on radius 0 the unstructured region goes to radius zero
         # there is no hub layer on the outlet
         if self.layerList_[0][1][-1] == True:
             ob.jInit(
@@ -691,7 +693,18 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         ----------
         channel: map3dTo3d
           Volume.
+        direction: int
+          Direction in uvw 
+          1 -> U
+          2 -> V
+          3 -> W
 
+        Returns
+        -------
+        first: map2dTo3d
+          first segment in direction
+        second: map2dTo3d
+          second segment in direction
         """
         firstPar = 0.0
         secondPar = 1.0
@@ -717,7 +730,21 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                                       m3dGmsh,
                                       face0: str,
                                       face1: str):
-        """Returns the common edges between two faces
+        """Returns the common edges between two faces.
+
+        Parameters
+        ----------
+        channel: map3dTo3d
+          Volume.
+        face0: str
+          Pyhsical name of first face
+        face1: str
+          Pyhsical name of second face
+
+        Returns
+        -------
+        commonEdges: List[dtGmshEdge]
+          List of edges on both faces
         """
         commonEdges = []
         edges0 = m3dGmsh.getModel().getDtGmshFaceByPhysical(face0).dtEdges()

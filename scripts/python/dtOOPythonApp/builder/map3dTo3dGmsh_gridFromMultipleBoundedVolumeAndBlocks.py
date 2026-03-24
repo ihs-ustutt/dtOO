@@ -192,12 +192,6 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
       length of the blade at the shroud.
     bladeShroudElementScale_: float
       Factor defining the number of elements at the shroud for each mesh block.
-    channelHubShroudDir_: int
-      Parameter direction in channel from hub to shroud.
-    channelInletOutletDir_: int
-      Parameter direction in channel from inlet to outlet.
-    channelSuctionPressureDir_: int
-      Parameter direction in channel from suction to pressure side.
     meshTEBlocks_: Bool
       marker if trailing edge mesh blocks should be meshed
     map3dTo3dGmshJson_: jsonPrimitive
@@ -224,9 +218,6 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         bladeHubElementScale: float = None,
         bladeShroudElementSize: scaOneD = None,
         bladeShroudElementScale: float = None,
-        channelHubShroudDir: int = 3,
-        channelInletOutletDir: int = 2,
-        channelSuctionPressureDir: int = 1,
         charLengthMin: float = 0.05,
         charLengthMax: float = 0.10,
         meshTEBlocks: bool = False
@@ -235,49 +226,43 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         """
         Parameters 
         ----------
-        label_: str
+        label: str
           Label.
-        channel_: multipleBoundedVolume
+        channel: multipleBoundedVolume
           Channel.
-        channelFaces_: List[ map2dTo3d ]
+        channelFaces: List[ map2dTo3d ]
           List of bounding faces surrounding the channel
-        blocks_: List[ map3dTo3d ]
+        blocks: List[ map3dTo3d ]
           List of mesh blocks surrounding the blade.
-        nMeanplaneBlocks_: int
+        nMeanplaneBlocks: int
           number of block faces which are part of the meanplane
-        blade_: map2dTo3d
+        blade: map2dTo3d
           Blade.
-        nBoundaryLayers_: int
+        nBoundaryLayers: int
           Number of boundary layers.
-        nElementsSpanwise_: int
+        nElementsSpanwise: int
           Number of elements in spanwise direction.
-        nElementsNormal_: int
+        nElementsNormal: int
           Number of elements in normal to the blade direction.
-        firstElementSizeHubToShroud_: float
+        firstElementSizeHubToShroud: float
           Size of first element on hub and shroud.
-        firstElementSizeNormalBlade_: float
+        firstElementSizeNormalBlade: float
           Size of first element at the blade in normal to the blade direction.
-        bladeHubElementSize_: scaOneD
+        bladeHubElementSize: scaOneD
           Function describing the element size versus the standardized unwrapped
         length of the blade at the hub.
-          bladeHubElementScale_: float
+          bladeHubElementScale: float
         Factor defining the number of elements at the hub for each mesh block.
-          bladeShroudElementSize_: scaOneD
+          bladeShroudElementSize: scaOneD
         Function describing the element size versus the standardized unwrapped
           length of the blade at the shroud.
-        bladeShroudElementScale_: float
+        bladeShroudElementScale: float
           Factor defining the number of elements at the shroud for each mesh block.
-        channelHubShroudDir_: int
-          Parameter direction in channel from hub to shroud.
-        channelInletOutletDir_: int
-          Parameter direction in channel from inlet to outlet.
-        channelSuctionPressureDir_: int
-          Parameter direction in channel from suction to pressure side.
         charLengthMin: float
           Sets gmsh attribute `Mesh.CharacteristicLengthMin`.
         charLengthMax: float
           Sets gmsh attribute `Mesh.CharacteristicLengthMax`.
-        meshTEBlocks_: Bool
+        meshTEBlocks: Bool
           marker if trailing edge mesh blocks should be meshed
         """
         logging.info( "Initializing %s ..." % (label) )
@@ -303,9 +288,6 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         self.bladeHubElementScale_ = bladeHubElementScale
         self.bladeShroudElementSize_ = bladeShroudElementSize
         self.bladeShroudElementScale_ = bladeShroudElementScale
-        self.channelHubShroudDir_ = channelHubShroudDir
-        self.channelInletOutletDir_ = channelInletOutletDir
-        self.channelSuctionPressureDir_ = channelSuctionPressureDir
         
         self.meshTEBlocks_ = meshTEBlocks
 
