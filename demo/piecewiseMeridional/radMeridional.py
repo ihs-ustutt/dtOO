@@ -12,13 +12,12 @@ logging.warning("Warning")
 logging.error("Error")
 
 import dtOOPythonSWIG as dtOO
-#import dtOOPythonApp.builder as builder
 
 import re
 import numpy as np
 import sys
 import importlib
-#import foamlib
+import foamlib
 
 class radMeridional:
 
@@ -111,97 +110,97 @@ class radMeridional:
         ).enableDebug()#.buildExtract( container )
         container = layerRegion.buildExtract(container)
          
-        ## guide vane
-        #gvLabel = "gv"
+        # guide vane
+        gvLabel = "gv"
 
-        #self.aG.push_back( 
-        #    radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
-        #)
-        #spanwiseCuts = [0.00, 1.00,]
-        #gv_alpha_1 = [(np.pi/180.) * -55.0]
-        #gv_alpha_2 = [(np.pi/180.) * -16.0]
-        #gv_ratioX = [0.5]
-        #gv_deltaY = [0.12]
-        #gv_offX = [-0.046]
-        #gv_offY = [0.077]
-        #
-        #gv_t_le = [0.01]
-        #gv_u_le = [0.00]
-        #gv_t_mid = [0.03]
-        #gv_u_mid = [0.20]
-        #gv_t_te = [0.01]
-        #gv_u_te = [0.80]
-        #
-        #print("guide vane")
-        #self.buildBlade(
-        #        container,
-        #        gvLabel,
-        #        self.nGvBlades, False,
-        #        spanwiseCuts, gv_alpha_1, gv_alpha_2, gv_ratioX, gv_deltaY, gv_offX, gv_offY,
-        #        spanwiseCuts, gv_t_le, gv_u_le, gv_t_mid, gv_u_mid, gv_t_te, gv_u_te,
-        #    ) 
-        #self.bV[gvLabel+"_mesh"].makeGrid() 
+        self.aG.push_back( 
+            radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
+        )
+        spanwiseCuts = [0.00, 1.00,]
+        gv_alpha_1 = [(np.pi/180.) * -55.0]
+        gv_alpha_2 = [(np.pi/180.) * -16.0]
+        gv_ratioX = [0.5]
+        gv_deltaY = [0.12]
+        gv_offX = [-0.046]
+        gv_offY = [0.077]
         
-        ## runner
-        #ruLabel = "ru"
-        #self.aG.push_back( 
-        #    radMeridionalContour.getRegChannel(1, 1) << "xyz_"+ruLabel+"_channel" 
-        #)
-        #spanwiseCuts_mp = [0.00, 0.33,  0.66, 1.00,]
-        #ru_alpha_1 = [
-        #        (np.pi/180.) * 90.,
-        #        (np.pi/180.) * 75.,
-        #        (np.pi/180.) * 52.
-        #        ]
-        #ru_alpha_2 = [
-        #        (np.pi/180.) * 45., 
-        #        (np.pi/180.) * 31., 
-        #        (np.pi/180.) * 32., 
-        #        (np.pi/180.) * 10.
-        #        ]
-        #ru_ratioX = [
-        #        0.65,
-        #        #0.35,
-        #        0.70,
-        #        0.35,
-        #        0.22
-        #        ]
-        #ru_deltaY = [
-        #        0.80,
-        #        0.55,
-        #        0.90,
-        #        0.55
-        #        ]
-        #ru_offX = [
-        #        0.125,
-        #        0.125,
-        #        0.0
-        #        ]
-        #ru_offY = [
-        #        0.065,
-        #        0.085,
-        #        0.035
-        #        ]
-        #
-        #spanwiseCuts_td = [0.00, 1.00,]
-        #ru_t_le = [0.020,
-        #           0.018]
-        #ru_u_le = [0.00]
-        #ru_t_mid = [0.04,
-        #            0.03]
-        #ru_u_mid = [0.50]
-        #ru_t_te = [0.02]
-        #ru_u_te = [0.80]
-        #
-        #print("runner")
-        #self.buildBlade(
-        #        container,
-        #        ruLabel,
-        #        self.nRuBlades, True,
-        #        spanwiseCuts_mp, ru_alpha_1, ru_alpha_2, ru_ratioX, ru_deltaY, ru_offX, ru_offY,
-        #        spanwiseCuts_td, ru_t_le, ru_u_le, ru_t_mid, ru_u_mid, ru_t_te, ru_u_te,
-        #    )
-        #self.bV[ruLabel+"_mesh"].makeGrid() 
+        gv_t_le = [0.01]
+        gv_u_le = [0.00]
+        gv_t_mid = [0.03]
+        gv_u_mid = [0.20]
+        gv_t_te = [0.01]
+        gv_u_te = [0.80]
+        
+        print("guide vane")
+        self.buildBlade(
+                container,
+                gvLabel,
+                self.nGvBlades, False,
+                spanwiseCuts, gv_alpha_1, gv_alpha_2, gv_ratioX, gv_deltaY, gv_offX, gv_offY,
+                spanwiseCuts, gv_t_le, gv_u_le, gv_t_mid, gv_u_mid, gv_t_te, gv_u_te,
+            ) 
+        self.bV[gvLabel+"_mesh"].makeGrid() 
+        
+        # runner
+        ruLabel = "ru"
+        self.aG.push_back( 
+            radMeridionalContour.getRegChannel(1, 1) << "xyz_"+ruLabel+"_channel" 
+        )
+        spanwiseCuts_mp = [0.00, 0.33,  0.66, 1.00,]
+        ru_alpha_1 = [
+                (np.pi/180.) * 90.,
+                (np.pi/180.) * 75.,
+                (np.pi/180.) * 52.
+                ]
+        ru_alpha_2 = [
+                (np.pi/180.) * 45., 
+                (np.pi/180.) * 31., 
+                (np.pi/180.) * 32., 
+                (np.pi/180.) * 10.
+                ]
+        ru_ratioX = [
+                0.65,
+                #0.35,
+                0.70,
+                0.35,
+                0.22
+                ]
+        ru_deltaY = [
+                0.80,
+                0.55,
+                0.90,
+                0.55
+                ]
+        ru_offX = [
+                0.125,
+                0.125,
+                0.0
+                ]
+        ru_offY = [
+                0.065,
+                0.085,
+                0.035
+                ]
+        
+        spanwiseCuts_td = [0.00, 1.00,]
+        ru_t_le = [0.020,
+                   0.018]
+        ru_u_le = [0.00]
+        ru_t_mid = [0.04,
+                    0.03]
+        ru_u_mid = [0.50]
+        ru_t_te = [0.02]
+        ru_u_te = [0.80]
+        
+        print("runner")
+        self.buildBlade(
+                container,
+                ruLabel,
+                self.nRuBlades, True,
+                spanwiseCuts_mp, ru_alpha_1, ru_alpha_2, ru_ratioX, ru_deltaY, ru_offX, ru_offY,
+                spanwiseCuts_td, ru_t_le, ru_u_le, ru_t_mid, ru_u_mid, ru_t_te, ru_u_te,
+            )
+        self.bV[ruLabel+"_mesh"].makeGrid() 
 
         #
         # Meshing of layer region
@@ -264,7 +263,7 @@ class radMeridional:
             ).buildExtract(container)
         self.bV["meshChannel"].makeGrid()
         """
-        """
+        
         from dtOOPythonApp.builder import (
           ofOpenFOAMCase_turboMachine,
           ofOpenFOAMCase_setupWrapper
@@ -273,19 +272,19 @@ class radMeridional:
         container = ofOpenFOAMCase_turboMachine(
           label = "of",
           bVs = [
-            self.bV["meshInlet"], self.bV["meshChannel"], self.bV["meshLayers"],
+            self.bV["gv_mesh"], self.bV["ru_mesh"], self.bV["meshLayers"],
           ],
           dictRule = \
               ofOpenFOAMCase_setupWrapper.controlDict(
                 application = "simpleFoam",
                 endTime = 2000,
                 # Patches where Q and PT is tracked
-                QPatches = ['meshInlet_inlet', 
-                            'meshInlet_outlet', 'meshChannel_inlet', 
-                            'meshChannel_outlet','meshLayers_inlet', 
+                QPatches = ['gv_mesh_inlet', 
+                            'gv_mesh_outlet', 'ru_mesh_inlet', 
+                            'ru_mesh_outlet','meshLayers_inlet', 
                             'meshLayers_outlet',],
-                PTPatches = ['meshInlet_inlet', 'meshLayers_outlet',],
-                #FPatches = ['mesh_blade',],
+                PTPatches = ['gv_mesh_inlet', 'meshLayers_outlet',],
+                FPatches = ['gv_mesh_blade', 'ru_mesh_blade'],
                 libs = [
                   "libsimpleFunctionObjects.so",
                   "libsimpleSwakFunctionObjects.so",
@@ -296,21 +295,20 @@ class radMeridional:
             + ofOpenFOAMCase_setupWrapper.fvSchemes()
             + ofOpenFOAMCase_setupWrapper.fvSolution()
             + ofOpenFOAMCase_setupWrapper.transportModel()
-            + ofOpenFOAMCase_setupWrapper.turbulenceProperties(),
-            #+ ofOpenFOAMCase_setupWrapper.MRFProperties(
-            #    cellZones = ["mesh",],
-            #    omegas    = [9.81,],
-            #    nonRotatingPatches = [
-            #      [
-            #        "mesh_suction", "mesh_pressure",
-            #        "mesh_inlet", "mesh_outlet",
-            #        "mesh_shroud",
-            #      ],
-            #    ],
-            #    patches = [],
-            #    axes = [dtOO.dtVector3(0,0,1)],
-            #    origins = [dtOO.dtPoint3(0,0,0)]
-            #  ),
+            + ofOpenFOAMCase_setupWrapper.turbulenceProperties()
+            + ofOpenFOAMCase_setupWrapper.MRFProperties(
+                cellZones = ["ru_mesh",],
+                omegas    = [375*2*np.pi/60,],
+                nonRotatingPatches = [
+                  [
+                    "ru_mesh_suction", "ru_mesh_pressure",
+                    "ru_mesh_inlet", "ru_mesh_outlet",
+                  ],
+                ],
+                patches = [],
+                axes = [dtOO.dtVector3(0,0,-1)],
+                origins = [dtOO.dtPoint3(0,0,0)]
+              ),
             fieldRules = [
               ofOpenFOAMCase_setupWrapper.fieldRuleString("U", [0.0,0.0,-1.0,]),
               ofOpenFOAMCase_setupWrapper.fieldRuleString("p", [0.0,]),
@@ -322,29 +320,29 @@ class radMeridional:
               ofOpenFOAMCase_setupWrapper.emptyRuleString(),
               # meshInlet
               ofOpenFOAMCase_setupWrapper.cylindricalInletRuleString(
-                "meshInlet_inlet",
+                "gv_mesh_inlet",
                 ["U"],
-                [ [-2,1,0], ]
+                [ [-1,-1,0], ]
               ),
               ofOpenFOAMCase_setupWrapper.inletRuleString(
-                "meshInlet_inlet",
+                "gv_mesh_inlet",
                 ["p", "k", "omega",],
                 [ [0], [0.0, 0.10], [0.001, 0.1] ]
               ),
               ofOpenFOAMCase_setupWrapper.wallRuleString(
-                "meshInlet_shroud",
+                "gv_mesh_shroud",
                 ["omega", "U", "p", "k", "nut"]
               ),
                ofOpenFOAMCase_setupWrapper.wallRuleString(
-                "meshInlet_hub",
+                "gv_mesh_hub",
                 ["omega", "U", "p", "k", "nut"]
               ),
-              #ofOpenFOAMCase_setupWrapper.wallRuleString(
-              #  "mesh_blade",
-              #  ["omega", "U", "p", "k", "nut"]
-              #),
+              ofOpenFOAMCase_setupWrapper.wallRuleString(
+                "gv_mesh_blade",
+                ["omega", "U", "p", "k", "nut"]
+              ),
               ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
-                "meshInlet_suction", "meshInlet_pressure"
+                "gv_mesh_suction", "gv_mesh_pressure"
               ),
               # mixing plane?
               #ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
@@ -353,23 +351,27 @@ class radMeridional:
               #  rotCentre = None
               #),
               ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
-                "meshInlet_outlet", "meshChannel_inlet",
+                "gv_mesh_outlet", "ru_mesh_inlet",
                 ["U", "p", "k", "omega",],
                 axis = dtOO.dtVector3(0,0,1),
                 origin = dtOO.dtPoint3(0,0,0),
                 stackAxis = "Z"
               ),
-              # mesh Channel
+              # runner
               ofOpenFOAMCase_setupWrapper.wallRuleString(
-                "meshChannel_hub",
+                "ru_mesh_hub",
                 ["omega", "U", "p", "k", "nut"]
               ),
               ofOpenFOAMCase_setupWrapper.wallRuleString(
-                "meshChannel_shroud",
+                "ru_mesh_shroud",
+                ["omega", "U", "p", "k", "nut"]
+              ),
+              ofOpenFOAMCase_setupWrapper.wallRuleString(
+                "ru_mesh_blade",
                 ["omega", "U", "p", "k", "nut"]
               ),
               ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
-                "meshChannel_suction", "meshChannel_pressure"
+                "ru_mesh_suction", "ru_mesh_pressure"
               ),
               #ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
               #  "meshChannel_outlet", "meshLayers_inlet",
@@ -377,7 +379,7 @@ class radMeridional:
               #  rotCentre = None
               #),
               ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
-                "meshChannel_outlet", "meshLayers_inlet",
+                "ru_mesh_outlet", "meshLayers_inlet",
                 ["U", "p", "k", "omega",],
                 axis = dtOO.dtVector3(0,0,1),
                 origin = dtOO.dtPoint3(0,0,0),
@@ -412,8 +414,8 @@ class radMeridional:
         fc = foamlib.FoamCase( cDir )
         fc.control_dict['writeInterval'] = 50
         fc.control_dict['endTime'] = 1000
-        fc.turbulence_properties["laminar"]["turbulence"] = False
-        """ 
+        fc.turbulence_properties["RAS"]["turbulence"] = False
+         
         return container  
     
     def buildBlade(self,

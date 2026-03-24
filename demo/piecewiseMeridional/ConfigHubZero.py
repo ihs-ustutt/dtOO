@@ -2,7 +2,6 @@ import numpy as np
 import importlib
 import radMeridional
 import dtOOPythonSWIG as dtOO
-from dtOOPythonApp.vis import dtOOInParaVIEW
 
 class ConfigHubZero():
 
@@ -142,11 +141,24 @@ class ConfigHubZero():
         dz = np.sin(angle)*length
 
         return dx, dz
+    
+    def getConfig(self):
+        return self.config
 
-    def run(self):
-        importlib.reload(radMeridional)
-        cc = radMeridional.radMeridional(self.config).create()
-        rr = dtOOInParaVIEW( cc )
-        return cc, rr
+def run(*args, **kwargs):
+    from dtOOPythonApp.vis import dtOOInParaVIEW
+
+    machine = ConfigHubZero()
+    config = machine.getConfig()
+
+    importlib.reload(radMeridional)
+    cc = radMeridional.radMeridional(config).create()
+    rr = dtOOInParaVIEW( cc )
+    return cc, rr
 
 
+if __name__ == "__main__":
+    machine = ConfigHubZero()
+    config = machine.getConfig()
+    
+    radMeridional.radMeridional(config).create()
