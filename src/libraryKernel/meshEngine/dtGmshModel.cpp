@@ -174,7 +174,10 @@ std::map< int, std::vector< std::string > > dtGmshModel::_positionStrFace
       );
 
 std::map<std::string, dtInt> dtGmshModel::_edgePositionStr =
-  ::boost::assign::map_list_of("0", 0)("1", 1)("2", 2)("3", 3);
+  ::boost::assign::map_list_of
+    ("0", 0)("1", 1)("2", 2)("3", 3)
+    ("4", 4)("5", 5)("6", 6)("7", 7)
+    ("8", 8)("9", 9)("10", 10)("11", 11);
 std::map< int, std::vector< std::string > > dtGmshModel::_positionStrEdge
     =
     ::boost::assign::map_list_of
@@ -197,6 +200,46 @@ std::map< int, std::vector< std::string > > dtGmshModel::_positionStrEdge
         3, 
         ::boost::assign::list_of
           ("3").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        4, 
+        ::boost::assign::list_of
+          ("4").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        5, 
+        ::boost::assign::list_of
+          ("5").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        6, 
+        ::boost::assign::list_of
+          ("6").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        7, 
+        ::boost::assign::list_of
+          ("7").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        8, 
+        ::boost::assign::list_of
+          ("8").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        9, 
+        ::boost::assign::list_of
+          ("9").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        10, 
+        ::boost::assign::list_of
+          ("10").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        11, 
+        ::boost::assign::list_of
+          ("11").convert_to_container< std::vector< std::string > >()
       );
 // clang-format off
 std::map<std::string, dtInt> dtGmshModel::_vertexPositionStr 
