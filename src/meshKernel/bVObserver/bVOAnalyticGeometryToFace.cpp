@@ -177,38 +177,23 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       dtPoint2 const midPointUV = findPointInside(vertUVs);
       dtPoint3 const midPoint = aFace->getMap2dTo3d()->getPoint(midPointUV);
       // calculate distance of face's midpoint to m2d
-      dtReal const midDist =
-        uv_map2dTo3dClosestPointToPoint(m2d, midPoint).distance();
+      uv_map2dTo3dClosestPointToPoint distAlgo(m2d, midPoint);
+      dtReal const midDist = distAlgo.distance();
       bool midIsOnFace = analyticGeometry::inXYZTolerance(
         midDist, config().lookupDef<dtReal>("_inc", 1.0)
       );
       // for multipleBoundedSurface objects the midpoint has to be on m2d
       // and, additionally, has to be inside of the polygon; the polygon is
       // formed by the edges
-      if (isMultiBounded)
+      if (midIsOnFace && isMultiBounded)
       {
-        bool const insidePolygon = mBS->insideInternalPolygon(midPointUV);
+        bool const insidePolygon =
+          mBS->insideInternalPolygon(distAlgo.result());
         midIsOnFace = midIsOnFace && insidePolygon;
         logC() << "    + midPoint of " << _aG[i].getLabel()
                << " : insidePolygon = " << insidePolygon
                << " -> midIsOnFace = " << midIsOnFace << std::endl;
       }
-
-      dt__debug(
-        preUpdate(),
-        << logMe::dtFormat("Processing face: %s \n"
-                           "  BouningBox (UV) : < (%f, %f), (%f, %f) >\n"
-                           "  Vertices (UV) :\n"
-                           "    1: (%f %f)  2: (%f %f)\n"
-                           "    3: (%f %f)  4: (%f %f)\n"
-                           "  MidPoint (UV) -> (XYZ) :(%f, %f) -> (%f, %f, %f)"
-           ) % m2d->getLabel() %
-               uvBound.first[0] % uvBound.first[1] % uvBound.second[0] %
-               uvBound.second[1] % midPointUV[0] % midPointUV[1] % midPoint[0] %
-               midPoint[1] % midPoint[2] % vertUVs[0][0] % vertUVs[0][1] %
-               vertUVs[1][0] % vertUVs[1][1] % vertUVs[2][0] % vertUVs[2][1] %
-               vertUVs[3][0] % vertUVs[3][1]
-      );
 
       //
       // define check points; prevent checking directly the corner points
@@ -227,6 +212,17 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
           bool inTolerance = analyticGeometry::inXYZTolerance(
             dist, config().lookupDef<dtReal>("_inc", 1.0)
           );
+          // for multipleBoundedSurfaces the ckPoint has to be additionally
+          // inside the polygon
+          if (inTolerance && isMultiBounded)
+          {
+            bool const insidePolygon =
+              mBS->insideInternalPolygon(distAlgo.result());
+            inTolerance = inTolerance && insidePolygon;
+            logC() << "    + ckPoint of " << _aG[i].getLabel()
+                   << " : insidePolygon = " << insidePolygon
+                   << " -> inTolerance = " << inTolerance << std::endl;
+          }
 
           // give a second chance to points with midIsOnFace; use first guess
           // and increase number of iterations
@@ -249,6 +245,17 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
               inTolerance = analyticGeometry::inXYZTolerance(
                 dist, config().lookupDef<dtReal>("_inc", 1.0)
               );
+              // for multipleBoundedSurfaces the ckPoint has to be additionally
+              // inside the polygon
+              if (inTolerance && isMultiBounded)
+              {
+                bool const insidePolygon =
+                  mBS->insideInternalPolygon(distAlgo.result());
+                inTolerance = inTolerance && insidePolygon;
+                logC() << "    + ckPoint of " << _aG[i].getLabel()
+                       << " : insidePolygon = " << insidePolygon
+                       << " -> inTolerance = " << inTolerance << std::endl;
+              }
               if (inTolerance)
                 break;
               dt__info(preUpdate(), << "The saga continues ...");

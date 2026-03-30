@@ -151,6 +151,6 @@ analyticGeometry const *const multipleBoundedSurface::surfaceConstPtr(void
 
 bool multipleBoundedSurface::insideInternalPolygon(dtPoint2 const &ppUV) const
 {
-  return dtLinearAlgebra::isInsidePolygon(_polygon_0[0], _polygon_0);
+  return dtLinearAlgebra::isInsidePolygon(ppUV, _polygon_0);
 }
 } // namespace dtOO
