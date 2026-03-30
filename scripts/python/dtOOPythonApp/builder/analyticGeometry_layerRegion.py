@@ -636,7 +636,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
         #  unstructured mesh
         if unstructOnRotAxis != None:
             layerParallel.append(unstructOnRotAxis)
-
+        
         return returnBounds, on_rad_zero, layerParallel 
 
     # creates the layer curve parallel to the channel curves
@@ -998,7 +998,11 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
                 bs.setLabel("outlet_unstruct")
             else:
                 bs.setLabel("para"+str(ib))
-            boundSurf.push_back(bs.clone())
+
+            if not bs.degenerated():
+                boundSurf.push_back(bs.clone())
+            else:
+                logging.info("Degenerated MBV boundary: %s " % bs.getLabel())
 
             ib = ib + 1
         
@@ -1022,10 +1026,10 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
         )
         
         # creating the first multi bounded surface  and pushing it into a VH
-        multBoundSurfs = vectorHandlingAnalyticGeometry()
+        #multBoundSurfs = vectorHandlingAnalyticGeometry()
         mbs1 = multipleBoundedSurface(m2d, self.unstructVH_)
-        mbs1.setLabel("periodic0_unstruct")
-        multBoundSurfs.push_back( mbs1.clone())
+        mbs1.setLabel("periodicUnstruct_0")
+        boundSurf.push_back( mbs1.clone())
 
         # initializing a rotation dtTransformer
         cfg = jsonPrimitive()
@@ -1046,20 +1050,27 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
         
         # creating the rotated mbs and pushing it
         mbs2 = multipleBoundedSurface(m2d_rot, unstructVH_rot)
-        mbs2.setLabel("periodic1_unstruct")
-        multBoundSurfs.push_back( mbs2.clone())
+        mbs2.setLabel("periodicUnstruct_1")
+        boundSurf.push_back( mbs2.clone())
 
-        # pushing the boundary surfaces into the same VH as the mbs's
-        for surf in boundSurf:
-            multBoundSurfs.push_back(surf)
+        ## pushing the boundary surfaces into the same VH as the mbs's
+        #for surf in boundSurf:
+        #    multBoundSurfs.push_back(surf)
+        
+        for face in boundSurf:
+            logging.info( "face.degenerated() = %d" %face.degenerated())
+            logging.info( "face.getLabel() = %s" % face.getLabel())
+            logging.info( "face.virtualClassName() = %s" % face.virtualClassName())
+            #logging.info( "face.getPointPercent() = %s" % face.virtualClassName())
         
         # generating the multiple bounded volume
-        multBoundedVol = multipleBoundedVolume(infinityMap3dTo3d(), multBoundSurfs)
+        multBoundedVol = multipleBoundedVolume(infinityMap3dTo3d(), boundSurf)
         
         # adding the multi bounded surfaces to the vhs
         boundSurf.push_back(mbs1.clone())
         boundSurf.push_back(mbs2.clone())
-        
+       
+
         # returning the multi bounded volume and its boundary surfaces
         return multBoundedVol.clone(), boundSurf
 

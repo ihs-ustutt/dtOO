@@ -228,6 +228,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
         # adding the unstructured region to the model
         unstruct3d = m3dGmsh.getModel().addIfToGmshModel(self.unstructured_)
+        logging.info("unstruct3d = %d" % unstruct3d)
         self.appendAnalyticGeometry(
                self.unstructured_.clone(),
                "debug_unstructuredRegion_"+self.label_)
@@ -247,6 +248,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                 else:
                     # surfaceConstPtr returns the rectangular bounding box in which the mbs was created
                     aG.push_back(face.clone())
+                    logging.info( "degenerated = %d" % face.degenerated() )
         
         # self.layerList_ has the following format:
         # self.layerList_ = [[hub layer lists],[shroud layer list]]
@@ -255,7 +257,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         # [bool list radius zero] tracks which layer se3gment has a radius of zero
         #  those layers have to be meshed five sided
         #  the entrie for those layers will be True 
-
+        """
         # iterating over the layers and pushing their respective surfaces
         # six and five sided layers are treated differently
         for i_hs in range(len(self.layerList_)):
@@ -323,7 +325,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                     # Recursive means that all the edges and faces of the region are also tramsfinite
                     m3dGmsh.getModel().getDtGmshRegionByTag( rID ).meshTransfiniteRecursive()
                     m3dGmsh.getModel().getDtGmshRegionByTag( rID ).meshRecombineRecursive()
-                 
+        """         
         # initializing region labels
         #  later it will be iterated over the list in self (region labels are not used here)
         ob = bVONameRegions()
@@ -332,27 +334,17 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         
         # initializing surface labels in gmsh
         ob = bVOAnalyticGeometryToFace()
-#        ob.jInit(
-#          jsonPrimitive(
-#            '{'
-#              '"analyticGeometry" : ['
-#                '{"labels" : "ortho_*"},'
-#                '{"labels" : "channel*"},'
-#                '{"labels" : "periodic1*"},'
-#                '{"labels" : "periodic0*"},'
-#                '{"labels" : "parallel*"}'
-#              '],'
-#              '"_inc" : 10.0,'
-#              '"_facesPerEntry" : []'
-#            '}'
-#          ),
-#          None, None, None, aG, None, m3dGmsh
-#        )
         ob.jInit(
           jsonPrimitive(
             '{'
               '"analyticGeometry" : ['
-                '{"label" : "periodic1_unstruct"}'
+                #'{"labels" : "ortho_*"},'
+                #'{"labels" : "channel*"},'
+                #'{"labels" : "periodic1*"},'
+                #'{"labels" : "periodic0*"},'
+                '{"label" : "periodicUnstruct_1"},'
+                '{"label" : "periodicUnstruct_0"}'
+                #'{"labels" : "parallel*"}'
               '],'
               '"_inc" : 10.0,'
               '"_facesPerEntry" : []'
@@ -360,9 +352,21 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
           ),
           None, None, None, aG, None, m3dGmsh
         )
+        #ob.jInit(
+        #  jsonPrimitive(
+        #    '{'
+        #      '"analyticGeometry" : ['
+        #        '{"label" : "periodic1_unstruct"}'
+        #      '],'
+        #      '"_inc" : 10.0,'
+        #      '"_facesPerEntry" : []'
+        #    '}'
+        #  ),
+        #  None, None, None, aG, None, m3dGmsh
+        #)
        
         ob.preUpdate()
- 
+        """ 
         # meshing the lines orthogonal to the channel lines
         # these lines connect the faces channel and parallel
         channelToParallelLines = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical("channel*","parallel*")
@@ -506,7 +510,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
                 logging.info( "meshing circumferential Line : %s, ID: %i, number of elements: %i" % (label, line, nE) )
                 m3dGmsh.getModel().getDtGmshEdgeByTag(line).meshTransfiniteWNElements(1,1,nE)
-
+        """
         # initializing grading 
         # scaTanhGradingOneD(c, g, gMin, gMax) -> f(x)=c[0]+c[1]*tanh(g*(c[2]+c[3]*x))/tanh(g)
         theRef = scaTanhGradingOneDCompound(
