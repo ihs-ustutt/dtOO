@@ -1024,7 +1024,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
         # creating the first multi bounded surface  and pushing it into a VH
         multBoundSurfs = vectorHandlingAnalyticGeometry()
         mbs1 = multipleBoundedSurface(m2d, self.unstructVH_)
-        mbs1.setLabel("per0_unstruct")
+        mbs1.setLabel("periodic0_unstruct")
         multBoundSurfs.push_back( mbs1.clone())
 
         # initializing a rotation dtTransformer
@@ -1046,7 +1046,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
         
         # creating the rotated mbs and pushing it
         mbs2 = multipleBoundedSurface(m2d_rot, unstructVH_rot)
-        mbs2.setLabel("per1_unstruct")
+        mbs2.setLabel("periodic1_unstruct")
         multBoundSurfs.push_back( mbs2.clone())
 
         # pushing the boundary surfaces into the same VH as the mbs's
