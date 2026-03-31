@@ -285,7 +285,6 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         None
 
         """
-        print("TEST 0")
         # vector handler for boundary surfaces
         self.boundSurf_ = labeledVectorHandlingAnalyticGeometry()
         
@@ -294,7 +293,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         shroudCurves = vectorHandlingAnalyticGeometry()
         
         # generating bounding faces for multiple bounded surfaces
-        # the face is a circular segment and not the whol rotating face
+        # the face is a circular segment and not the whole rotating face
         #  because the rotation of 2*pi would be detected as degenerated face
         #  (starting and ending curve would be at the same point)
         f = 0.66
@@ -334,27 +333,31 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
             lab = "quad"
 
             ## Faces are found by cutting segments from the volume
-            # outlet boundary of region (first meanplane face)
-            if i == 0:
-                out = vol.segmentConstVPercent(0)
-                self.boundSurf_.push_back(out << "outlet")
-                
-                # boundary curves for multiple bounded surfaces at hub and shroud
-                hub = vol.segmentConstVPercent(0).segmentConstVPercent(0)
-                hubCurves.push_back(hub)
-                shr = vol.segmentConstVPercent(0).segmentConstVPercent(1)
-                shroudCurves.push_back(shr)
-
-            # inlet boundary of region (last meanplane face)
-            elif i == len(self.meanplanes_)-1:
-                inl = vol.segmentConstVPercent(1)
-                self.boundSurf_.push_back(inl << "inlet")
+            # outlet or inlet boundary of region (first meanplane face)
+            if i == 0 or i == len(self.meanplanes_)-1:
+                if i == 0:
+                    let = "outlet"
+                if i == len(self.meanplanes_)-1:
+                    let = "inlet"
+                inOut = vol.segmentConstVPercent(1)
+                self.boundSurf_.push_back(inOut << let)
                 
                 # boundary curves for multiple bounded surfaces at hub and shroud
                 hub = vol.segmentConstVPercent(1).segmentConstVPercent(0)
                 hubCurves.push_back(hub)
                 shr = vol.segmentConstVPercent(1).segmentConstVPercent(1)
                 shroudCurves.push_back(shr)
+
+            ## inlet boundary of region (last meanplane face)
+            #elif i == len(self.meanplanes_)-1:
+            #    inl = vol.segmentConstVPercent(1)
+            #    self.boundSurf_.push_back(inl << "inlet")
+            #    
+            #    # boundary curves for multiple bounded surfaces at hub and shroud
+            #    hub = vol.segmentConstVPercent(1).segmentConstVPercent(0)
+            #    hubCurves.push_back(hub)
+            #    shr = vol.segmentConstVPercent(1).segmentConstVPercent(1)
+            #    shroudCurves.push_back(shr)
             
             # special treatment for suction boundaries
             #  only the first two and last two faces are taken from the meanplane
@@ -403,7 +406,6 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
                 hubCurves.push_back(face.segmentConstVPercent(0))
                 shroudCurves.push_back(face.segmentConstVPercent(1))
         
-        print("TEST 0.5")
         # creating multiple bounded surfaces for hub and shroud
         # pushing them into the vector handler for the multiple bounded volume
         mbs_hub = multipleBoundedSurface(m2d_hub, hubCurves)
@@ -411,8 +413,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         
         self.boundSurf_.push_back(mbs_hub.clone() << "hub")
         self.boundSurf_.push_back(mbs_shroud.clone() << "shroud")
-        
-        print("TEST 1")
+         
         # appending boundaries if debug is enabeled
         if self.debug():
             for face in self.boundSurf_:

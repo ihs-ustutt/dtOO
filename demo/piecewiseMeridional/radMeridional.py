@@ -97,6 +97,105 @@ class radMeridional:
         
         speHub, speShroud, inOutCurves = radMeridionalContour.getLayerRegionCurves()
 
+        # 
+        # guide vane
+        #
+
+        gvLabel = "gv"
+        self.aG.push_back( 
+            radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
+        )
+        spanwiseCuts = [0.00, 1.00,]
+        gv_alpha_1 = [(np.pi/180.) * -55.0]
+        gv_alpha_2 = [(np.pi/180.) * -16.0]
+        gv_ratioX = [0.5]
+        gv_deltaY = [0.12]
+        gv_offX = [-0.046]
+        gv_offY = [0.077]
+        
+        gv_t_le = [0.01]
+        gv_u_le = [0.00]
+        gv_t_mid = [0.03]
+        gv_u_mid = [0.20]
+        gv_t_te = [0.01]
+        gv_u_te = [0.80]
+        
+        print("guide vane")
+        self.buildBlade(
+                container,
+                gvLabel,
+                self.nGvBlades, False,
+                spanwiseCuts, gv_alpha_1, gv_alpha_2, gv_ratioX, gv_deltaY, gv_offX, gv_offY,
+                spanwiseCuts, gv_t_le, gv_u_le, gv_t_mid, gv_u_mid, gv_t_te, gv_u_te,
+            ) 
+        self.bV[gvLabel+"_mesh"].makeGrid() 
+        
+        #
+        # runner
+        #
+        ruLabel = "ru"
+        self.aG.push_back( 
+            radMeridionalContour.getRegChannel(1, 1) << "xyz_"+ruLabel+"_channel" 
+        )
+        spanwiseCuts_mp = [0.00, 0.33,  0.66, 1.00,]
+        ru_alpha_1 = [
+                (np.pi/180.) * 90.,
+                (np.pi/180.) * 75.,
+                (np.pi/180.) * 52.
+                ]
+        ru_alpha_2 = [
+                (np.pi/180.) * 45., 
+                (np.pi/180.) * 31., 
+                (np.pi/180.) * 32., 
+                (np.pi/180.) * 10.
+                ]
+        ru_ratioX = [
+                0.65,
+                #0.35,
+                0.70,
+                0.35,
+                0.22
+                ]
+        ru_deltaY = [
+                0.80,
+                0.55,
+                0.90,
+                0.55
+                ]
+        ru_offX = [
+                0.125,
+                0.125,
+                0.0
+                ]
+        ru_offY = [
+                0.065,
+                0.085,
+                0.035
+                ]
+        
+        spanwiseCuts_td = [0.00, 1.00,]
+        ru_t_le = [0.020,
+                   0.018]
+        ru_u_le = [0.00]
+        ru_t_mid = [0.04,
+                    0.03]
+        ru_u_mid = [0.50]
+        ru_t_te = [0.02]
+        ru_u_te = [0.80]
+        
+        print("runner")
+        self.buildBlade(
+                container,
+                ruLabel,
+                self.nRuBlades, True,
+                spanwiseCuts_mp, ru_alpha_1, ru_alpha_2, ru_ratioX, ru_deltaY, ru_offX, ru_offY,
+                spanwiseCuts_td, ru_t_le, ru_u_le, ru_t_mid, ru_u_mid, ru_t_te, ru_u_te,
+            )
+        self.bV[ruLabel+"_mesh"].makeGrid() 
+        
+        #
+        # Building Layer Region
+        #
         # creating the layer region object
         modname = "dtOOPythonApp.builder.analyticGeometry_layerRegion"
         module = self.reloadModule(modname)
@@ -109,99 +208,7 @@ class radMeridional:
           self.layer_supports,
         ).enableDebug()#.buildExtract( container )
         container = layerRegion.buildExtract(container)
-         
-        ## guide vane
-        #gvLabel = "gv"
-
-        #self.aG.push_back( 
-        #    radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
-        #)
-        #spanwiseCuts = [0.00, 1.00,]
-        #gv_alpha_1 = [(np.pi/180.) * -55.0]
-        #gv_alpha_2 = [(np.pi/180.) * -16.0]
-        #gv_ratioX = [0.5]
-        #gv_deltaY = [0.12]
-        #gv_offX = [-0.046]
-        #gv_offY = [0.077]
-        #
-        #gv_t_le = [0.01]
-        #gv_u_le = [0.00]
-        #gv_t_mid = [0.03]
-        #gv_u_mid = [0.20]
-        #gv_t_te = [0.01]
-        #gv_u_te = [0.80]
-        #
-        #print("guide vane")
-        #self.buildBlade(
-        #        container,
-        #        gvLabel,
-        #        self.nGvBlades, False,
-        #        spanwiseCuts, gv_alpha_1, gv_alpha_2, gv_ratioX, gv_deltaY, gv_offX, gv_offY,
-        #        spanwiseCuts, gv_t_le, gv_u_le, gv_t_mid, gv_u_mid, gv_t_te, gv_u_te,
-        #    ) 
-        #self.bV[gvLabel+"_mesh"].makeGrid() 
         
-        ## runner
-        #ruLabel = "ru"
-        #self.aG.push_back( 
-        #    radMeridionalContour.getRegChannel(1, 1) << "xyz_"+ruLabel+"_channel" 
-        #)
-        #spanwiseCuts_mp = [0.00, 0.33,  0.66, 1.00,]
-        #ru_alpha_1 = [
-        #        (np.pi/180.) * 90.,
-        #        (np.pi/180.) * 75.,
-        #        (np.pi/180.) * 52.
-        #        ]
-        #ru_alpha_2 = [
-        #        (np.pi/180.) * 45., 
-        #        (np.pi/180.) * 31., 
-        #        (np.pi/180.) * 32., 
-        #        (np.pi/180.) * 10.
-        #        ]
-        #ru_ratioX = [
-        #        0.65,
-        #        #0.35,
-        #        0.70,
-        #        0.35,
-        #        0.22
-        #        ]
-        #ru_deltaY = [
-        #        0.80,
-        #        0.55,
-        #        0.90,
-        #        0.55
-        #        ]
-        #ru_offX = [
-        #        0.125,
-        #        0.125,
-        #        0.0
-        #        ]
-        #ru_offY = [
-        #        0.065,
-        #        0.085,
-        #        0.035
-        #        ]
-        #
-        #spanwiseCuts_td = [0.00, 1.00,]
-        #ru_t_le = [0.020,
-        #           0.018]
-        #ru_u_le = [0.00]
-        #ru_t_mid = [0.04,
-        #            0.03]
-        #ru_u_mid = [0.50]
-        #ru_t_te = [0.02]
-        #ru_u_te = [0.80]
-        #
-        #print("runner")
-        #self.buildBlade(
-        #        container,
-        #        ruLabel,
-        #        self.nRuBlades, True,
-        #        spanwiseCuts_mp, ru_alpha_1, ru_alpha_2, ru_ratioX, ru_deltaY, ru_offX, ru_offY,
-        #        spanwiseCuts_td, ru_t_le, ru_u_le, ru_t_mid, ru_u_mid, ru_t_te, ru_u_te,
-        #    )
-        ##self.bV[ruLabel+"_mesh"].makeGrid() 
-
         #
         # Meshing of layer region
         #
@@ -234,35 +241,6 @@ class radMeridional:
                 bs = bs                  
             ).buildExtract(container)
         self.bV["meshLayers"].makeGrid()
-        """
-        modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromChannel"
-        module = self.reloadModule(modname)
-        #from dtOOPythonApp.builder import ( map3dTo3dGmsh_gridFromChannel )
-
-        container = module.map3dTo3dGmsh_gridFromChannel(
-                "meshInlet",                                            # label
-                radMeridionalContour.getRegChannel(0, self.nRuBlades),    # channel
-                5,                                                      # nBoundaryLayersH2S
-                15,                                                     # nEHubToShroud
-                20,                                                     # nECircumferential
-                25,                                                     # nEMeridional
-                0.01,                                                   # fESHubToShroud
-                0.01,                                                   # fESInlet
-            ).buildExtract(container)
-        self.bV["meshInlet"].makeGrid()
-
-        container = module.map3dTo3dGmsh_gridFromChannel(
-                "meshChannel",                            
-                radMeridionalContour.getRegChannel(1, self.nRuBlades),
-                5,                                              
-                15,                                             
-                20,                                             
-                25,                                             
-                0.01,                                           
-                0.01,                                           
-            ).buildExtract(container)
-        self.bV["meshChannel"].makeGrid()
-        """
         
         #from dtOOPythonApp.builder import (
         #  ofOpenFOAMCase_turboMachine,
@@ -595,24 +573,35 @@ class radMeridional:
           nMeanplaneBlocks = nMeanplaneBlocks
         ).buildExtract(container)
         
-        ## collecting the curves for the meanplane
-        ## mesh block curves extend form hub to shroud and are tangentially 
-        ##  offset from the specified mesh block faces
-        #meshBlockCurves = dtOO.labeledVectorHandlingAnalyticFunction()
-        #for iNum in self.aF.getIndices(label+"_meshBlockCurve_*"):
-        #    ii = self.aF.getLabel( iNum )
-        #    meshBlockCurves.push_back(self.aF[ii].clone())
-        #
-        ## creating the meanplane surfaces extending from the blocks over
-        ## the mesh block curves to the channel interfaces
-        #modname = "dtOOPythonApp.builder.vec3dSurfaceTwoD_inOutFeMeanplane"
-        #module = self.reloadModule(modname)
-        #container = module.vec3dSurfaceTwoD_inOutFeMeanplane(
-        #    label = label,
-        #    channel = self.aG["xyz_"+label+"_channel"],
-        #    curves = meshBlockCurves
-        #).buildExtract(container)
-         
+        # building the meanplane faces extending from the mesh blocks 
+        #  to the tangentially offset meanplane curve
+        for i in range(2):
+            # curve seqence is switched between inlet and outlet in 
+            #  order to keep u and v directions consistent with the 
+            #  mesh block faces
+            if i == 0:
+                at = "in"
+                c0 = 0
+                c1 = 1
+            elif i == 1:
+                at = "out"
+                c0 = 1
+                c1 = 0
+            # generating faces
+            surf = dtOO.vec3dSurfaceTwoD(
+                dtOO.bSplineSurface_exchangeSurfaceConstructOCC(
+                    dtOO.bSplineSurface_skinConstructOCC(
+                        dtOO.vec3dCurveOneD.MustDownCast(
+                            self.aF[label+"_meshBlockCurve_"+at+str(c0)]
+                        ).ptrConstDtCurve(),
+                        dtOO.vec3dCurveOneD.MustDownCast(
+                            self.aF[label+"_meshBlockCurve_"+at+str(c1)]
+                        ).ptrConstDtCurve()
+                    ).result()
+                ).result()
+            )
+            self.aF.push_back(surf << label+"_fe_meanplane_"+at+str(0))
+ 
         #
         # do conformal mapping
         #
@@ -626,17 +615,17 @@ class radMeridional:
           )
           theAG.setLabel("xyz_"+ii)
           self.aG.push_back( theAG.clone() )
-        ##  mapping multiple faces
-        #for iNum in self.aF.getIndices(label+"_fe_meanplane_*"):
-        #  ii = self.aF.getLabel( iNum )
-        #  theAG = dtOO.vec3dTwoDInMap3dTo3d(
-        #    dtOO.vec3dTwoD.MustConstDownCast(
-        #      conMap.applyAnalyticFunction(self.aF[ii].clone())
-        #    ),
-        #    dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
-        #  )
-        #  theAG.setLabel("xyz_"+ii)
-        #  self.aG.push_back( theAG.clone() )
+        #  mapping multiple faces (aF of meanplanefaces)
+        for iNum in self.aF.getIndices(label+"_fe_meanplane_*"):
+          ii = self.aF.getLabel( iNum )
+          theAG = dtOO.vec3dTwoDInMap3dTo3d(
+            dtOO.vec3dTwoD.MustConstDownCast(
+              conMap.applyAnalyticFunction(self.aF[ii].clone())
+            ),
+            dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
+          )
+          theAG.setLabel("xyz_"+ii)
+          self.aG.push_back( theAG.clone() )
         #  mapping multiple volumes
         for iNum in self.aF.getIndices(label+"_meshBlock_*"):
           ii = self.aF.getLabel( iNum )
@@ -667,7 +656,6 @@ class radMeridional:
         meshBlockCurves = dtOO.labeledVectorHandlingAnalyticGeometry()
         for iNum in self.aG.getIndices("xyz_"+label+"_meshBlockCurve_*"):
             ii = self.aG.getLabel( iNum )
-            print(ii)
             meshBlockCurves.push_back(self.aG[ii].clone())
         
         # creating the meanplane surfaces extending from the blocks over
@@ -675,15 +663,15 @@ class radMeridional:
         modname = "dtOOPythonApp.builder.analyticSurface_inOutFeMeanplane"
         module = self.reloadModule(modname)
         container = module.analyticSurface_inOutFeMeanplane(
+            prefix = "xyz",
             label = label,
             channel = self.aG["xyz_"+label+"_channel"],
             curves = meshBlockCurves
         ).enableDebug().buildExtract(container)
-        """ 
+         
         #
         # ordering geometries for meshing
         #
-
         # collecting and organizing mesh blocks
         blocks = []
         for iNum in self.aG.getIndices("xyz_"+label+"_meshBlock_*"):
@@ -691,7 +679,7 @@ class radMeridional:
         # sorting the blocks by number
         blocks.sort(key=lambda x: int(x.getLabel().split('_')[-1]))
         
-        # collecting relavant faces
+        # collecting relevant faces
         # couplingFaces contains the faces which will connect the
         #   mesh block to the grid channel
         # meanplaneFaces are the faces which will form the periodic
@@ -773,7 +761,7 @@ class radMeridional:
           charLengthMin=0.025,
           meshTEBlocks = True,
         ).enableDebug().buildExtract( container )
-        """
+         
     #
     # returns a list with dtPoint2 types and spline orders
     #  with spanwise cut percentage and blade input parameters
