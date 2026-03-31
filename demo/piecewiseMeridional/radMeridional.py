@@ -17,7 +17,7 @@ import re
 import numpy as np
 import sys
 import importlib
-#import foamlib
+import foamlib
 
 class radMeridional:
 
@@ -100,7 +100,6 @@ class radMeridional:
         # 
         # guide vane
         #
-
         gvLabel = "gv"
         self.aG.push_back( 
             radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
@@ -242,157 +241,160 @@ class radMeridional:
             ).buildExtract(container)
         self.bV["meshLayers"].makeGrid()
         
-        #from dtOOPythonApp.builder import (
-        #  ofOpenFOAMCase_turboMachine,
-        #  ofOpenFOAMCase_setupWrapper
-        #)
+        #
+        # of case setup
+        #
+        from dtOOPythonApp.builder import (
+          ofOpenFOAMCase_turboMachine,
+          ofOpenFOAMCase_setupWrapper
+        )
 
-        #container = ofOpenFOAMCase_turboMachine(
-        #  label = "of",
-        #  bVs = [
-        #    self.bV["gv_mesh"], self.bV["ru_mesh"], self.bV["meshLayers"],
-        #  ],
-        #  dictRule = \
-        #      ofOpenFOAMCase_setupWrapper.controlDict(
-        #        application = "simpleFoam",
-        #        endTime = 2000,
-        #        # Patches where Q and PT is tracked
-        #        QPatches = ['gv_mesh_inlet', 
-        #                    'gv_mesh_outlet', 'ru_mesh_inlet', 
-        #                    'ru_mesh_outlet','meshLayers_inlet', 
-        #                    'meshLayers_outlet',],
-        #        PTPatches = ['gv_mesh_inlet', 'meshLayers_outlet',],
-        #        FPatches = ['gv_mesh_blade', 'ru_mesh_blade'],
-        #        libs = [
-        #          "libsimpleFunctionObjects.so",
-        #          "libsimpleSwakFunctionObjects.so",
-        #          "libmappedFieldFixedValue.so",
-        #          "libmixingPlane.so",
-        #        ]
-        #      )
-        #    + ofOpenFOAMCase_setupWrapper.fvSchemes()
-        #    + ofOpenFOAMCase_setupWrapper.fvSolution()
-        #    + ofOpenFOAMCase_setupWrapper.transportModel()
-        #    + ofOpenFOAMCase_setupWrapper.turbulenceProperties()
-        #    + ofOpenFOAMCase_setupWrapper.MRFProperties(
-        #        cellZones = ["ru_mesh",],
-        #        omegas    = [375*2*np.pi/60,],
-        #        nonRotatingPatches = [
-        #          [
-        #            "ru_mesh_suction", "ru_mesh_pressure",
-        #            "ru_mesh_inlet", "ru_mesh_outlet",
-        #          ],
-        #        ],
-        #        patches = [],
-        #        axes = [dtOO.dtVector3(0,0,-1)],
-        #        origins = [dtOO.dtPoint3(0,0,0)]
-        #      ),
-        #    fieldRules = [
-        #      ofOpenFOAMCase_setupWrapper.fieldRuleString("U", [0.0,0.0,-1.0,]),
-        #      ofOpenFOAMCase_setupWrapper.fieldRuleString("p", [0.0,]),
-        #      ofOpenFOAMCase_setupWrapper.fieldRuleString("k", [0.1,]),
-        #      ofOpenFOAMCase_setupWrapper.fieldRuleString("omega", [0.1,]),
-        #      ofOpenFOAMCase_setupWrapper.fieldRuleString("nut", [0.1,]),
-        #    ],
-        #    setupRules = [
-        #      ofOpenFOAMCase_setupWrapper.emptyRuleString(),
-        #      # meshInlet
-        #      ofOpenFOAMCase_setupWrapper.cylindricalInletRuleString(
-        #        "gv_mesh_inlet",
-        #        ["U"],
-        #        [ [-1,-1,0], ]
-        #      ),
-        #      ofOpenFOAMCase_setupWrapper.inletRuleString(
-        #        "gv_mesh_inlet",
-        #        ["p", "k", "omega",],
-        #        [ [0], [0.0, 0.10], [0.001, 0.1] ]
-        #      ),
-        #      ofOpenFOAMCase_setupWrapper.wallRuleString(
-        #        "gv_mesh_shroud",
-        #        ["omega", "U", "p", "k", "nut"]
-        #      ),
-        #       ofOpenFOAMCase_setupWrapper.wallRuleString(
-        #        "gv_mesh_hub",
-        #        ["omega", "U", "p", "k", "nut"]
-        #      ),
-        #      ofOpenFOAMCase_setupWrapper.wallRuleString(
-        #        "gv_mesh_blade",
-        #        ["omega", "U", "p", "k", "nut"]
-        #      ),
-        #      ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
-        #        "gv_mesh_suction", "gv_mesh_pressure"
-        #      ),
-        #      # mixing plane?
-        #      #ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
-        #      #  "meshInlet_outlet", "meshChannel_inlet",
-        #      #  rotAxis = None,
-        #      #  rotCentre = None
-        #      #),
-        #      ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
-        #        "gv_mesh_outlet", "ru_mesh_inlet",
-        #        ["U", "p", "k", "omega",],
-        #        axis = dtOO.dtVector3(0,0,1),
-        #        origin = dtOO.dtPoint3(0,0,0),
-        #        stackAxis = "Z"
-        #      ),
-        #      # runner
-        #      ofOpenFOAMCase_setupWrapper.wallRuleString(
-        #        "ru_mesh_hub",
-        #        ["omega", "U", "p", "k", "nut"]
-        #      ),
-        #      ofOpenFOAMCase_setupWrapper.wallRuleString(
-        #        "ru_mesh_shroud",
-        #        ["omega", "U", "p", "k", "nut"]
-        #      ),
-        #      ofOpenFOAMCase_setupWrapper.wallRuleString(
-        #        "ru_mesh_blade",
-        #        ["omega", "U", "p", "k", "nut"]
-        #      ),
-        #      ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
-        #        "ru_mesh_suction", "ru_mesh_pressure"
-        #      ),
-        #      #ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
-        #      #  "meshChannel_outlet", "meshLayers_inlet",
-        #      #  rotAxis = None,
-        #      #  rotCentre = None
-        #      #),
-        #      ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
-        #        "ru_mesh_outlet", "meshLayers_inlet",
-        #        ["U", "p", "k", "omega",],
-        #        axis = dtOO.dtVector3(0,0,1),
-        #        origin = dtOO.dtPoint3(0,0,0),
-        #        stackAxis = "R"
-        #      ),
-        #      ofOpenFOAMCase_setupWrapper.wallRuleString(
-        #        "meshLayers_hub",
-        #        ["omega", "U", "p", "k", "nut"]
-        #      ),
-        #      ofOpenFOAMCase_setupWrapper.wallRuleString(
-        #        "meshLayers_shroud",
-        #        ["omega", "U", "p", "k", "nut"]
-        #      ),
-        #      ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
-        #        "meshLayers_periodic0", "meshLayers_periodic1"
-        #      ),
-        #      ofOpenFOAMCase_setupWrapper.outletRuleString(
-        #        "meshLayers_outlet", 
-        #        ["U", "p", "k", "omega",]
-        #      ),
-        #    ]
+        container = ofOpenFOAMCase_turboMachine(
+          label = "of",
+          bVs = [
+            self.bV["gv_mesh"], self.bV["ru_mesh"], self.bV["meshLayers"],
+          ],
+          dictRule = \
+              ofOpenFOAMCase_setupWrapper.controlDict(
+                application = "simpleFoam",
+                endTime = 2000,
+                # Patches where Q and PT is tracked
+                QPatches = ['gv_mesh_inlet', 
+                            'gv_mesh_outlet', 'ru_mesh_inlet', 
+                            'ru_mesh_outlet','meshLayers_inlet', 
+                            'meshLayers_outlet',],
+                PTPatches = ['gv_mesh_inlet', 'meshLayers_outlet',],
+                FPatches = ['gv_mesh_blade', 'ru_mesh_blade'],
+                libs = [
+                  "libsimpleFunctionObjects.so",
+                  "libsimpleSwakFunctionObjects.so",
+                  "libmappedFieldFixedValue.so",
+                  "libmixingPlane.so",
+                ]
+              )
+            + ofOpenFOAMCase_setupWrapper.fvSchemes()
+            + ofOpenFOAMCase_setupWrapper.fvSolution()
+            + ofOpenFOAMCase_setupWrapper.transportModel()
+            + ofOpenFOAMCase_setupWrapper.turbulenceProperties()
+            + ofOpenFOAMCase_setupWrapper.MRFProperties(
+                cellZones = ["ru_mesh",],
+                omegas    = [375*2*np.pi/60,],
+                nonRotatingPatches = [
+                  [
+                    "ru_mesh_suction", "ru_mesh_pressure",
+                    "ru_mesh_inlet", "ru_mesh_outlet",
+                  ],
+                ],
+                patches = [],
+                axes = [dtOO.dtVector3(0,0,-1)],
+                origins = [dtOO.dtPoint3(0,0,0)]
+              ),
+            fieldRules = [
+              ofOpenFOAMCase_setupWrapper.fieldRuleString("U", [0.0,0.0,-1.0,]),
+              ofOpenFOAMCase_setupWrapper.fieldRuleString("p", [0.0,]),
+              ofOpenFOAMCase_setupWrapper.fieldRuleString("k", [0.1,]),
+              ofOpenFOAMCase_setupWrapper.fieldRuleString("omega", [0.1,]),
+              ofOpenFOAMCase_setupWrapper.fieldRuleString("nut", [0.1,]),
+            ],
+            setupRules = [
+              ofOpenFOAMCase_setupWrapper.emptyRuleString(),
+              # meshInlet
+              ofOpenFOAMCase_setupWrapper.cylindricalInletRuleString(
+                "gv_mesh_inlet",
+                ["U"],
+                [ [-2.28,-7.46,0], ]
+              ),
+              ofOpenFOAMCase_setupWrapper.inletRuleString(
+                "gv_mesh_inlet",
+                ["p", "k", "omega",],
+                [ [0], [0.0, 0.10], [0.001, 0.1] ]
+              ),
+              ofOpenFOAMCase_setupWrapper.wallRuleString(
+                "gv_mesh_shroud",
+                ["omega", "U", "p", "k", "nut"]
+              ),
+               ofOpenFOAMCase_setupWrapper.wallRuleString(
+                "gv_mesh_hub",
+                ["omega", "U", "p", "k", "nut"]
+              ),
+              ofOpenFOAMCase_setupWrapper.wallRuleString(
+                "gv_mesh_blade",
+                ["omega", "U", "p", "k", "nut"]
+              ),
+              ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+                "gv_mesh_suction", "gv_mesh_pressure"
+              ),
+              # mixing plane?
+              #ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+              #  "meshInlet_outlet", "meshChannel_inlet",
+              #  rotAxis = None,
+              #  rotCentre = None
+              #),
+              ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
+                "gv_mesh_outlet", "ru_mesh_inlet",
+                ["U", "p", "k", "omega",],
+                axis = dtOO.dtVector3(0,0,1),
+                origin = dtOO.dtPoint3(0,0,0),
+                stackAxis = "Z"
+              ),
+              # runner
+              ofOpenFOAMCase_setupWrapper.wallRuleString(
+                "ru_mesh_hub",
+                ["omega", "U", "p", "k", "nut"]
+              ),
+              ofOpenFOAMCase_setupWrapper.wallRuleString(
+                "ru_mesh_shroud",
+                ["omega", "U", "p", "k", "nut"]
+              ),
+              ofOpenFOAMCase_setupWrapper.wallRuleString(
+                "ru_mesh_blade",
+                ["omega", "U", "p", "k", "nut"]
+              ),
+              ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+                "ru_mesh_suction", "ru_mesh_pressure"
+              ),
+              #ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+              #  "meshChannel_outlet", "meshLayers_inlet",
+              #  rotAxis = None,
+              #  rotCentre = None
+              #),
+              ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
+                "ru_mesh_outlet", "meshLayers_inlet",
+                ["U", "p", "k", "omega",],
+                axis = dtOO.dtVector3(0,0,1),
+                origin = dtOO.dtPoint3(0,0,0),
+                stackAxis = "R"
+              ),
+              ofOpenFOAMCase_setupWrapper.wallRuleString(
+                "meshLayers_hub",
+                ["omega", "U", "p", "k", "nut"]
+              ),
+              ofOpenFOAMCase_setupWrapper.wallRuleString(
+                "meshLayers_shroud",
+                ["omega", "U", "p", "k", "nut"]
+              ),
+              ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+                "meshLayers_periodic0", "meshLayers_periodic1"
+              ),
+              ofOpenFOAMCase_setupWrapper.outletRuleString(
+                "meshLayers_outlet", 
+                ["U", "p", "k", "omega",]
+              ),
+            ]
 
-        #).buildExtract( container )
-        #
-        #self.dC["of"].runCurrentState()
-        #
-        #cDir = self.dC["of"].getDirectory(
-        #    dtOO.lVHOstateHandler().commonState()
-        #)
-        #
-        # 
-        #fc = foamlib.FoamCase( cDir )
-        #fc.control_dict['writeInterval'] = 50
-        #fc.control_dict['endTime'] = 1000
-        #fc.turbulence_properties["RAS"]["turbulence"] = False
+        ).buildExtract( container )
+        
+        self.dC["of"].runCurrentState()
+        
+        cDir = self.dC["of"].getDirectory(
+            dtOO.lVHOstateHandler().commonState()
+        )
+        
+         
+        fc = foamlib.FoamCase( cDir )
+        fc.control_dict['writeInterval'] = 50
+        fc.control_dict['endTime'] = 1000
+        fc.turbulence_properties["RAS"]["turbulence"] = False
          
         return container  
     
@@ -658,8 +660,8 @@ class radMeridional:
             ii = self.aG.getLabel( iNum )
             meshBlockCurves.push_back(self.aG[ii].clone())
         
-        # creating the meanplane surfaces extending from the blocks over
-        # the mesh block curves to the channel interfaces
+        # creating the meanplane surfaces extending from the tangentially 
+        #  offset meshblock curves to the inlet or the outlet
         modname = "dtOOPythonApp.builder.analyticSurface_inOutFeMeanplane"
         module = self.reloadModule(modname)
         container = module.analyticSurface_inOutFeMeanplane(

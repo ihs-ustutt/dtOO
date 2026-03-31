@@ -35,11 +35,11 @@ class ConfigHubZero():
             "layer_thickness" : 0.2,
             "layer_supports" : [0.5],
             "interface_hub" : [[1, 0.00],
-                               [1, 0.7],],                # [curve, percent]
+                               [1, 0.98],],                # [curve, percent]
             "interface_shroud" : [[1, 0.00],
-                                  [2, 0.5],],
+                                  [2, 0.4],],
             "interface_curvature" : [[0.0, 0.5, 1],
-                                     [0.4, 0.5, -1],],
+                                     [0.0, 0.5, -1],],
         }
         for key, value in self.config.items():
             setattr(self, key, value)
