@@ -221,11 +221,8 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         
         aF = labeledVectorHandlingAnalyticFunction()
         aG = labeledVectorHandlingAnalyticGeometry()
-        #aG_unstruct = labeledVectorHandlingAnalyticGeometry()
         logging.info("Creating Layer Mesh on hub and shroud")
        
-        
-
         # adding the unstructured region to the model
         unstruct3d = m3dGmsh.getModel().addIfToGmshModel(self.unstructured_)
         logging.info("unstruct3d = %d" % unstruct3d)
@@ -240,16 +237,8 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
             # the interface and the outlet surfaces as well as the periodic surfaces
             #  should be added. Not the faces parallel to the hub and shroud curves ("para")
             if not (face.getLabel().startswith("para")):
-
-                # the interface and outlet surfaces are not multi bounded
-                if multipleBoundedSurface.ConstDownCast(face) == None:
-                    aG.push_back(face.clone())
-                # the periodic faces are multi bounded
-                else:
-                    # surfaceConstPtr returns the rectangular bounding box in which the mbs was created
-                    aG.push_back(face.clone())
-                    logging.info( "degenerated = %d" % face.degenerated() )
-        
+                aG.push_back(face.clone())
+                 
         # self.layerList_ has the following format:
         # self.layerList_ = [[hub layer lists],[shroud layer list]]
         # with:
@@ -257,7 +246,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         # [bool list radius zero] tracks which layer se3gment has a radius of zero
         #  those layers have to be meshed five sided
         #  the entrie for those layers will be True 
-        """
+        
         # iterating over the layers and pushing their respective surfaces
         # six and five sided layers are treated differently
         for i_hs in range(len(self.layerList_)):
@@ -325,7 +314,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                     # Recursive means that all the edges and faces of the region are also tramsfinite
                     m3dGmsh.getModel().getDtGmshRegionByTag( rID ).meshTransfiniteRecursive()
                     m3dGmsh.getModel().getDtGmshRegionByTag( rID ).meshRecombineRecursive()
-        """         
+                 
         # initializing region labels
         #  later it will be iterated over the list in self (region labels are not used here)
         ob = bVONameRegions()
@@ -338,35 +327,22 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
           jsonPrimitive(
             '{'
               '"analyticGeometry" : ['
-                #'{"labels" : "ortho_*"},'
-                #'{"labels" : "channel*"},'
-                #'{"labels" : "periodic1*"},'
-                #'{"labels" : "periodic0*"},'
+                '{"labels" : "ortho_*"},'
+                '{"labels" : "channel*"},'
+                '{"labels" : "periodic1*"},'
+                '{"labels" : "periodic0*"},'
                 '{"label" : "periodicUnstruct_1"},'
-                '{"label" : "periodicUnstruct_0"}'
-                #'{"labels" : "parallel*"}'
+                '{"label" : "periodicUnstruct_0"},'
+                '{"labels" : "parallel*"}'
               '],'
               '"_inc" : 10.0,'
               '"_facesPerEntry" : []'
             '}'
           ),
           None, None, None, aG, None, m3dGmsh
-        )
-        #ob.jInit(
-        #  jsonPrimitive(
-        #    '{'
-        #      '"analyticGeometry" : ['
-        #        '{"label" : "periodic1_unstruct"}'
-        #      '],'
-        #      '"_inc" : 10.0,'
-        #      '"_facesPerEntry" : []'
-        #    '}'
-        #  ),
-        #  None, None, None, aG, None, m3dGmsh
-        #)
-       
+        ) 
         ob.preUpdate()
-        """ 
+        
         # meshing the lines orthogonal to the channel lines
         # these lines connect the faces channel and parallel
         channelToParallelLines = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical("channel*","parallel*")
@@ -510,7 +486,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
                 logging.info( "meshing circumferential Line : %s, ID: %i, number of elements: %i" % (label, line, nE) )
                 m3dGmsh.getModel().getDtGmshEdgeByTag(line).meshTransfiniteWNElements(1,1,nE)
-        """
+        
         # initializing grading 
         # scaTanhGradingOneD(c, g, gMin, gMax) -> f(x)=c[0]+c[1]*tanh(g*(c[2]+c[3]*x))/tanh(g)
         theRef = scaTanhGradingOneDCompound(
@@ -586,49 +562,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
           None, None, aF, None, None, m3dGmsh
         )
         m3dGmsh.attachBVObserver(ob)
-        """
-        # untagging the periodic faces
-        for face in m3dGmsh.getModel().getDtGmshFaceListByPhysical("periodic*"):     
-            m3dGmsh.getModel().untagPhysical(face)
- 
-        # iterating over the surfaces of the unstructured region
-        # the faces were already labeled in getUnstructuredRegion()
-        for face in self.unstructuredSurfaces_:
-            
-            # the interface and the outlet surfaces as well as the periodic surfaces
-            #  should be added. Not the faces parallel to the hub and shroud curves ("para")
-            if not (face.getLabel().startswith("para")):
-                
-                # the interface and outlet surfaces are not multi bounded
-                if multipleBoundedSurface.ConstDownCast(face) == None:
-                    aG_unstruct.push_back(face.clone())
-                # the periodic faces are multi bounded
-                else:
-                    # surfaceConstPtr returns the rectangular bounding box in which the mbs was created
-                    scp = multipleBoundedSurface.MustDownCast(face).surfaceConstPtr()
-                    scp.setLabel(face.getLabel())
-                    aG_unstruct.push_back(scp.clone()) 
          
-        # initializing surface labels in gmsh
-        ob = bVOAnalyticGeometryToFace()
-        ob.jInit(
-          jsonPrimitive(
-            '{'
-              '"analyticGeometry" : ['
-                '{"label" : "interface_unstruct"},'
-                '{"label" : "outlet_unstruct"},'
-                '{"label" : "per0_unstruct"},'
-                '{"label" : "per1_unstruct"}'
-              '],'
-              '"_inc" : 10.0,'
-              '"_facesPerEntry" : []'
-            '}'
-          ),
-          None, None, None, aG_unstruct, None, m3dGmsh
-        )
-        #m3dGmsh.attachBVObserver(ob)
-        ob.preUpdate()
-        
         ## useful debug statement to understand the naming of the layers and vizualize them
         ##  especially for the bVOFaceToPatchRule
         #for face in m3dGmsh.getModel().getDtGmshFaceListByPhysical("*"):
@@ -641,7 +575,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         #print("lenth shroud : ", str(len(self.layerList_[1][0])))
 
         # setting bVOFaceToPatchRule, renames all the added faces
-        # this is dne to set boundary conditions in the of case later
+        # this is done to set boundary conditions in the of case later
         ob = bVOFaceToPatchRule()
         ob.thisown = False
         # if the last hub layer is on radius 0 the unstructured region goes to radius zero
@@ -694,7 +628,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
             )
 
         m3dGmsh.attachBVObserver(ob)
-        """
+        
         #m3dGmsh.makeGrid()    
 
         ob = bVOWriteMSH()

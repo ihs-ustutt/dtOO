@@ -1025,8 +1025,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
             ).result()
         )
         
-        # creating the first multi bounded surface  and pushing it into a VH
-        #multBoundSurfs = vectorHandlingAnalyticGeometry()
+        # creating the first multi bounded surface  and pushing it into the VH
         mbs1 = multipleBoundedSurface(m2d, self.unstructVH_)
         mbs1.setLabel("periodicUnstruct_0")
         boundSurf.push_back( mbs1.clone())
@@ -1052,17 +1051,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
         mbs2 = multipleBoundedSurface(m2d_rot, unstructVH_rot)
         mbs2.setLabel("periodicUnstruct_1")
         boundSurf.push_back( mbs2.clone())
-
-        ## pushing the boundary surfaces into the same VH as the mbs's
-        #for surf in boundSurf:
-        #    multBoundSurfs.push_back(surf)
-        
-        for face in boundSurf:
-            logging.info( "face.degenerated() = %d" %face.degenerated())
-            logging.info( "face.getLabel() = %s" % face.getLabel())
-            logging.info( "face.virtualClassName() = %s" % face.virtualClassName())
-            #logging.info( "face.getPointPercent() = %s" % face.virtualClassName())
-        
+ 
         # generating the multiple bounded volume
         multBoundedVol = multipleBoundedVolume(infinityMap3dTo3d(), boundSurf)
         
