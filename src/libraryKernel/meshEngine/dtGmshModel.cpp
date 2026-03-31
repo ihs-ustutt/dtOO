@@ -57,10 +57,6 @@ License
 
 #define __caCThis const_cast<dtGmshModel *>(this)
 
-#define __cgnsCheck(cmd)                                                       \
-  if (cmd)                                                                     \
-  dt__throw(__cgnsCheck(), << dt__eval(cg_get_error()))
-
 namespace dtOO {
 // clang-format off
 std::map<std::string, dtInt> dtGmshModel::_facePositionStr = ::boost::
@@ -172,12 +168,13 @@ std::map< int, std::vector< std::string > > dtGmshModel::_positionStrFace
         ::boost::assign::list_of
           ("14").convert_to_container< std::vector< std::string > >()
       );
-
+// clang-format off
 std::map<std::string, dtInt> dtGmshModel::_edgePositionStr =
   ::boost::assign::map_list_of
     ("0", 0)("1", 1)("2", 2)("3", 3)
     ("4", 4)("5", 5)("6", 6)("7", 7)
     ("8", 8)("9", 9)("10", 10)("11", 11);
+// clang-format on
 std::map< int, std::vector< std::string > > dtGmshModel::_positionStrEdge
     =
     ::boost::assign::map_list_of
