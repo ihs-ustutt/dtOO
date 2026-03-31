@@ -369,13 +369,13 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
 
         # calculating the centerpoint of the special curves
         # will be later used in order to make sure the layer boundaries are pointing inside the domain
-        # the bounding box of the special curfes self.speBb_ will be used to generate 
+        # the bounding box of the special curves self.speBb_ will be used to generate 
         #  the multi bounded volume of the unstructured region
         axis, self.speCenter_, self.speBb_ = self.calculateNormalAxis(speHub + speShroud)
         
         logging.info("### Creating Hub Layer Curves")
         # Creating the boundary curves for the layers
-        # each layer id defined by four curves those returned through self.hubLayerCurves_
+        # each layer is defined by four curves those returned through self.hubLayerCurves_
         # the hubLayerCurves_ list has the following format:
         # self.hubLayerCurve = [
         #                        [channel curve, 
@@ -723,7 +723,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
     # the curves are returned in a list
     def createLayerBounds(self, layerCurve, thickness, supports, lab):
         
-        # global layer boundaries 
+        # global layer boundaries are the last interface ant the outlet curve 
         # the layers will expand between these two boundaries in streamwise direction
         # here the last interface curve and the outlet curve is used 
         boundsGlob = []
@@ -731,7 +731,7 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         boundsGlob.append(self.inOutCurves_[1]) 
         
         # layer boundaries between the special curves
-        # will extend from the channel curves inside th domain orthogonally to streamwise direction
+        # will extend from the channel curves inside the domain, orthogonally to streamwise direction
         layerStreamOrtho = []
         # layerboundaries which will be parallel to channel curves
         layerParallel = []
@@ -1045,14 +1045,14 @@ class analyticGeometryLayers_piecewiseMeridionalRotContour(dtBundleBuilder):
         rr = dtLinearAlgebra.length(vv - self.rotVector_ * zz)
         return dtPoint2(rr, zz)
 
-    def xyz_rz(self, pp: dtPoint3) -> dtPoint3:
-        vv = (
-            self.origin_
-            + self.rotVector_ * pp[1]
-            + dtLinearAlgebra.crossProduct(self.normalAxis_, self.rotVector_)
-            * pp[0]
-        )
-        return vv
+    #def xyz_rz(self, pp: dtPoint3) -> dtPoint3:
+    #    vv = (
+    #        self.origin_
+    #        + self.rotVector_ * pp[1]
+    #        + dtLinearAlgebra.crossProduct(self.normalAxis_, self.rotVector_)
+    #        * pp[0]
+    #    )
+    #    return vv
     
     # creates the splits of the channel curve 
     # splits are made by interfaces with interface_hub and interface_shroud
