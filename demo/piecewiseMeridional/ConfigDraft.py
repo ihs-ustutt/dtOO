@@ -2,14 +2,14 @@ import numpy as np
 import importlib
 import radMeridional
 import dtOOPythonSWIG as dtOO
-from dtOOPythonApp.vis import dtOOInParaVIEW
 
 class ConfigDraft():
 
     def __init__(self):
 
         self.config = {
-            "nBlades" : 12,
+            "nRuBlades" : 15,
+            "nGvBlades" : 24,
             "d_inlet" : 2.58,
             "l_inExt" : 0.50,
             "d_outHub" : 0.4,
@@ -145,12 +145,26 @@ class ConfigDraft():
         dz = np.sin(angle)*length
 
         return dx, dz
+    
+    def getConfig(self):
+        return self.config
 
-    def run(self):
-        
-        importlib.reload(radMeridional)
-        cc = radMeridional.radMeridional(self.config).create()
-        rr = dtOOInParaVIEW( cc )
-        return cc, rr
 
+def run(*args, **kwargs):
+    from dtOOPythonApp.vis import dtOOInParaVIEW
+
+    machine = ConfigDraft()
+    config = machine.getConfig()
+
+    importlib.reload(radMeridional)
+    cc = radMeridional.radMeridional(config).create()
+    rr = dtOOInParaVIEW( cc )
+    return cc, rr
+
+
+if __name__ == "__main__":
+    machine = ConfigDraft()
+    config = machine.getConfig()
+    
+    radMeridional.radMeridional(config).create()
 

@@ -284,7 +284,8 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         -------
         None
 
-        """ 
+        """
+        print("TEST 0")
         # vector handler for boundary surfaces
         self.boundSurf_ = labeledVectorHandlingAnalyticGeometry()
         
@@ -402,6 +403,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
                 hubCurves.push_back(face.segmentConstVPercent(0))
                 shroudCurves.push_back(face.segmentConstVPercent(1))
         
+        print("TEST 0.5")
         # creating multiple bounded surfaces for hub and shroud
         # pushing them into the vector handler for the multiple bounded volume
         mbs_hub = multipleBoundedSurface(m2d_hub, hubCurves)
@@ -410,6 +412,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         self.boundSurf_.push_back(mbs_hub.clone() << "hub")
         self.boundSurf_.push_back(mbs_shroud.clone() << "shroud")
         
+        print("TEST 1")
         # appending boundaries if debug is enabeled
         if self.debug():
             for face in self.boundSurf_:
