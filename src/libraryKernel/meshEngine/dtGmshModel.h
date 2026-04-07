@@ -57,7 +57,9 @@ public:
   //
   // get GEntitys
   //
+  ::GRegion *getRegionByIndex(dtInt const ind) const;
   dtGmshRegion *getDtGmshRegionByTag(dtInt const tag) const;
+  ::GFace *getFaceByIndex(dtInt const ind) const;
   dtGmshFace *getDtGmshFaceByTag(dtInt const tag) const;
   dtGmshEdge *getDtGmshEdgeByPhysical(std::string const &physical) const;
   dtGmshFace *getDtGmshFaceByPhysical(std::string const &physical) const;
@@ -111,6 +113,7 @@ public:
   static dtPoint3 extractPosition(::GVertex const *const gv);
   static dtPoint3 extractPosition(::MVertex const *const mv);
   static void setPosition(::MVertex *mv, dtPoint3 const &pp);
+  static void translatePosition(::MVertex *mv, dtVector3 const &vv);
   //
   // add vertex
   //

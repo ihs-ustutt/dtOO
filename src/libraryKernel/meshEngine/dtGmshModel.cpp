@@ -751,12 +751,22 @@ dtInt dtGmshModel::addIfToGmshModel(analyticGeometry const *const aG)
   return aGId;
 }
 
+::GRegion *dtGmshModel::getRegionByIndex(dtInt const ind) const
+{
+  return progHelper::list2Vector(this->regions()).at(ind);
+}
+
 dtGmshRegion *dtGmshModel::getDtGmshRegionByTag(dtInt const tag) const
 {
   ::GRegion *region = ::GModel::getRegionByTag(abs(tag));
   dt__ptrAss(dtGmshRegion * gRegion, dtGmshRegion::DownCast(region));
 
   return gRegion;
+}
+
+::GFace *dtGmshModel::getFaceByIndex(dtInt const ind) const
+{
+  return progHelper::list2Vector(this->faces()).at(ind);
 }
 
 dtGmshFace *dtGmshModel::getDtGmshFaceByTag(dtInt const tag) const
@@ -1208,6 +1218,11 @@ dtPoint3 dtGmshModel::extractPosition(::MVertex const *const mv)
 void dtGmshModel::setPosition(::MVertex *mv, dtPoint3 const &pp)
 {
   mv->setXYZ(pp.x(), pp.y(), pp.z());
+}
+
+void dtGmshModel::translatePosition(::MVertex *mv, dtVector3 const &vv)
+{
+  mv->setXYZ(mv->x() + vv.x(), mv->y() + vv.y(), mv->z() + vv.z());
 }
 
 void dtGmshModel::add(::GEntity *ge)
