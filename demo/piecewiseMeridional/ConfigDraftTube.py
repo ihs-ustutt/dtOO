@@ -1,9 +1,9 @@
 import numpy as np
 import importlib
-import radMeridional
+import radMeridionalOptimization
 import dtOOPythonSWIG as dtOO
 
-class ConfigHubZero():
+class ConfigDraftTube():
 
     def __init__(self):
 
@@ -28,16 +28,23 @@ class ConfigHubZero():
             "angle_shroud1" : 90 * np.pi/180,
 
             "h_inlet" : 0.36,
-            "h_hub" : 0.804,
-            "h_shroud" : 0.444,
-            
+            #"h_hub" : 0.814,
+            #"h_shroud" : 0.454,
+            "h_hub" : 0.68,
+            "h_shroud" : 0.38,
+ 
             "label" : "radMeridionalContour",
             "layer_thickness" : 0.2,
             "layer_supports" : [0.5],
             "interface_hub" : [[1, 0.00],
-                               [1, 1.00],],                # [curve, percent]
+                               [1, 0.90],],                # [curve, percent]
             "interface_shroud" : [[1, 0.00],
-                                  [1, 1.00],],
+                                  [2, 0.4],],
+
+            #"interface_hub" : [[1, 0.00],
+            #                   [1, 1.00],],                # [curve, percent]
+            #"interface_shroud" : [[1, 0.00],
+            #                      [1, 1.00],],
             "interface_curvature" : [[0.0, 0.5, 1],
                                      [0.0, 0.5, -1],],
         }
@@ -82,18 +89,27 @@ class ConfigHubZero():
               dtOO.bSplineCurve_pointConstructOCC(
                 dtOO.vectorDtPoint3()
                   << dtOO.dtPoint3(+self.d_outHub/2, +0.00, -self.h_hub+self.h_inlet)
-                  << dtOO.dtPoint3(+0.00, +0.00, -self.h_hub+self.h_inlet),
+                  << dtOO.dtPoint3(+self.d_outHub/2, +0.00, -self.h_hub+self.h_inlet-0.22),
                 1
               ).result()
             ),
-            dtOO.analyticCurve(
-              dtOO.bSplineCurve_pointConstructOCC(
-                dtOO.vectorDtPoint3()
-                  << dtOO.dtPoint3(+0.00, +0.00, -self.h_hub+self.h_inlet)
-                  << dtOO.dtPoint3(+0.00, +0.00, -2.55),
-                1
-              ).result()
-            )
+
+            #dtOO.analyticCurve(
+            #  dtOO.bSplineCurve_pointConstructOCC(
+            #    dtOO.vectorDtPoint3()
+            #      << dtOO.dtPoint3(+self.d_outHub/2, +0.00, -self.h_hub+self.h_inlet-0.124)
+            #      << dtOO.dtPoint3(+0.00, +0.00, -self.h_hub+self.h_inlet-0.124),
+            #    1
+            #  ).result()
+            #),
+            #dtOO.analyticCurve(
+            #  dtOO.bSplineCurve_pointConstructOCC(
+            #    dtOO.vectorDtPoint3()
+            #      << dtOO.dtPoint3(+0.00, +0.00, -self.h_hub+self.h_inlet-0.124)
+            #      << dtOO.dtPoint3(+0.00, +0.00, -2.55),
+            #    1
+            #  ).result()
+            #)
           ]
     
     def buildShroudCurves(self):
@@ -121,18 +137,18 @@ class ConfigHubZero():
               dtOO.bSplineCurve_pointConstructOCC(
                 dtOO.vectorDtPoint3()
                   << dtOO.dtPoint3(+self.d_outShroud/2, +0.00, -self.h_shroud)
-                  << dtOO.dtPoint3(+self.d_outShroud/2, +0.00, -0.54),
+                  << dtOO.dtPoint3(+self.d_outShroud/2, +0.00, -self.h_shroud-0.16),
                 1
               ).result()
             ),
-            dtOO.analyticCurve(
-              dtOO.bSplineCurve_pointConstructOCC(
-                dtOO.vectorDtPoint3()
-                  << dtOO.dtPoint3(+self.d_outShroud/2, +0.00, -0.54)
-                  << dtOO.dtPoint3(+1.15, +0.00, -2.55),
-                1
-              ).result()
-            )
+            #dtOO.analyticCurve(
+            #  dtOO.bSplineCurve_pointConstructOCC(
+            #    dtOO.vectorDtPoint3()
+            #      << dtOO.dtPoint3(+self.d_outShroud/2, +0.00, -0.54)
+            #      << dtOO.dtPoint3(+1.15, +0.00, -2.55),
+            #    1
+            #  ).result()
+            #)
           ]
 
     def deltas_LengthAndAngle(self, angle, length):
@@ -148,7 +164,7 @@ class ConfigHubZero():
 def run(*args, **kwargs):
     from dtOOPythonApp.vis import dtOOInParaVIEW
 
-    machine = ConfigHubZero()
+    machine = ConfigDraftTube()
     config = machine.getConfig()
 
     importlib.reload(radMeridionalOptimization)
@@ -158,7 +174,7 @@ def run(*args, **kwargs):
 
 
 if __name__ == "__main__":
-    machine = ConfigHubZero()
+    machine = ConfigDraftTube()
     config = machine.getConfig()
     
     radMeridionalOptimization.radMeridionalOptimization(config, True).create()

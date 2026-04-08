@@ -136,37 +136,37 @@ class radMeridional:
         )
         spanwiseCuts_mp = [0.00, 0.33,  0.66, 1.00,]
         ru_alpha_1 = [
-                (np.pi/180.) * 90.,
-                (np.pi/180.) * 75.,
-                (np.pi/180.) * 52.
+                (np.pi/180.) * 95.,
+                (np.pi/180.) * 85.,
+                (np.pi/180.) * 60.
                 ]
         ru_alpha_2 = [
-                (np.pi/180.) * 45., 
-                (np.pi/180.) * 31., 
-                (np.pi/180.) * 32., 
-                (np.pi/180.) * 10.
+                (np.pi/180.) * 16., 
+                (np.pi/180.) * 15., 
+                (np.pi/180.) * 20., 
+                (np.pi/180.) * 8.
                 ]
         ru_ratioX = [
-                0.65,
+                0.44,
                 #0.35,
-                0.70,
-                0.35,
+                0.50,
+                0.50,
                 0.22
                 ]
         ru_deltaY = [
                 0.80,
-                0.55,
-                0.90,
-                0.55
+                0.84,
+                0.64,
+                0.52
                 ]
         ru_offX = [
-                0.125,
-                0.125,
+                0.105,
+                0.11,
                 0.0
                 ]
         ru_offY = [
                 0.065,
-                0.085,
+                0.075,
                 0.035
                 ]
         
@@ -420,7 +420,9 @@ class radMeridional:
             }
             """ 
         return container  
-    
+    #
+    # build blade function
+    #
     def buildBlade(self,
                    container,
                    label,
@@ -540,7 +542,7 @@ class radMeridional:
         #
         # mesh block
         #
-        meshBlock_thickness = 0.03 
+        meshBlock_thickness = 0.025 
         fRef = dtOO.vec3dMuParserTwoD(
           "1.0*"+str(meshBlock_thickness)+", xx, yy", "xx", "yy"
         )

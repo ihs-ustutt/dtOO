@@ -96,36 +96,36 @@ class radMeridionalOptimization:
         ).enableDebug()#.buildExtract( container )
         container = radMeridionalContour.buildExtract(container)
         
-        ## 
-        ## guide vane
-        ##
-        #gvLabel = "gv"
-        #self.aG.push_back( 
-        #    radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
-        #)
-        #spanwiseCuts = [0.00, 1.00,]
-        #gv_alpha_1 = [(np.pi/180.) * -55.0]
-        #gv_alpha_2 = [(np.pi/180.) * -16.0]
-        #gv_ratioX = [0.5]
-        #gv_deltaY = [0.12]
-        #gv_offX = [-0.046]
-        #gv_offY = [0.077]
+        # 
+        # guide vane
         #
-        #gv_t_le = [0.01]
-        #gv_u_le = [0.00]
-        #gv_t_mid = [0.03]
-        #gv_u_mid = [0.20]
-        #gv_t_te = [0.01]
-        #gv_u_te = [0.80]
-        #
-        #print("guide vane")
-        #self.buildBlade(
-        #        container,
-        #        gvLabel,
-        #        self.nGvBlades, False,
-        #        spanwiseCuts, gv_alpha_1, gv_alpha_2, gv_ratioX, gv_deltaY, gv_offX, gv_offY,
-        #        spanwiseCuts, gv_t_le, gv_u_le, gv_t_mid, gv_u_mid, gv_t_te, gv_u_te,
-        #    ) 
+        gvLabel = "gv"
+        self.aG.push_back( 
+            radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
+        )
+        spanwiseCuts = [0.00, 1.00,]
+        gv_alpha_1 = [(np.pi/180.) * -55.0]
+        gv_alpha_2 = [(np.pi/180.) * -16.0]
+        gv_ratioX = [0.5]
+        gv_deltaY = [0.12]
+        gv_offX = [-0.046]
+        gv_offY = [0.077]
+        
+        gv_t_le = [0.01]
+        gv_u_le = [0.00]
+        gv_t_mid = [0.03]
+        gv_u_mid = [0.20]
+        gv_t_te = [0.01]
+        gv_u_te = [0.80]
+        
+        print("guide vane")
+        self.buildBlade(
+                container,
+                gvLabel,
+                self.nGvBlades, False,
+                spanwiseCuts, gv_alpha_1, gv_alpha_2, gv_ratioX, gv_deltaY, gv_offX, gv_offY,
+                spanwiseCuts, gv_t_le, gv_u_le, gv_t_mid, gv_u_mid, gv_t_te, gv_u_te,
+            ) 
         
         #
         # runner
@@ -136,39 +136,73 @@ class radMeridionalOptimization:
         )
         spanwiseCuts_mp = [0.00, 0.33,  0.66, 1.00,]
         ru_alpha_1 = [
-                (np.pi/180.) * 90.,
-                (np.pi/180.) * 75.,
-                (np.pi/180.) * 52.
+                (np.pi/180.) * 95.,
+                (np.pi/180.) * 85.,
+                (np.pi/180.) * 60.
                 ]
         ru_alpha_2 = [
-                (np.pi/180.) * 45., 
-                (np.pi/180.) * 31., 
-                (np.pi/180.) * 32., 
-                (np.pi/180.) * 10.
+                (np.pi/180.) * 16.,
+                (np.pi/180.) * 15.,
+                (np.pi/180.) * 20.,
+                (np.pi/180.) * 8.
                 ]
         ru_ratioX = [
-                0.65,
+                0.44,
                 #0.35,
-                0.70,
-                0.35,
+                0.50,
+                0.50,
                 0.22
                 ]
         ru_deltaY = [
                 0.80,
-                0.55,
-                0.90,
-                0.55
+                0.84,
+                0.64,
+                0.52
                 ]
         ru_offX = [
-                0.125,
-                0.125,
+                0.105,
+                0.11,
                 0.0
                 ]
         ru_offY = [
                 0.065,
-                0.085,
+                0.075,
                 0.035
                 ]
+        #ru_alpha_1 = [
+        #        (np.pi/180.) * 90.,
+        #        (np.pi/180.) * 75.,
+        #        (np.pi/180.) * 52.
+        #        ]
+        #ru_alpha_2 = [
+        #        (np.pi/180.) * 45., 
+        #        (np.pi/180.) * 31., 
+        #        (np.pi/180.) * 32., 
+        #        (np.pi/180.) * 10.
+        #        ]
+        #ru_ratioX = [
+        #        0.65,
+        #        #0.35,
+        #        0.70,
+        #        0.35,
+        #        0.22
+        #        ]
+        #ru_deltaY = [
+        #        0.80,
+        #        0.55,
+        #        0.90,
+        #        0.55
+        #        ]
+        #ru_offX = [
+        #        0.125,
+        #        0.125,
+        #        0.0
+        #        ]
+        #ru_offY = [
+        #        0.065,
+        #        0.085,
+        #        0.035
+        #        ]
         
         spanwiseCuts_td = [0.00, 1.00,]
         ru_t_le = [0.020,
@@ -189,60 +223,60 @@ class radMeridionalOptimization:
                 spanwiseCuts_td, ru_t_le, ru_u_le, ru_t_mid, ru_u_mid, ru_t_te, ru_u_te,
             )
  
-        ##
-        ## Building Layer Region
-        ##
-        #speHub, speShroud, inOutCurves = radMeridionalContour.getLayerRegionCurves()
-        ## creating the layer region object
-        #modname = "dtOOPythonApp.builder.analyticGeometry_layerRegion"
-        #module = self.reloadModule(modname)
-        #layerRegion = module.analyticGeometry_layerRegion( 
-        #  self.label,
-        #  speHub,
-        #  speShroud,
-        #  inOutCurves,
-        #  self.layer_thickness,
-        #  self.layer_supports,
-        #).enableDebug()#.buildExtract( container )
-        #container = layerRegion.buildExtract(container)
         #
-        ##
-        ## Meshing of layer region
-        ##
-        ## returning the hub and shroud layers
-        #layers = layerRegion.getLayerList(self.nRuBlades)    
-        ## returns layer data in the following nested list:
-        ## layers = [[hub layer lists],[shroud layer list]]
-        ## with:
-        ## [hub layer lists] = [[3d layer domain], [bool list radius zero]]
+        # Building Layer Region
+        #
+        speHub, speShroud, inOutCurves = radMeridionalContour.getLayerRegionCurves()
+        # creating the layer region object
+        modname = "dtOOPythonApp.builder.analyticGeometry_layerRegion"
+        module = self.reloadModule(modname)
+        layerRegion = module.analyticGeometry_layerRegion( 
+          self.label,
+          speHub,
+          speShroud,
+          inOutCurves,
+          self.layer_thickness,
+          self.layer_supports,
+        ).enableDebug()#.buildExtract( container )
+        container = layerRegion.buildExtract(container)
+        
+        #
+        # Meshing of layer region
+        #
+        # returning the hub and shroud layers
+        layers = layerRegion.getLayerList(self.nRuBlades)    
+        # returns layer data in the following nested list:
+        # layers = [[hub layer lists],[shroud layer list]]
+        # with:
+        # [hub layer lists] = [[3d layer domain], [bool list radius zero]]
 
-        ## returns the unstructured region and its surfaces
-        #mv, bs = layerRegion.getUnstructuredRegion(self.nRuBlades)
-        #
-        #modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
-        #module = self.reloadModule(modname)
-        ##from dtOOPythonApp.builder import ( map3dTo3dGmsh_gridFromLayers )
-        ## module.map3dTo3dGmsh_gridFromLayers(
-        #    # label, layer data, nElementsLayer, firstElementSize, meshSizeSW, meshSizeCIRC, unstructRegion
-        ## )
-        #
-        ## creating the mesh of the suction area with wall layers and the unstructured region
-        #container = module.map3dTo3dGmsh_gridFromLayers(
-        #        label = "meshLayers",   
-        #        layers = layers,        
-        #        nElementsLayer = 20,     
-        #        firstElement = 0.001,    
-        #        elementSize_sw = 0.01,  
-        #        elementSize_circ = 0.03,
-        #        mv = mv,                
-        #        bs = bs                  
-        #    ).buildExtract(container)
+        # returns the unstructured region and its surfaces
+        mv, bs = layerRegion.getUnstructuredRegion(self.nRuBlades)
+        
+        modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
+        module = self.reloadModule(modname)
+        #from dtOOPythonApp.builder import ( map3dTo3dGmsh_gridFromLayers )
+        # module.map3dTo3dGmsh_gridFromLayers(
+            # label, layer data, nElementsLayer, firstElementSize, meshSizeSW, meshSizeCIRC, unstructRegion
+        # )
+        
+        # creating the mesh of the suction area with wall layers and the unstructured region
+        container = module.map3dTo3dGmsh_gridFromLayers(
+                label = "meshLayers",   
+                layers = layers,        
+                nElementsLayer = 20,     
+                firstElement = 0.001,    
+                elementSize_sw = 0.01,  
+                elementSize_circ = 0.03,
+                mv = mv,                
+                bs = bs                  
+            ).buildExtract(container)
         
         if self.createOFCase_ == True:
             
             self.bV[gvLabel+"_mesh"].makeGrid() 
             self.bV[ruLabel+"_mesh"].makeGrid() 
-            #self.bV["meshLayers"].makeGrid()
+            self.bV["meshLayers"].makeGrid()
             
             #
             # draft tube
@@ -250,7 +284,7 @@ class radMeridionalOptimization:
             gbv = dtOO.gmshBoundedVolume()
             gbv.jInit(dtOO.jsonPrimitive('{"label" : "dt_mesh"}'), None, None, None, None, None)
             gbv.thisown = False
-            bV.push_back( gbv )
+            self.bV.push_back( gbv )
 
             rmsh = dtOO.bVOReadMSH()
             rmsh.jInit(dtOO.jsonPrimitive('{"_filename" : "dt_mesh.msh"}'), gbv)
@@ -271,7 +305,7 @@ class radMeridionalOptimization:
               gm.tagPhysical( gm.getFaceByIndex(i), "dt_mesh_outlet" )
             
             # translating the draft tube
-            trans = dtOO.dtVector3(0,0,-0.32)
+            trans = dtOO.dtVector3(0,0,-self.h_shroud-0.16)
             for i in range(gm.getNumMeshVertices()):
               print(i)
               gm.translatePosition( gm.getMeshVertexByTag(i+1), trans )
@@ -287,7 +321,7 @@ class radMeridionalOptimization:
             container = ofOpenFOAMCase_turboMachine(
               label = "of",
               bVs = [
-                self.bV["gv_mesh"], self.bV["ru_mesh"], self.bV["dt_mesh"],# self.bV["meshLayers"],
+                self.bV["gv_mesh"], self.bV["ru_mesh"], self.bV["meshLayers"], self.bV["dt_mesh"],
               ],
               dictRule = \
                   ofOpenFOAMCase_setupWrapper.controlDict(
@@ -296,18 +330,18 @@ class radMeridionalOptimization:
                     # Patches where Q and PT is tracked
                     QPatches = ['gv_mesh_inlet', 'gv_mesh_outlet', 
                                 'ru_mesh_inlet', 'ru_mesh_outlet',
-                                #'meshLayers_inlet', 'meshLayers_outlet',
+                                'meshLayers_inlet', 'meshLayers_outlet',
                                 'dt_mesh_inlet', 'dt_mesh_outlet',
                                 'gv_mesh_suction', 'gv_mesh_pressure',
-                                'ru_mesh_suction', 'ru_mesh_pressure'],
-                                #'meshLayers_periodic0', 'meshLayers_periodic1'],
+                                'ru_mesh_suction', 'ru_mesh_pressure',
+                                'meshLayers_periodic0', 'meshLayers_periodic1'],
                     PTPatches = ['gv_mesh_inlet', 'gv_mesh_outlet',
                                 'ru_mesh_inlet', 'ru_mesh_outlet',
-                                #'meshLayers_inlet', 'meshLayers_outlet',
+                                'meshLayers_inlet', 'meshLayers_outlet',
                                 'dt_mesh_inlet', 'dt_mesh_outlet',
                                 'gv_mesh_suction', 'gv_mesh_pressure',
-                                'ru_mesh_suction', 'ru_mesh_pressure'],
-                                #'meshLayers_periodic0', 'meshLayers_periodic1'],
+                                'ru_mesh_suction', 'ru_mesh_pressure',
+                                'meshLayers_periodic0', 'meshLayers_periodic1'],
                     FPatches = ['gv_mesh_blade', 'ru_mesh_blade'],
                     libs = [
                       "libsimpleFunctionObjects.so",
@@ -351,7 +385,7 @@ class radMeridionalOptimization:
                   ofOpenFOAMCase_setupWrapper.inletRuleString(
                     "gv_mesh_inlet",
                     ["p", "k", "omega",],
-                    [ [0], [0.0, 0.10], [0.032*0.36, 0.1] ]
+                    [ [0], [0.0, 0.10], [0.032*self.h_inlet, 0.1] ]
                   ),
                   ofOpenFOAMCase_setupWrapper.wallRuleString(
                     "gv_mesh_shroud",
@@ -381,6 +415,7 @@ class radMeridionalOptimization:
                     origin = dtOO.dtPoint3(0,0,0),
                     stackAxis = "Z"
                   ),
+
                   # runner
                   ofOpenFOAMCase_setupWrapper.wallRuleString(
                     "ru_mesh_hub",
@@ -403,25 +438,40 @@ class radMeridionalOptimization:
                   #  rotCentre = None
                   #),
                   ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
-                    "ru_mesh_outlet", "dt_mesh_inlet", #"meshLayers_inlet",
+                    "ru_mesh_outlet", "meshLayers_inlet",
                     ["U", "p", "k", "omega",],
                     axis = dtOO.dtVector3(0,0,1),
                     origin = dtOO.dtPoint3(0,0,0),
                     stackAxis = "R"
                   ),
+
+                  # mesh layers
                   ofOpenFOAMCase_setupWrapper.wallRuleString(
-                    "dt_mesh_wall", #"meshLayers_hub",
+                    "meshLayers_hub",
                     ["omega", "U", "p", "k", "nut"]
                   ),
-                  #ofOpenFOAMCase_setupWrapper.wallRuleString(
-                  #  "meshLayers_shroud",
-                  #  ["omega", "U", "p", "k", "nut"]
-                  #),
-                  #ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
-                  #  "meshLayers_periodic0", "meshLayers_periodic1"
-                  #),
+                  ofOpenFOAMCase_setupWrapper.wallRuleString(
+                    "meshLayers_shroud",
+                    ["omega", "U", "p", "k", "nut"]
+                  ),
+                  ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+                    "meshLayers_periodic0", "meshLayers_periodic1"
+                  ),
+                  ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
+                    "meshLayers_outlet", "dt_mesh_inlet",
+                    ["U", "p", "k", "omega",],
+                    axis = dtOO.dtVector3(0,0,1),
+                    origin = dtOO.dtPoint3(0,0,0),
+                    stackAxis = "R"
+                  ),
+                  
+                  # draft tube
+                  ofOpenFOAMCase_setupWrapper.wallRuleString(
+                    "dt_mesh_wall",
+                    ["omega", "U", "p", "k", "nut"]
+                  ),
                   ofOpenFOAMCase_setupWrapper.outletRuleString(
-                    "dt_mesh_outlet", #"meshLayers_outlet", 
+                    "dt_mesh_outlet",  
                     ["U", "p", "k", "omega",]
                   ),
                 ]
@@ -558,22 +608,22 @@ class radMeridionalOptimization:
         )
         self.bC.dtTransformer().add( conMap.clone() )
          
-        ##
-        ## depiction in 3d Space of blade and meanplane
-        ##
-        #for ii in [label+"_meanplane", label+"_blade",]:         
-        #  theAG = dtOO.vec3dTwoDInMap3dTo3d(
-        #    dtOO.vec3dTwoD.MustConstDownCast(
-        #      conMap.applyAnalyticFunction(self.aF[ii].clone())
-        #    ),
-        #    dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )   
-        #  )
-        #  self.aG.push_back( theAG << "xyz_"+str(ii) )
+        #
+        # depiction in 3d Space of blade and meanplane
+        #
+        for ii in [label+"_meanplane", label+"_blade",]:         
+          theAG = dtOO.vec3dTwoDInMap3dTo3d(
+            dtOO.vec3dTwoD.MustConstDownCast(
+              conMap.applyAnalyticFunction(self.aF[ii].clone())
+            ),
+            dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )   
+          )
+          self.aG.push_back( theAG << "xyz_"+str(ii) )
         
         #
         # mesh block
         #
-        meshBlock_thickness = 0.03 
+        meshBlock_thickness = 0.025 
         fRef = dtOO.vec3dMuParserTwoD(
           "1.0*"+str(meshBlock_thickness)+", xx, yy", "xx", "yy"
         )
