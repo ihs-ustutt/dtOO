@@ -28,16 +28,16 @@ class ConfigHubZero():
             "angle_shroud1" : 90 * np.pi/180,
 
             "h_inlet" : 0.36,
-            "h_hub" : 0.68,
-            "h_shroud" : 0.38,
+            "h_hub" : 0.804,
+            "h_shroud" : 0.444,
             
             "label" : "radMeridionalContour",
             "layer_thickness" : 0.2,
             "layer_supports" : [0.5],
             "interface_hub" : [[1, 0.00],
-                               [1, 0.98],],                # [curve, percent]
+                               [1, 1.00],],                # [curve, percent]
             "interface_shroud" : [[1, 0.00],
-                                  [2, 0.4],],
+                                  [1, 1.00],],
             "interface_curvature" : [[0.0, 0.5, 1],
                                      [0.0, 0.5, -1],],
         }
@@ -151,8 +151,8 @@ def run(*args, **kwargs):
     machine = ConfigHubZero()
     config = machine.getConfig()
 
-    importlib.reload(radMeridional)
-    cc = radMeridional.radMeridional(config, False).create()
+    importlib.reload(radMeridionalOptimization)
+    cc = radMeridionalOptimization.radMeridionalOptimization(config, False).create()
     rr = dtOOInParaVIEW( cc )
     return cc, rr
 
@@ -161,4 +161,4 @@ if __name__ == "__main__":
     machine = ConfigHubZero()
     config = machine.getConfig()
     
-    radMeridional.radMeridional(config, True).create()
+    radMeridionalOptimization.radMeridionalOptimization(config, True).create()
