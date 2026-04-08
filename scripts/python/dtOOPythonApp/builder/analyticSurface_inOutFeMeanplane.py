@@ -39,8 +39,159 @@ import logging
 import numpy as np
 
 class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
+    """Create the meanplane faces connecting to the interfaces
 
+    The interfaces are the inlet and the outlet of the channel domain.
+    The inlet is located at 0% and the outlet at 100% of the v-coordinate 
+    of the channel.
+    The hub is located at 0% and the shroud at 100% of the w-coordinate.
+    The rotational direction of the channel is the u-direction and extends
+    100%.
 
+    The created meanplane faces are build from a trans4SindedFace. 
+    They extend between the interfaces and the offset mesh block curves,
+    which were created in the class vec3dThreeD_skinAndSplit.
+
+    The offset mesh block curves extend from hub to shroud of the channel. 
+    They have the following naming convention:
+        
+        prefix+"_"+label+"_meshBlockCurve_in1" -> curve connecting to the inlet
+        prefix+"_"+label+"_meshBlockCurve_out1" -> curve connecting to the outlet
+
+    The class trans4SindedFace needs a closed loop of four edges. The direction
+    of those edges have to be consistent.
+    In order to keep the direction consistent the curves are defined with the 
+    following specification:
+        
+        Location            From -> To                      Naming
+        --------            ----------                      ------
+        hub                 interface -> mesh block curve   "hsCurve_u0_<in/out>
+        mesh block curve    hub -> shroud                   (see above)
+        shroud              mesh block curve -> interface   "hsCurve_u1_<in/out>
+        interface           shroud -> hub                   "interfCurve_<in/out>"
+
+    The curves are input in the constructor of the trans4SidedFace class in the same order.
+    This results in the following parameter directions of the tesulting meanplane faces:
+        
+        Direction   From -> To
+        ---------   ----------
+        u ->        mesh block curve -> interface
+        v -->       hub -> shroud
+
+    The following ASCII diagramm shows the curve directions and the resulting face 
+    directions in the channel.
+
+                        hub
+                      ------->
+                     ^     <- |                      
+                     |       ||  
+           interface |       || mesh block curve
+                     |       v|
+                     |        v
+                      <-------
+                       shroud
+
+    To enable the extention of the meanplane face over 0% of the u-coordinate of the channel
+    a check is implemented, which catches changes of the u-coordinate of the interface curve
+    points at hub and shroud.
+    If the u distance of these two poinst in the channel is greater than 50% the bigger of 
+    the two values will get its negative u-coordinate. Then the curve on the interface will
+    extend over the 0% u-boundary of the channel.
+
+    Attributes
+    ----------
+    prefix_: str
+      Prefix of label
+    label_: str
+      Label.
+    channel_: map3dTo3d
+      Channel.
+    aG_: labeledVectorHandlingAnalyticGeometry
+      Mesh block curves.
+    Returns
+    -------
+    None
+
+    Examples
+    --------
+    >>> import dtOOPythonSWIG as dtOO
+    
+    Create three dimensional channel domain
+    >>> c0 = dtOO.bSplineCurve_pointConstructOCC(
+    ...       dtOO.vectorDtPoint3()
+    ...         << dtOO.dtPoint3(+1.00, +0.00, 0.50)
+    ...         << dtOO.dtPoint3(+0.50, +0.00, 0.50),
+    ...         1
+    ...     ).result()
+    >>> c1 = dtOO.bSplineCurve_pointConstructOCC(
+    ...       dtOO.vectorDtPoint3()
+    ...         << dtOO.dtPoint3(+0.50, +0.00, 0.50)
+    ...         << dtOO.dtPoint3(+0.30, +0.00, 0.25)
+    ...         << dtOO.dtPoint3(+0.50, +0.00, 0.00),
+    ...         2
+    ...     ).result()
+    >>> c2 = dtOO.bSplineCurve_pointConstructOCC(
+    ...       dtOO.vectorDtPoint3()
+    ...         << dtOO.dtPoint3(+0.50, +0.00, 0.00)
+    ...         << dtOO.dtPoint3(+1.00, +0.00, 0.00),
+    ...         1
+    ...     ).result()
+    >>> c3 = dtOO.bSplineCurve_pointConstructOCC(
+    ...       dtOO.vectorDtPoint3()
+    ...         << dtOO.dtPoint3(+1.00, +0.00, 0.00)
+    ...         << dtOO.dtPoint3(+1.00, +0.00, 0.50),
+    ...         1
+    ...     ).result()
+    >>> channel2d = dtOO.analyticSurface(
+    ...         dtOO.bSplineSurface_bSplineCurveFillConstructOCC(
+    ...             c0, c1, c2, c3
+    ...         ).result()
+    ...     )
+    >>> channel = dtOO.rotatingMap2dTo3d(
+    ...             dtOO.dtVector3(0,0,1),
+    ...             channel2d,
+    ...         )
+    
+    Create the mesh block curves
+    >>> c_in1 = dtOO.bSplineCurve_pointConstructOCC(
+    ...           dtOO.vectorDtPoint3()
+    ...             << dtOO.dtPoint3(+0.90, +0.20, 0.00)
+    ...             << dtOO.dtPoint3(+0.90, +0.20, 0.50),
+    ...             1
+    ...         ).result()
+    >>> c_out1 = dtOO.bSplineCurve_pointConstructOCC(
+    ...           dtOO.vectorDtPoint3()
+    ...             << dtOO.dtPoint3(+0.60, +0.05, 0.00)
+    ...             << dtOO.dtPoint3(+0.65, -0.05, 0.50),
+    ...             1
+    ...         ).result()
+    
+    Push the mesh block curves into a vector handler
+    >>> meshBlockCurves = dtOO.labeledVectorHandlingAnalyticGeometry()
+    >>> label = "test"
+    >>> meshBlockCurves.push_back(
+    ...     dtOO.analyticCurve( c_in1 ) << "xyz_"+label+"_meshBlockCurve_in1"
+    ... )
+    >>> meshBlockCurves.push_back(
+    ...     dtOO.analyticCurve( c_out1 ) << "xyz_"+label+"_meshBlockCurve_out1"
+    ... )
+    
+    Create the meanplane faces between the interfaces and the mesh block curves
+    >>> from dtOOPythonApp.builder import analyticSurface_inOutFeMeanplane 
+    >>> feMeanplane = analyticSurface_inOutFeMeanplane(
+    ...     prefix = "xyz",
+    ...     label = label,
+    ...     channel = channel,
+    ...     curves = meshBlockCurves
+    ... )
+    >>> feMeanplane.build()
+
+    Chec the label of the last generated geometry
+    >>> feMeanplane.lVH_aG().labels()[-1]
+    'xyz_test_fe_meanplane_out1'
+    
+    """
+    
     def __init__(
         self,
         prefix: str,
@@ -48,8 +199,24 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
         channel: analyticGeometry,
         curves: labeledVectorHandlingAnalyticGeometry
       ) -> None:
+        
+        """ Constructor
 
-
+        Parameters 
+        ----------
+        prefix: str
+          Prefix of label
+        label: str
+          Label.
+        channel: map3dTo3d
+          Channel.
+        curves: labeledVectorHandlingAnalyticGeometry
+          Mesh block curves.
+        Returns
+        -------
+        None
+        
+        """
         logging.info( "Initializing %s ..." % (label) )
         super(
           analyticSurface_inOutFeMeanplane, self
@@ -60,13 +227,23 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
         self.aG_ = curves
     
     def build(self) -> None:
- 
+        """Build part.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
         mpCurveList = [["in", 0], ["out", 1]]
         for oc in range(len(mpCurveList)):
             
             # current offset curve
             offC = map1dTo3d.MustDownCast(
-                    self.aG_["xyz_"+self.label_+"_meshBlockCurve_"+mpCurveList[oc][0]+"1"]
+                    self.aG_[self.prefix_+"_"+self.label_+"_meshBlockCurve_"+mpCurveList[oc][0]+"1"]
                 )
             
             # v coordinate at outlet or inlet
@@ -183,7 +360,7 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
             self.aG_.set(
               trans4SidedFace(
                 map1dTo3d.MustDownCast( self.aG_["hsCurve_u0_"+mpCurveList[oc][0]] ),
-                map1dTo3d.MustDownCast( self.aG_["xyz_"+self.label_+"_meshBlockCurve_"+mpCurveList[oc][0]+"1"] ),
+                map1dTo3d.MustDownCast( self.aG_[self.prefix_+"_"+self.label_+"_meshBlockCurve_"+mpCurveList[oc][0]+"1"] ),
                 map1dTo3d.MustDownCast( self.aG_["hsCurve_u1_"+mpCurveList[oc][0]] ),
                 map1dTo3d.MustDownCast( self.aG_["interfCurve_"+mpCurveList[oc][0]] )
               ) << self.label_+"_fe_meanplane_"+mpCurveList[oc][0]+str(1)

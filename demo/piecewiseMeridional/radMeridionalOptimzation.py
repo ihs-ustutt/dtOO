@@ -18,7 +18,7 @@ import numpy as np
 import sys
 import importlib
 
-class radMeridional:
+class radMeridionalOptimization:
 
     def __init__(self, data: dict, createOFCase: bool):
         
@@ -189,61 +189,92 @@ class radMeridional:
                 spanwiseCuts_td, ru_t_le, ru_u_le, ru_t_mid, ru_u_mid, ru_t_te, ru_u_te,
             )
  
+        ##
+        ## Building Layer Region
+        ##
+        #speHub, speShroud, inOutCurves = radMeridionalContour.getLayerRegionCurves()
+        ## creating the layer region object
+        #modname = "dtOOPythonApp.builder.analyticGeometry_layerRegion"
+        #module = self.reloadModule(modname)
+        #layerRegion = module.analyticGeometry_layerRegion( 
+        #  self.label,
+        #  speHub,
+        #  speShroud,
+        #  inOutCurves,
+        #  self.layer_thickness,
+        #  self.layer_supports,
+        #).enableDebug()#.buildExtract( container )
+        #container = layerRegion.buildExtract(container)
         #
-        # Building Layer Region
-        #
-        speHub, speShroud, inOutCurves = radMeridionalContour.getLayerRegionCurves()
-        # creating the layer region object
-        modname = "dtOOPythonApp.builder.analyticGeometry_layerRegion"
-        module = self.reloadModule(modname)
-        layerRegion = module.analyticGeometry_layerRegion( 
-          self.label,
-          speHub,
-          speShroud,
-          inOutCurves,
-          self.layer_thickness,
-          self.layer_supports,
-        ).enableDebug()#.buildExtract( container )
-        container = layerRegion.buildExtract(container)
-        
-        #
-        # Meshing of layer region
-        #
-        # returning the hub and shroud layers
-        layers = layerRegion.getLayerList(self.nRuBlades)    
-        # returns layer data in the following nested list:
-        # layers = [[hub layer lists],[shroud layer list]]
-        # with:
-        # [hub layer lists] = [[3d layer domain], [bool list radius zero]]
+        ##
+        ## Meshing of layer region
+        ##
+        ## returning the hub and shroud layers
+        #layers = layerRegion.getLayerList(self.nRuBlades)    
+        ## returns layer data in the following nested list:
+        ## layers = [[hub layer lists],[shroud layer list]]
+        ## with:
+        ## [hub layer lists] = [[3d layer domain], [bool list radius zero]]
 
-        # returns the unstructured region and its surfaces
-        mv, bs = layerRegion.getUnstructuredRegion(self.nRuBlades)
-        
-        modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
-        module = self.reloadModule(modname)
-        #from dtOOPythonApp.builder import ( map3dTo3dGmsh_gridFromLayers )
-        # module.map3dTo3dGmsh_gridFromLayers(
-            # label, layer data, nElementsLayer, firstElementSize, meshSizeSW, meshSizeCIRC, unstructRegion
-        # )
-        
-        # creating the mesh of the suction area with wall layers and the unstructured region
-        container = module.map3dTo3dGmsh_gridFromLayers(
-                label = "meshLayers",   
-                layers = layers,        
-                nElementsLayer = 20,     
-                firstElement = 0.001,    
-                elementSize_sw = 0.01,  
-                elementSize_circ = 0.03,
-                mv = mv,                
-                bs = bs                  
-            ).buildExtract(container)
+        ## returns the unstructured region and its surfaces
+        #mv, bs = layerRegion.getUnstructuredRegion(self.nRuBlades)
+        #
+        #modname = "dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers"
+        #module = self.reloadModule(modname)
+        ##from dtOOPythonApp.builder import ( map3dTo3dGmsh_gridFromLayers )
+        ## module.map3dTo3dGmsh_gridFromLayers(
+        #    # label, layer data, nElementsLayer, firstElementSize, meshSizeSW, meshSizeCIRC, unstructRegion
+        ## )
+        #
+        ## creating the mesh of the suction area with wall layers and the unstructured region
+        #container = module.map3dTo3dGmsh_gridFromLayers(
+        #        label = "meshLayers",   
+        #        layers = layers,        
+        #        nElementsLayer = 20,     
+        #        firstElement = 0.001,    
+        #        elementSize_sw = 0.01,  
+        #        elementSize_circ = 0.03,
+        #        mv = mv,                
+        #        bs = bs                  
+        #    ).buildExtract(container)
         
         if self.createOFCase_ == True:
             
             self.bV[gvLabel+"_mesh"].makeGrid() 
             self.bV[ruLabel+"_mesh"].makeGrid() 
-            self.bV["meshLayers"].makeGrid()
+            #self.bV["meshLayers"].makeGrid()
             
+            #
+            # draft tube
+            #
+            gbv = dtOO.gmshBoundedVolume()
+            gbv.jInit(dtOO.jsonPrimitive('{"label" : "dt_mesh"}'), None, None, None, None, None)
+            gbv.thisown = False
+            bV.push_back( gbv )
+
+            rmsh = dtOO.bVOReadMSH()
+            rmsh.jInit(dtOO.jsonPrimitive('{"_filename" : "dt_mesh.msh"}'), gbv)
+            rmsh.preUpdate()
+            
+            # naming physical faces
+            gm = gbv.getModel()
+            for i in range( gm.getNumFaces() ):
+              gm.untagPhysical( gm.getFaceByIndex(i) )
+              gm.tagPhysical( gm.getFaceByIndex(i), "dt_mesh_wall" )
+
+            for i in [0,36,]:
+              gm.untagPhysical( gm.getFaceByIndex(i) )
+              gm.tagPhysical( gm.getFaceByIndex(i), "dt_mesh_inlet" )
+
+            for i in [35,37,]:
+              gm.untagPhysical( gm.getFaceByIndex(i) )
+              gm.tagPhysical( gm.getFaceByIndex(i), "dt_mesh_outlet" )
+            
+            # translating the draft tube
+            trans = dtOO.dtVector3(0,0,-0.32)
+            for i in range(gm.getNumMeshVertices()):
+              print(i)
+              gm.translatePosition( gm.getMeshVertexByTag(i+1), trans )
              
             #
             # of case setup
@@ -256,7 +287,7 @@ class radMeridional:
             container = ofOpenFOAMCase_turboMachine(
               label = "of",
               bVs = [
-                self.bV["gv_mesh"], self.bV["ru_mesh"], self.bV["meshLayers"],
+                self.bV["gv_mesh"], self.bV["ru_mesh"], self.bV["dt_mesh"],# self.bV["meshLayers"],
               ],
               dictRule = \
                   ofOpenFOAMCase_setupWrapper.controlDict(
@@ -265,16 +296,18 @@ class radMeridional:
                     # Patches where Q and PT is tracked
                     QPatches = ['gv_mesh_inlet', 'gv_mesh_outlet', 
                                 'ru_mesh_inlet', 'ru_mesh_outlet',
-                                'meshLayers_inlet', 'meshLayers_outlet',
+                                #'meshLayers_inlet', 'meshLayers_outlet',
+                                'dt_mesh_inlet', 'dt_mesh_outlet',
                                 'gv_mesh_suction', 'gv_mesh_pressure',
-                                'ru_mesh_suction', 'ru_mesh_pressure',
-                                'meshLayers_periodic0', 'meshLayers_periodic1'],
+                                'ru_mesh_suction', 'ru_mesh_pressure'],
+                                #'meshLayers_periodic0', 'meshLayers_periodic1'],
                     PTPatches = ['gv_mesh_inlet', 'gv_mesh_outlet',
                                 'ru_mesh_inlet', 'ru_mesh_outlet',
-                                'meshLayers_inlet', 'meshLayers_outlet',
+                                #'meshLayers_inlet', 'meshLayers_outlet',
+                                'dt_mesh_inlet', 'dt_mesh_outlet',
                                 'gv_mesh_suction', 'gv_mesh_pressure',
-                                'ru_mesh_suction', 'ru_mesh_pressure',
-                                'meshLayers_periodic0', 'meshLayers_periodic1'],
+                                'ru_mesh_suction', 'ru_mesh_pressure'],
+                                #'meshLayers_periodic0', 'meshLayers_periodic1'],
                     FPatches = ['gv_mesh_blade', 'ru_mesh_blade'],
                     libs = [
                       "libsimpleFunctionObjects.so",
@@ -370,25 +403,25 @@ class radMeridional:
                   #  rotCentre = None
                   #),
                   ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
-                    "ru_mesh_outlet", "meshLayers_inlet",
+                    "ru_mesh_outlet", "dt_mesh_inlet", #"meshLayers_inlet",
                     ["U", "p", "k", "omega",],
                     axis = dtOO.dtVector3(0,0,1),
                     origin = dtOO.dtPoint3(0,0,0),
                     stackAxis = "R"
                   ),
                   ofOpenFOAMCase_setupWrapper.wallRuleString(
-                    "meshLayers_hub",
+                    "dt_mesh_wall", #"meshLayers_hub",
                     ["omega", "U", "p", "k", "nut"]
                   ),
-                  ofOpenFOAMCase_setupWrapper.wallRuleString(
-                    "meshLayers_shroud",
-                    ["omega", "U", "p", "k", "nut"]
-                  ),
-                  ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
-                    "meshLayers_periodic0", "meshLayers_periodic1"
-                  ),
+                  #ofOpenFOAMCase_setupWrapper.wallRuleString(
+                  #  "meshLayers_shroud",
+                  #  ["omega", "U", "p", "k", "nut"]
+                  #),
+                  #ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+                  #  "meshLayers_periodic0", "meshLayers_periodic1"
+                  #),
                   ofOpenFOAMCase_setupWrapper.outletRuleString(
-                    "meshLayers_outlet", 
+                    "dt_mesh_outlet", #"meshLayers_outlet", 
                     ["U", "p", "k", "omega",]
                   ),
                 ]

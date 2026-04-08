@@ -1029,7 +1029,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
         mbs1 = multipleBoundedSurface(m2d, self.unstructVH_)
         mbs1.setLabel("periodicUnstruct_0")
         boundSurf.push_back( mbs1.clone())
-
+        
         # initializing a rotation dtTransformer
         cfg = jsonPrimitive()
         cfg.appendDtPoint3("_origin", self.origin_)

@@ -53,8 +53,8 @@ from .vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution import (
 from .vec3dThreeD_skinAndSplit import (
   vec3dThreeD_skinAndSplit
 )
-from .vec3dSurfaceTwoD_inOutFeMeanplane import (
-  vec3dSurfaceTwoD_inOutFeMeanplane
+from .analyticSurface_inOutFeMeanplane import (
+  analyticSurface_inOutFeMeanplane
 )
 from .vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane import (
   vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane

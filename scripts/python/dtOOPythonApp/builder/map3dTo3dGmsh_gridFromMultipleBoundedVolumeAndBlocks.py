@@ -574,10 +574,36 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             bladeFaces = m3dGmsh.getModel().getDtGmshFaceListByPhysical("*blade*")
             l = len(bladeFaces)
             m3dGmsh.getModel().untagPhysical(m3dGmsh.getModel().getDtGmshFaceByPhysical("*blade_"+str(l)+"*"))
+        
         #
         # add debug faces and lines
         #
+        
         if self.debug():
+            
+            # curves for visualisation purposes only
+            #tEList = [tEHub[0], tEShroud[0], tEBlock0_Hub[0], tEBlock0_Shroud[0], tEBlock1_Hub[0], tEBlock1_Shroud[0]]
+
+            #otherHubLines = set(hubLines) \
+            #    - set([-x for x in bladeHubLines]) \
+            #    - set(bladeHubLines)
+            #otherHubLines = set(otherHubLines) \
+            #    - set([-x for x in bladeToBlockLines]) \
+            #    - set(bladeToBlockLines)
+            #otherHubLines = set(otherHubLines) \
+            #    - set([-x for x in tEList]) \
+            #    - set(tEList)
+            #
+            #otherShroudLines = set(shroudLines) \
+            #    - set([-x for x in bladeShroudLines]) \
+            #    - set(bladeShroudLines)
+            #otherShroudLines = set(otherShroudLines) \
+            #    - set([-x for x in bladeToBlockLines]) \
+            #    - set(bladeToBlockLines)
+            #otherShroudLines = set(otherShroudLines) \
+            #    - set([-x for x in tEList]) \
+            #    - set(tEList)
+            
             # all faces
             for faceLabel in [
                   "*hub*", "*shroud*", 
@@ -610,13 +636,19 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
                   "hubToShroudLines",
                   "bladeToBlockLines",
                   "bladeHubLines",
+                  #"TrailingEdgeLines",
                   "bladeShroudLines",
+                  #"otherHubLines",
+                  #"otherShroudLines"
                 ],
                 [ 
                   hubToShroudLines,
                   bladeToBlockLines,
                   bladeHubLines,
+                  #tEList,
                   bladeShroudLines,
+                  #otherHubLines,
+                  #otherShroudLines
                 ]
             ):
                 for ii in lines:
