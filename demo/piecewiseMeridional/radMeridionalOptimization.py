@@ -96,36 +96,36 @@ class radMeridionalOptimization:
         ).enableDebug()#.buildExtract( container )
         container = radMeridionalContour.buildExtract(container)
         
-        # 
-        # guide vane
+        ## 
+        ## guide vane
+        ##
+        #gvLabel = "gv"
+        #self.aG.push_back( 
+        #    radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
+        #)
+        #spanwiseCuts = [0.00, 1.00,]
+        #gv_alpha_1 = [(np.pi/180.) * -55.0]
+        #gv_alpha_2 = [(np.pi/180.) * -16.0]
+        #gv_ratioX = [0.5]
+        #gv_deltaY = [0.12]
+        #gv_offX = [-0.046]
+        #gv_offY = [0.077]
         #
-        gvLabel = "gv"
-        self.aG.push_back( 
-            radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
-        )
-        spanwiseCuts = [0.00, 1.00,]
-        gv_alpha_1 = [(np.pi/180.) * -55.0]
-        gv_alpha_2 = [(np.pi/180.) * -16.0]
-        gv_ratioX = [0.5]
-        gv_deltaY = [0.12]
-        gv_offX = [-0.046]
-        gv_offY = [0.077]
-        
-        gv_t_le = [0.01]
-        gv_u_le = [0.00]
-        gv_t_mid = [0.03]
-        gv_u_mid = [0.20]
-        gv_t_te = [0.01]
-        gv_u_te = [0.80]
-        
-        print("guide vane")
-        self.buildBlade(
-                container,
-                gvLabel,
-                self.nGvBlades, False,
-                spanwiseCuts, gv_alpha_1, gv_alpha_2, gv_ratioX, gv_deltaY, gv_offX, gv_offY,
-                spanwiseCuts, gv_t_le, gv_u_le, gv_t_mid, gv_u_mid, gv_t_te, gv_u_te,
-            ) 
+        #gv_t_le = [0.01]
+        #gv_u_le = [0.00]
+        #gv_t_mid = [0.03]
+        #gv_u_mid = [0.20]
+        #gv_t_te = [0.01]
+        #gv_u_te = [0.80]
+        #
+        #print("guide vane")
+        #self.buildBlade(
+        #        container,
+        #        gvLabel,
+        #        self.nGvBlades, False,
+        #        spanwiseCuts, gv_alpha_1, gv_alpha_2, gv_ratioX, gv_deltaY, gv_offX, gv_offY,
+        #        spanwiseCuts, gv_t_le, gv_u_le, gv_t_mid, gv_u_mid, gv_t_te, gv_u_te,
+        #    ) 
         
         #
         # runner
