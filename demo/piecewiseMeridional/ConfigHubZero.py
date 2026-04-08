@@ -26,20 +26,33 @@ class ConfigHubZero():
             "angle_shroud0" : 0 * np.pi/180,
             "l_shroud1" : 0.18,
             "angle_shroud1" : 90 * np.pi/180,
-
+            
             "h_inlet" : 0.36,
             "h_hub" : 0.68,
             "h_shroud" : 0.38,
-            
+
             "label" : "radMeridionalContour",
             "layer_thickness" : 0.2,
             "layer_supports" : [0.5],
             "interface_hub" : [[1, 0.00],
-                               [1, 0.98],],                # [curve, percent]
+                               [1, 0.7],],                # [curve, percent]
             "interface_shroud" : [[1, 0.00],
-                                  [2, 0.4],],
+                                  [2, 0.5],],
             "interface_curvature" : [[0.0, 0.5, 1],
-                                     [0.0, 0.5, -1],],
+                                     [0.4, 0.5, -1],],
+            #"h_inlet" : 0.36,
+            #"h_hub" : 0.68,
+            #"h_shroud" : 0.38,
+            #
+            #"label" : "radMeridionalContour",
+            #"layer_thickness" : 0.2,
+            #"layer_supports" : [0.5],
+            #"interface_hub" : [[1, 0.00],
+            #                   [1, 0.98],],                # [curve, percent]
+            #"interface_shroud" : [[1, 0.00],
+            #                      [2, 0.4],],
+            #"interface_curvature" : [[0.0, 0.5, 1],
+            #                         [0.0, 0.5, -1],],
         }
         for key, value in self.config.items():
             setattr(self, key, value)
