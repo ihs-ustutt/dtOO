@@ -169,40 +169,6 @@ class radMeridionalOptimization:
                 0.075,
                 0.035
                 ]
-        #ru_alpha_1 = [
-        #        (np.pi/180.) * 90.,
-        #        (np.pi/180.) * 75.,
-        #        (np.pi/180.) * 52.
-        #        ]
-        #ru_alpha_2 = [
-        #        (np.pi/180.) * 45., 
-        #        (np.pi/180.) * 31., 
-        #        (np.pi/180.) * 32., 
-        #        (np.pi/180.) * 10.
-        #        ]
-        #ru_ratioX = [
-        #        0.65,
-        #        #0.35,
-        #        0.70,
-        #        0.35,
-        #        0.22
-        #        ]
-        #ru_deltaY = [
-        #        0.80,
-        #        0.55,
-        #        0.90,
-        #        0.55
-        #        ]
-        #ru_offX = [
-        #        0.125,
-        #        0.125,
-        #        0.0
-        #        ]
-        #ru_offY = [
-        #        0.065,
-        #        0.085,
-        #        0.035
-        #        ]
         
         spanwiseCuts_td = [0.00, 1.00,]
         ru_t_le = [0.020,
@@ -274,9 +240,12 @@ class radMeridionalOptimization:
         
         if self.createOFCase_ == True:
             
-            self.bV[gvLabel+"_mesh"].makeGrid() 
-            self.bV[ruLabel+"_mesh"].makeGrid() 
-            self.bV["meshLayers"].makeGrid()
+            stateLbl = "myState"
+            dtOO.lVHOstateHandler().makeState(stateLbl)
+            
+            #self.bV[gvLabel+"_mesh"].makeGrid() 
+            #self.bV[ruLabel+"_mesh"].makeGrid() 
+            #self.bV["meshLayers"].makeGrid()
             
             #
             # draft tube
@@ -413,7 +382,11 @@ class radMeridionalOptimization:
                     ["U", "p", "k", "omega",],
                     axis = dtOO.dtVector3(0,0,1),
                     origin = dtOO.dtPoint3(0,0,0),
-                    stackAxis = "Z"
+                    stackAxis = "Z",
+                    #discretization = "userDefined",
+                    #planes = 13,
+                    #planesBl = 7,
+                    #gradingIf = True
                   ),
 
                   # runner
@@ -442,7 +415,11 @@ class radMeridionalOptimization:
                     ["U", "p", "k", "omega",],
                     axis = dtOO.dtVector3(0,0,1),
                     origin = dtOO.dtPoint3(0,0,0),
-                    stackAxis = "R"
+                    stackAxis = "R",
+                    discretization = "userDefined",
+                    planes = 5,
+                    planesBl = 3,
+                    gradingIf = "false"
                   ),
 
                   # mesh layers

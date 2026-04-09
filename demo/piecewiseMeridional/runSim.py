@@ -45,7 +45,7 @@ for var in ["U", "U:Transformed", "p",]:
           "gv_mesh_inlet", "gv_mesh_outlet", 
           "ru_mesh_inlet", "ru_mesh_outlet", 
           "meshLayers_inlet", "meshLayers_outlet", 
-          "dt_mesh_inlet"
+          "dt_mesh_inlet", "dt_mesh_outlet"
         ]:
     fc.run(["patchToCsv", var, patch])
 
@@ -59,6 +59,8 @@ UTrans_ru_out = dtAverageValueField(dtCylField(_case+"ru_mesh_outlet_U:Transform
 UTrans_ml_in = dtAverageValueField(dtCylField(_case+"meshLayers_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
 UTrans_ml_out = dtAverageValueField(dtCylField(_case+"meshLayers_outlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
 UTrans_dt_in = dtAverageValueField(dtCylField(_case+"dt_mesh_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
+
+#UTrans_dt_out = dtValueField(dtField(_case+"dt_mesh_outlet_U:Transformed_"+_time+".csv").Read())
 
 fig, axes = plt.subplots(3, 1, figsize=(6.7, 8))
 
@@ -105,6 +107,17 @@ ax.set_ylabel('Velocity Transformed')
 ax.set_title("Mesh Layer (ML) Outlet and Draft Tube (DT) Inlet")
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 ax.grid(True)
+
+#ax = axes[3]
+#ax.plot(UTrans_dt_out.CoordOne()[:,2], UTrans_dt_out.ValueAvAOne()[:,0], 'ks', label = r'DT Outlet $U_z$')
+##ax.savefig("fig_ru_out.png")
+## Labels and title
+#ax.set_xlabel('x position')
+#ax.set_ylabel('Velocity Transformed')
+#ax.set_title("Draft Tube (DT) Outlet")
+#ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+#ax.grid(True)
+
 
 pT_gv_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_gv_mesh_inlet").Read(pattern={"*.dat": ":,1:"}) )
 pT_gv_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_gv_mesh_outlet").Read(pattern={"*.dat": ":,1:"}) )
