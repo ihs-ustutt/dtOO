@@ -895,24 +895,28 @@ class ofOpenFOAMCase_setupWrapper:
     str
       Cyclic AMI rule string.
     """
-    if rotAxis == None or rotCentre == None:
-        transformStr = "    transform       noOrdering;"
-    else: 
-        transformStr = str( 
-                           "    transform       rotational;"
-                           "    rotationAxis    ("
-                                   +str(rotAxis[0])+" "+str(rotAxis[1])+" "+str(rotAxis[2])
-                                +");"
-                           "    rotationCentre  ("
-                                   +str(rotCentre[0])+" "+str(rotCentre[1])+" "+str(rotCentre[2])
-                                +");"
-                           )
-
+   
     retStr = ":ofOpenFOAMCyclicAmiRule::"+patchOne+","+patchTwo+":"
     retStr += str(
       ":"
-      "  "+patchOne+"("+transformStr+"  ),"
-      "  "+patchTwo+"("+transformStr+"  )"
+      "  "+patchOne+"("
+      "    transform       rotational;"
+      "    rotationAxis    ("
+             +str(rotAxis[0])+" "+str(rotAxis[1])+" "+str(rotAxis[2])
+           +");"
+      "    rotationCentre  ("
+             +str(rotCentre[0])+" "+str(rotCentre[1])+" "+str(rotCentre[2])
+           +");"
+      "  ),"
+      "  "+patchTwo+"("
+      "    transform       rotational;"
+      "    rotationAxis    ("
+             +str(rotAxis[0])+" "+str(rotAxis[1])+" "+str(rotAxis[2])
+           +");"
+      "    rotationCentre  ("
+             +str(rotCentre[0])+" "+str(rotCentre[1])+" "+str(rotCentre[2])
+           +");"
+      "  )"
       ":"
     )
     return retStr
@@ -967,7 +971,11 @@ class ofOpenFOAMCase_setupWrapper:
     variables: List[str],
     axis: dtVector3 = dtVector3(0,0,1), 
     origin: dtPoint3 = dtPoint3(0,0,0),
-    stackAxis: str = "R"
+    stackAxis: str = "R",
+    discretization: str = "bothPatches",
+    planes: int = -1,
+    planesBl: int = -1,
+    gradingIf: str = "false"
   ) -> str:
     """Create a cyclic AMI rule.
 
@@ -994,24 +1002,32 @@ class ofOpenFOAMCase_setupWrapper:
     str
       Cyclic AMI rule string.
     """
-   
-    retStr = ":ofOpenFOAMMixingPlaneRule::"+patchOne+","+patchTwo+":"
-    retStr += str(
-      ":"
-      "  "+patchOne+"("
-      "    axis    ("+str(axis[0])+" "+str(axis[1])+" "+str(axis[2])+");"
-      "    origin  ("+str(origin[0])+" "+str(origin[1])+" "+str(origin[2])+");"
-      "    ribbonPatch {"
-      "      division        meshDependent;"
-      "      stackAxis       "+stackAxis+";"
-      "      discretisation  bothPatches;"
-      "    }"                                                                                                     
-      "  )" 
-      "  "+patchTwo+"("
-      "    axis    ("+str(axis[0])+" "+str(axis[1])+" "+str(axis[2])+");"
-      "    origin  ("+str(origin[0])+" "+str(origin[1])+" "+str(origin[2])+");"
-      "  )"
-      ":"
+    ribbonPatch = str( 
+      "   ribbonPatch {" 
+      "     division       meshDependent;" 
+      "     stackAxis      "+stackAxis+";" 
+      "     discretisation "+discretization+";" 
+      ) 
+    if discretization == "userDefined": 
+        ribbonPatch += str( 
+          "     planes         "+str(planes)+";" 
+          "     planesBl       "+str(planesBl)+";" 
+          "     gradingIf      "+gradingIf+";" 
+          ) 
+    ribbonPatch += str("   }")    
+    retStr = ":ofOpenFOAMMixingPlaneRule::"+patchOne+","+patchTwo+":" 
+    retStr += str( 
+      ":" 
+      " "+patchOne+"(" 
+      "   axis   ("+str(axis[0])+" "+str(axis[1])+" "+str(axis[2])+");" 
+      "   origin ("+str(origin[0])+" "+str(origin[1])+" "+str(origin[2])+");" 
+         +ribbonPatch+ 
+      " )" 
+      " "+patchTwo+"(" 
+      "   axis   ("+str(axis[0])+" "+str(axis[1])+" "+str(axis[2])+");" 
+      "   origin ("+str(origin[0])+" "+str(origin[1])+" "+str(origin[2])+");" 
+      " )" 
+      ":" 
     )
     for variable in variables:
       if variable=="U":
