@@ -28,6 +28,7 @@ class constValue;
 class analyticFunction;
 class analyticGeometry;
 class map2dTo3d;
+class dtGmshFace;
 
 class bVOAnalyticGeometryToFace : public bVOInterface {
 public:
@@ -56,7 +57,11 @@ public:
   virtual void preUpdate(void);
 
 private:
-  dt__pVH(map2dTo3d) _m2d;
+  std::vector<dtPoint3> calcCheckPoints(dtGmshFace const *const aFace) const;
+  static dtPoint2 findPointInside(std::vector<dtPoint2> const &points);
+
+private:
+  dt__pVH(analyticGeometry) _aG;
   static bool _registrated;
 };
 } // namespace dtOO

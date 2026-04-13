@@ -57,10 +57,6 @@ License
 
 #define __caCThis const_cast<dtGmshModel *>(this)
 
-#define __cgnsCheck(cmd)                                                       \
-  if (cmd)                                                                     \
-  dt__throw(__cgnsCheck(), << dt__eval(cg_get_error()))
-
 namespace dtOO {
 // clang-format off
 std::map<std::string, dtInt> dtGmshModel::_facePositionStr = ::boost::
@@ -172,9 +168,13 @@ std::map< int, std::vector< std::string > > dtGmshModel::_positionStrFace
         ::boost::assign::list_of
           ("14").convert_to_container< std::vector< std::string > >()
       );
-
+// clang-format off
 std::map<std::string, dtInt> dtGmshModel::_edgePositionStr =
-  ::boost::assign::map_list_of("0", 0)("1", 1)("2", 2)("3", 3);
+  ::boost::assign::map_list_of
+    ("0", 0)("1", 1)("2", 2)("3", 3)
+    ("4", 4)("5", 5)("6", 6)("7", 7)
+    ("8", 8)("9", 9)("10", 10)("11", 11);
+// clang-format on
 std::map< int, std::vector< std::string > > dtGmshModel::_positionStrEdge
     =
     ::boost::assign::map_list_of
@@ -197,6 +197,46 @@ std::map< int, std::vector< std::string > > dtGmshModel::_positionStrEdge
         3, 
         ::boost::assign::list_of
           ("3").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        4, 
+        ::boost::assign::list_of
+          ("4").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        5, 
+        ::boost::assign::list_of
+          ("5").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        6, 
+        ::boost::assign::list_of
+          ("6").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        7, 
+        ::boost::assign::list_of
+          ("7").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        8, 
+        ::boost::assign::list_of
+          ("8").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        9, 
+        ::boost::assign::list_of
+          ("9").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        10, 
+        ::boost::assign::list_of
+          ("10").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        11, 
+        ::boost::assign::list_of
+          ("11").convert_to_container< std::vector< std::string > >()
       );
 // clang-format off
 std::map<std::string, dtInt> dtGmshModel::_vertexPositionStr 
@@ -711,12 +751,22 @@ dtInt dtGmshModel::addIfToGmshModel(analyticGeometry const *const aG)
   return aGId;
 }
 
+::GRegion *dtGmshModel::getRegionByIndex(dtInt const ind) const
+{
+  return progHelper::list2Vector(this->regions()).at(ind);
+}
+
 dtGmshRegion *dtGmshModel::getDtGmshRegionByTag(dtInt const tag) const
 {
   ::GRegion *region = ::GModel::getRegionByTag(abs(tag));
   dt__ptrAss(dtGmshRegion * gRegion, dtGmshRegion::DownCast(region));
 
   return gRegion;
+}
+
+::GFace *dtGmshModel::getFaceByIndex(dtInt const ind) const
+{
+  return progHelper::list2Vector(this->faces()).at(ind);
 }
 
 dtGmshFace *dtGmshModel::getDtGmshFaceByTag(dtInt const tag) const
@@ -1168,6 +1218,11 @@ dtPoint3 dtGmshModel::extractPosition(::MVertex const *const mv)
 void dtGmshModel::setPosition(::MVertex *mv, dtPoint3 const &pp)
 {
   mv->setXYZ(pp.x(), pp.y(), pp.z());
+}
+
+void dtGmshModel::translatePosition(::MVertex *mv, dtVector3 const &vv)
+{
+  mv->setXYZ(mv->x() + vv.x(), mv->y() + vv.y(), mv->z() + vv.z());
 }
 
 void dtGmshModel::add(::GEntity *ge)

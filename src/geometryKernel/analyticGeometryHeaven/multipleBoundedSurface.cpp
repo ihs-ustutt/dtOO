@@ -18,7 +18,7 @@ License
 #include "multipleBoundedSurface.h"
 #include "map1dTo3d.h"
 #include "map2dTo3d.h"
-#include <analyticGeometryHeaven/aGBuilder/map1dTo3d_orderLoop.h>
+#include <analyticGeometryHeaven/aGBuilder/map1dTo3d_findLoop.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logContainer.h>
 #include <logMe/logMe.h>
@@ -45,11 +45,22 @@ multipleBoundedSurface::multipleBoundedSurface(
 )
 {
   _m2d.reset(map2dTo3d::DownCast(m2d->clone()));
-  _m1d = map1dTo3d_orderLoop(map1dTo3d::PointerVectorCloneCast(m1d)).result();
-  dt__forAllIndex(_m1d, ii)
+  _m1d = map1dTo3d::PointerVectorCloneCast(m1d);
+  dt__forAllRefAuto(map1dTo3d_findLoop(_m1d).result(), oInd)
   {
-    _polygon_0.push_back(_m2d->reparamOnFace(_m1d[ii].getPointPercent(0.0)));
-    _polygon_1.push_back(_m2d->reparamOnFace(_m1d[ii].getPointPercent(1.0)));
+    std::vector<dtPoint3> points(2);
+    if (oInd >= 0)
+    {
+      points[0] = _m1d[oInd].getPointPercent(0.0);
+      points[1] = _m1d[oInd].getPointPercent(1.0);
+    }
+    else
+    {
+      points[0] = _m1d[abs(oInd)].getPointPercent(1.0);
+      points[1] = _m1d[abs(oInd)].getPointPercent(0.0);
+    }
+    _polygon_0.push_back(_m2d->reparamOnFace(points[0]));
+    _polygon_1.push_back(_m2d->reparamOnFace(points[1]));
   }
 }
 
@@ -140,6 +151,6 @@ analyticGeometry const *const multipleBoundedSurface::surfaceConstPtr(void
 
 bool multipleBoundedSurface::insideInternalPolygon(dtPoint2 const &ppUV) const
 {
-  return dtLinearAlgebra::isInsidePolygon(_polygon_0[0], _polygon_0);
+  return dtLinearAlgebra::isInsidePolygon(ppUV, _polygon_0);
 }
 } // namespace dtOO

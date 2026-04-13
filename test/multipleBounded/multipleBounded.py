@@ -171,6 +171,8 @@ found in the generated log file:
 >>> ob.jInit( jsonPrimitive(), None, None, None, None, None, ref )
 >>> ob.preUpdate()
 
+Use `bVOAnalyticGeometryToFace` to label the `multipleBoundedSurface`-objects:
+
 >>> ob = bVOAnalyticGeometryToFace()
 >>> ob.jInit( 
 ...   jsonPrimitive(

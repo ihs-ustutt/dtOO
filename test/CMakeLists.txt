@@ -276,7 +276,7 @@ set_property(TEST multipleBounded PROPERTY LABELS base-test)
 DTOO_ADDTESTWLABEL("multipleBounded")
 
 #
-# multipleBounded
+# labeledVectorHandlingSWIG
 #
 add_test(
   NAME labeledVectorHandlingSWIG
@@ -288,6 +288,20 @@ add_test(
 )
 set_tests_properties(labeledVectorHandlingSWIG PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST labeledVectorHandlingSWIG PROPERTY LABELS base-test)
+
+#
+# trans4SidedFace
+#
+add_test(
+  NAME trans4SidedFace
+  COMMAND 
+    "${Python3_EXECUTABLE}" 
+    "-m" "doctest" 
+    "trans4SidedFace.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/trans4SidedFace
+)
+set_tests_properties(trans4SidedFace PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+set_property(TEST trans4SidedFace PROPERTY LABELS base-test)
 
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
