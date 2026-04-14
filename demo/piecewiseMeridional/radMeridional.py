@@ -17,17 +17,32 @@ import re
 import numpy as np
 import sys
 import importlib
+from typing import List
 
 class radMeridional:
 
-    def __init__(self, data: dict, createOFCase: bool):
-        
+    def __init__(
+        self,
+        data: dict,
+        hubCurves: List[dtOO.analyticGeometry],
+        shroudCurves: List[dtOO.analyticGeometry],
+        stateLbl: str = "pvState",
+        indiv: int = 0,
+        createOFCase: bool = False
+    ):
+
         # constructiong variables for the class from the Config Class
         for key, value in data.items():
             setattr(self, key, value)
 
+        self.hubCurves = hubCurves
+        self.shroudCurves = shroudCurves
+
+        self.stateLbl = stateLbl
+        self.indiv = indiv
+
         self.createOFCase_ = createOFCase
-            
+
     def create(self,) -> dtOO.dtBundle:
         # Create an empty container
         container = dtOO.dtBundle()
@@ -103,30 +118,22 @@ class radMeridional:
         self.aG.push_back( 
             radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
         )
-        spanwiseCuts = [0.00, 1.00,]
-        gv_alpha_1 = [(np.pi/180.) * -55.0]
-        gv_alpha_2 = [(np.pi/180.) * -16.0]
-        gv_ratioX = [0.5]
-        gv_deltaY = [0.12]
-        gv_offX = [-0.046]
-        gv_offY = [0.077]
-        
-        gv_t_le = [0.01]
-        gv_u_le = [0.00]
-        gv_t_mid = [0.03]
-        gv_u_mid = [0.20]
-        gv_t_te = [0.01]
-        gv_u_te = [0.80]
         
         print("guide vane")
         self.buildBlade(
                 container,
                 gvLabel,
                 self.nGvBlades, False,
-                spanwiseCuts, gv_alpha_1, gv_alpha_2, gv_ratioX, gv_deltaY, gv_offX, gv_offY,
-                spanwiseCuts, gv_t_le, gv_u_le, gv_t_mid, gv_u_mid, gv_t_te, gv_u_te,
-            ) 
-        
+                self.spanwiseCuts,
+                self.gv_alpha_1, self.gv_alpha_2,
+                self.gv_ratioX, self.gv_deltaY,
+                self.gv_offX, self.gv_offY,
+                self.spanwiseCuts,
+                self.gv_t_le, self.gv_u_le,
+                self.gv_t_mid, self.gv_u_mid,
+                self.gv_t_te, self.gv_u_te,
+            )
+
         #
         # runner
         #
@@ -134,59 +141,20 @@ class radMeridional:
         self.aG.push_back( 
             radMeridionalContour.getRegChannel(1, 1) << "xyz_"+ruLabel+"_channel" 
         )
-        spanwiseCuts_mp = [0.00, 0.33,  0.66, 1.00,]
-        ru_alpha_1 = [
-                (np.pi/180.) * 95.,
-                (np.pi/180.) * 85.,
-                (np.pi/180.) * 60.
-                ]
-        ru_alpha_2 = [
-                (np.pi/180.) * 16., 
-                (np.pi/180.) * 15., 
-                (np.pi/180.) * 20., 
-                (np.pi/180.) * 8.
-                ]
-        ru_ratioX = [
-                0.44,
-                #0.35,
-                0.50,
-                0.50,
-                0.22
-                ]
-        ru_deltaY = [
-                0.80,
-                0.84,
-                0.64,
-                0.52
-                ]
-        ru_offX = [
-                0.105,
-                0.11,
-                0.0
-                ]
-        ru_offY = [
-                0.065,
-                0.075,
-                0.035
-                ]
-        
-        spanwiseCuts_td = [0.00, 1.00,]
-        ru_t_le = [0.020,
-                   0.018]
-        ru_u_le = [0.00]
-        ru_t_mid = [0.04,
-                    0.03]
-        ru_u_mid = [0.50]
-        ru_t_te = [0.02]
-        ru_u_te = [0.80]
         
         print("runner")
         self.buildBlade(
                 container,
                 ruLabel,
                 self.nRuBlades, True,
-                spanwiseCuts_mp, ru_alpha_1, ru_alpha_2, ru_ratioX, ru_deltaY, ru_offX, ru_offY,
-                spanwiseCuts_td, ru_t_le, ru_u_le, ru_t_mid, ru_u_mid, ru_t_te, ru_u_te,
+                self.spanwiseCuts_mp,
+                self.ru_alpha_1, self.ru_alpha_2,
+                self.ru_ratioX, self.ru_deltaY,
+                self.ru_offX, self.ru_offY,
+                self.spanwiseCuts_td,
+                self.ru_t_le, self.ru_u_le,
+                self.ru_t_mid, self.ru_u_mid,
+                self.ru_t_te, self.ru_u_te,
             )
  
         #
@@ -230,19 +198,21 @@ class radMeridional:
         container = module.map3dTo3dGmsh_gridFromLayers(
                 label = "meshLayers",   
                 layers = layers,        
-                nElementsLayer = 20,     
+                nElementsLayer = 30,     
                 firstElement = 0.001,    
                 elementSize_sw = 0.01,  
-                elementSize_circ = 0.03,
+                elementSize_circ = 0.02,
                 mv = mv,                
                 bs = bs                  
             ).buildExtract(container)
         
         if self.createOFCase_ == True:
             
-            self.bV[gvLabel+"_mesh"].makeGrid() 
-            self.bV[ruLabel+"_mesh"].makeGrid() 
-            self.bV["meshLayers"].makeGrid()
+            dtOO.lVHOstateHandler().makeState(self.stateLbl+"_"+str(self.indiv))
+
+            #self.bV[gvLabel+"_mesh"].makeGrid() 
+            #self.bV[ruLabel+"_mesh"].makeGrid() 
+            #self.bV["meshLayers"].makeGrid()
             
              
             #
@@ -518,7 +488,7 @@ class radMeridional:
             .appendStr("label", "uVw_phirMs")\
             .appendInt("_nV", 31)\
             .appendInt("_nW", 11)\
-            .appendBool("_adjustRadius", False)\
+            .appendBool("_adjustRadius", adjustRadius)\
             .appendAnalyticGeometry(\
               "_rM2d", \
               self.aG.get("xyz_" + label + "_channel")\
@@ -771,7 +741,7 @@ class radMeridional:
           nMeanplaneBlocks = nMeanplaneBlocks,
           blade = self.aG["xyz_"+label+"_blade"],
           nBoundaryLayers = 7,
-          nElementsSpanwise = 40,
+          nElementsSpanwise = 60,
           nElementsNormal = 7,
           firstElementSizeHubToShroud = 0.001,
           firstElementSizeNormalBlade = 0.001,
@@ -784,7 +754,7 @@ class radMeridional:
               dtOO.dtPoint2(1.00, 0.010),
             ], 1
           )(),
-          bladeHubElementScale = 0.10,
+          bladeHubElementScale = 0.070,
           charLengthMax=0.05,
           charLengthMin=0.025,
           meshTEBlocks = True,

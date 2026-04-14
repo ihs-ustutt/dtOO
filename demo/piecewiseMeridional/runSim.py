@@ -5,35 +5,52 @@ import matplotlib.pyplot as plt
 import numpy as np
 import re
 
-_case = './of_08-04-2026.14:17:11/'
+_case = './of_newLayer_bladeAngle0_0/'
 _safe_case = re.sub(r'[\\/:\*\?"<>|]', '_', _case)
 
 fc = foamlib.FoamCase( _case )
-if False:
+if True:
   fc.decompose_par_dict['method'] = 'metis'
-  fc.decompose_par_dict['numberOfSubdomains'] = 8
-  fc.control_dict['writeInterval'] = 100
-  fc.control_dict['endTime'] = 500
+  fc.decompose_par_dict['numberOfSubdomains'] = 32
+   
   fc.turbulence_properties["RAS"]["turbulence"] = False
   fc.fv_schemes['gradSchemes']['none'] = ('cellLimited', 'Gauss', 'linear', 0.33)
   fc.fv_schemes['gradSchemes']['grad(p)'] = ('cellLimited', 'Gauss', 'linear', 0.33)
   fc.fv_schemes['gradSchemes']['grad(U)'] = ('cellLimited', 'Gauss', 'linear', 0.33)
   fc.fv_schemes['divSchemes']['div(phi,U)'] = \
-    ('Gauss', 'linearUpwindV', 'cellLimited', 'Gauss', 'linear', 0.33)
+    ('Gauss', 'linearUpwind', 'cellLimited', 'Gauss', 'linear', 0.33)
   fc.fv_schemes["mixingInterface"] = {
         "U": "consistentAveraging",
         "p": "consistentAveraging",
-        "k": "areaAveraging",
-        "epsilon": "areaAveraging",
-        "omega": "areaAveraging"
+        "k": "fluxAveraging",
+        "epsilon": "fluxAveraging",
+        "omega": "fluxAveraging"
       }
-  fc.run()
-  
+  fc.fv_solution["relaxationFactors"] = {
+        "p": 0.2,
+        "U": 0.6,
+        "k": 0.6,
+        "epsilon": 0.6,
+        "omega": 0.6
+      }
+  fc.fv_solution["SIMPLE"] = {
+        "nNonOrthogonalCorrectors": 1
+      }
+ 
+  fc.control_dict['writeInterval'] = 100
+  fc.control_dict['endTime'] = 500
+  fc.control_dict['DebugSwitches'] = {
+          'mixingInterfacePatch': 2
+        }
   fc.control_dict['endTime'] = 2000
+  fc.control_dict['writeInterval'] = 1
+  #fc.control_dict['purgeWrite'] = 10
   fc.turbulence_properties["RAS"]["turbulence"] = True
+  
   fc.run()
   
-fc.reconstruct_par()
+#fc.reconstruct_par()
+fc.run(["reconstructPar", '-time', '500,1990:'])
 
 _omega = np.abs(
   foamlib.FoamFile(fc.path/'constant/MRFProperties')['MRF_ru_mesh']['omega']
@@ -205,6 +222,8 @@ fig.suptitle("Case: "+_case)
 plt.tight_layout(rect=[0, 0.15, 1, 1])
 plt.savefig(f"./ofCase_eval/eval_{_safe_case}.png")
 plt.close()
+
+
 #try:
 #  #
 #  # Read data from ``postProcessing`` folder
