@@ -19,6 +19,7 @@ from dtOOPythonSWIG import vectorReal
 from dtOOPythonSWIG import scaTanhGradingOneD
 from dtOOPythonSWIG import scaTanhGradingOneDCompound
 from dtOOPythonSWIG import bVOSetPrescribedElementSize
+from dtOOPythonSWIG import bVOSetPrescribedMeshSizeAtPoints
 from dtOOPythonSWIG import bVOOrientCellVolumes
 from dtOOPythonSWIG import multipleBoundedSurface
 
@@ -133,14 +134,16 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
     """
     def __init__(self,
+                 mv: analyticGeometry, 
+                 bs: List[analyticGeometry],
                  label: str,
                  layers: List[List[List[analyticGeometry] | List[bool]]],
                  nElementsLayer: int,
                  firstElement: float,
                  elementSize_sw: float,
                  elementSize_circ: float,
-                 mv: analyticGeometry, 
-                 bs: List[analyticGeometry]
+                 charLengthMin: float = 0.05,
+                 charLengthMax: float = 0.10
         ) -> None :
         
         """Constructor
@@ -191,8 +194,14 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                 '{"name" : "[gmsh]General.Terminal", "value" : "1."},'
                 '{"name" : "[gmsh]General.Verbosity", "value" : "100."},'
                 '{"name" : "[gmsh]General.ExpertMode", "value" : "1."},'
-                '{"name" : "[gmsh]Mesh.CharacteristicLengthMin", "value" : "0.05"},'
-                '{"name" : "[gmsh]Mesh.CharacteristicLengthMax", "value" : "0.1"},'
+                '{'
+                  '"name" : "[gmsh]Mesh.CharacteristicLengthMin", '
+                  '"value" : "'+str(charLengthMin)+'"'
+                '},'
+                '{'
+                  '"name" : "[gmsh]Mesh.CharacteristicLengthMax", '
+                  '"value" : "'+str(charLengthMax)+'"'
+                '},'
                 '{"name" : "[gmsh]Mesh.Algorithm", "value" : "1"},'
                 '{"name" : "[gmsh]Mesh.MeshSizeExtendFromBoundary", "value" : "1"},'
                 '{"name" : "[gmsh]Mesh.MeshSizeFromPoints", "value" : "1"}'
@@ -348,6 +357,9 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         # meshing the lines orthogonal to the channel lines
         # these lines connect the faces channel and parallel
         channelToParallelLines = m3dGmsh.getModel().getDtGmshEdgeTagListByFromToPhysical("channel*","parallel*")
+        # channel to parallel length
+        c2pLength = 0
+
         for line in channelToParallelLines:
             logging.info( "meshing graded Line : ID: %i, number of elements: %i" % (line, self.nLayers_) )
             theEdge = m3dGmsh.getModel().getDtGmshEdgeByTag( line )
@@ -359,6 +371,13 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                 m3dGmsh.getModel().getDtGmshEdgeByTag(line).getMap1dTo3d(),
                 "debug_layerEdge_channelToParallelLine_"+"_ID"+str(line)+"_"+self.label_
             )
+            # summing up the channel to parallel lengths of the edges
+            c2pLength = c2pLength + theEdge.length()
+        
+        # calculating the mean value
+        c2pLength = c2pLength / len(channelToParallelLines)
+        # estimating the mesh size at the points
+        meshSizeAtPoints =  c2pLength / self.nLayers_
 
         # list containing the lengths of the mesh lines in circumferential direction
         lChannel_circ = [0, 0]
@@ -489,6 +508,17 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                 logging.info( "meshing circumferential Line : %s, ID: %i, number of elements: %i" % (label, line, nE) )
                 m3dGmsh.getModel().getDtGmshEdgeByTag(line).meshTransfiniteWNElements(1,1,nE)
         
+        # setting an observer which prescribes meshsizes
+        # meshSizeAtPoints is calculatate from the mean length of the channel to parallel
+        #  and the number of layers between them 
+        ob = bVOSetPrescribedMeshSizeAtPoints()
+        ob.thisown = False
+        ob.jInit(
+          jsonPrimitive()\
+            .appendReal("_meshSize", meshSizeAtPoints),
+          None, None, None, None, None, m3dGmsh
+        )
+
         # initializing grading 
         # scaTanhGradingOneD(c, g, gMin, gMax) -> f(x)=c[0]+c[1]*tanh(g*(c[2]+c[3]*x))/tanh(g)
         theRef = scaTanhGradingOneDCompound(
@@ -565,16 +595,16 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         )
         m3dGmsh.attachBVObserver(ob)
          
-        ## useful debug statement to understand the naming of the layers and vizualize them
-        ##  especially for the bVOFaceToPatchRule
-        #for face in m3dGmsh.getModel().getDtGmshFaceListByPhysical("*"):
-        #    print(face.getPhysicalString())
-        #    self.appendAnalyticGeometry(
-        #        face.getMap2dTo3d(),
-        #        "debug_allFaces_"+face.getPhysicalString()
-        #    )
-        #print("lenth hub : ", str(len(self.layerList_[0][0])))
-        #print("lenth shroud : ", str(len(self.layerList_[1][0])))
+        # useful debug statement to understand the naming of the layers and vizualize them
+        #  especially for the bVOFaceToPatchRule
+        for face in m3dGmsh.getModel().getDtGmshFaceListByPhysical("*"):
+            print(face.getPhysicalString())
+            self.appendAnalyticGeometry(
+                face.getMap2dTo3d(),
+                "debug_allFaces_"+face.getPhysicalString()
+            )
+        print("length hub : ", str(len(self.layerList_[0][0])))
+        print("length shroud : ", str(len(self.layerList_[1][0])))
 
         # setting bVOFaceToPatchRule, renames all the added faces
         # this is done to set boundary conditions in the of case later
