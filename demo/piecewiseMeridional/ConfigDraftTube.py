@@ -224,7 +224,9 @@ def run(*args, **kwargs):
     hubCurves, shroudCurves = machine.getCurves()
 
     importlib.reload(radMeridionalOptimization)
-    cc = radMeridionalOptimization.radMeridionalOptimization(config, hubCurves, shroudCurves,  "newCoarse_bladeAngle", 1,  True).create()
+    cc = radMeridionalOptimization.radMeridionalOptimization(
+            config, hubCurves, shroudCurves,  "newCoarse_bladeAngle", 1,  True
+        ).create()
     rr = dtOOInParaVIEW( cc )
     return cc, rr
 
@@ -239,7 +241,7 @@ if __name__ == "__main__":
     
     hubCurves, shroudCurves = machine.getCurves()
     
-    stateLbl = "newLayer_bladeAngle0"
+    stateLbl = "fittingLayers_bladeAngle0"
     
     # input values which will be optimized:
     varList = [

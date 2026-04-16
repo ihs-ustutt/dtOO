@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 import importlib
 import radMeridional
 import dtOOPythonSWIG as dtOO
@@ -38,7 +39,7 @@ class ConfigDraft():
                                   [2, 0.5],],
             "interface_curvature" : [[0.0, 0.5, 1],
                                      [0.4, 0.5, -1],],
-# guide vane
+            # guide vane
             "spanwiseCuts" : [0.00, 1.00,],
             "gv_alpha_1" : [round((np.pi/180.) * -55.0, 4)],
             "gv_alpha_2" : [round((np.pi/180.) * -16.0, 4)],

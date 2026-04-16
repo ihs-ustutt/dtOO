@@ -1,5 +1,6 @@
 import numpy as np
 import importlib
+import copy
 import radMeridional
 import dtOOPythonSWIG as dtOO
 from dtOOPythonApp.vis import dtOOInParaVIEW

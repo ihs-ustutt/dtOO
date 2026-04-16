@@ -111,51 +111,51 @@ class radMeridional:
         ).enableDebug()#.buildExtract( container )
         container = radMeridionalContour.buildExtract(container)
         
-        # 
-        # guide vane
+        ## 
+        ## guide vane
+        ##
+        #gvLabel = "gv"
+        #self.aG.push_back( 
+        #    radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
+        #)
         #
-        gvLabel = "gv"
-        self.aG.push_back( 
-            radMeridionalContour.getRegChannel(0, 1) << "xyz_"+gvLabel+"_channel" 
-        )
-        
-        print("guide vane")
-        self.buildBlade(
-                container,
-                gvLabel,
-                self.nGvBlades, False,
-                self.spanwiseCuts,
-                self.gv_alpha_1, self.gv_alpha_2,
-                self.gv_ratioX, self.gv_deltaY,
-                self.gv_offX, self.gv_offY,
-                self.spanwiseCuts,
-                self.gv_t_le, self.gv_u_le,
-                self.gv_t_mid, self.gv_u_mid,
-                self.gv_t_te, self.gv_u_te,
-            )
+        #print("guide vane")
+        #self.buildBlade(
+        #        container,
+        #        gvLabel,
+        #        self.nGvBlades, False,
+        #        self.spanwiseCuts,
+        #        self.gv_alpha_1, self.gv_alpha_2,
+        #        self.gv_ratioX, self.gv_deltaY,
+        #        self.gv_offX, self.gv_offY,
+        #        self.spanwiseCuts,
+        #        self.gv_t_le, self.gv_u_le,
+        #        self.gv_t_mid, self.gv_u_mid,
+        #        self.gv_t_te, self.gv_u_te,
+        #    )
 
+        ##
+        ## runner
+        ##
+        #ruLabel = "ru"
+        #self.aG.push_back( 
+        #    radMeridionalContour.getRegChannel(1, 1) << "xyz_"+ruLabel+"_channel" 
+        #)
         #
-        # runner
-        #
-        ruLabel = "ru"
-        self.aG.push_back( 
-            radMeridionalContour.getRegChannel(1, 1) << "xyz_"+ruLabel+"_channel" 
-        )
-        
-        print("runner")
-        self.buildBlade(
-                container,
-                ruLabel,
-                self.nRuBlades, True,
-                self.spanwiseCuts_mp,
-                self.ru_alpha_1, self.ru_alpha_2,
-                self.ru_ratioX, self.ru_deltaY,
-                self.ru_offX, self.ru_offY,
-                self.spanwiseCuts_td,
-                self.ru_t_le, self.ru_u_le,
-                self.ru_t_mid, self.ru_u_mid,
-                self.ru_t_te, self.ru_u_te,
-            )
+        #print("runner")
+        #self.buildBlade(
+        #        container,
+        #        ruLabel,
+        #        self.nRuBlades, True,
+        #        self.spanwiseCuts_mp,
+        #        self.ru_alpha_1, self.ru_alpha_2,
+        #        self.ru_ratioX, self.ru_deltaY,
+        #        self.ru_offX, self.ru_offY,
+        #        self.spanwiseCuts_td,
+        #        self.ru_t_le, self.ru_u_le,
+        #        self.ru_t_mid, self.ru_u_mid,
+        #        self.ru_t_te, self.ru_u_te,
+        #    )
  
         #
         # Building Layer Region
@@ -194,18 +194,21 @@ class radMeridional:
             # label, layer data, nElementsLayer, firstElementSize, meshSizeSW, meshSizeCIRC, unstructRegion
         # )
         
-        # creating the mesh of the suction area with wall layers and the unstructured region
-        container = module.map3dTo3dGmsh_gridFromLayers(
-                label = "meshLayers",   
-                layers = layers,        
-                nElementsLayer = 30,     
-                firstElement = 0.001,    
-                elementSize_sw = 0.01,  
-                elementSize_circ = 0.02,
-                mv = mv,                
-                bs = bs                  
-            ).buildExtract(container)
+        ## creating the mesh of the suction area with wall layers and the unstructured region
+        #container = module.map3dTo3dGmsh_gridFromLayers(
+        #        label = "meshLayers",   
+        #        layers = layers,        
+        #        nElementsLayer = 10,     
+        #        firstElement = 0.001,    
+        #        elementSize_sw = 0.07,  
+        #        elementSize_circ = 0.05,
+        #        mv = mv,                
+        #        bs = bs                  
+        #    ).buildExtract(container)
         
+        #
+        # of case setup
+        #
         if self.createOFCase_ == True:
             
             dtOO.lVHOstateHandler().makeState(self.stateLbl+"_"+str(self.indiv))
@@ -741,7 +744,7 @@ class radMeridional:
           nMeanplaneBlocks = nMeanplaneBlocks,
           blade = self.aG["xyz_"+label+"_blade"],
           nBoundaryLayers = 7,
-          nElementsSpanwise = 60,
+          nElementsSpanwise = 30,
           nElementsNormal = 7,
           firstElementSizeHubToShroud = 0.001,
           firstElementSizeNormalBlade = 0.001,
