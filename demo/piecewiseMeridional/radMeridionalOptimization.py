@@ -204,8 +204,8 @@ class radMeridionalOptimization:
                 firstElement = 0.001,    
                 elementSize_sw = 0.02,  
                 elementSize_circ = 0.03,
-                charLengthMin = 0.04,
-                charLengthMax = 0.08,
+                charLengthMin = 0.02,
+                charLengthMax = 0.04,
             ).buildExtract(container)
         
         if self.createOFCase_ == True:
@@ -225,7 +225,7 @@ class radMeridionalOptimization:
             self.bV.push_back( gbv )
 
             rmsh = dtOO.bVOReadMSH()
-            rmsh.jInit(dtOO.jsonPrimitive('{"_filename" : "dt_mesh.msh"}'), gbv)
+            rmsh.jInit(dtOO.jsonPrimitive('{"_filename" : "dt_mesh_adjustBL.msh"}'), gbv)
             rmsh.preUpdate()
             
             # naming physical faces

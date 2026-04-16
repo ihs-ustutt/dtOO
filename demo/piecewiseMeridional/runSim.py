@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import re
 
-_case = './of_newLayer_bladeAngle0_0/'
+_case = './of_fittingLayers_bladeAngle0_0/'
 _safe_case = re.sub(r'[\\/:\*\?"<>|]', '_', _case)
 
 fc = foamlib.FoamCase( _case )
@@ -37,13 +37,15 @@ if True:
         "nNonOrthogonalCorrectors": 1
       }
  
-  fc.control_dict['writeInterval'] = 100
-  fc.control_dict['endTime'] = 500
   fc.control_dict['DebugSwitches'] = {
           'mixingInterfacePatch': 2
         }
+  fc.control_dict['writeInterval'] = 100
+  fc.control_dict['endTime'] = 500
+  fc.run()
+  
   fc.control_dict['endTime'] = 2000
-  fc.control_dict['writeInterval'] = 1
+  fc.control_dict['writeInterval'] = 10
   #fc.control_dict['purgeWrite'] = 10
   fc.turbulence_properties["RAS"]["turbulence"] = True
   

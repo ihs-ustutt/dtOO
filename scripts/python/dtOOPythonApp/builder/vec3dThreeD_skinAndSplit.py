@@ -244,7 +244,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
             theRef.setLabel( self.label_+"_"+str(cc + 1) )
             self.appendAnalyticFunction( theRef )
             
-            # generates the meanplaneextiention in sequence to the last defined
+            # generates the meanplane extention in sequence to the last defined
             #  meanplane block
             if (self.meanplaneFromBlocks_ == True and cc == self.nMeanplaneBlocks_):
                 
