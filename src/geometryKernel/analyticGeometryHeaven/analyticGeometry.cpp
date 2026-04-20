@@ -226,7 +226,7 @@ void analyticGeometry::updateBoundingBox(void) const
         dtInt const at0 = ii * J + jj;
         dtInt const at1 = (ii + 1) * J + jj;
         dtInt const at2 = ii * J + (jj + 1);
-        dtInt const at3 = (ii + 1) * J + jj;
+        dtInt const at3 = (ii + 1) * J + (jj + 1);
         _boundingBoxValue =
           _boundingBoxValue +
           dtLinearAlgebra::area(bb[at0], bb[at1], bb[at2], bb[at3]);
