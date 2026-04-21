@@ -194,17 +194,17 @@ class radMeridional:
             # label, layer data, nElementsLayer, firstElementSize, meshSizeSW, meshSizeCIRC, unstructRegion
         # )
         
-        ## creating the mesh of the suction area with wall layers and the unstructured region
-        #container = module.map3dTo3dGmsh_gridFromLayers(
-        #        label = "meshLayers",   
-        #        layers = layers,        
-        #        nElementsLayer = 10,     
-        #        firstElement = 0.001,    
-        #        elementSize_sw = 0.07,  
-        #        elementSize_circ = 0.05,
-        #        mv = mv,                
-        #        bs = bs                  
-        #    ).buildExtract(container)
+        # creating the mesh of the suction area with wall layers and the unstructured region
+        container = module.map3dTo3dGmsh_gridFromLayers(
+                label = "meshLayers",   
+                layers = layers,        
+                nElementsLayer = 10,     
+                firstElement = 0.001,    
+                elementSize_sw = 0.07,  
+                elementSize_circ = 0.05,
+                mv = mv,                
+                bs = bs                  
+            ).buildExtract(container)
         
         #
         # of case setup
@@ -229,7 +229,7 @@ class radMeridional:
             container = ofOpenFOAMCase_turboMachine(
               label = "of",
               bVs = [
-                self.bV["gv_mesh"], self.bV["ru_mesh"], self.bV["meshLayers"],
+                ["gv_mesh"], self.bV["ru_mesh"], self.bV["meshLayers"],
               ],
               dictRule = \
                   ofOpenFOAMCase_setupWrapper.controlDict(

@@ -595,16 +595,16 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         )
         m3dGmsh.attachBVObserver(ob)
          
-        # useful debug statement to understand the naming of the layers and vizualize them
-        #  especially for the bVOFaceToPatchRule
-        for face in m3dGmsh.getModel().getDtGmshFaceListByPhysical("*"):
-            print(face.getPhysicalString())
-            self.appendAnalyticGeometry(
-                face.getMap2dTo3d(),
-                "debug_allFaces_"+face.getPhysicalString()
-            )
-        print("length hub : ", str(len(self.layerList_[0][0])))
-        print("length shroud : ", str(len(self.layerList_[1][0])))
+        ## useful debug statement to understand the naming of the layers and vizualize them
+        ##  especially for the bVOFaceToPatchRule
+        #for face in m3dGmsh.getModel().getDtGmshFaceListByPhysical("*"):
+        #    print(face.getPhysicalString())
+        #    self.appendAnalyticGeometry(
+        #        face.getMap2dTo3d(),
+        #        "debug_allFaces_"+face.getPhysicalString()
+        #    )
+        #print("length hub : ", str(len(self.layerList_[0][0])))
+        #print("length shroud : ", str(len(self.layerList_[1][0])))
 
         # setting bVOFaceToPatchRule, renames all the added faces
         # this is done to set boundary conditions in the of case later
