@@ -40,7 +40,7 @@ class ConfigDraftTube():
             "h_shroud" : 0.38,
             
             # layers and interfaces
-            "layer_thickness" : 0.0166,
+            "layer_thickness" : 0.0775,
             "layer_supports" : [0.5],
             "interface_hub" : [[1, 0.00],
                                [1, 0.90],],                # [curve, percent]
@@ -72,21 +72,21 @@ class ConfigDraftTube():
                     round((np.pi/180.) * 75., 4),
                     round((np.pi/180.) * 52., 4)
                 ],
-            ## of_newCoarse_0 :
-            #"ru_alpha_2" : [
-            #        round((np.pi/180.) * 45., 4), 
-            #        round((np.pi/180.) * 31., 4), 
-            #        round((np.pi/180.) * 32., 4), 
-            #        round((np.pi/180.) * 10., 4) 
-            #    ],
-            # of_newCoarse_bladeAngle_0
+            # of_newCoarse_bladeAngle_05 :
             "ru_alpha_2" : [
-                    round((np.pi/180.) * 46., 4), 
+                    round((np.pi/180.) * 45., 4), 
+                    round((np.pi/180.) * 31., 4), 
                     round((np.pi/180.) * 32., 4), 
-                    round((np.pi/180.) * 33., 4), 
-                    round((np.pi/180.) * 11., 4) 
+                    round((np.pi/180.) * 10., 4) 
                 ],
-            #of_newCoarse_bladeAngle_1
+            ## of_newCoarse_bladeAngle_0
+            #"ru_alpha_2" : [
+            #        round((np.pi/180.) * 46., 4), 
+            #        round((np.pi/180.) * 32., 4), 
+            #        round((np.pi/180.) * 33., 4), 
+            #        round((np.pi/180.) * 11., 4) 
+            #    ],
+            ##of_newCoarse_bladeAngle_1
             #"ru_alpha_2" : [
             #        round((np.pi/180.) * 44., 4), 
             #        round((np.pi/180.) * 30., 4), 
@@ -241,24 +241,24 @@ if __name__ == "__main__":
     
     hubCurves, shroudCurves = machine.getCurves()
     
-    stateLbl = "fittingLayers_bladeAngle0"
+    stateLbl = "thickerBL15_0775"
     
-    # input values which will be optimized:
+    # input values which will be optimized and their variation:
     varList = [
-        "l_hub0", "l_hub1", "angle_hub1",
-        "l_shroud0", "l_shroud1", 
+        ["l_hub0", 0.5], ["l_hub1", 0.5], ["angle_hub1", 0.1],
+        ["l_shroud0", 0.5], ["l_shroud1", 0.5], 
 
         #"gv_alpha_1", "gv_alpha_2",
         #"gv_ratioX", "gv_deltaY",
         #"gv_offX","gv_offY",
         #"gv_t_le", "gv_t_mid", "gv_t_te",
         
-        "ru_alpha_1", "ru_alpha_2",
-        "ru_ratioX", "ru_deltaY",
-        "ru_t_le", "ru_t_mid", "ru_t_te",
-        ]
+        ["ru_alpha_1", 0.05], ["ru_alpha_2", 0.05],
+        ["ru_ratioX", 0.1], ["ru_deltaY", 0.1],
+        ["ru_t_le",0.1], ["ru_t_mid", 0.1], ["ru_t_te", 0.1],
+    ]
     
-    variation = 0.1
+    #variation = 0.05
     # number of iterations
     nIt = 1
 
@@ -270,7 +270,7 @@ if __name__ == "__main__":
         writer = csv.writer(f)
 
         # header (column names)
-        header = ["individual"] + varList 
+        header = ["individual"] + [param[0] for param in varList] + ["case created"]
         writer.writerow(header)
         
         # iterating over individuals
@@ -284,39 +284,50 @@ if __name__ == "__main__":
                 
                 # iterating over the parameters which are changed
                 for param in varList:
+                    
+                    # extracting values
+                    paramStr = param[0]
+                    variation = param[1]
+
                     # variation is +- of the specified value
                     var = random.uniform(-variation, variation)
                     
-                    # if the varied parameter is a list, all list items are changed
+                    # if the varied paramStreter is a list, all list items are changed
                     #  with the same variation
-                    if isinstance(config[param], list):
-                        for i in range(len(config[param])):
-                            config[param][i] = round_sig(config[param][i] + config[param][i]*var)
+                    if isinstance(config[paramStr], list):
+                        for i in range(len(config[paramStr])):
+                            config[paramStr][i] = round_sig(config[paramStr][i] + config[paramStr][i]*var)
                         
-                        #row.append(str(config[param]))
+                        #row.append(str(config[paramStr]))
 
                     # non list items are varied like this
                     else:
-                        config[param] = round_sig(config[param] + config[param]*var)
-                        #row.append(config[param])
+                        config[paramStr] = round_sig(config[paramStr] + config[paramStr]*var)
+                        #row.append(config[paramStr])
+            
             
             row = [individual]
             for param in varList:
-                if isinstance(config[param], list):
-                    row.append(str(config[param]))
+                if isinstance(config[param[0]], list):
+                    row.append(str(config[param[0]]))
                 else:
-                    row.append(config[param])
-            writer.writerow(row)
+                    row.append(config[param[0]])
+            #writer.writerow(row)
             
             print("Building Individual No. " + str(individual))
-            #try:
-            radMeridionalOptimization.radMeridionalOptimization(
-                    config, hubCurves, shroudCurves, stateLbl, individual,  True
-                ).create()
-            print("Sucess")
-            #except:
-            #    print("Failed")
-            #    continue
+            try:
+                radMeridionalOptimization.radMeridionalOptimization(
+                        config, hubCurves, shroudCurves, stateLbl, individual,  True
+                    ).create()
+                print("Sucess")
+                row.append("success")
+                writer.writerow(row)
+            except:
+                print("Failed")
+                row.append("failed")
+                writer.writerow(row)
+                continue
+
 
     
     """

@@ -4,14 +4,19 @@ from pyDtOO import *
 import matplotlib.pyplot as plt
 import numpy as np
 import re
+import sys
 
-_case = './of_fittingLayers_bladeAngle0_0/'
+n_cores = sys.argv[1]
+case_name = sys.argv[2]
+
+_case = './'+case_name+'/'
+#_case = './of_bladeAngle05_tolP001/'
 _safe_case = re.sub(r'[\\/:\*\?"<>|]', '_', _case)
 
 fc = foamlib.FoamCase( _case )
 if True:
   fc.decompose_par_dict['method'] = 'metis'
-  fc.decompose_par_dict['numberOfSubdomains'] = 32
+  fc.decompose_par_dict['numberOfSubdomains'] = int(n_cores)
    
   fc.turbulence_properties["RAS"]["turbulence"] = False
   fc.fv_schemes['gradSchemes']['none'] = ('cellLimited', 'Gauss', 'linear', 0.33)
@@ -34,17 +39,17 @@ if True:
         "omega": 0.6
       }
   fc.fv_solution["SIMPLE"] = {
-        "nNonOrthogonalCorrectors": 1
+        "nNonOrthogonalCorrectors": 2
       }
  
   fc.control_dict['DebugSwitches'] = {
           'mixingInterfacePatch': 2
         }
   fc.control_dict['writeInterval'] = 100
-  fc.control_dict['endTime'] = 500
+  fc.control_dict['endTime'] = 1000
   fc.run()
   
-  fc.control_dict['endTime'] = 2000
+  fc.control_dict['endTime'] = 2500
   fc.control_dict['writeInterval'] = 10
   #fc.control_dict['purgeWrite'] = 10
   fc.turbulence_properties["RAS"]["turbulence"] = True
@@ -52,7 +57,7 @@ if True:
   fc.run()
   
 #fc.reconstruct_par()
-fc.run(["reconstructPar", '-time', '500,1990:'])
+fc.run(["reconstructPar", '-time', '500,2490:'])
 
 _omega = np.abs(
   foamlib.FoamFile(fc.path/'constant/MRFProperties')['MRF_ru_mesh']['omega']

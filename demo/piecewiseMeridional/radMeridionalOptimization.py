@@ -200,7 +200,7 @@ class radMeridionalOptimization:
                 bs = bs,                  
                 label = "meshLayers",   
                 layers = layers,        
-                nElementsLayer = 7,     
+                nElementsLayer = 15,     
                 firstElement = 0.001,    
                 elementSize_sw = 0.02,  
                 elementSize_circ = 0.03,
@@ -225,7 +225,7 @@ class radMeridionalOptimization:
             self.bV.push_back( gbv )
 
             rmsh = dtOO.bVOReadMSH()
-            rmsh.jInit(dtOO.jsonPrimitive('{"_filename" : "dt_mesh_adjustBL.msh"}'), gbv)
+            rmsh.jInit(dtOO.jsonPrimitive('{"_filename" : "dt_mesh.msh"}'), gbv)
             rmsh.preUpdate()
             
             # naming physical faces
@@ -801,8 +801,8 @@ class radMeridionalOptimization:
           blocks = blocks,
           nMeanplaneBlocks = nMeanplaneBlocks,
           blade = self.aG["xyz_"+label+"_blade"],
-          nBoundaryLayers = 7,
-          nElementsSpanwise = 40,
+          nBoundaryLayers = 15,
+          nElementsSpanwise = 50,
           nElementsNormal = 7,
           firstElementSizeHubToShroud = 0.001,
           firstElementSizeNormalBlade = 0.001,
