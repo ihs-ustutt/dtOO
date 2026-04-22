@@ -641,31 +641,6 @@ if __name__ == "__main__":
                 continue
 
 
-    
-    """
-    target_individual = 4
-
-    with open("./"+evalFolder+"/"+stateLbl+".csv", "r", newline="") as f:
-        reader = list(csv.reader(f))
-        row = reader[target_individual+1]
-
-
-    # skip first column (individual index)
-    values = row[1:]
-
-    for i, param in enumerate(varList):
-        value = values[i]
-
-        # detect list
-        if value.startswith("["):
-            config[param] = ast.literal_eval(value)
-        else:
-            config[param] = float(value)
-
-    for param in config:
-        print(param +" = "+ str(config[param]))
-    """
-
 
 
 
