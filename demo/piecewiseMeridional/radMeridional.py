@@ -241,7 +241,7 @@ class radMeridional:
           dtOO.jsonPrimitive(
             '{'
               '"option" : ['
-                '{"name" : "reparamOnFace_precision", "value" : "1.e-05"},'
+                '{"name" : "reparamOnFace_precision", "value" : "1.e-04"},'
                 '{"name" : "reparamInVolume_precision","value" : "1.e-05"},'
                 '{"name" : "invY_precision", "value" : "1.e-04"},'
                 '{"name" : "xyz_resolution", "value" : "1.e-05"},'

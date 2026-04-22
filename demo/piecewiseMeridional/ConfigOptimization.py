@@ -12,17 +12,20 @@ import dtOOPythonSWIG as dtOO
 class ConfigOptimization():
 
     def __init__(self, configMeas):
-
+        
         print("Setting up input dictionary")
-                
+        
+        # setting dict items as class variables
         for key, value in configMeas.items():
             setattr(self, key, value)
         
+        # calculation point offsets for the channel curves
         self.dx_hub0, self.dz_hub0 = self.deltas_LengthAndAngle(self.angle_hub0, self.l_hub0)
         self.dx_hub1, self.dz_hub1 = self.deltas_LengthAndAngle(self.angle_hub1, self.l_hub1)
         self.dx_shroud0, self.dz_shroud0 = self.deltas_LengthAndAngle(self.angle_shroud0, self.l_shroud0)
         self.dx_shroud1, self.dz_shroud1 = self.deltas_LengthAndAngle(self.angle_shroud1, self.l_shroud1)
-
+        
+        # build hub and shroud curves
         self.hubCurves = self.buildHubCurves()
         self.shroudCurves = self.buildShroudCurves()
  
@@ -98,12 +101,18 @@ class ConfigOptimization():
         return dx, dz
     
     def getCurves(self):
+        # returns hub and shroud curves
         return self.hubCurves, self.shroudCurves
 
 class Config():
     
     def __init__(self):
 
+        # 
+        # specifies configs
+        #
+        
+        # config for hub and shroud curves
         self.configMeas = {
             "d_inlet" : 2.58,
             "l_inExt" : 0.27,
@@ -125,6 +134,7 @@ class Config():
             "h_shroud" : 0.38,
         }
         
+        # config for meridional contour -> specifies interfaces
         self.configMeridional = {
             "label" : "radMeridionalContour",
             "interface_hub" : [[1, 0.00],
@@ -134,6 +144,8 @@ class Config():
             "interface_curvature" : [[0.0, 0.5, 1],
                                      [0.0, 0.5, -1],],
         }
+
+        # config for guid vane blade
         self.configGuideVane = {
             "label" : "gv",
             "regChannel" : 0,
@@ -157,6 +169,8 @@ class Config():
 
             "adjustRadius" : False,
         }
+
+        # config for gunner blade
         self.configRunner = {
             "label" : "ru",
             "regChannel" : 1,
@@ -222,6 +236,8 @@ class Config():
 
             "adjustRadius" : True,
         }
+
+        # config for generation of layer region
         self.configLayer = {
             "label" : "radMeridionalContour",
             "nSlices" : 15,
@@ -229,7 +245,7 @@ class Config():
             "layer_supports" : [0.5],
         }
         
-        # input values which will be optimized and their variation:
+        # input values for variation and their variation:
         self.varList = [
             ["l_hub0", 0.5], ["l_hub1", 0.5], ["angle_hub1", 0.1],
             ["l_shroud0", 0.5], ["l_shroud1", 0.5],  
@@ -239,26 +255,32 @@ class Config():
         ]
     
     def getConfig(self):
+        # returns config dictionaries
         return (
                 copy.deepcopy(self.configMeas), copy.deepcopy(self.configMeridional), 
                 copy.deepcopy(self.configGuideVane), copy.deepcopy(self.configRunner), 
                 copy.deepcopy(self.configLayer),
             )
+
     def getVarList(self):
+        # returns varList
         return self.varList
 
 def run(*args, **kwargs):
+    # function for running the file in paraview
     from dtOOPythonApp.vis import dtOOInParaVIEW
     
     config = Config()
     configMeas, configMeridional, configGuideVane, configRunner, configLayer = config.getConfig()
     varList = config.getVarList()
-
+    
+    # individual which will be recreated
     target_individual = 2
     
     stateLbl = "variation"
     evalFolder = "ofCase_eval"
     
+    # open csv which saves the varied parameters
     with open("./"+evalFolder+"/"+stateLbl+".csv", "r", newline="") as f:
         reader = list(csv.reader(f))
         row = reader[target_individual+1]
@@ -266,7 +288,8 @@ def run(*args, **kwargs):
 
     # skip first column (individual index) and the last (case created)
     values = row[1:-1]
-
+    
+    # updating the configs so they contain the parmeters form the specified individual
     for i, param in enumerate(varList):
         value = values[i]
         
@@ -289,35 +312,54 @@ def run(*args, **kwargs):
     print("configRunner")
     for p in configRunner:
         print(p," : ",configRunner[p])
-
+    
+    # generate hub and shroud curves
     machine = ConfigOptimization(configMeas)
     hubCurves, shroudCurves = machine.getCurves()
     
     importlib.reload(radMeridional)
-
+    
+    # create radMeridional object
     generate = radMeridional.radMeridional()
+
+    # create meridional channel
     generate.createMeridional(configMeridional, hubCurves, shroudCurves)
+
+    # create guide vane
     generate.createBlade(configGuideVane)
+
+    # create runner
     generate.createBlade(configRunner)
+
+    # create layered region
     generate.createLayerRegion(configLayer)
     
+    # return bV and dC in order to generate the mesh files
     bV, dC = generate.getbVAnddC()
     #bV["gv_mesh"].makeGrid()
     bV["ru_mesh"].makeGrid()
     #bV["meshLayers"].makeGrid()
-
+    
+    # paraview plotting
     cc = generate.getContainer()
     rr = dtOOInParaVIEW( cc )
     return cc, rr
 
 def round_sig(x, sig=4):
+    # rounding to significant position
     if x == 0:
         return 0
     return round(x, sig - int(np.floor(np.log10(abs(x)))) - 1)
 
 def varConfig(config, paramStr, var):
     
+    #
+    # varies the config dict 
+    #
+
+    # checks if the varied parameter is in the dict
     if paramStr in config:
+
         # if the varied paramStreter is a list, all list items are changed
         #  with the same variation
         if isinstance(config[paramStr], list):
@@ -333,7 +375,15 @@ def varConfig(config, paramStr, var):
 
 def appendRow(row, varList, config):
     
+    #
+    # appending the row for the cfg file
+    #
+
+    # iterating over parameters that are varied
     for param in varList:
+
+        # when the parameter string is in the config file the value will
+        #  be written in the row
         if param[0] in config:
             if isinstance(config[param[0]], list):
                 row.append(str(config[param[0]]))
@@ -343,7 +393,7 @@ def appendRow(row, varList, config):
     return row
 
 def createOFCase(container, bV, dC, stateLbl, indiv, h_inlet, h_shroud):
-
+    
     dtOO.lVHOstateHandler().makeState(stateLbl+"_"+str(indiv))
     
     #
@@ -381,6 +431,7 @@ def createOFCase(container, bV, dC, stateLbl, indiv, h_inlet, h_shroud):
     #
     # of case setup
     #
+
     from dtOOPythonApp.builder import (
       ofOpenFOAMCase_turboMachine,
       ofOpenFOAMCase_setupWrapper
@@ -562,6 +613,7 @@ def createOFCase(container, bV, dC, stateLbl, indiv, h_inlet, h_shroud):
 
 if __name__ == "__main__":
     
+    # create Config object and return the specified varList
     config = Config()
     varList = config.getVarList()
     
@@ -573,7 +625,7 @@ if __name__ == "__main__":
     # activates optimization
     optiOn = True 
     
-    
+    # writer for the csv file
     evalFolder = "ofCase_eval"
     with open("./"+evalFolder+"/"+stateLbl+".csv", "w", newline="") as f:
         writer = csv.writer(f)
@@ -585,12 +637,12 @@ if __name__ == "__main__":
         # iterating over individuals
         for individual in range(nIt):
             
+            # getting the original config dicts from the Config object
             configMeas, configMeridional, configGuideVane, configRunner, configLayer = config.getConfig()
-            # first individual is made from specified values
+            
+            # first individual is made from specified values -> no variation
             if individual != 0 and optiOn == True:
                 
-                row = [individual]
-
                 # iterating over the parameters which are changed
                 for param in varList:
                     
@@ -601,16 +653,18 @@ if __name__ == "__main__":
                     # variation is +- of the specified value
                     var = random.uniform(-variation, variation)
                     
+                    # apply the variation to the configs
                     configMeas = varConfig(configMeas, paramStr, var)
                     configRunner = varConfig(configRunner, paramStr, var)
             
+            # saving parameters of the individual in row
             row = [individual]
             row = appendRow(row, varList, configMeas)
             row = appendRow(row, varList, configRunner)
-            #writer.writerow(row)
             
             print("Building Individual No. " + str(individual))
             
+            # generate geometry
             try:
                 machine = ConfigOptimization(configMeas) 
                 hubCurves, shroudCurves = machine.getCurves()
@@ -630,11 +684,10 @@ if __name__ == "__main__":
                 print("Sucess")
                 row.append("success")
                 writer.writerow(row)
-            except Exception as e:
+            except:
                 error_msg = traceback.format_exc()
                 print("Failed:\n", error_msg)
-                print("Failed:", e)
-                row.append(str(e)) 
+                row.append(str(error_msg)) 
                 writer.writerow(row)
                 if individual == 0:
                     break
