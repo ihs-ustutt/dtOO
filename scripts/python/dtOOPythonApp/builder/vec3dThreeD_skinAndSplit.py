@@ -212,7 +212,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
         else:
           cc = 0
           for split in self.splits_:
-            print("meshBlock nr : ", cc)
+            logging.info("meshBlock nr : %d" % cc)
             logging.info( 
               "Split between %f <--> %f in direction %d" 
               % 

@@ -43,7 +43,7 @@ if True:
       }
  
   fc.control_dict['DebugSwitches'] = {
-          'mixingInterfacePatch': 2
+          'mixingInterfacePolyPatch': 2
         }
   fc.control_dict['writeInterval'] = 100
   fc.control_dict['endTime'] = 1000
