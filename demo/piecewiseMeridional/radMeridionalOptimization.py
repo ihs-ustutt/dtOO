@@ -353,8 +353,8 @@ class radMeridionalOptimization:
                     origin = dtOO.dtPoint3(0,0,0),
                     stackAxis = "Z",
                     discretization = "userDefined",
-                    planes = 24,
-                    planesBl = 7,
+                    planes = 40,
+                    planesBl = 15,
                     gradingIf = "false"
                   ),
 
@@ -386,8 +386,8 @@ class radMeridionalOptimization:
                     origin = dtOO.dtPoint3(0,0,0),
                     stackAxis = "R",
                     discretization = "userDefined",
-                    planes = 24,
-                    planesBl = 7,
+                    planes = 40,
+                    planesBl = 15,
                     gradingIf = "false"
                   ),
 
@@ -410,8 +410,8 @@ class radMeridionalOptimization:
                     origin = dtOO.dtPoint3(0,0,0),
                     stackAxis = "R",
                     discretization = "userDefined",
-                    planes = 24,
-                    planesBl = 7,
+                    planes = 40,
+                    planesBl = 15,
                     gradingIf = "false"
                   ),
                   

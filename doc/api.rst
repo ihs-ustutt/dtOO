@@ -24,3 +24,11 @@ The documentation of the pyDtOO package.
 
 .. automodule:: pyDtOO.dtClusteredSingletonState
     :members:
+
+Python dtOOPythonApp classes
+============================
+
+The documentation of the dtOOPythonApp package.
+
+.. automodule:: dtOOPythonApp.builder.vec3dThreeD_skinAndSplit
+  :members:
