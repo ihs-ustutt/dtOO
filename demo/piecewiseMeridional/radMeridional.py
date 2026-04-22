@@ -218,12 +218,6 @@ class radMeridional:
 
     def __init__(
         self,
-        #data: dict,
-        #hubCurves: List[dtOO.analyticGeometry],
-        #shroudCurves: List[dtOO.analyticGeometry],
-        #stateLbl: str = "pvState",
-        #indiv: int = 0,
-        #createOFCase: bool = False
     ):
         """Constructor.
 
@@ -234,20 +228,7 @@ class radMeridional:
         -------
         None
 
-        """
-
-        ## constructiong variables for the class from the Config Class
-        #for key, value in data.items():
-        #    setattr(self, key, value)
-
-        #self.hubCurves = hubCurves
-        #self.shroudCurves = shroudCurves
-
-        #self.stateLbl = stateLbl
-        #self.indiv = indiv
-
-        #self.createOFCase_ = createOFCase
-        
+        """ 
         # Create an empty self.container
         self.container = dtOO.dtBundle()
 
