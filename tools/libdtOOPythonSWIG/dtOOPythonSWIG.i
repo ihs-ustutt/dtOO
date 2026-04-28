@@ -339,6 +339,7 @@ namespace dtOO {
 #include <bVObserver/bVOMeshRule.h>
 #include <bVObserver/bVOSetOrder.h>
 #include <bVObserver/bVOWriteINP.h>
+#include <bVObserver/bVOTransformMeshPoints.h>
 #include <gmshBoundedVolume.h>
 #include <map3dTo3dGmsh.h>
 #include <customGmsh.h>
@@ -687,6 +688,7 @@ namespace dtOO {
 %include bVObserver/bVOMeshRule.h
 %include bVObserver/bVOSetOrder.h
 %include bVObserver/bVOWriteINP.h
+%include bVObserver/bVOTransformMeshPoints.h
 %include gmshBoundedVolume.h
 %include map3dTo3dGmsh.h
 %include customGmsh.h
