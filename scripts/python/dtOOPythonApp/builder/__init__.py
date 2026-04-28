@@ -75,3 +75,6 @@ from .analyticGeometry_layerRegion import (
   analyticGeometry_layerRegion
 )
 from .map3dTo3dGmsh_gridFromLayers import map3dTo3dGmsh_gridFromLayers
+from . combineGmsh_fullRotate import (
+  combineGmsh_fullRotate
+)

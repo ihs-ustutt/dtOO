@@ -706,3 +706,9 @@ Axial Runner ``tistos``
 
 .. automodule:: dtOO.demo.tistos.build
     :members:
+
+Radial Turbine
+==============
+
+.. automodule:: dtOO.demo.piecewiseMeridional.radMeridional
+	:members:

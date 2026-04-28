@@ -6,8 +6,8 @@ import numpy as np
 import re
 import sys
 
-n_cores = sys.argv[1]
-case_name = sys.argv[2]
+n_cores = 16 #sys.argv[1]
+case_name = "of_bladeAngle05_newVersion_0" #sys.argv[2]
 
 _case = './'+case_name+'/'
 #_case = './of_bladeAngle05_tolP001/'

@@ -182,13 +182,13 @@ class Config():
                      round((np.pi/180.) * 75., 4),
                      round((np.pi/180.) * 52., 4)
                  ],
-            ## bladeAngle05 :
-            #"alpha_2" : [
-            #        round((np.pi/180.) * 45., 4),
-            #        round((np.pi/180.) * 31., 4),
-            #        round((np.pi/180.) * 32., 4),
-            #        round((np.pi/180.) * 10., 4)
-            #    ],
+            # bladeAngle05 :
+            "alpha_2" : [
+                    round((np.pi/180.) * 45., 4),
+                    round((np.pi/180.) * 31., 4),
+                    round((np.pi/180.) * 32., 4),
+                    round((np.pi/180.) * 10., 4)
+                ],
             ## bladeAngle0
             #"alpha_2" : [
             #        round((np.pi/180.) * 46., 4),
@@ -196,13 +196,13 @@ class Config():
             #        round((np.pi/180.) * 33., 4),
             #        round((np.pi/180.) * 11., 4)
             #    ],
-            #bladeAngle1
-            "alpha_2" : [
-                    round((np.pi/180.) * 44., 4),
-                    round((np.pi/180.) * 30., 4),
-                    round((np.pi/180.) * 31., 4),
-                    round((np.pi/180.) * 9., 4)
-                ],
+            ##bladeAngle1
+            #"alpha_2" : [
+            #        round((np.pi/180.) * 44., 4),
+            #        round((np.pi/180.) * 30., 4),
+            #        round((np.pi/180.) * 31., 4),
+            #        round((np.pi/180.) * 9., 4)
+            #    ],
             "ratioX" : [
                      0.65,
                      0.70,
@@ -245,14 +245,25 @@ class Config():
             "layer_supports" : [0.5],
         }
         
+        #
         # input values for variation and their variation:
+        #
+
+
         self.varList = [
-            ["l_hub0", 0.5], ["l_hub1", 0.5], ["angle_hub1", 0.1],
-            ["l_shroud0", 0.5], ["l_shroud1", 0.5],  
+            ["l_hub0", 0.05], ["l_hub1", 0.05], ["angle_hub1", 0.05],
+            ["l_shroud0", 0.05], ["l_shroud1", 0.05],  
             ["alpha_1", 0.05], ["alpha_2", 0.05],
-            ["ratioX", 0.1], ["deltaY", 0.1],
-            ["t_le",0.1], ["t_mid", 0.1], ["t_te", 0.1],
+            ["ratioX", 0.05], ["deltaY", 0.05],
+            ["t_le",0.05], ["t_mid", 0.05], ["t_te", 0.05],
         ]
+        #self.varList = [
+        #    ["l_hub0", 0.5], ["l_hub1", 0.5], ["angle_hub1", 0.1],
+        #    ["l_shroud0", 0.5], ["l_shroud1", 0.5],  
+        #    ["alpha_1", 0.05], ["alpha_2", 0.05],
+        #    ["ratioX", 0.1], ["deltaY", 0.1],
+        #    ["t_le",0.1], ["t_mid", 0.1], ["t_te", 0.1],
+        #]
     
     def getConfig(self):
         # returns config dictionaries
@@ -617,13 +628,13 @@ if __name__ == "__main__":
     config = Config()
     varList = config.getVarList()
     
-    stateLbl = "variation"
+    stateLbl = "bladeAngle05_newVersion"
      
     # number of iterations
-    nIt = 3
+    nIt = 1
 
     # activates optimization
-    optiOn = True 
+    optiOn = False 
     
     # writer for the csv file
     evalFolder = "ofCase_eval"
@@ -684,11 +695,13 @@ if __name__ == "__main__":
                 print("Sucess")
                 row.append("success")
                 writer.writerow(row)
+                f.flush()
             except:
                 error_msg = traceback.format_exc()
                 print("Failed:\n", error_msg)
                 row.append(str(error_msg)) 
                 writer.writerow(row)
+                f.flush()
                 if individual == 0:
                     break
                 continue

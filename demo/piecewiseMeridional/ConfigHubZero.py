@@ -192,7 +192,7 @@ class ConfigHubZero():
         self.configLayer = {
             "label" : "radMeridionalContour",
             "nSlices" : 15,
-            "layer_thickness" : 0.2,
+            "layer_thickness" : 0.0775,
             "layer_supports" : [0.5],
         }
 
