@@ -6,8 +6,11 @@ import numpy as np
 import re
 import sys
 
-n_cores = 16 #sys.argv[1]
-case_name = "of_bladeAngle05_newVersion_0" #sys.argv[2]
+n_cores = sys.argv[1]
+case_name = sys.argv[2]
+
+print(str(n_cores))
+print(case_name)
 
 _case = './'+case_name+'/'
 #_case = './of_bladeAngle05_tolP001/'
@@ -31,25 +34,25 @@ if True:
         "epsilon": "fluxAveraging",
         "omega": "fluxAveraging"
       }
-  fc.fv_solution["relaxationFactors"] = {
-        "p": 0.2,
-        "U": 0.6,
-        "k": 0.6,
-        "epsilon": 0.6,
-        "omega": 0.6
-      }
-  fc.fv_solution["SIMPLE"] = {
-        "nNonOrthogonalCorrectors": 2
-      }
+  #fc.fv_solution["relaxationFactors"] = {
+  #      "p": 0.2,
+  #      "U": 0.6,
+  #      "k": 0.6,
+  #      "epsilon": 0.6,
+  #      "omega": 0.6
+  #    }
+  #fc.fv_solution["SIMPLE"] = {
+  #      "nNonOrthogonalCorrectors": 2
+  #    }
  
   fc.control_dict['DebugSwitches'] = {
           'mixingInterfacePolyPatch': 2
         }
   fc.control_dict['writeInterval'] = 100
-  fc.control_dict['endTime'] = 1000
+  fc.control_dict['endTime'] = 500
   fc.run()
   
-  fc.control_dict['endTime'] = 2500
+  fc.control_dict['endTime'] = 2000
   fc.control_dict['writeInterval'] = 10
   #fc.control_dict['purgeWrite'] = 10
   fc.turbulence_properties["RAS"]["turbulence"] = True

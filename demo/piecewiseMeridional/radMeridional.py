@@ -21,6 +21,12 @@ The following builder classes are used:
 
     - `analyticGeometry_piecewiseMeridionalRotContour`
 
+Based on the created meridional contour the bladed channels and a layered 
+region can be built with the two other classes.
+In those classes the geometries are created and mesh settings are applied.
+The final meshing is done outside of the class by returning the necessary 
+bounded volumes.
+
 Bladed channels (i.e. runner and guide vane channels) can be created with 
 the `createBlade` method. The defined blades are created inside the regular 
 channels which are handed over to the method from `createMeridional`. 
@@ -106,14 +112,13 @@ class radMeridional:
 	- Draft Tube Cone
     
     The following figure shows the resulting meshes of the different geometries:
-
      
     .. _all:
     .. figure:: bladeFigs/allGeoms.png
        :width: 100%
        :align: center
 
-       Final geometries and meshes of this example, with guid vane (top right),
+       Final geometries and meshes of this example, with guide vane (top right),
        runner (top left) and draft tube cone (bottom).
     
     The meridional contour of the machine is defined with the method `createMeridional`
@@ -608,13 +613,17 @@ class radMeridional:
     The mesh of the draft tube cone is created as a combination of an unstructured region
     and transfinite regions on the hub and shroud walls.
 
-    The method `createLayerRegion` is used for the generation and the meshing of the geometry. 
-    The basis for the draft tube cone geometry are the special hub and shroud curves and the 
-    inlet and outlet curves of the draft tube cone. The creation of the layers is specified 
-    
-    Those curves can are returned by the object of the class 
-    `analyticGeometry_piecewiseMeridionalRotContour` which was created in the `createMeridional`
-    method.
+    The method `createLayerRegion` is used for the generation and the meshing of the geometry.
+    In this method the class `analyticGeometry_layerRegion` is used to create the geometry.
+    The mesh settings are performed by the class `map3dTo3dGmsh_gridFromLayers`.
+
+    The basis for the draft tube cone geometry are the special hub and shroud curves and its 
+    inlet and outlet curves. 
+    The curves are returned by the object of the class `analyticGeometry_piecewiseMeridionalRotContour` 
+    which was created in the `createMeridional` method.
+     
+    :numref:`speCurves` shows the curves wich are handed to the `createLayerRegion` method from 
+    `createMeridional`.
      
     .. _speCurves:
     .. figure:: meridionalFigs/speCurves.png
@@ -623,7 +632,47 @@ class radMeridional:
 
        Special hub (speHub) and special shroud (speShroud) curves (black), as well as the inlet
        (red) and outlet (orange) curves of the draft tube cone.
+    
+    The creation of the layers is specified with a configuration dictionary.
 
+    A two dimensional layer face is build on each hub and shroud curve, which is not 
+    located on a radius of zero. Each layer face has four boundary curves. The first boundary curves
+    are the hub or shroud curves themselves. 
+
+    .. _layer2d:
+    .. figure:: meridionalFigs/layers2d.png
+       :width: 40%
+       :align: center
+
+       Two dimensional layer faces (blue) in the draft tube cone.
+    
+    
+    The second and fourth boundary curves extend from the walls into the flow channel. For the 
+    first and the last layer faces, at the hub and shroud, those are either the inlet or the outlet 
+    curves or a hub or shroud curve which is located on a radius of zero. 
+    At the intersect points of two hub or respectively shroud curves boundary curves extending into
+    the flow channel are built which point in a mean normal dircection of both curves.
+    The length of the created curves is determined by ``layer_thickness`` (:math:`t_{Layer}` in 
+    :numref:`layer2d` and :numref:`layerGen`) in the configuration dictionary.
+
+    The third boundary curves connect the second and fourth boundary curve inside the flow channel.
+    They are constructed from the end points of the second and fourth boundary curves and support 
+    points. Those support points are calculated by translating points on the hub and shroud curves,
+    in the normal direction of the curves at the support points. 
+    The position of the points on the hub and shroud curves is set with the list in ``layer_supports``.
+
+    The generation of the bounding curves of the hub layer is shown in the following figure.
+
+    .. _layerGen:
+    .. figure:: meridionalFigs/layerGen.png
+       :width: 80%
+       :align: center
+
+       Generation of layer bounding curves at the hub (black). 
+       Second and third bounding curves (left, blue), third bounding 
+       curve (right, blue).
+
+    Create the configuration dictionary:
 
     >>> configLayer = {
     ...     "label" : "radMeridionalContour",
@@ -632,28 +681,46 @@ class radMeridional:
     ...     "layer_supports" : [0.5],
     ... }
     
-    >>> generate.createLayerRegion(configLayer)
-    
-    .. _layer3d:
-    .. figure:: meridionalFigs/layers2d.png
-       :width: 66%
+    The transfinite layers volumes are created by rotating the layer faces according to the
+    specified number of slices  in ``nSlices`` (:math:`n_{Slices}` in :numref:`layers3d`). 
+    The unstructured region is build from its bounding surfaces. Those are the faces 
+    resulting from the third bounding curves of the layer faces and the inlet and outlet 
+    curves which connect to the region.
+    :numref:`layers3d` shows the volumes of the draft tube cone.
+
+    .. _layers3d:
+    .. figure:: meridionalFigs/layers3d.png
+       :width: 50%
        :align: center
 
-       Three dimensional section of the draft tube cone.
+       Volumes of the draft tube. Layer faces (blue), inlet (red) and outlet (orange).
+
+    
+    Create the layer region:
+    
+    >>> generate.createLayerRegion(configLayer)
+    
+
+    Mesh Generation
+    ---------------
+    
+    The object ``container`` and the vector handling objects for bounded 
+    volumes ``bV`` and ``cases`` can be returned with the get methods 
+    `getContainer` and `getbVAnddC`.
+    Those can be used to create the mesh files in `GMSH` or `openFOAM` cases.
+
+    Return ``container``, ``bV`` and ``dC`` from the ``generate`` object:
 
     >>> container = generate.getContainer()
     >>> bV, dC = generate.getbVAnddC()
     
-    .. _layerMesh:
-    .. figure:: meridionalFigs/layersMesh.png
-       :width: 66%
-       :align: center
+    With the following commands the meshes of the geometries are created:
 
-       Mesh of the draft tube cone.
+    >>> #bV["gv_mesh"].makeGrid()
+    >>> #bV["ru_mesh"].makeGrid()
+    >>> #bV["meshLayers"].makeGrid()
 
-    >>> bV["gv_mesh"].makeGrid()
-    >>> bV["ru_mesh"].makeGrid()
-    >>> bV["meshLayers"].makeGrid()
+    The resulting mesh files are shown in :numref:`all`
 
     """
 	
@@ -772,18 +839,6 @@ class radMeridional:
         
         from dtOOPythonApp.builder import ( map3dTo3dGmsh_gridFromLayers ) 
         # creating the mesh of the suction area with wall layers and the unstructured region
-        #self.container = map3dTo3dGmsh_gridFromLayers(
-        #        mv = mv,
-        #        bs = bs,
-        #        label = "meshLayers",
-        #        layers = layers,
-        #        nElementsLayer = 15,
-        #        firstElement = 0.001,
-        #        elementSize_sw = 0.02,
-        #        elementSize_circ = 0.01,
-        #        charLengthMin = 0.02,
-        #        charLengthMax = 0.04,
-        #    ).buildExtract(self.container)
         self.container = map3dTo3dGmsh_gridFromLayers(
                 mv = mv,
                 bs = bs,
@@ -791,11 +846,23 @@ class radMeridional:
                 layers = layers,
                 nElementsLayer = 15,
                 firstElement = 0.001,
-                elementSize_sw = 0.08,
-                elementSize_circ = 0.06,
-                charLengthMin = 0.05,
-                charLengthMax = 0.1,
+                elementSize_sw = 0.02,
+                elementSize_circ = 0.01,
+                charLengthMin = 0.02,
+                charLengthMax = 0.04,
             ).buildExtract(self.container)
+        #self.container = map3dTo3dGmsh_gridFromLayers(
+        #        mv = mv,
+        #        bs = bs,
+        #        label = "meshLayers",
+        #        layers = layers,
+        #        nElementsLayer = 15,
+        #        firstElement = 0.001,
+        #        elementSize_sw = 0.08,
+        #        elementSize_circ = 0.06,
+        #        charLengthMin = 0.05,
+        #        charLengthMax = 0.1,
+        #    ).buildExtract(self.container)
         
     #
     # build blade function
@@ -1157,32 +1224,6 @@ class radMeridional:
         from dtOOPythonApp.builder import (
           map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks
         )
-        #self.container = map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(
-        #    label = label+"_mesh",
-        #    channel = self.aG["xyz_"+label+"_gridChannel"],
-        #    channelFaces = gcFaces,
-        #    blocks = blocks,
-        #    nMeanplaneBlocks = nMeanplaneBlocks,
-        #    blade = self.aG["xyz_"+label+"_blade"],
-        #    nBoundaryLayers = 15,
-        #    nElementsSpanwise = 50,
-        #    nElementsNormal = 7,
-        #    firstElementSizeHubToShroud = 0.001,
-        #    firstElementSizeNormalBlade = 0.001,
-        #    bladeHubElementSize = scaOneD_scaCurve2dOneDPointConstruct(
-        #        [
-        #           dtOO.dtPoint2(0.00, 0.015),
-        #           dtOO.dtPoint2(0.45, 0.005),
-        #           dtOO.dtPoint2(0.50, 0.004),
-        #           dtOO.dtPoint2(0.55, 0.005),
-        #           dtOO.dtPoint2(1.00, 0.015),
-        #        ], 1
-        #    )(),
-        #    bladeHubElementScale = 0.3,
-        #    charLengthMax=0.015,
-        #    charLengthMin=0.015,
-        #    meshTEBlocks = True,
-        #).enableDebug().buildExtract( self.container )
         self.container = map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(
             label = label+"_mesh",
             channel = self.aG["xyz_"+label+"_gridChannel"],
@@ -1197,18 +1238,44 @@ class radMeridional:
             firstElementSizeNormalBlade = 0.001,
             bladeHubElementSize = scaOneD_scaCurve2dOneDPointConstruct(
                 [
-                   dtOO.dtPoint2(0.00, 0.04),
-                   dtOO.dtPoint2(0.45, 0.007),
-                   dtOO.dtPoint2(0.50, 0.007),
-                   dtOO.dtPoint2(0.55, 0.007),
-                   dtOO.dtPoint2(1.00, 0.04),
+                   dtOO.dtPoint2(0.00, 0.015),
+                   dtOO.dtPoint2(0.45, 0.005),
+                   dtOO.dtPoint2(0.50, 0.004),
+                   dtOO.dtPoint2(0.55, 0.005),
+                   dtOO.dtPoint2(1.00, 0.015),
                 ], 1
             )(),
             bladeHubElementScale = 0.3,
-            charLengthMax=0.1,
-            charLengthMin=0.04,
+            charLengthMax=0.015,
+            charLengthMin=0.015,
             meshTEBlocks = True,
         ).enableDebug().buildExtract( self.container )
+        #self.container = map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(
+        #    label = label+"_mesh",
+        #    channel = self.aG["xyz_"+label+"_gridChannel"],
+        #    channelFaces = gcFaces,
+        #    blocks = blocks,
+        #    nMeanplaneBlocks = nMeanplaneBlocks,
+        #    blade = self.aG["xyz_"+label+"_blade"],
+        #    nBoundaryLayers = 15,
+        #    nElementsSpanwise = 50,
+        #    nElementsNormal = 7,
+        #    firstElementSizeHubToShroud = 0.001,
+        #    firstElementSizeNormalBlade = 0.001,
+        #    bladeHubElementSize = scaOneD_scaCurve2dOneDPointConstruct(
+        #        [
+        #           dtOO.dtPoint2(0.00, 0.04),
+        #           dtOO.dtPoint2(0.45, 0.007),
+        #           dtOO.dtPoint2(0.50, 0.007),
+        #           dtOO.dtPoint2(0.55, 0.007),
+        #           dtOO.dtPoint2(1.00, 0.04),
+        #        ], 1
+        #    )(),
+        #    bladeHubElementScale = 0.3,
+        #    charLengthMax=0.1,
+        #    charLengthMin=0.04,
+        #    meshTEBlocks = True,
+        #).enableDebug().buildExtract( self.container )
     
     #
     # returns a list with dtPoint2 types and spline orders
