@@ -182,13 +182,13 @@ class Config():
                      round((np.pi/180.) * 75., 4),
                      round((np.pi/180.) * 52., 4)
                  ],
-            # bladeAngle05 :
-            "alpha_2" : [
-                    round((np.pi/180.) * 45., 4),
-                    round((np.pi/180.) * 31., 4),
-                    round((np.pi/180.) * 32., 4),
-                    round((np.pi/180.) * 10., 4)
-                ],
+            ## bladeAngle05 :
+            #"alpha_2" : [
+            #        round((np.pi/180.) * 45., 4),
+            #        round((np.pi/180.) * 31., 4),
+            #        round((np.pi/180.) * 32., 4),
+            #        round((np.pi/180.) * 10., 4)
+            #    ],
             ## bladeAngle0
             #"alpha_2" : [
             #        round((np.pi/180.) * 46., 4),
@@ -196,13 +196,13 @@ class Config():
             #        round((np.pi/180.) * 33., 4),
             #        round((np.pi/180.) * 11., 4)
             #    ],
-            ##bladeAngle1
-            #"alpha_2" : [
-            #        round((np.pi/180.) * 44., 4),
-            #        round((np.pi/180.) * 30., 4),
-            #        round((np.pi/180.) * 31., 4),
-            #        round((np.pi/180.) * 9., 4)
-            #    ],
+            #bladeAngle1
+            "alpha_2" : [
+                    round((np.pi/180.) * 44., 4),
+                    round((np.pi/180.) * 30., 4),
+                    round((np.pi/180.) * 31., 4),
+                    round((np.pi/180.) * 9., 4)
+                ],
             "ratioX" : [
                      0.65,
                      0.70,
@@ -451,7 +451,9 @@ def createOFCase(container, bV, dC, stateLbl, indiv, h_inlet, h_shroud):
     container = combineGmsh_fullRotate(
     	label = "ru_mesh_combined",
 	section = bV["ru_mesh"],
-	numberOfSections = 15
+	numberOfSections = 15,
+    absTol = 5.0e-4,
+    relTol = 1.0e+99
     ).buildExtract( container )
 
     container = combineGmsh_fullRotate(
@@ -484,11 +486,11 @@ def createOFCase(container, bV, dC, stateLbl, indiv, h_inlet, h_shroud):
             application = "simpleFoam",
             endTime = 2000,
             # Patches where Q and PT is tracked
-            QPatches = ['gv_mesh_combined_inlet', 'gv_mesh_outlet', 
+            QPatches = ['gv_mesh_combined_inlet', 'gv_mesh_combined_outlet', 
                         'ru_mesh_combined_inlet', 'ru_mesh_combined_outlet',
                         'meshLayers_combined_inlet', 'meshLayers_combined_outlet',
                         'dt_mesh_inlet', 'dt_mesh_outlet'],
-            PTPatches = ['gv_mesh_combined_inlet', 'gv_mesh_outlet',
+            PTPatches = ['gv_mesh_combined_inlet', 'gv_mesh_combined_outlet',
                         'ru_mesh_combined_inlet', 'ru_mesh_combined_outlet',
                         'meshLayers_combined_inlet', 'meshLayers_combined_outlet',
                         'dt_mesh_inlet', 'dt_mesh_outlet'],
@@ -651,7 +653,7 @@ if __name__ == "__main__":
     config = Config()
     varList = config.getVarList()
     
-    stateLbl = "bladeAngle05_fullRotate_gv_ggi"
+    stateLbl = "bladeAngle1_fullRotate_gv_ggi"
      
     # number of iterations
     nIt = 1
