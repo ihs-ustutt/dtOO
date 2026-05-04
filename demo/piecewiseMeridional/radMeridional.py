@@ -727,21 +727,27 @@ class radMeridional:
     def __init__(
         self,
     ):
-	
-        """Constructor.
+        """Initalize the radMeridional object. 
 
+        This constructor:
+        - Creates the main dtOO container
+        - Initializes logging
+        - Configures static dtOO properties
+        - Sets up base container and vector handlers
+        - Initializes labeled vector handling objects (bC, cV, aF, aG, bV, dC, dP)
+        
         Parameters
         ----------
+        None
 
         Returns
         -------
         None
 
         """ 
-        # Create an empty self.container
+        # Create an empty container
         self.container = dtOO.dtBundle()
 
-        #importlib.reload(builder)
         # Create log file
         dtOO.logMe.initLog('build.log')
 
@@ -793,9 +799,67 @@ class radMeridional:
         self.dC = self.container.cptr_dC()
         self.dP = self.container.cptr_dP()
 
-    def createMeridional(self, configM, hubCurves, shroudCurves):
-         
-        # creating the meridional contour
+    def createMeridional(self, configM, hubCurves, shroudCurves): 
+        """Create the regular channels and special hub and shroud curves. 
+        
+        This method:
+        - Splits the hub and shroud curves at the interfaces.
+        - Creates the interface curves.
+        - Creates regular channels between the inlet and the interfaces.
+        - Creates the special hub and shroud curves after the last interface.
+
+        Parameters
+        ----------
+        configM : dict
+          Dictionary containing the interface parameters with the
+          following keys:
+
+          - **label** (*str*): 
+            Label.
+
+          - **interface_hub** (*List[Tuple[int, float]]*): 
+            Positions of the interfaces on the hub curves. 
+            Each entry represents:
+
+              - ``interface_hub[i]``: Interface number
+              - ``interface_hub[i][0]``: Curve number where the interface is located
+              - ``interface_hub[i][1]``: Percentage on curve (0 to 1)
+
+          - **interface_shroud** (*List[Tuple[int, float]]*): 
+            Positions of the interfaces on the shroud curves. 
+            Each entry represents:
+
+              - ``interface_shroud[i]``: Interface number
+              - ``interface_shroud[i][0]``: Curve number where the interface is located
+              - ``interface_shroud[i][1]``: Percentage on curve (0 to 1)
+
+          - **interface_curvature** (*List[Tuple[float, float, int]]*): 
+            Curvature of the interface curve from hub to shroud. 
+            Each entry represents:
+
+              - ``interface_curvature[i]``: Interface number
+              - ``interface_curvature[i][0]``: Curvature offset point [%] from hub to shroud
+              - ``interface_curvature[i][1]``: Curvature in % of length of connection line
+              - ``interface_curvature[i][2]``: Curvature direction
+
+        hubCurves : List[analyticGeometry]
+          List containing the hub curves.
+
+        shroudCurves : List[analyticGeometry]
+          List containing the shroud curves.
+
+        Returns
+        -------
+        None
+
+        """
+        
+        #
+        # Create the interface curves and the regular chennels as well as the special 
+        # hub and shroud curves.
+        # radMeridionalContour object is used in the other methods to return the 
+        # Geometries.
+        #
         from dtOOPythonApp.builder import analyticGeometry_piecewiseMeridionalRotContour
         self.radMeridionalContour = analyticGeometry_piecewiseMeridionalRotContour( 
           label = configM["label"],
@@ -808,11 +872,50 @@ class radMeridional:
         self.container = self.radMeridionalContour.buildExtract(self.container)
     
     def createLayerRegion(self, configL):
+        """Create a layered flow channel geometry. 
+        
+        This method:
+        - Takes the special hub and shroud curves from the radMeridionalContour object.
+        - Creates transfinite faces on the hub and shroud curves.
+        - Creates a multiple bounded volume inside the flow channel.
+        - Applies mesh settings to the geometry regions.
+
+        Parameters
+        ----------
+        configL : dict
+          Dictionary containing the parameters for the layers with the
+          following keys:
+
+          - **label** (*str*): 
+            Label.
+
+          - **nSlices** (*int*): 
+            Number of total slices. Geometry will be 360°/nSlices.
+
+          - **layer_thickness** (*float*): 
+            Thickness of the layers on the hub and shroud curves.
+
+          - **layer_supports** (*List[float]*): 
+            Number of layer support points and their
+            positions on each hub and shroud curve.
+        
+        Returns
+        -------
+        None
+
+        """
+
         #
-        # Building Layer Region
+        # Return the special hub and shroud curves and inlet and outlet curves
+        # of the layered region from the radMeridionalContour object, which was 
+        # created in the createMeridional method.
         #
         speHub, speShroud, inOutCurves = self.radMeridionalContour.getLayerRegionCurves()
-        # creating the layer region object
+        
+        #
+        # Build the layer region geometry as transfinite layers and 
+        # a multiple bounded volume
+        #
         from dtOOPythonApp.builder import analyticGeometry_layerRegion
         layerRegion = analyticGeometry_layerRegion( 
           label = configL["label"],
@@ -825,20 +928,38 @@ class radMeridional:
         self.container = layerRegion.buildExtract(self.container)
         
         #
-        # Meshing of layer region
+        # Apply mesh settings to the layer region
         #
-        # returning the hub and shroud layers
-        layers = layerRegion.getLayerList(configL["nSlices"])    
-        # returns layer data in the following nested list:
-        # layers = [[hub layer lists],[shroud layer list]]
+        
+        #
+        # Return  the data of the layers a nested list with the following format:
+        # layers = Tuple[
+        #     Tuple[
+        #         List[analyticGeometry], List[bool]
+        #     ], 
+        #     Tuple[
+        #         List[analyticGeometry], List[bool]
+        #     ]
+        # ]
         # with:
-        # [hub layer lists] = [[3d layer domain], [bool list radius zero]]
-
-        # returns the unstructured region and its surfaces
+        # layers[0] : Hub Layers
+        # layers[1] : Shroud Layers
+        # layers[i][0] : List of layer volumes
+        # layers[i][1] : List of bool values which tell if the layer is on a radius of zero
+        #
+        layers = layerRegion.getLayerList(configL["nSlices"])    
+        
+        #
+        # The volume inside the flow channels is returened as the mutliple bounded volume mv
+        # its bounding surfaces are returned in the list bs
+        #
         mv, bs = layerRegion.getUnstructuredRegion(configL["nSlices"])
         
         from dtOOPythonApp.builder import ( map3dTo3dGmsh_gridFromLayers ) 
-        # creating the mesh of the suction area with wall layers and the unstructured region
+        
+        # 
+        # Apply the mesh settings to the layers and the multiple bounded volume
+        #
         self.container = map3dTo3dGmsh_gridFromLayers(
                 mv = mv,
                 bs = bs,
@@ -863,12 +984,100 @@ class radMeridional:
         #        charLengthMin = 0.05,
         #        charLengthMax = 0.1,
         #    ).buildExtract(self.container)
-        
-    #
-    # build blade function
-    #
+       
+
+
     def createBlade(self, configB):
         
+        """Create blade geometry and the grid channel of the blade. 
+        
+        This method:
+
+        - Creates blade in parametere space by combining the meanplane
+          with the thickness distribution.
+        - Maps the blade onto a regular chennel returned by the 
+          radMeridionalContour object.
+        - Creates six sided mesh blocks surrounding the blade.
+        - Creates six sided mesh blocks at the blades' trailing edge.
+        - Creates meanplanes extending from the mesh blocks towards the
+          in- and outlets of the channel.
+        - Creates the grid channel from the mesh blocks and a multiple
+          bounded volume with the meanplane and meshblock faces.
+        - Applies mesh settings to the geometry regions.
+        
+        The inputs are handed to the methods with a configuration dictionary.
+        The entries of the type List[floats] in this dictionary give the blade 
+        parameters along the blades' span from hub to shroud.
+
+        Parameters
+        ----------
+        configB : dict
+          Dictionary containing the parameters for the layers with the
+          following keys:
+
+          - **label** (*str*): 
+            Label.
+
+          - **regChannel** (*int*): 
+            Number of the regular channel in which the blade is created.
+
+          - **nBlades** (*int*): 
+            Number of total blades. Geometry will be 360°/nBlades.
+
+          - **spanwiseCuts_mp** (*List[float]*): 
+            Percentages of spanwise cuts where the blade's meanplane is created.
+
+          - **alpha_1** (*List[float]*): 
+            Blade inlet angles along spanwise direction from hub to shroud.
+
+          - **alpha_2** (*List[float]*): 
+            Blade outlet angles along spanwise direction from hub to shroud.
+
+          - **ratioX** (*List[float]*): 
+            Ratio between expanse of the blades' inlet and outlet angles for the x-direction along blade span.
+
+          - **deltaY** (*List[float]*): 
+            Blade length in y direction along blade span.
+
+          - **offX** (*List[float]*): 
+            Blade offsets in x-direction along blade span.
+
+          - **offY** (*List[float]*): 
+            Blade offsets in y-direction along blade span.
+
+          - **spanwiseCuts_td** (*List[float]*): 
+            Percentages of spanwise cuts where the blades' thickness distribution is created.
+
+          - **t_le** (*List[float]*): 
+            Thicknesses at the blades' leading edge along the blades' span.
+
+          - **u_le** (*List[float]*): 
+            Percentage of the u-positions of the leading edge thicknesses along the blades' span.
+
+          - **t_mid** (*List[float]*): 
+            Thicknesses at the blades' middle along the blades' span.
+
+          - **u_mid** (*List[float]*): 
+            Percentage of the u-positions of the thicknesses in the middle along the blades' span.
+
+          - **t_te** (*List[float]*): 
+            Thicknesses at the blades' trailing edge along the blades' span.
+
+          - **u_te** (*List[float]*): 
+            Percentage of the u-positions of the trailing edge thicknesses along the blades' span.
+
+          - **adjustRadius** (*bool*): 
+            Enables adjusting the blades curvature along the channel radius.
+        
+        Returns
+        -------
+        None
+
+        """
+
+        #
+        # Assign the entries of the configuration dictionary to variables.
+        #
         label = configB["label"]
         regChannel = configB["regChannel"]
         nBlades = configB["nBlades"]
@@ -890,14 +1099,23 @@ class radMeridional:
         u_te = configB["u_te"]
         
         adjustRadius = configB["adjustRadius"]
-
+        
+        #
+        # Return the regular channel from the radMeridionalContour object,
+        # which is created in the method createMeridional.
+        #
         self.aG.push_back(
             self.radMeridionalContour.getRegChannel(
                 regChannel, 1
             ) << "xyz_"+label+"_channel"
         )
+
         #
-        # meanplane
+        # Create the blades' meanplane in the parameter space.
+        #
+        # The method fillInputList transforms the lists form the configuration
+        # dictionary into a valid input for the class constructor
+        # scaOneD_scaCurve2dOneDPointConstruct.
         #
         from dtOOPythonApp.builder import (
             analyticSurface_threePointMeanplaneFromRatio,
@@ -927,7 +1145,7 @@ class radMeridional:
         ).buildExtract( self.container )
         
         #
-        # thickness distribution
+        # Create the blades' thickness distribution in the parameters space.
         #
         from dtOOPythonApp.builder import (
           vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution
@@ -956,7 +1174,7 @@ class radMeridional:
         ).buildExtract( self.container )
 
         #
-        # Combination of the Meanplane and the Thickness distribution
+        # Combine the meanplane and the thickness distribution in the parameter space.
         #
         dAdd = dtOO.discreteAddNormal()
         dAdd.jInit(
@@ -977,7 +1195,8 @@ class radMeridional:
         self.aF.push_back( theAF.clone() )
         
         #
-        # conformalMapping
+        # Create a conformal mapping object with the regular channel
+        # and the adjustRadius setting.
         #
         conMap = dtOO.uVw_phirMs()
         conMap.jInit(
@@ -1007,7 +1226,8 @@ class radMeridional:
         #  self.aG.push_back( theAG << "xyz_"+str(ii) )
         
         #
-        # mesh block
+        # Create a surface around the blade surface with a normal distance
+        # specified by meshBlock_thickness.
         #
         meshBlock_thickness = 0.025 
         fRef = dtOO.vec3dMuParserTwoD(
@@ -1035,7 +1255,18 @@ class radMeridional:
         self.aF.push_back( theAF.clone() )
         
         #
-        # split mesh block
+        # The class vec3dThreeD_skinAndSplit does the following tasks:
+        #   - Create mesh blocks by splitting the mesh black surface.
+        #   - Create trailing edge mesh blocks based on the first and last
+        #     mesh block.
+        #   - Creates a meanplane curve by offseting mesh block edges in the
+        #     tangential directions of the mesh blocks.
+        #     These curves will later be used to create peridoc faces of the
+        #     grid channel.
+        #     Two meanplane curves are created, one offset from the first mesh
+        #     block extending towards the outlet and one offset from the meshblock
+        #     specified with nMeanplaneBlocks extending towards the inlet of the
+        #     regular channel.
         #
 
         # number of mesh block faces which will be part of the meanplane
@@ -1065,12 +1296,15 @@ class radMeridional:
           nMeanplaneBlocks = nMeanplaneBlocks
         ).buildExtract(self.container)
         
-        # building the meanplane faces extending from the mesh blocks 
-        #  to the tangentially offset meanplane curve
+        #
+        # Build the two meanplane faces extending from the mesh block edges 
+        # to the tangentially offset meanplane curves.
+        #
         for i in range(2):
-            # curve seqence is switched between inlet and outlet in 
-            #  order to keep u and v directions consistent with the 
-            #  mesh block faces
+            #
+            # curve seqence is switched with c0 and c1 between inlet and outlet in 
+            # order to keep u and v directions consistent with the mesh block faces.
+            #
             if i == 0:
                 at = "in"
                 c0 = 0
@@ -1079,7 +1313,10 @@ class radMeridional:
                 at = "out"
                 c0 = 1
                 c1 = 0
-            # generating faces
+            # 
+            # Create the fe_meanplane faces. Those will later be used as part of the
+            # periodic faces of the grid channel.
+            #
             surf = dtOO.vec3dSurfaceTwoD(
                 dtOO.bSplineSurface_exchangeSurfaceConstructOCC(
                     dtOO.bSplineSurface_skinConstructOCC(
@@ -1095,9 +1332,10 @@ class radMeridional:
             self.aF.push_back(surf << label+"_fe_meanplane_"+at+str(0))
  
         #
-        # do conformal mapping
+        # Apply the conformal mapping object the following geometries.
         #
-        #  mapping single faces
+        #   - faces of the blade meanplane, the blade and the mesh blocks
+        #
         for ii in [label+"_meanplane", label+"_blade", label+"_meshBlock",]:
           theAG = dtOO.vec3dTwoDInMap3dTo3d(
             dtOO.vec3dTwoD.MustConstDownCast(
@@ -1107,7 +1345,9 @@ class radMeridional:
           )
           theAG.setLabel("xyz_"+ii)
           self.aG.push_back( theAG.clone() )
-        #  mapping multiple faces (aF of meanplanefaces)
+        #
+        #   - fe_meanplane faces extending tangentially from the mesh blocks.
+        #
         for iNum in self.aF.getIndices(label+"_fe_meanplane_*"):
           ii = self.aF.getLabel( iNum )
           theAG = dtOO.vec3dTwoDInMap3dTo3d(
@@ -1118,7 +1358,9 @@ class radMeridional:
           )
           theAG.setLabel("xyz_"+ii)
           self.aG.push_back( theAG.clone() )
-        #  mapping multiple volumes
+        #
+        #   - mesh block volumes
+        #
         for iNum in self.aF.getIndices(label+"_meshBlock_*"):
           ii = self.aF.getLabel( iNum )
           theAG = dtOO.vec3dThreeDInMap3dTo3d(
@@ -1129,7 +1371,9 @@ class radMeridional:
           )
           theAG.setLabel("xyz_"+ii)
           self.aG.push_back( theAG.clone() )
-        #  mapping multiple curves (meshBlockCurves)
+        #
+        #   - mesh block curves which were used to create the fe_meanplane faces
+        #
         for iNum in self.aF.getIndices(label+"_meshBlockCurve_*"):
           ii = self.aF.getLabel( iNum )
           theAG = dtOO.vec3dOneDInMap3dTo3d(
@@ -1141,17 +1385,20 @@ class radMeridional:
           theAG.setLabel("xyz_"+ii)
           self.aG.push_back( theAG.clone() )
         
-
-        # collecting the curves for the meanplane
-        # mesh block curves extend form hub to shroud and are tangentially 
-        #  offset from the specified mesh block faces
+        #
+        # Collect the curves for the fe_meanplane faces.
+        # The curves extend form hub to shroud and are tangentially 
+        # offset from the specified mesh block faces
+        #
         meshBlockCurves = dtOO.labeledVectorHandlingAnalyticGeometry()
         for iNum in self.aG.getIndices("xyz_"+label+"_meshBlockCurve_*"):
             ii = self.aG.getLabel( iNum )
             meshBlockCurves.push_back(self.aG[ii].clone())
         
-        # creating the meanplane surfaces extending from the tangentially 
-        #  offset meshblock curves to the inlet or the outlet
+        #
+        # Create the fe_meanplane surfaces extending from the tangentially 
+        # offset meshblock curves to the inlet or the outlet.
+        #
         from dtOOPythonApp.builder import analyticSurface_inOutFeMeanplane
         self.container = analyticSurface_inOutFeMeanplane(
             prefix = "xyz",
@@ -1161,47 +1408,61 @@ class radMeridional:
         ).enableDebug().buildExtract(self.container)
          
         #
-        # ordering geometries for meshing
+        # Order the gemetries for the cration of the grid channel.
         #
-        # collecting and organizing mesh blocks
+        # Collect and organize the mesh block volumes.
+        # The mesh blocks are ordered by their number.
+        #
         blocks = []
         for iNum in self.aG.getIndices("xyz_"+label+"_meshBlock_*"):
             blocks.append( self.aG[ self.aG.getLabel( iNum ) ] )
-        # sorting the blocks by number
         blocks.sort(key=lambda x: int(x.getLabel().split('_')[-1]))
         
-        # collecting relevant faces
-        # couplingFaces contains the faces which will connect the
-        #   mesh block to the grid channel
-        # meanplaneFaces are the faces which will form the periodic
-        #   boundaries of the grid
+        #
+        # Collect the coupling and meanplane faces.
+        # The list couplingFaces contains the faces which will connect the
+        # mesh block to the grid channel.
+        # The list meanplaneFaces contains the faces which will form the 
+        # periodic boundaries of the grid.
+        #
         couplingFaces = []
         meanplaneFaces = []
-
-        # faces extending from outlet to the mesh block trailing edge 
+        
+        #
+        # Faces extending from outlet to the mesh block trailing edge. 
+        #
         meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_out1"]))
         meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_out0"]))
-
+        
+        #
+        # Iterate over the mesh blocks and sort the faces.
+        #
         for i, block in enumerate(blocks):
           face = dtOO.map3dTo3d.MustDownCast( block ).segmentConstWPercent( 1.0 )
           
-          # appending the specified meanplane and coupling faces on the mesh blocks 
+          #
+          # Append the specified meanplane and coupling to the lists. 
+          #
           if i <= nMeanplaneBlocks:
             meanplaneFaces.append(face)
             self.aG.push_back(face.clone() << "xyz_"+label+"_meanplaneFaceOnBlock_"+str(i))
           else:
             couplingFaces.append(face)
         
-        # faces extending from the mesh block leading edge area to the inlet
+        #
+        # Faces extending from the mesh block leading edge area to the inlet.
+        #
         meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_in0"]))
         meanplaneFaces.append(dtOO.map2dTo3d.MustDownCast(self.aG["xyz_"+label+"_fe_meanplane_in1"]))
         
-        # last two coupling faces at trailing edge
+        #
+        # Last two coupling faces at the trailing edge.
+        #
         couplingFaces.append(dtOO.map3dTo3d.MustDownCast(blocks[-1]).segmentConstUPercent( 1.0 ))
         couplingFaces.append(dtOO.map3dTo3d.MustDownCast(blocks[0]).segmentConstUPercent( 0.0 ))
         
         #
-        # create grid channel
+        # Create the grid channel.
         #
         from dtOOPythonApp.builder import multipleBoundedVolume_gridChannel
         gridChannel = multipleBoundedVolume_gridChannel(
@@ -1212,14 +1473,17 @@ class radMeridional:
             nBlades = nBlades
         ).enableDebug()
         self.container = gridChannel.buildExtract(self.container)
-        
+        #
+        # Return the multiple bounded volume of the grid channel as well
+        # as the list with its boundary faces.
+        #
         gc, gcFaces = gridChannel.getGridChannel()
         self.aG.push_back(
             gc << "xyz_"+label+"_gridChannel"
         )
         
         #
-        # generating mesh
+        # Apply the mesh settings to the grid channel.
         #
         from dtOOPythonApp.builder import (
           map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks
@@ -1281,33 +1545,105 @@ class radMeridional:
     # returns a list with dtPoint2 types and spline orders
     #  with spanwise cut percentage and blade input parameters
     #
-    def fillInputList(self, inList):
+    def fillInputList(self, inList): 
+        """Create inputs for scaOneD_scaCurve2dOneDPointConstruct class.
+
+        Takes the input lists for the createBlade method and transforms them
+        into inputs of the scaOneD_scaCurve2dOneDPointConstruct class.
+
+        Creates a List with dtPoint2 objects which contain a input value from
+        the input list and the spanwise percentage of the blade where this value 
+        is applied. The percentage is calculated from the length of the input
+        list as a normalized index.
+        Based on the list length the order of the scaOneD_scaCurve2dOneDPointConstruct
+        function is calculated.
         
-        # only one entry
+
+        Parameters
+        ----------
+        inList : List[float]
+          List containing the input values along the blades' span.
+
+        Returns
+        -------
+        outList : List[dtPoint2[float, float]]
+          Input parameter and its percenatage along the blades' span.
+          
+        order : int
+          Order of the function.
+
+        """
+        #
+        # If the input list has only one entrie the values are kept 
+        # constant along the spanwise direction.
+        #
         if len(inList) == 1:
-            # the inputs will be the same at spanwiseCut 0 and 1
+            #
+            # The inputs will be the same at spanwiseCut 0 and 1.
+            # The odere is one.
+            #
             outList = [
                         dtOO.dtPoint2(0.00, inList[0]), 
                         dtOO.dtPoint2(1.00, inList[0]),
                       ]      
             order = 1
-
+        
+        #
+        # Else the parameter vary along the spanwise direction.
+        #
         else:
             outList = []
+            #
+            # Iterate over the input list.
+            #
             for nL in range(len(inList)):
-                # calculating the percentage of the spanwise cut from normalized index
+                #
+                # Calculate the percentage of the spanwise cut from the normalized index
+                #
                 cutPercent = nL/(len(inList)-1)
-                # appending percentage and input
+                #
+                # Append the percentage and input as a dtPoint2 object to the outList.
+                #
                 outList.append(dtOO.dtPoint2(cutPercent, inList[nL]),)
             
-            #the order is one less than the number of inputs
+            #
+            # The order is one less than the length of the input list.
+            #
             order = len(inList) -1
         
         return outList, order
     
     def getContainer(self):
+        """Return the container object.
+        
+        Are used to create an openFOAM cases.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        container: dtBundle
+          Initialization of the dtBundle.
+        """
         return self.container
 
     def getbVAnddC(self):
+        """Return the bV and dC object.
+        
+        Are used to create the meshes and openFoam cases.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        bV: lvH_boundedVolume
+          Labeled vector handling of bounded volumes.
+        dC: lvh_dtCase
+          Labeled vector handling of cases.
+        """
         return self.bV, self.dC
 
