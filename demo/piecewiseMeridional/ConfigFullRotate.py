@@ -182,13 +182,13 @@ class Config():
                      round((np.pi/180.) * 75., 4),
                      round((np.pi/180.) * 52., 4)
                  ],
-            ## bladeAngle05 :
-            #"alpha_2" : [
-            #        round((np.pi/180.) * 45., 4),
-            #        round((np.pi/180.) * 31., 4),
-            #        round((np.pi/180.) * 32., 4),
-            #        round((np.pi/180.) * 10., 4)
-            #    ],
+            # bladeAngle05 :
+            "alpha_2" : [
+                    round((np.pi/180.) * 45., 4),
+                    round((np.pi/180.) * 31., 4),
+                    round((np.pi/180.) * 32., 4),
+                    round((np.pi/180.) * 10., 4)
+                ],
             ## bladeAngle0
             #"alpha_2" : [
             #        round((np.pi/180.) * 46., 4),
@@ -196,13 +196,13 @@ class Config():
             #        round((np.pi/180.) * 33., 4),
             #        round((np.pi/180.) * 11., 4)
             #    ],
-            #bladeAngle1
-            "alpha_2" : [
-                    round((np.pi/180.) * 44., 4),
-                    round((np.pi/180.) * 30., 4),
-                    round((np.pi/180.) * 31., 4),
-                    round((np.pi/180.) * 9., 4)
-                ],
+            ##bladeAngle1
+            #"alpha_2" : [
+            #        round((np.pi/180.) * 44., 4),
+            #        round((np.pi/180.) * 30., 4),
+            #        round((np.pi/180.) * 31., 4),
+            #        round((np.pi/180.) * 9., 4)
+            #    ],
             "ratioX" : [
                      0.65,
                      0.70,
@@ -250,12 +250,19 @@ class Config():
         #
 
 
+        #self.varList = [
+        #    ["l_hub0", 0.05], ["l_hub1", 0.05], ["angle_hub1", 0.05],
+        #    ["l_shroud0", 0.05], ["l_shroud1", 0.05],  
+        #    ["alpha_1", 0.05], ["alpha_2", 0.05],
+        #    ["ratioX", 0.05], ["deltaY", 0.05],
+        #    ["t_le",0.05], ["t_mid", 0.05], ["t_te", 0.05],
+        #]
         self.varList = [
-            ["l_hub0", 0.05], ["l_hub1", 0.05], ["angle_hub1", 0.05],
-            ["l_shroud0", 0.05], ["l_shroud1", 0.05],  
-            ["alpha_1", 0.05], ["alpha_2", 0.05],
-            ["ratioX", 0.05], ["deltaY", 0.05],
-            ["t_le",0.05], ["t_mid", 0.05], ["t_te", 0.05],
+            ["l_hub0", 0.1], ["l_hub1", 0.1], ["angle_hub1", 0.1],
+            ["l_shroud0", 0.1], ["l_shroud1", 0.1],  
+            ["alpha_1", 0.1], ["alpha_2", 0.1],
+            ["ratioX", 0.1], ["deltaY", 0.1],
+            ["t_le",0.1], ["t_mid", 0.1], ["t_te", 0.1],
         ]
         #self.varList = [
         #    ["l_hub0", 0.5], ["l_hub1", 0.5], ["angle_hub1", 0.1],
@@ -286,9 +293,9 @@ def run(*args, **kwargs):
     varList = config.getVarList()
     
     # individual which will be recreated
-    target_individual = 2
+    target_individual = 13
     
-    stateLbl = "variation"
+    stateLbl = "variation_ru10"
     evalFolder = "ofCase_eval"
     
     # open csv which saves the varied parameters
@@ -336,19 +343,19 @@ def run(*args, **kwargs):
     # create meridional channel
     generate.createMeridional(configMeridional, hubCurves, shroudCurves)
 
-    # create guide vane
-    generate.createBlade(configGuideVane)
+    ## create guide vane
+    #generate.createBlade(configGuideVane)
 
     # create runner
     generate.createBlade(configRunner)
 
-    # create layered region
-    generate.createLayerRegion(configLayer)
+    ## create layered region
+    #generate.createLayerRegion(configLayer)
     
     # return bV and dC in order to generate the mesh files
     bV, dC = generate.getbVAnddC()
     #bV["gv_mesh"].makeGrid()
-    bV["ru_mesh"].makeGrid()
+    #bV["ru_mesh"].makeGrid()
     #bV["meshLayers"].makeGrid()
     
     # paraview plotting
@@ -452,8 +459,6 @@ def createOFCase(container, bV, dC, stateLbl, indiv, h_inlet, h_shroud):
     	label = "ru_mesh_combined",
 	section = bV["ru_mesh"],
 	numberOfSections = 15,
-    absTol = 5.0e-4,
-    relTol = 1.0e+99
     ).buildExtract( container )
 
     container = combineGmsh_fullRotate(
@@ -468,16 +473,16 @@ def createOFCase(container, bV, dC, stateLbl, indiv, h_inlet, h_shroud):
     	print(bV.getLabel( iNum ))
     
     #
-    # of case setup
+    # of case setup GENERAL GRID INTERFACE
     #
 
     from dtOOPythonApp.builder import (
       ofOpenFOAMCase_turboMachine,
       ofOpenFOAMCase_setupWrapper
     )
-
+    
     container = ofOpenFOAMCase_turboMachine(
-      label = "of",
+      label = "of_GGI",
       bVs = [
         bV["gv_mesh_combined"], bV["ru_mesh_combined"], bV["meshLayers_combined"], bV["dt_mesh"],
       ],
@@ -645,21 +650,199 @@ def createOFCase(container, bV, dC, stateLbl, indiv, h_inlet, h_shroud):
 
     ).buildExtract( container )
     
-    dC["of"].runCurrentState()
+    dC["of_GGI"].runCurrentState()
+     
+    #
+    # of case setup MIXING PLANE
+    #
+
+    container = ofOpenFOAMCase_turboMachine(
+      label = "of_MP",
+      bVs = [
+        bV["gv_mesh"], bV["ru_mesh"], bV["meshLayers"], bV["dt_mesh"],
+      ],
+      dictRule = \
+          ofOpenFOAMCase_setupWrapper.controlDict(
+            application = "simpleFoam",
+            endTime = 2000,
+            # Patches where Q and PT is tracked
+            QPatches = ['gv_mesh_inlet', 'gv_mesh_outlet', 
+                        'ru_mesh_inlet', 'ru_mesh_outlet',
+                        'meshLayers_inlet', 'meshLayers_outlet',
+                        'dt_mesh_inlet', 'dt_mesh_outlet',
+                        'gv_mesh_suction', 'gv_mesh_pressure',
+                        'ru_mesh_suction', 'ru_mesh_pressure',
+                        'meshLayers_periodic0', 'meshLayers_periodic1'],
+            PTPatches = ['gv_mesh_inlet', 'gv_mesh_outlet',
+                        'ru_mesh_inlet', 'ru_mesh_outlet',
+                        'meshLayers_inlet', 'meshLayers_outlet',
+                        'dt_mesh_inlet', 'dt_mesh_outlet',
+                        'gv_mesh_suction', 'gv_mesh_pressure',
+                        'ru_mesh_suction', 'ru_mesh_pressure',
+                        'meshLayers_periodic0', 'meshLayers_periodic1'],
+            FPatches = ['gv_mesh_blade', 'ru_mesh_blade'],
+            libs = [
+              "libsimpleFunctionObjects.so",
+              #"libsimpleSwakFunctionObjects.so",
+              #"libmappedFieldFixedValue.so",
+              "libmixingPlane.so",
+            ]
+          )
+        + ofOpenFOAMCase_setupWrapper.fvSchemes()
+        + ofOpenFOAMCase_setupWrapper.fvSolution()
+        + ofOpenFOAMCase_setupWrapper.transportModel()
+        + ofOpenFOAMCase_setupWrapper.turbulenceProperties()
+        + ofOpenFOAMCase_setupWrapper.MRFProperties(
+            cellZones = ["ru_mesh",],
+            omegas    = [375*2*np.pi/60,],
+            nonRotatingPatches = [
+              [
+                "ru_mesh_suction", "ru_mesh_pressure",
+                "ru_mesh_inlet", "ru_mesh_outlet",
+              ],
+            ],
+            patches = [],
+            axes = [dtOO.dtVector3(0,0,-1)],
+            origins = [dtOO.dtPoint3(0,0,0)]
+          ),
+        fieldRules = [
+          ofOpenFOAMCase_setupWrapper.fieldRuleString("U", [0.0,0.0,-1.0,]),
+          ofOpenFOAMCase_setupWrapper.fieldRuleString("p", [0.0,]),
+          ofOpenFOAMCase_setupWrapper.fieldRuleString("k", [0.1,]),
+          ofOpenFOAMCase_setupWrapper.fieldRuleString("omega", [0.1,]),
+          ofOpenFOAMCase_setupWrapper.fieldRuleString("nut", [0.1,]),
+        ],
+        setupRules = [
+          ofOpenFOAMCase_setupWrapper.emptyRuleString(),
+          # meshInlet
+          ofOpenFOAMCase_setupWrapper.cylindricalInletRuleString(
+            "gv_mesh_inlet",
+            ["U"],
+            [ [-2.92*2.7,-7.23*2.7,0], ]
+          ),
+          ofOpenFOAMCase_setupWrapper.inletRuleString(
+            "gv_mesh_inlet",
+            ["p", "k", "omega",],
+            [ [0], [0.1, 0.10], [0.032*h_inlet, 0.1] ]
+          ),
+          ofOpenFOAMCase_setupWrapper.wallRuleString(
+            "gv_mesh_shroud",
+            ["omega", "U", "p", "k", "nut"]
+          ),
+           ofOpenFOAMCase_setupWrapper.wallRuleString(
+            "gv_mesh_hub",
+            ["omega", "U", "p", "k", "nut"]
+          ),
+          ofOpenFOAMCase_setupWrapper.wallRuleString(
+            "gv_mesh_blade",
+            ["omega", "U", "p", "k", "nut"]
+          ),
+          ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+            "gv_mesh_suction", "gv_mesh_pressure"
+          ),
+          # mixing plane?
+          #ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+          #  "meshInlet_outlet", "meshChannel_inlet",
+          #  rotAxis = None,
+          #  rotCentre = None
+          #),
+          ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
+            "gv_mesh_outlet", "ru_mesh_inlet",
+            ["U", "p", "k", "omega",],
+            axis = dtOO.dtVector3(0,0,1),
+            origin = dtOO.dtPoint3(0,0,0),
+            stackAxis = "Z",
+            discretization = "userDefined",
+            planes = 40,
+            planesBl = 15,
+            gradingIf = "false"
+          ),
+
+          # runner
+          ofOpenFOAMCase_setupWrapper.wallRuleString(
+            "ru_mesh_hub",
+            ["omega", "U", "p", "k", "nut"]
+          ),
+          ofOpenFOAMCase_setupWrapper.wallRuleString(
+            "ru_mesh_shroud",
+            ["omega", "U", "p", "k", "nut"]
+          ),
+          ofOpenFOAMCase_setupWrapper.wallRuleString(
+            "ru_mesh_blade",
+            ["omega", "U", "p", "k", "nut"]
+          ),
+          ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+            "ru_mesh_suction", "ru_mesh_pressure"
+          ),
+          #ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+          #  "meshChannel_outlet", "meshLayers_inlet",
+          #  rotAxis = None,
+          #  rotCentre = None
+          #),
+          ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
+            "ru_mesh_outlet", "meshLayers_inlet",
+            ["U", "p", "k", "omega",],
+            axis = dtOO.dtVector3(0,0,1),
+            origin = dtOO.dtPoint3(0,0,0),
+            stackAxis = "R",
+            discretization = "userDefined",
+            planes = 40,
+            planesBl = 15,
+            gradingIf = "false"
+          ),
+
+          # mesh layers
+          ofOpenFOAMCase_setupWrapper.wallRuleString(
+            "meshLayers_hub",
+            ["omega", "U", "p", "k", "nut"]
+          ),
+          ofOpenFOAMCase_setupWrapper.wallRuleString(
+            "meshLayers_shroud",
+            ["omega", "U", "p", "k", "nut"]
+          ),
+          ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
+            "meshLayers_periodic0", "meshLayers_periodic1"
+          ),
+          ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
+            "meshLayers_outlet", "dt_mesh_inlet",
+            ["U", "p", "k", "omega",],
+            axis = dtOO.dtVector3(0,0,1),
+            origin = dtOO.dtPoint3(0,0,0),
+            stackAxis = "R",
+            discretization = "userDefined",
+            planes = 40,
+            planesBl = 15,
+            gradingIf = "false"
+          ),
+          
+          # draft tube
+          ofOpenFOAMCase_setupWrapper.wallRuleString(
+            "dt_mesh_wall",
+            ["omega", "U", "p", "k", "nut"]
+          ),
+          ofOpenFOAMCase_setupWrapper.outletRuleString(
+            "dt_mesh_outlet",  
+            ["U", "p", "k", "omega",]
+          ),
+        ]
+
+    ).buildExtract( container )
     
+    dC["of_MP"].runCurrentState()
+
 if __name__ == "__main__":
     
     # create Config object and return the specified varList
     config = Config()
     varList = config.getVarList()
     
-    stateLbl = "bladeAngle1_fullRotate_gv_ggi"
+    stateLbl = "variation_ru10"
      
     # number of iterations
-    nIt = 1
+    nIt = 21
 
     # activates optimization
-    optiOn = False 
+    optiOn = True 
     
     # writer for the csv file
     evalFolder = "ofCase_eval"
