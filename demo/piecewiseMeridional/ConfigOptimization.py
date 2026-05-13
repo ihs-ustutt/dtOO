@@ -145,7 +145,7 @@ class Config():
                                      [0.0, 0.5, -1],],
         }
 
-        # config for guid vane blade
+        # config for guide vane blade
         self.configGuideVane = {
             "label" : "gv",
             "regChannel" : 0,
@@ -170,7 +170,7 @@ class Config():
             "adjustRadius" : False,
         }
 
-        # config for gunner blade
+        # config for runner blade
         self.configRunner = {
             "label" : "ru",
             "regChannel" : 1,
@@ -182,13 +182,13 @@ class Config():
                      round((np.pi/180.) * 75., 4),
                      round((np.pi/180.) * 52., 4)
                  ],
-            # bladeAngle05 :
-            "alpha_2" : [
-                    round((np.pi/180.) * 45., 4),
-                    round((np.pi/180.) * 31., 4),
-                    round((np.pi/180.) * 32., 4),
-                    round((np.pi/180.) * 10., 4)
-                ],
+            ## bladeAngle05 :
+            #"alpha_2" : [
+            #        round((np.pi/180.) * 45., 4),
+            #        round((np.pi/180.) * 31., 4),
+            #        round((np.pi/180.) * 32., 4),
+            #        round((np.pi/180.) * 10., 4)
+            #    ],
             ## bladeAngle0
             #"alpha_2" : [
             #        round((np.pi/180.) * 46., 4),
@@ -196,13 +196,13 @@ class Config():
             #        round((np.pi/180.) * 33., 4),
             #        round((np.pi/180.) * 11., 4)
             #    ],
-            ##bladeAngle1
-            #"alpha_2" : [
-            #        round((np.pi/180.) * 44., 4),
-            #        round((np.pi/180.) * 30., 4),
-            #        round((np.pi/180.) * 31., 4),
-            #        round((np.pi/180.) * 9., 4)
-            #    ],
+            #bladeAngle1
+            "alpha_2" : [
+                    round((np.pi/180.) * 44., 4),
+                    round((np.pi/180.) * 30., 4),
+                    round((np.pi/180.) * 31., 4),
+                    round((np.pi/180.) * 9., 4)
+                ],
             "ratioX" : [
                      0.65,
                      0.70,
@@ -628,7 +628,7 @@ if __name__ == "__main__":
     config = Config()
     varList = config.getVarList()
     
-    stateLbl = "bladeAngle05_newVersion"
+    stateLbl = "bladeAngle1_fullRotate_gv_ggi_nTE3"
      
     # number of iterations
     nIt = 1

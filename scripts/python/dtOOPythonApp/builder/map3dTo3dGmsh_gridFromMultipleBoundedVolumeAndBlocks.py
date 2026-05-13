@@ -482,6 +482,12 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         # Managing Faces and Edges
         #
         
+        # untagging the face between the first and last TE block from the blade faces
+        #  this face was needed to get all the bladeToBlockLines 
+        bladeFaces = m3dGmsh.getModel().getDtGmshFaceListByPhysical("*blade*")
+        l = len(bladeFaces)
+        m3dGmsh.getModel().untagPhysical(m3dGmsh.getModel().getDtGmshFaceByPhysical("*blade_"+str(l)+"*"))
+        
         # organizing periodic faces
         #  the order is set by adding the faces seqentially and the naming
         periodic_pressure = m3dGmsh.getModel().getDtGmshFaceListByPhysical("*pressure_*")
@@ -569,11 +575,11 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             bladeShroudLines = \
               set(bladeShroudLines)-set(-np.array(tEShroud))-set(tEShroud)
             
-            # untagging the face between the first and last TE block from the flade faces
-            #  this face was needed to get all the bladeToBlockLines 
-            bladeFaces = m3dGmsh.getModel().getDtGmshFaceListByPhysical("*blade*")
-            l = len(bladeFaces)
-            m3dGmsh.getModel().untagPhysical(m3dGmsh.getModel().getDtGmshFaceByPhysical("*blade_"+str(l)+"*"))
+            ## untagging the face between the first and last TE block from the blade faces
+            ##  this face was needed to get all the bladeToBlockLines 
+            #bladeFaces = m3dGmsh.getModel().getDtGmshFaceListByPhysical("*blade*")
+            #l = len(bladeFaces)
+            #m3dGmsh.getModel().untagPhysical(m3dGmsh.getModel().getDtGmshFaceByPhysical("*blade_"+str(l)+"*"))
         
         #
         # add debug faces and lines
@@ -810,7 +816,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
                 for edgeTag in meshList[0]:
                     edge = m3dGmsh.getModel().getDtGmshEdgeByTag(edgeTag[0])
                     edge.setNElements( self.nElementsNormal_ )
-                    edge.setGrading( meshList[1], gradings["normalBlade"][0] )
+                    #edge.setGrading( meshList[1], gradings["normalBlade"][0] )
         
         #
         # add observers

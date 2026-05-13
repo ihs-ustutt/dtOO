@@ -707,8 +707,65 @@ Axial Runner ``tistos``
 .. automodule:: dtOO.demo.tistos.build
     :members:
 
+.. _radial_turbine_demo:
+
 Radial Turbine
 ==============
+
+This class is the main class for the generation and meshing of geometries of a
+radial flow machine. 
+It contains the following creation methods:
+
+    1. `createMeridional`
+    2. `createBlade`
+    3. `createLayerRegion`
+
+The creation methods are responsible for generating the different geometries.
+They, in turn, call multiple classes from the :ref:`dtOOPythonApp <dtOOPythonApp>` 
+package, which perform the specific tasks required for geometry generation.
+The builder classes are located in the following path:
+
+    `./dtOO/scripts/python/dtOOPythonApp/builder`
+
+The meridional contour of the whole machine is defined by hub and shroud curves.
+The `createMeridional` method separates these, through defined interfaces,
+into regular channels and special curves.
+The following builder classes are used:
+    
+    - :ref:`analyticGeometry_piecewiseMeridionalRotContour <analyticGeometry_piecewiseMeridionalRotContour>`
+
+Based on the created meridional contour, the bladed channels and a layered
+region can be built using the two other methods.
+Within these methods, the geometries are created and mesh settings are applied.
+The final meshing is performed outside of the class by returning the necessary
+bounded volumes.
+
+Bladed channels (i.e., runner and guide vane channels) can be created using
+the `createBlade` method. The defined blades are generated inside the regular
+channels that are passed to the method from `createMeridional`.
+The resulting geometry and mesh represent a periodic segment of the blade channel.
+The blade is surrounded by transfinite and structured mesh blocks, while the rest
+of the channel is meshed unstructured.     
+The following builder classes are used:
+
+    - `analyticSurface_threePointMeanplaneFromRatio`
+    - `scaOneD_scaCurve2dOneDPointConstruct`
+    - `vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution`
+    - `vec3dThreeD_skinAndSplit`
+    - `analyticSurface_inOutFeMeanplane`
+    - `multipleBoundedVolume_gridChannel`
+    - `map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks`
+
+The `createLayerRegion` method takes the special hub and shroud curves and
+creates a segment of a flow channel. This flow channel consists of transfinite
+layer regions on the hub and shroud faces and an unstructured region in between.
+The following builder classes are used:
+
+    - `analyticGeometry_layerRegion`
+    - `map3dTo3dGmsh_gridFromLayers`
+
+WORKFLOW DESCRIPTION AND CLASS DIAGRAM
+
 
 .. automodule:: dtOO.demo.piecewiseMeridional.radMeridional
 	:members:

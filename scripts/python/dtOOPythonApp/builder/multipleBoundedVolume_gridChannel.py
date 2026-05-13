@@ -90,9 +90,11 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
 
     Examples
     --------
+
     >>> import dtOOPythonSWIG as dtOO
     
     Build channel geometry
+
     >>> channel = dtOO.rotatingMap2dTo3d(
     ...     dtOO.dtVector3(0,0,1),
     ...     dtOO.analyticSurface(
@@ -126,6 +128,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     ... )
 
     Define meanplane curves
+
     >>> c_mp0 = dtOO.bSplineCurve_pointConstructOCC(
     ...     dtOO.vectorDtPoint3()
     ...       << dtOO.dtPoint3(+0.50, +0.00, 0.00)
@@ -152,6 +155,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     ... ).result()
     
     Define copling curve
+
     >>> c_coup = dtOO.bSplineCurve_pointConstructOCC(
     ...     dtOO.vectorDtPoint3()
     ...       << dtOO.dtPoint3(+0.85, +0.25, 0.00)
@@ -160,6 +164,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     ... ).result()
 
     Create meanplane faces in the channel from the curves
+
     >>> mp0 = dtOO.analyticSurface(
     ...         dtOO.bSplineSurface_exchangeSurfaceConstructOCC(
     ...             dtOO.bSplineSurface_skinConstructOCC(
@@ -183,6 +188,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     ...     )
     
     Create coupling faces from meanplane curves and coupling curve 
+
     >>> coup0 = dtOO.analyticSurface(
     ...             dtOO.bSplineSurface_exchangeSurfaceConstructOCC(
     ...                 dtOO.bSplineSurface_skinConstructOCC(
@@ -199,6 +205,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     ...     )
 
     Make a list containing the meanplane faces
+
     >>> meanplaneFaces = [
     ...        dtOO.map2dTo3d.MustDownCast(mp0),
     ...        dtOO.map2dTo3d.MustDownCast(mp1),
@@ -211,6 +218,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     ...     ]
 
     create the grid channel
+
     >>> from dtOOPythonApp.builder import multipleBoundedVolume_gridChannel
     >>> gridChannel = multipleBoundedVolume_gridChannel(
     ...     label = "test",
@@ -223,9 +231,11 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     >>> gridChannel.build()
     
     return the multiple bounded volume and a list with the faces
+
     >>> gc, gcFaces = gridChannel.getGridChannel()
     
     Check the class of the returned volume
+
     >>> gc.virtualClassName()
     'multipleBoundedVolume'
 

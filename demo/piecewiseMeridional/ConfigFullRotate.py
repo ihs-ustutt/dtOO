@@ -343,17 +343,22 @@ def run(*args, **kwargs):
     # create meridional channel
     generate.createMeridional(configMeridional, hubCurves, shroudCurves)
 
-    ## create guide vane
-    #generate.createBlade(configGuideVane)
+    # create guide vane
+    generate.createBlade(configGuideVane)
 
     # create runner
     generate.createBlade(configRunner)
 
-    ## create layered region
-    #generate.createLayerRegion(configLayer)
+    # create layered region
+    generate.createLayerRegion(configLayer)
+    
+    container = generate.getContainer()
+    bV, dC = generate.getbVAnddC()
+    
+    # create the open foam case
+    createOFCase(container, bV, dC, stateLbl, individual, configMeas["h_inlet"], configMeas["h_shroud"])
     
     # return bV and dC in order to generate the mesh files
-    bV, dC = generate.getbVAnddC()
     #bV["gv_mesh"].makeGrid()
     #bV["ru_mesh"].makeGrid()
     #bV["meshLayers"].makeGrid()

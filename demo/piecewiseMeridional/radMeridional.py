@@ -1,58 +1,3 @@
-"""
-This class is the main class for the generation and meshing of geometries of a
-radial flow machine. 
-It contains the following creation methods:
-
-    1. `createMeridional`
-    2. `createBlade`
-    3. `createLayerRegion`
-
-The creation methods are responsible for generating the different geometries.
-They, in turn, call multiple builder classes that perform the specific tasks
-required for geometry generation.
-The builder classes are located in the following path:
-
-    `./dtOO/scripts/python/dtOOPythonApp/builder`
-
-The meridional contour of the whole machine is defined by hub and shroud curves.
-The `createMeridional` method separates these, through defined interfaces,
-into regular channels and special curves.
-The following builder classes are used:
-
-    - `analyticGeometry_piecewiseMeridionalRotContour`
-
-Based on the created meridional contour, the bladed channels and a layered
-region can be built using the two other methods.
-Within these methods, the geometries are created and mesh settings are applied.
-The final meshing is performed outside of the class by returning the necessary
-bounded volumes.
-
-Bladed channels (i.e., runner and guide vane channels) can be created using
-the `createBlade` method. The defined blades are generated inside the regular
-channels that are passed to the method from `createMeridional`.
-The resulting geometry and mesh represent a periodic segment of the blade channel.
-The blade is surrounded by transfinite and structured mesh blocks, while the rest
-of the channel is meshed unstructured.     
-The following builder classes are used:
-
-    - `analyticSurface_threePointMeanplaneFromRatio`
-    - `scaOneD_scaCurve2dOneDPointConstruct`
-    - `vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution`
-    - `vec3dThreeD_skinAndSplit`
-    - `analyticSurface_inOutFeMeanplane`
-    - `multipleBoundedVolume_gridChannel`
-    - `map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks`
-
-The `createLayerRegion` method takes the special hub and shroud curves and
-creates a segment of a flow channel. This flow channel consists of transfinite
-layer regions on the hub and shroud faces and an unstructured region in between.
-The following builder classes are used:
-
-    - `analyticGeometry_layerRegion`
-    - `map3dTo3dGmsh_gridFromLayers`
-
-WORKFLOW DESCRIPTION AND CLASS DIAGRAM
-"""
 
 import logging
 logging.basicConfig(
@@ -586,8 +531,8 @@ class radMeridional:
         self.dP = self.container.cptr_dP()
 
     def createMeridional(self, configM, hubCurves, shroudCurves): 
-        """Create the regular channels and special hub and shroud curves. 
-        
+        """Create the regular channels and special hub and shroud curves.
+
         This method:
         - Splits the hub and shroud curves at the interfaces.
         - Creates the interface curves.
@@ -600,39 +545,39 @@ class radMeridional:
           Dictionary containing the interface parameters with the
           following keys:
 
-          - **label** (*str*): 
+          - **label** (*str*):
             Label.
 
-          - **interface_hub** (*List[Tuple[int, float]]*): 
-            Positions of the interfaces on the hub curves. 
+          - **interface_hub** (*List[Tuple[int, float]]*):
+            Positions of the interfaces on the hub curves.
             Each entry represents:
 
               - ``interface_hub[i]``: Interface number
               - ``interface_hub[i][0]``: Curve number where the interface is located
-              - ``interface_hub[i][1]``: Percentage on curve (0 to 1)
+              - ``interface_hub[i][1]``: Percentage along the curve (0 to 1)
 
-          - **interface_shroud** (*List[Tuple[int, float]]*): 
-            Positions of the interfaces on the shroud curves. 
+          - **interface_shroud** (*List[Tuple[int, float]]*):
+            Positions of the interfaces on the shroud curves.
             Each entry represents:
 
               - ``interface_shroud[i]``: Interface number
               - ``interface_shroud[i][0]``: Curve number where the interface is located
-              - ``interface_shroud[i][1]``: Percentage on curve (0 to 1)
+              - ``interface_shroud[i][1]``: Percentage along the curve (0 to 1)
 
-          - **interface_curvature** (*List[Tuple[float, float, int]]*): 
-            Curvature of the interface curve from hub to shroud. 
+          - **interface_curvature** (*List[Tuple[float, float, int]]*):
+            Curvature of the interface curve from hub to shroud.
             Each entry represents:
 
               - ``interface_curvature[i]``: Interface number
               - ``interface_curvature[i][0]``: Curvature offset point [%] from hub to shroud
-              - ``interface_curvature[i][1]``: Curvature in % of length of connection line
+              - ``interface_curvature[i][1]``: Curvature as a percentage of the connection line length
               - ``interface_curvature[i][2]``: Curvature direction
 
         hubCurves : List[analyticGeometry]
-          List containing the hub curves.
+          List of hub curves.
 
         shroudCurves : List[analyticGeometry]
-          List containing the shroud curves.
+          List of shroud curves.
 
         Returns
         -------
@@ -641,16 +586,15 @@ class radMeridional:
 
         Meridional Contour
         ------------------
-         
-        The regular channels and the special hub and shroud curves are 
-        created in this method. 
-        The inputs of this method are the lists with the hub and shroud curves
-        (``hubCurves`` and ``shroudCurves``)
-        and the a configuration dictionary, which specifies the positions and 
-        curvatures of the interface curves.
-        
-        The following figure shows the hub and shroud curves with their respective numbers
-        in the ``hubCurves`` and ``shroudCurves`` lists.
+
+        The regular channels and the special hub and shroud curves are created 
+        in this method.
+        The inputs to this method are lists of hub and shroud curves 
+        (``hubCurves`` and ``shroudCurves``) and a configuration dictionary, 
+        which specifies the positions and curvatures of the interfaces.
+
+        The following figure shows the hub and shroud curves with their respective 
+        indices in the ``hubCurves`` and ``shroudCurves`` lists.
 
         .. _hsCurves:
         .. figure:: meridionalFigs/hsCurve_noInterface.png
@@ -658,123 +602,128 @@ class radMeridional:
            :align: center
 
            Hub and shroud curves of the meridional channel.
-           Numbering correlates to the numbering in the 
+           Numbering corresponds to the indices in the
            ``hubCurves`` and ``shroudCurves`` lists.
 
-        In the method the builder class `analyticGeometry_piecewiseRadMeridional` is called. 
-        An object of this class is created in order to manage the meridional contour.
-        Based on the configuration dictionary the interface curves are built in this object.
+        In this method, the builder class `analyticGeometry_piecewiseRadMeridional` 
+        is called. An object of this class is created to manage the meridional contour.
+        Based on the configuration dictionary, the interface curves are constructed 
+        with this object.
 
-        Inlet and outlet interface curves are build independently from the configuration 
-        dictionary.
-        Between the start points of the first hub and shroud curves in the lists an inlet
-        curve is created. An outlet curve is created between the end points of the last 
-        hub and shroud curves.
-     
-        In the configuration dictionary nested lists with the keys ``interface_hub``, 
-        ``interface_shroud`` and ``interface_curvature`` are defined. 
-        Those lists allow the definition of the interface curves.
+        Inlet and outlet interface curves are built independently of the settings in the 
+        configuration dictionary as straight lines.
+        Between the start points of the first hub and shroud curves in the lists, 
+        an inlet curve is created.
+        An outlet curve is created between the end points of the last hub and shroud 
+        curves.
+        
+        The interface curves in the flow channel are defined through the nested lists
+        in the configuration dictionary.
+        The keys to these lists are ``interface_hub``, ``interface_shroud``, 
+        and ``interface_curvature`` in the dictionary.
 
-        The following figure shows the creation of the interface curves whith a focus
-        on the curvature of the second interface curve.
+        The following figure shows the creation of the interface curves, 
+        with a focus on the curvature of the second interface curve.
 
         .. _interfaceCalc:
         .. figure:: meridionalFigs/interfaceCalc.png
            :width: 80%
            :align: center
 
-           Creation of the interface curves (red) between the hub and shroud curves (black)
-           with the linear meanplane curve `MP,lin` (green).
+           Creation of the interface curves (red) between the hub and shroud curves 
+           (black), with the linear mean-plane curve ``MP,lin`` (green).
 
-        :numref:`map-fig-var_interface` gives the mapping between math symbols in :numref:`interfaceCalc`
-        and the naming of the list keys in this example.
+        :numref:`map-fig-var_interface` gives the mapping between the mathematical symbols in
+        :numref:`interfaceCalc` and the naming of the list keys in this example.
 
         .. _map-fig-var_interface:
-        .. csv-table:: Mapping between math symbol and variable names.
+        .. csv-table:: Mapping between mathematical symbols and variable names.
            :header: "Symbol", "Label"
            :widths: 10, 20
            :escape: #
            :align: center
 
-           :math:`a`        ,``interface_curvature[i][0]``
-           :math:`b`        ,``interface_curvature[i][1]``
-           :math:`c`	,``interface_curvature[i][2]``
+           :math:`a`, ``interface_curvature[i][0]``
+           :math:`b`, ``interface_curvature[i][1]``
+           :math:`c`, ``interface_curvature[i][2]``
 
         The lists ``interface_hub`` and ``interface_shroud`` define the positions
         of the start and end points of the interface curves on the hub and shroud curves.
-        
+
         The lists are unpacked as follows:
 
-            ``interface_hub[i]`` :		Start point of the i-th interface curve on the hub.
-        
-            ``interface_shroud[i]`` :	End point of the i-th interface curve on the shroud.
-        
-        The lower level lists specify the hub and shroud curves and the percentages of those 
-        curves where the start and end points of the interfaces are positioned:
-        
-            ``interface_hub[i][0]`` : 	Number of the hub curve on which the start point is located.
-        
-            ``interface_hub[i][1]`` :	Percentage of the hub curve where the start point is located.
-        
-        
-        The interface curves are calculated by first creating a straight line `MP,lin` between 
-        the interfaces' start and end points. With the list ``interface_curvature`` a control 
-        point can be calculated which sets the curvature of the interface curve based on ``MP,lin``.
-        Finally the interface curve is created from the start and end points of the interface 
-        and the control point.
-     
-        The highest list level of ``interface_curvature`` corresponds to the number of the interface curve:
+            ``interface_hub[i]``: Start point of the i-th interface curve on the hub.
 
-            ``interface_curvature[i]`` :	Number of the interface.
+            ``interface_shroud[i]``: End point of the i-th interface curve on the shroud.
 
-        The lower level of the list sets the curvature of the interface as follows:
+        The lower-level lists specify the hub and shroud curves and the percentages of 
+        those curves at which the start and end points of the interfaces are located:
 
-            ``interface_curvature[i][0]`` :	Control point offset as procentual length of 'MP,lin'.
-        
-            ``interface_curvature[i][1]`` : Control point base position as percentage on `MP,lin`.
-        
-            ``interface_curvature[i][2]`` :	Direction of control point offset.	
-        
-        When the start or end point of a interface is on the span of a hub and shroud curve,
-        the curve is cut into two curves at this point. Those two curves then share their 
-        end or respectively their start points with the interface.
+            ``interface_hub[i][0]``: Index of the hub curve on which the start point is located.
 
-        With the interfaces the meridional contour is partitioned into the regular channels 
-        for the blade geometries and the special hub and shroud curves for the draft tube cone. 
+            ``interface_hub[i][1]``: Percentage along the hub curve where the start point is located.
+
+        The interface curves are calculated by first creating a straight line ``MP,lin`` 
+        between the interface start and end points. Using the list ``interface_curvature``, 
+        a control point is computed that defines the curvature of the interface curve 
+        relative to ``MP,lin``.
+        Finally, the interface curve is constructed from the start and end points of the 
+        interface and the control point.
         
+        The list ``interface_curvature`` is unpacked as follows.
+        The highest level of ``interface_curvature`` corresponds to the index of the 
+        interface curve:
+
+            ``interface_curvature[i]``: Index of the interface.
+
+        The lower level of the list defines the curvature of the interface as follows:
+
+            ``interface_curvature[i][0]``: Control point offset as a percentage of the length of ``MP,lin``.
+
+            ``interface_curvature[i][1]``: Control point base position as a percentage along ``MP,lin``.
+
+            ``interface_curvature[i][2]``: Direction of the control point offset.
+
+        When the start or end point of an interface lies on the span of a hub or shroud 
+        curve, that curve is split into two curves at this point. The resulting two 
+        curves then share their end or start points, respectively, with the interface.
+
+        With the interfaces, the meridional contour is partitioned into regular channels
+        for the blade geometries and special hub and shroud curves for the draft tube cone.
+
         The following figure shows the interfaces and the resulting regular channels,
-        as well as the special curves which are not part of the regular channels.
-        
+        as well as the special curves that are not part of the regular channels.
+
         .. _interfaces:
         .. figure:: meridionalFigs/interfaces.png
            :width: 50%
            :align: center
 
-           Hub and shroud curves (black), interface curves (red) 
+           Hub and shroud curves (black), interface curves (red),
            and inlet and outlet curves (orange). The special curves
-           are downstrem of the last interface curve.
-           The two dimensional faces of the first regular channel (yellow) 
+           are downstream of the last interface curve.
+           The two-dimensional faces of the first regular channel (yellow)
            and the second regular channel (green).
-        
-        
-        The first regular channel is created from the inlet curve and the first interface curve,
-        as well as the hub and shroud curves extending inbetween them.
-        The following regular channels are defined between the seqential interfaces and the 
-        hub and shroud curves inbetween them.  
 
-        The layered region can be build from the last interface curve, the outlet curve and 
+        The first regular channel is created from the inlet curve and the first interface
+        curve, as well as the hub and shroud curves extending between them.
+        The subsequent regular channels are defined between the sequential interfaces and
+        the hub and shroud curves between them.
+
+        The layered region is built from the last interface curve, the outlet curve, and
         the special curves, which are not part of the regular channels.
-        
-        The object radMeridionalContour of the class analyticGeometry_piecewiseMeridionalRotContour 
-        is set as an instance of the radMeridional class. Through this object the regular channels
-        and the special hub and shroud curves can be accessed in the other methods.
+
+        The object `radMeridionalContour` of the class
+        `analyticGeometry_piecewiseMeridionalRotContour` is instantiated as part of the
+        `radMeridional` class. Through this object, the regular channels and the special
+        hub and shroud curves can be accessed in other methods.
         """
         
         #
         # Create the interface curves and the regular channels as well as the special 
         # hub and shroud curves.
-        # radMeridionalContour object is used in the other methods to return the 
-        # Geometries.
+        # The radMeridionalContour object is used in the other methods to return the 
+        # geometries.
         #
         from dtOOPythonApp.builder import analyticGeometry_piecewiseMeridionalRotContour
         self.radMeridionalContour = analyticGeometry_piecewiseMeridionalRotContour( 
@@ -788,10 +737,10 @@ class radMeridional:
         self.container = self.radMeridionalContour.buildExtract(self.container)
     
     def createLayerRegion(self, configL):
-        """Create a layered flow channel geometry. 
-        
+        """Create a layered flow channel geometry.
+
         This method:
-        - Takes the special hub and shroud curves from the radMeridionalContour object.
+        - Takes the special hub and shroud curves from the ``radMeridionalContour`` object.
         - Creates transfinite faces on the hub and shroud curves.
         - Creates a multiple bounded volume inside the flow channel.
         - Applies mesh settings to the geometry regions.
@@ -802,66 +751,64 @@ class radMeridional:
           Dictionary containing the parameters for the layers with the
           following keys:
 
-          - **label** (*str*): 
+          - **label** (*str*):
             Label.
 
-          - **nSlices** (*int*): 
-            Number of total slices. Geometry will be 360°/nSlices.
+          - **nSlices** (*int*):
+            Number of total slices. The geometry spans 360° / nSlices.
 
-          - **layer_thickness** (*float*): 
+          - **layer_thickness** (*float*):
             Thickness of the layers on the hub and shroud curves.
 
-          - **layer_supports** (*List[float]*): 
-            Number of layer support points and their
-            positions on each hub and shroud curve.
-        
+          - **layer_supports** (*List[float]*):
+            Number and positions of layer support points on each hub and shroud curve.
+
         Returns
         -------
-        None
-        
+        None 
+
 
         Draft Tube Cone
         ---------------
-        
-        The mesh of the draft tube cone consists of six or five sided layer 
-        regions on the hub and shroud walls and a multiple bounded volume 
-        inside the flow domain.
-        The layers are meshed transfinite and the multiple bounded volume 
-        is meshed unstructured.
 
-        The creation of the layers is specified with a configuration 
-        dictionary.
-        
-        The basis for the draft tube cone geometry are the special hub and 
-        shroud curves and the inlet and outlet curves of the regions. 
-        The curves are returned by the object of the class 
-        `analyticGeometry_piecewiseMeridionalRotContour` which was created 
-        in the `createMeridional` method.
-         
-        :numref:`speCurves` shows the curves wich are handed to the 
+        The mesh of the draft tube cone consists of six- or five-sided layer
+        regions on the hub and shroud walls, as well as a multiple bounded volume
+        inside the flow domain.
+        The layered regions are meshed transfinite, while the multiple bounded volume
+        is meshed using an unstructured mesh.
+
+        The creation of the layers is specified using a configuration dictionary.
+
+        The basis for the draft tube cone geometry are the special hub and shroud curves,
+        as well as the inlet and outlet curves of the region.
+        These curves are returned by the object of the class
+        `analyticGeometry_piecewiseMeridionalRotContour`, which is created in the
+        `createMeridional` method.
+
+        :numref:`speCurves` shows the curves that are passed to the
         `createLayerRegion` method from `createMeridional`.
-         
+
         .. _speCurves:
         .. figure:: meridionalFigs/speCurves.png
            :width: 50%
            :align: center
 
-           Special hub (speHub) and special shroud (speShroud) curves (black), 
-           as well as the inlet (red) and outlet (orange) curves of the draft 
+           Special hub (speHub) and special shroud (speShroud) curves (black),
+           as well as the inlet (red) and outlet (orange) curves of the draft
            tube cone.
-        
-        The geometry generation is done by the class `analyticGeometry_layerRegion`.
-        In the class the layers are created as two dimensional surfaces and then
-        rotated in order to create the layer volumes.
+
+        The geometry generation is performed by the class `analyticGeometry_layerRegion`.
+        In this class, the layers are created as two-dimensional surfaces and then
+        rotated to generate volumetric layers.
         The multiple bounded volume is created from the bounding surfaces in the
         flow domain.
 
-        A two dimensional layer face is build on each hub and shroud curve, 
-        which is not located on a radius of zero. 
+        A two-dimensional layer face is built on each hub and shroud curve
+        that is not located at a radius of zero.
         Each layer face has four boundary curves. The first boundary curves
-        are the hub or shroud curves themselves. 
+        are the hub or shroud curves themselves.
 
-        The generation of the bounding curves of the hub layer is shown in 
+        The generation of the bounding curves of the hub layer is shown in
         the following figure.
 
         .. _layerGen:
@@ -869,30 +816,29 @@ class radMeridional:
            :width: 80%
            :align: center
 
-           Generation of layer bounding curves at the hub (black). 
-           Second and third bounding curves (left, blue), third bounding 
+           Generation of layer bounding curves at the hub (black).
+           Second and third bounding curves (left, blue), third bounding
            curve (right, blue).
-        
-        The second and fourth boundary curves extend from the walls into the flow channel. 
-        For the first and the last layer faces, at the hub and shroud, those are either 
-        the inlet or the outlet curves or a hub or shroud curve which is located on a 
-        radius of zero. 
-        At the intersect points of two wall curves, boundary curves extending into
-        the flow channel are built which point in a mean normal direction of both 
-        curves.
-        The length of the created curves is determined by ``layer_thickness`` 
-        (:math:`t_{Layer}` in :numref:`layer2d` and :numref:`layerGen`) 
+
+        The second and fourth boundary curves extend from the walls into the flow channel.
+        For the first and last layer faces, at the hub and shroud, these correspond either
+        to the inlet or outlet curves, or to a hub curve located at a radius of zero.
+
+        At the intersection points of two wall curves, boundary curves extending into
+        the flow channel are constructed so they point in the mean normal direction
+        of both curves.
+        The length of the generated curves is determined by ``layer_thickness``
+        (:math:`t_{Layer}` in :numref:`layer2d` and :numref:`layerGen`)
         in the configuration dictionary.
 
-        The third boundary curves connect the second and fourth boundary curve inside the 
-        flow channel. They are constructed from the end points of the second and fourth 
-        boundary curves and support points. Those support points are calculated by 
-        translating points on the hub and shroud curves, in the normal direction of the 
-        curves. 
-        The position of the points on the hub and shroud curves is set with the list 
-        in ``layer_supports``.
+        The third boundary curves connect the second and fourth boundary curves inside the
+        flow channel. They are constructed from the end points of the second and fourth
+        boundary curves and support points. These support points are calculated by
+        translating points on the hub and shroud curves in the normal direction of the curves.
+        The positions of these points on the hub and shroud curves are defined using the list
+        ``layer_supports``.
 
-        The following figure shows the resulting layer faces on all special hub and 
+        The following figure shows the resulting layer faces on all special hub and
         shroud curves.
 
         .. _layer2d:
@@ -900,62 +846,64 @@ class radMeridional:
            :width: 40%
            :align: center
 
-           Two dimensional layer faces (blue) in the draft tube cone.
-        
-        The layers volumes are created by rotating the layer faces by the
-        angle resulting from the specified number of slices  ``nSlices`` 
-        (:math:`n_{Slices}` in :numref:`layers3d`) in the configuration 
-        dictionary. 
-        The resulting layer volumes are six sided except if a hub curve is
-        located on a radius of zero, which results in a five sided layer.
-        The follwoing figure shows the volume of the draft tube cone.
+           Two-dimensional layer faces (blue) in the draft tube cone.
+
+        The layer volumes are created by rotating the layer faces by the angle
+        resulting from the specified number of slices ``nSlices``
+        (:math:`n_{Slices}` in :numref:`layers3d`) in the configuration dictionary.
+        The resulting layer volumes are six-sided, except when a hub curve is
+        located at a radius of zero, which results in a five-sided layer.
+        The following figure shows the volume of the draft tube cone.
 
         .. _layers3d:
         .. figure:: meridionalFigs/layers3d.png
            :width: 50%
            :align: center
 
-           Volumes of the draft tube. Layer faces (blue), inlet (red) and outlet (orange).
+           Volumes of the draft tube cone. 
+           Layer faces (blue), inlet (red), and outlet (orange).
         
-        With the method `getLayerList` of the class `analyticGeometry_layerRegion` a nested
-        list containing the layer volumes and data showing which of the layers are five sided.
-        Those lists are needed to apply the mesh settings.
-        
-        With the method `getUnstructuredRegion` the multiple bounded volume and a list
-        with its' bounding surfaces can be returned.
-        The bounding faces are the inlet and outlet areas which are not part of the layer
-        volumes and the layer faces connecting to the flow domain.
-        The periodic faces are created as multiple bounded surfaces, which are bounded by the
-        edges of the bounding faces and a hub curve on a radius of zero if it exists.
-        The following figure shows the bounding surfaces of the multiple bounded volume,
-        the periodic faces are not shown for visiblity.
+        With the method `getLayerList` of the class `analyticGeometry_layerRegion`,
+        a nested list containing the layer volumes and information indicating which 
+        layers are five-sided is returned. 
+        These lists are required to apply the mesh settings.
+
+        With the method ``getUnstructuredRegion``, the multiple bounded volume and a list
+        of its bounding surfaces can be returned.
+        The bounding faces consist of the inlet and outlet areas, which are not part of 
+        the layer volumes, as well as the layer faces connecting to the flow domain.
+
+        The periodic faces are created as multiple bounded surfaces, which are bounded by
+        the edges of the bounding faces and a hub curve located at a radius of zero, if 
+        it exists.
+        The following figure shows the bounding surfaces of the multiple bounded volume;
+        the periodic faces are not shown for clarity.
 
         .. _mbvBounds:
         .. figure:: meridionalFigs/boundingSurfs.png
            :width: 50%
            :align: center
 
-           Bounding faces of the multiple bounded volume with inlet (red), outlet (orange)
+           Bounding faces of the multiple bounded volume with inlet (red), outlet (orange),
            and layer faces (blue).
 
-        The mesh settings to the regions are applied with the class
-        ``map3dTo3dGmsh_gridFromLayers``. The edges where mesh settings are applied
+        The mesh settings for the regions are applied using the class
+        `map3dTo3dGmsh_gridFromLayers`. The edges where mesh settings are applied
         are shown in :numref:`layerMs`.
 
-        The layers are meshed with a grading from the wall surfaces to the connecting
-        faces with the multiple bounded volume. The elements size on the warr is set 
-        with ``firstElement``. The number of elements on the layer edges extending 
-        from the wall to the multiple bounded volume (green) is set with 
-        ``nElementsLayer``.
+        The layers are meshed with a grading from the wall surfaces toward the connecting
+        faces of the multiple bounded volume. The element size on the wall is set using
+        ``firstElement``. The number of elements on the layer edges extending from the 
+        wall to the multiple bounded volume (green) is set using ``nElementsLayer``.
 
-        The maximal element size on the layer edges extending in circumferential 
-        direction (blue) is set with ``elementSize_circ``.
-        Similarily the maximal element size on the edges extending along the walls
-        and the edges parrallel to them (pink) is set with ``elementSize_sw``
+        The maximum element size on the layer edges extending in the circumferential
+        direction (blue) is set using ``elementSize_circ``.
+        Similarly, the maximum element size on the edges extending along the walls
+        and the edges parallel to them (pink) is set using ``elementSize_sw``.
 
-        The mesh of the unstructured area can be controlled with the inputs
-        ``charLengthMin`` and ``charLengthMax`` setting the minimum and maximum
-        element size.
+        The mesh of the unstructured region can be controlled using the parameters
+        ``charLengthMin`` and ``charLengthMax``, which define the minimum and maximum
+        element sizes.
 
         .. _layerMS:
         .. figure:: meridionalFigs/layersMeshSetting.png
@@ -963,9 +911,9 @@ class radMeridional:
            :align: center
 
            Edges in the draft tube cone where mesh settings are applied, with
-           circumferential edges (blue) streamwise edges (pink) and layer edges
+           circumferential edges (blue), streamwise edges (pink), and layer edges
            (green).
-
+        
         """
 
         #
@@ -1052,25 +1000,25 @@ class radMeridional:
 
     def createBlade(self, configB):
         
-        """Create blade geometry and the grid channel of the blade. 
-        
+        """Create blade geometry and the grid channel of the blade.
+
         This method:
 
-        - Creates the blade in the parameter space by combining the meanplane
+        - Creates the blade in the parameter space by combining the mean plane
           with the thickness distribution.
-        - Maps the blade onto a regular channel returned by the 
-          radMeridionalContour object.
-        - Creates six sided mesh blocks surrounding the blade.
-        - Creates six sided mesh blocks at the blades' trailing edge.
-        - Creates meanplanes extending from the mesh blocks towards the
-          in- and outlets of the channel.
+        - Maps the blade onto a regular channel returned by the
+          `radMeridionalContour` object.
+        - Creates six-sided mesh blocks surrounding the blade.
+        - Creates six-sided mesh blocks at the blade’s trailing edge.
+        - Creates mean planes extending from the mesh blocks toward the
+          inlet and outlet of the channel.
         - Creates the grid channel from the mesh blocks and a multiple
-          bounded volume with the meanplane and meshblock faces.
+          bounded volume defined by the mean plane and mesh block faces.
         - Applies mesh settings to the geometry regions.
-        
-        The inputs are handed to the methods with a configuration dictionary.
-        The entries of the type List[floats] in this dictionary give the blade 
-        parameters along the blades' span from hub to shroud.
+
+        The inputs are provided via a configuration dictionary.
+        The entries of type ``List[float]`` in this dictionary define the blade
+        parameters along the blade span from hub to shroud.
 
         Parameters
         ----------
@@ -1140,73 +1088,77 @@ class radMeridional:
         Bladed Channels
         ---------------
         
-        This method creates a bladed chnnel and applies mesh settings to it. 
-        The the channel consists of six sided mesh blocks which surround the blade geometry
-        and a gid channel formed of a multiple bounded volume, connecting to the mesh blocks.
-        
-        The blade geometry is set with a configuration dictionary. The key ``label`` is used
-        here as an identifier for the bladed channel. The main geometries created in this 
-        method will get the string value behind ``label`` in their physical strings.
+        This method creates a bladed channel and applies mesh settings to it.
+        The channel consists of six-sided mesh blocks which surround the blade geometry
+        and a grid channel formed by a multiple bounded volume, connecting to the mesh 
+        blocks.
 
-        The key ``regChannel`` in the dictionary passes, in which regular channel the blade 
-        is created. The regular channel is returned by the object of the class 
-        `analyticGeometry_piecewiseMeridionalRotContour` which was created in the method 
-        `createMeridional`.
- 
-        The meanplane is defined with the parameters ``spanwiseCuts_mp``, ``alpha_1``, 
-        ``alpha_2``, ``ratioX``, ``deltaY``, ``offX`` and ``offY``.
-        The class `analyticSurface_threePointMeanplaneFromRatio` creates the meanplane 
+        The blade geometry is defined using a configuration dictionary. The key ``label`` 
+        is used as an identifier for the bladed channel. The main geometries created in 
+        this method receive the string value stored under ``label`` in their physical 
+        names.
+
+        The key ``regChannel`` in the dictionary specifies in which regular channel the 
+        blade is created. The regular channel is returned by the object of the class
+        `analyticGeometry_piecewiseMeridionalRotContour`, which is created in the 
+        method `createMeridional`.
+
+        The mean plane is defined using the parameters ``spanwiseCuts_mp``, ``alpha_1``,
+        ``alpha_2``, ``ratioX``, ``deltaY``, ``offX``, and ``offY``.
+        The class `analyticSurface_threePointMeanplaneFromRatio` creates the mean plane
         in the uvw-parameter space.
-        
-        The thickness distribution is defined with the parameters ``spanwiseCuts_td``, 
-        ``t_le``, ``u_le``, ``t_mid``, ``u_mid``, ``t_te`` and ``u_te``.
-        With the class `vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution` 
-        the thickness distribution is set
-        The parametrization of the blade geometryis further described in 
+
+        The thickness distribution is defined using the parameters ``spanwiseCuts_td``,
+        ``t_le``, ``u_le``, ``t_mid``, ``u_mid``, ``t_te``, and ``u_te``.
+        The class `vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution` defines
+        the thickness distribution.
+        The parametrization of the blade geometry is further described in
         `[Fraas_2025] <https://doi.org/10.3390/ijtpp10040038>`_.
-        
-        The parameters of the meanplane and the thickness dirtribution are nested in lists. 
-        The list items are the blade parameters along the blade's span from hub to shroud.
-        
-        The creation of the meanplane and the thickness distribution is done with
-        ``scaOneD_scaCurve2dOneDPointConstruct`` objects which define a functional relation
-        of the parameters along the spanwise direction.
-        The constructor of a ``scaOneD_scaCurve2dOneDPointConstruct`` object needs a list 
-        with ``dtPoint2`` objects as well as an order of the function as inputs.
-        To create those inputs the lists are handed to the method `fillInputList`. 
-        This method creates the list containing ``dtPoint2`` objects, which in 
-        turn contain the parameter values of the list  and the percentage of the blade span 
-        where those values are applied. Furthermore the order of the function is set in this
-        method.
-        
-        The blade is built by combining the meanplane contour and the thickness distribution 
-        with the `dtOO` class `discreteAddNormal`.
-        The resulting blade is represented as a surface in the uvw-parameter space. 
-        
-        The mesh blocks are created by generating a mesh block surface which surrounds the 
-        blade with a distance normal to its' surface of ``meshBlock_thickness``.
-        This is done similarily to the combination of the meanplane and the thickness with 
+
+        The parameters of the mean plane and the thickness distribution are stored in 
+        lists. The list entries define the blade parameters along the blade span from hub
+        to shroud.
+
+        The creation of the mean plane and the thickness distribution is performed using
+        `scaOneD_scaCurve2dOneDPointConstruct` objects, which define a functional 
+        relation of the parameters along the spanwise direction.
+        The constructor of a `scaOneD_scaCurve2dOneDPointConstruct` object requires a 
+        list of `dtPoint2` objects as well as the function order as inputs.
+
+        To create these inputs, the lists are passed to the method `fillInputList`.
+        This method creates a list of `dtPoint2` objects, which in turn contain the 
+        parameter values from the list and the percentage of the blade span at which 
+        those values are applied. Furthermore, the function order is set in this method.
+
+        The blade is constructed by combining the mean plane contour and the thickness 
+        distribution using the `dtOO` class `discreteAddNormal`.
+        The resulting blade is represented as a surface in the uvw-parameter space.
+
+        The mesh blocks are created by generating a mesh block surface that surrounds the
+        blade at a normal distance of ``meshBlock_thickness`` from its surface.
+        This is done similarly to the combination of the mean plane and thickness using 
         the `dtOO` class `discreteAddNormal`.
 
-        The class `vec3dThreeD_skinAndSplit` is used for multiple operations. Those are as 
-        follows:
+        The class `vec3dThreeD_skinAndSplit` is used for multiple operations, as follows:
 
         - Creation of mesh block volumes from the blade and mesh block surfaces.
         - Creation of trailing edge mesh blocks.
-        - Creation of meanplane curves.
+        - Creation of mean plane curves.
 
-        The mesh block volumes are created by splitting the blade and the mesh block surfaces 
+        The mesh block volumes are created by splitting the blade and mesh block surfaces
         along their u-direction and skinning the resulting faces with each other.
-        According to the number of splits and their positions, which is specified with the 
-        input variable of ``splits``, multiple mesh blocks are created. The volumes get the
+        According to the number of splits and their positions, specified by the input 
+        variable ``splits``, multiple mesh blocks are created. The volumes contain the 
         string ``meshBlock`` as part of their label.
-        The seqence of the mesh block numbering follows the direction of the u-parameter
-        of the blade surface starting with the first mesh block at the u-parameter 
-        of 0 percent and the last mesh block being the one ending at the u-parameter of 
-        100 percent.
-        The first mesh block is labeled with the suffix ``_1`` and the n-th one with the 
+
+        The sequence of mesh block numbering follows the direction of the u-parameter
+        of the blade surface, starting with the first mesh block at u = 0% and ending 
+        with the last mesh block at u = 100%.
+
+        The first mesh block is labeled with the suffix ``_1`` and the n-th one with the
         suffix ``_n``.
-        The split dimension can be changed from u by changing the input variable ``splitDim``.
+        The split dimension can be changed from u by modifying the input variable 
+        ``splitDim``.
 
         The following figure shows a blade surrounded by the mesh block volumes.
 
@@ -1216,44 +1168,50 @@ class radMeridional:
            :align: center
 
            Blade surface (grey), surrounded by mesh blocks.
-        
-        In addition to the mesh blocks which are created on the blade surface, two mesh 
-        blocks in the downstream direction at the blades' trailing edge are created. 
-        The trailing edge mesh blocks are created by creating tangentially offset curves 
-        from the blade surface and the edges of the mesh blocks and skinning those with 
-        the curves they are originated from. The thickness of the trailing edge mesh blocks
-        is set with the input variable ``tEMeshBlockThickness``.
-        The trailing edge mesh blocks get the label ``meshBlock``. The one connecting 
-        to the first trailing edge mesh block gets the suffix ``_0`` and the one block 
-        connecting to the last mesh block the suffix ``_n+1``.
-        
-        The following figure shows the trailing edge mesh blocks.
+
+        In addition to the mesh blocks created on the blade surface, two mesh blocks
+        in the downstream direction at the blade’s trailing edge are created.
+        The trailing edge mesh blocks are generated by creating curves, which are 
+        tangentially offset from the blade surface and the edges of the mesh blocks.
+        These curves are skinned with their originating curves to create surfaces.
+        By skinning the surfaces with each other the trailing edge mesh block volumes 
+        are created.
+        The thickness of the trailing edge mesh blocks is set using the input variable
+        ``tEMeshBlockThickness``.
+
+        The trailing edge mesh blocks are labeled ``meshBlock``. The block connecting
+        to the first trailing edge mesh block receives the suffix ``_0``, and the block
+        connecting to the last mesh block receives the suffix ``_n+1``.
+
+        The following figure shows the trailing edge mesh blocks connecting to the mesh 
+        blocks.
 
         .. _TEmeshBlock:
         .. figure:: bladeFigs/guideVane_TEmeshBlocks.png
            :width: 50%
            :align: center
 
-           Blade surface (grey), with trailing edge mesh blocks.
+           Blade surface (grey) with trailing edge mesh blocks.
 
-        The periodic faces of the grid channel will be created by the specified faces 
-        of the mesh blocks and four meanplane faces. 
-        The number of mesh block faces which are part of the periodic faces is defined 
-        with ``nMeanplaneBlocks``.
+        The periodic faces of the grid channel are created from the specified faces
+        of the mesh blocks and four mean plane faces.
+        The number of mesh block faces that are part of the periodic faces is defined
+        by ``nMeanplaneBlocks``.
         
-        
-        Two of the meanplane faces are created by calculating offset curves extending 
-        in tangential direction of the mesh blocks and skinning those with the corresponding 
-        mesh block edges. 
+        Two of the mean plane faces are created by calculating offset curves extending
+        in the tangential direction of the mesh blocks and skinning them with the corresponding
+        mesh block edges.
+
         The first of these two faces extends from the first trailing edge mesh block into
-        the downstream direction of the channel. The other face extends from the end of the 
-        mesh block specified in ``nMeanplaneBlocks`` in the w-direction.
-        The extention length of the faces can be set with ``meanplaneExtOut`` and 
+        the downstream direction of the channel. The other face extends from the end of the
+        mesh block specified by ``nMeanplaneBlocks`` in the w-direction.
+        The extension length of the faces can be set using ``meanplaneExtOut`` and
         ``meanplaneExtIn``.
-        The skinning is done so the u- and v-directions of the faces match the directions 
-        of the mesh block faces.
-        The label of the resulting face at the trailing edge mesh block gets the suffix 
-        ``_out0`` and the one at the mesh block specified with ``nMeanplaneBlocks`` gets 
+
+        The skinning is performed so the u- and v-directions of the faces match the
+        directions of the mesh block faces.
+        The label of the resulting face at the trailing edge mesh block receives the suffix
+        ``_out0``, while the one at the mesh block specified by ``nMeanplaneBlocks`` receives
         the suffix ``_in0``.
         The creation of these faces is shown in :numref:`feMean0`.
 
@@ -1262,55 +1220,57 @@ class radMeridional:
            :width: 100%
            :align: center
 
-           Creation of the meanplane faces with name suffix ``_out0`` and ``_in0``.
+           Creation of the mean plane faces with name suffixes ``_out0`` and ``_in0``.
 
-        All the geometries generated until now are defined in the uvw-parameter space.
-        By doing a conformal mapping inside the regular channel, the geometries are 
-        reparametrized in xyz-coordinates. The mapping is done with the `dtOO` class
+        All geometries generated up to this point are defined in the uvw-parameter space.
+        By performing a conformal mapping inside the regular channel, the geometries are
+        reparameterized into xyz-coordinates. The mapping is performed using the `dtOO` class
         `uVw_phirMs`.
-        With the bool value behind the key ``adjustRadius`` in the configuration 
-        dictionary shifts during the mapping of the blade in the radial channel can be
-        activated or deactivated.  
 
-        The other two meanplane faces extend from the tangentially offset curves of 
-        the connecting meanplane faces to the inlet or outlet faces of the regular channel.
-        Their labes get the suffixes ``_out1`` and ``_in1``. Their directions are also 
-        consistent with the directions of the other faces.
+        The Boolean value associated with the key ``adjustRadius`` in the configuration
+        dictionary controls whether radial shifts during the mapping of the blade in the
+        radial channel are activated or deactivated.
 
-        The following figure shows the four meanplane faces with their label suffixes.
+        The other two mean plane faces extend from the tangentially offset curves of the
+        connecting mean plane faces to the inlet or outlet faces of the regular channel.
+        Their labels receive the suffixes ``_out1`` and ``_in1``. Their orientations are also
+        consistent with those of the other faces.
+
+        The following figure shows the four mean plane faces with their label suffixes.
 
         .. _feMean:
         .. figure:: bladeFigs/guideVane_feMeanplane.png
            :width: 100%
            :align: center
 
-           Meanplane faces (yellow).
+           Mean plane faces (yellow).
 
-        Next the meanplane faces and the mesh block faces are ordered into different lists.
-        The list ``meanplaneFaces`` gets the faces which will later be the periodic faces of 
+        Next, the mean plane faces and the mesh block faces are organized into different lists.
+        The list ``meanplaneFaces`` contains the faces that will later form the periodic faces of
         the bladed channel.
-        Those are the meanplane faces (:numref:`gridChannel` `(yellow)`) and the mesh block 
-        faces which are specified with ``nMeanplaneBlocks`` (:numref:`gridChannel` `(green)`)
-        The other meshblock faces will connect the mesh block regions to the multiple bounded
-        volume.
-        These are saved in the list ``couplingFaces`` (:numref:`gridChannel` `(cyan)`).
+        These include the mean plane faces (:numref:`gridChannel`, yellow) and the mesh block
+        faces specified by ``nMeanplaneBlocks`` (:numref:`gridChannel`, green).
 
-        With the lists ``meanplaneFaces`` and ``couplingFaces`` the grid channel is created as 
-        a multiple bounded volume in the class `multipleBoundedVolume_gridChannel`. 
-        The class returns the volume of the grid channel and a list containing its' bounding 
-        surfaces. 
-        :numref:`gridChannel` shows the bounding faces of the grid channel and the mesh blocks 
-        surrounding the blade, the hub and shroud faces are excluded for visibility.
-        
-        The grid channel is bounded by the coupling faces (cyan) and the meanplane faces which 
-        are created as extension of the mesh blocks (:numref:`feMean` `(yellow)`) on one side 
-        of the channel. On the other side it is bounded by the rotation of the faces in 
-        ``meanplaneFaces`` (yellow, green). The inlet and outlet (red) are created by rotating 
-        the edges of the meanplane faces connecting to the inlet and outlet of the regular 
-        channels.
-        The hub and shroud faces of the grid channel multiple bounded surfaces which are bounded 
-        by the edges of the boundary faces of the grid channel at the hub and the shroud.
-        The angle of rotation of the faces is determined by the number of blades ``nBlades`` 
+        The remaining mesh block faces connect the mesh block regions to the multiple bounded
+        volume. These are stored in the list ``couplingFaces`` (:numref:`gridChannel`, cyan).
+
+        Using the lists ``meanplaneFaces`` and ``couplingFaces``, the grid channel is created as
+        a multiple bounded volume in the class `multipleBoundedVolume_gridChannel`.
+        The class returns the multiple bounded volume of the grid channel and a list containing 
+        its bounding surfaces.
+        :numref:`gridChannel` shows the bounding faces of the grid channel and the mesh blocks
+        surrounding the blade; the hub and shroud faces are excluded for clarity.
+
+        The grid channel is bounded by the coupling faces (cyan) and the mean plane faces,
+        which are created as extensions of the mesh blocks (:numref:`feMean`, yellow) on one side
+        of the grid channel. On the other side, it is bounded by the rotated faces in
+        ``meanplaneFaces`` (yellow, green). The inlet and outlet faces (red) are created by 
+        rotating the edges of the mean plane faces that connect to the inlet and outlet of the 
+        regular channels.
+
+        The hub and shroud faces of the grid channel are multiple bounded surfaces, defined by
+        the edges of the boundary faces connecting to them.
+        The rotation angle of the faces is determined by the number of blades ``nBlades``
         specified in the configuration dictionary.
 
         .. _gridChannel:
@@ -1318,41 +1278,42 @@ class radMeridional:
            :width: 100%
            :align: center
 
-           Grid channel with blade (grey), inlet and outlet (red), 
-           periodic faces (yellow, green) and coupling faces (cyan).
+           Grid channel with blade (grey), inlet and outlet (red),
+           periodic faces (yellow, green), and coupling faces (cyan).
 
-        The mesh settings for the grid channel and the mesh blocks are applied in the class 
-        `map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks`. The edges where mesh settings 
-        to the channel are applied are shown in :numref:`channelMeshing`.
-        
-        The volume of the grid channel is meshed unstructured with transfinite layers on the 
-        hub and shroud surfaces. The number of layers can be set with ``nBoundaryLayers``. 
-        The element size of the unstructured regions can be controlled with the inputs 
+        The mesh settings for the grid channel and the mesh blocks are applied using the class
+        `map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks`.
+        The edges where mesh settings are applied to the channel are shown in
+        :numref:`channelMeshing`.
+
+        The volume of the grid channel is meshed unstructured, with transfinite layers on the
+        hub and shroud surfaces. The number of layers can be set using ``nBoundaryLayers``.
+        The element size of the unstructured regions can be controlled using
         ``charLengthMax`` and ``charLengthMin``.
 
-        The number on elements in the spanwise direction ``nElementsSpanwise`` of the channel 
-        are applied on the edges extending from the hub to the shroud (orange). 
-        The edges are meshed with a grading with an element size of ``firstElementSizeHubToShroud`` 
-        on the hub and shroud surfaces. 
-        
+        The number of elements in the spanwise direction (``nElementsSpanwise``) of the channel
+        is applied to the edges extending from the hub to the shroud (orange).
+        These edges are meshed with a grading, with an element size of
+        ``firstElementSizeHubToShroud`` at the hub and shroud surfaces.
+
         The mesh blocks surrounding the blade are meshed transfinite.
-        The edges extending from the blade to the mesh block faces (green) are meshed with the 
-        number of elements specified in ``nElementsNormal`` and a grading with the element size 
-        of ``firstElementSizeNormalBlade`` on the blade surface.
-        The mesh size along the blade edge (blue) is set with ``bladeHubElementSize``. This input 
-        is an object of the class `scaOneD_scaCurve2dOneDPointConstruct` and gives the mesh sizing 
-        and the percentage of the blade where it is applied. The scale can be changed with 
-        ``bladeHubElementScale``.
+        The edges extending from the blade to the mesh block faces (green) are meshed with the
+        number of elements specified by ``nElementsNormal`` and a grading with an element size
+        of ``firstElementSizeNormalBlade`` at the blade surface.
+
+        The mesh size along the blade edge (blue) is set using ``bladeHubElementSize``.
+        This input is an object of the class `scaOneD_scaCurve2dOneDPointConstruct` and
+        defines the mesh size distribution along the blade surface. 
+        The scale can be adjusted using ``bladeHubElementScale``.
 
         .. _channelMeshing:
         .. figure:: bladeFigs/guideVane_channelMeshing.png
            :width: 100%
            :align: center
 
-           Edges of the bladed channel where mesh settings are applied.
-           Hub to shroud edges (orange), blade edges (blue), blade to block edges (green)
+           Edges of the bladed channel where mesh settings are applied:
+           hub-to-shroud edges (orange), blade edges (blue), blade-to-block edges (green),
            and trailing edge lines (pink).
-
         """
 
         #
@@ -1828,13 +1789,13 @@ class radMeridional:
     def fillInputList(self, inList): 
         """Create inputs for scaOneD_scaCurve2dOneDPointConstruct class.
 
-        Takes the input lists for the createBlade method and transforms them
+        Takes the input lists for the `createBlade` method and transforms them
         into inputs of the scaOneD_scaCurve2dOneDPointConstruct class.
 
-        Creates a List with dtPoint2 objects which contain a input value from
-        the input list and the spanwise percentage of the blade where this value 
+        Creates a list with dtPoint2 objects which contain the input values from
+        the input list and the spanwise percentage on the blade where this value 
         is applied. The percentage is calculated from the length of the input
-        list as a normalized index.
+        list with a normalized index.
         Based on the list length the order of the scaOneD_scaCurve2dOneDPointConstruct
         function is calculated.
 
@@ -1899,7 +1860,7 @@ class radMeridional:
     def getContainer(self):
         """Return the container object.
         
-        Are used to create an openFOAM cases.
+        Is used to create openFOAM cases.
 
         Parameters
         ----------

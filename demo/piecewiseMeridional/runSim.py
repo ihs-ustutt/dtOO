@@ -17,7 +17,7 @@ _case = './'+case_name+'/'
 _safe_case = re.sub(r'[\\/:\*\?"<>|]', '_', _case)
 
 fc = foamlib.FoamCase( _case )
-if True:
+if False:
   fc.decompose_par_dict['method'] = 'metis'
   fc.decompose_par_dict['numberOfSubdomains'] = int(n_cores)
    

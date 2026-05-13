@@ -377,19 +377,19 @@ def run(*args, **kwargs):
     generate = radMeridional.radMeridional()
 
     generate.createMeridional(configM, hubCurves, shroudCurves)
-    generate.createBlade(configGV)
-    generate.createBlade(configRu)
-    generate.createLayerRegion(configL)
+    #generate.createBlade(configGV)
+    #generate.createBlade(configRu)
+    #generate.createLayerRegion(configL)
 
     cc = generate.getContainer()
     
     rr = dtOOInParaVIEW( cc )
     
     #bV, dC = generate.getbVAnddC()
-    #        
+            
     #stateLbl = "test"
     #indiv = "0" 
-    #              
+                  
     #createOFCase(cc, bV, dC, stateLbl, indiv)
 
     return cc, rr

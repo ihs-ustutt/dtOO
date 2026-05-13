@@ -55,20 +55,20 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
     The offset mesh block curves extend from hub to shroud of the channel. 
     They have the following naming convention:
         
-        prefix+"_"+label+"_meshBlockCurve_in1" -> curve connecting to the inlet
-        prefix+"_"+label+"_meshBlockCurve_out1" -> curve connecting to the outlet
+    prefix+"_"+label+"_meshBlockCurve_in1" -> curve connecting to the inlet
+    prefix+"_"+label+"_meshBlockCurve_out1" -> curve connecting to the outlet
 
     The class trans4SindedFace needs a closed loop of four edges. The direction
     of those edges have to be consistent.
     In order to keep the direction consistent the curves are defined with the 
     following specification:
         
-        Location            From -> To                      Naming
-        --------            ----------                      ------
-        hub                 interface -> mesh block curve   "hsCurve_u0_<in/out>
-        mesh block curve    hub -> shroud                   (see above)
-        shroud              mesh block curve -> interface   "hsCurve_u1_<in/out>
-        interface           shroud -> hub                   "interfCurve_<in/out>"
+    Location            From -> To                      Naming
+    --------            ----------                      ------
+    hub                 interface -> mesh block curve   "hsCurve_u0_<in/out>
+    mesh block curve    hub -> shroud                   (see above)
+    shroud              mesh block curve -> interface   "hsCurve_u1_<in/out>
+    interface           shroud -> hub                   "interfCurve_<in/out>"
 
     The curves are input in the constructor of the trans4SidedFace class in the same order.
     This results in the following parameter directions of the tesulting meanplane faces:
@@ -114,9 +114,11 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
 
     Examples
     --------
+
     >>> import dtOOPythonSWIG as dtOO
     
     Create three dimensional channel domain
+
     >>> c0 = dtOO.bSplineCurve_pointConstructOCC(
     ...       dtOO.vectorDtPoint3()
     ...         << dtOO.dtPoint3(+1.00, +0.00, 0.50)
@@ -153,6 +155,7 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
     ...         )
     
     Create the mesh block curves
+    
     >>> c_in1 = dtOO.bSplineCurve_pointConstructOCC(
     ...           dtOO.vectorDtPoint3()
     ...             << dtOO.dtPoint3(+0.90, +0.20, 0.00)
@@ -167,8 +170,9 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
     ...         ).result()
     
     Push the mesh block curves into a vector handler
+    
     >>> meshBlockCurves = dtOO.labeledVectorHandlingAnalyticGeometry()
-    >>> label = "test"
+    >>> label = "test"    
     >>> meshBlockCurves.push_back(
     ...     dtOO.analyticCurve( c_in1 ) << "xyz_"+label+"_meshBlockCurve_in1"
     ... )
@@ -177,6 +181,7 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
     ... )
     
     Create the meanplane faces between the interfaces and the mesh block curves
+    
     >>> from dtOOPythonApp.builder import analyticSurface_inOutFeMeanplane 
     >>> feMeanplane = analyticSurface_inOutFeMeanplane(
     ...     prefix = "xyz",
@@ -186,7 +191,8 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
     ... )
     >>> feMeanplane.build()
 
-    Chec the label of the last generated geometry
+    Check the label of the last generated geometry
+    
     >>> feMeanplane.lVH_aG().labels()[-1]
     'xyz_test_fe_meanplane_out1'
     
