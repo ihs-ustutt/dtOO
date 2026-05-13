@@ -69,19 +69,19 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
     the creation of the meridional contour trough the last interface curve.
 
     The multi bounded volume and its boundary faces are returned by: 
-        getUnstructuredRegion(nSlices) -> analyticGeometry, List[analyticGeometry]
+    getUnstructuredRegion(nSlices) -> analyticGeometry, List[analyticGeometry]
 
     The wall layers are returned by the methods:
-        getLayerList(nSlices)  -> List[List[List[analyticGeometry] | List[bool]]]
+    getLayerList(nSlices)  -> List[List[List[analyticGeometry] | List[bool]]]
     
-        The List returned by getLayerList has the following format:
-          layers = [[hub layer lists],[shroud layer list]]
-          with:
-          [layer lists] = [[3d layer domain], [bool list radius zero]]
+    The List returned by getLayerList has the following format:
+    layers = [[hub layer lists],[shroud layer list]]
+    with:
+    [layer lists] = [[3d layer domain], [bool list radius zero]]
     
     The inputs nSlices signifies the number of slices in which the whole 360° domain 
     will be segmented. The resulting angle of the returned segment is as follows:
-        $[ rotAngle = 2*numpy.pi/nSlices ]$
+    $[ rotAngle = 2*numpy.pi/nSlices ]$
 
     Attributes
     ----------
@@ -910,8 +910,11 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
         -------
         layerList: List[List[List[analyticGeometry] | List[bool]]]
           List containing the following data for the hub and shroud layers:
+            
             - 3d Layer region
+            
             - bool list with information of the radius
+        
         """
 
         logging.info("Request Layer Volumes: %i Slices" % nSlices)
