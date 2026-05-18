@@ -37,6 +37,14 @@ public:
   dt__classSelfCreate(combineGmsh);
   combineGmsh();
   virtual ~combineGmsh();
+  virtual void jInit(
+    jsonPrimitive const &jE,
+    baseContainer *const bC,
+    lvH_constValue const *const cV,
+    lvH_analyticFunction const *const aF,
+    lvH_analyticGeometry const *const aG,
+    lvH_boundedVolume const *const bV
+  );
   virtual void init(
     ::QDomElement const &element,
     baseContainer *const bC,
@@ -50,8 +58,6 @@ public:
 private:
   lvH_boundedVolume _bV;
   vectorHandling<dtGmshModel const *> _dtGM;
-  dtReal _relTol;
-  dtReal _absTol;
   static bool _registrated;
 };
 } // namespace dtOO

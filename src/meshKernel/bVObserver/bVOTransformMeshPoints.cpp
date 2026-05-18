@@ -48,6 +48,24 @@ bVOTransformMeshPoints::bVOTransformMeshPoints() {}
 
 bVOTransformMeshPoints::~bVOTransformMeshPoints() {}
 
+void bVOTransformMeshPoints::jInit(
+  jsonPrimitive const &jE,
+  baseContainer const *const bC,
+  lvH_constValue const *const cV,
+  lvH_analyticFunction const *const aF,
+  lvH_analyticGeometry const *const aG,
+  lvH_boundedVolume const *const bV,
+  boundedVolume *attachTo
+)
+{
+  bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
+
+  dt__forAllRefAuto(jE.lookup<std::vector<std::string>>("transformer"), tLabel)
+  {
+    _dtT.push_back(bC->constPtrTransformerContainer()->get(tLabel)->clone());
+  }
+}
+
 void bVOTransformMeshPoints::init(
   ::QDomElement const &element,
   baseContainer const *const bC,
@@ -69,31 +87,39 @@ void bVOTransformMeshPoints::init(
 
   dt__info(init(), << dtXmlParserBase::convertToString(element));
 
+  jsonPrimitive jE;
+
   //
   // trasnformer vector
   //
-  dt__forAllRefAuto(
-    dtXmlParserBase::getAttributeStrVector("transformer", element), aLabel
-  )
-  {
-    _dtT.push_back(bC->constPtrTransformerContainer()->get(aLabel));
-  }
-  _copy = dtXmlParserBase::getAttributeBool("copy", element, true);
+  jE.append<std::vector<std::string>>(
+    "transformer",
+    dtXmlParserBase::getAttributeStrVector("transformer", element)
+  );
 
-  _relTol = std::numeric_limits<dtReal>::max();
+  jE.append<bool>(
+    "_copy", dtXmlParserBase::getAttributeBool("copy", element, true)
+  );
+
   if (dtXmlParserBase::hasAttribute("relative_tolerance", element))
   {
-    _relTol = dtXmlParserBase::getAttributeFloatMuParse(
-      "relative_tolerance", element, cV
+    jE.append<dtReal>(
+      "_relTol",
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "relative_tolerance", element, cV
+      )
     );
   }
-  _absTol = std::numeric_limits<dtReal>::max();
   if (dtXmlParserBase::hasAttribute("absolute_tolerance", element))
   {
-    _absTol = dtXmlParserBase::getAttributeFloatMuParse(
-      "absolute_tolerance", element, cV
+    jE.append<dtReal>(
+      "_absTol",
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "absolute_tolerance", element, cV
+      )
     );
   }
+  jInit(jE, bC, cV, aF, aG, bV, attachTo);
 }
 
 void bVOTransformMeshPoints::postUpdate(void)
@@ -104,7 +130,7 @@ void bVOTransformMeshPoints::postUpdate(void)
   //
   ::GModel::setCurrent(gm);
 
-  if (_copy == false)
+  if (config().lookupDef("_copy", true) == false)
   {
     dt__info(
       postUpdate(), << "Copy vertices without creating a topology twin."
@@ -115,7 +141,7 @@ void bVOTransformMeshPoints::postUpdate(void)
       {
         ::MVertex *mv = gm->getMeshVertexByTag(ii);
         dt__warnIfWithSolution(mv == NULL, continue, postUpdate());
-        dtPoint3 pT = aDtT->operator()(dtGmshModel::extractPosition(mv), 1);
+        dtPoint3 pT = aDtT(dtGmshModel::extractPosition(mv), 1);
         mv->setXYZ(pT.x(), pT.y(), pT.z());
       }
     }
@@ -135,12 +161,10 @@ void bVOTransformMeshPoints::postUpdate(void)
     std::map<::MVertex *, ::MVertex *> mv_newOld;
 
     dtInt cc = 0;
-    dt__forAllRefAuto(_dtT, aDtT)
+    dt__forAllRefAuto(_dtT, currentT)
     {
       std::map<::GEntity *, ::GEntity *> &ge_newOld = ge_newOldV[cc];
       cc = cc + 1;
-
-      dtTransformer const &currentT = *aDtT;
 
       dt__info(
         postUpdate(), << "currentT.getLabel() = " << currentT.getLabel()
@@ -372,16 +396,20 @@ void bVOTransformMeshPoints::postUpdate(void)
     SBoundingBox3d bbox = gm->bounds();
     dtReal lc = bbox.empty() ? 1. : norm(SVector3(bbox.max(), bbox.min()));
 
+    dtReal const relTol =
+      config().lookupDef<dtReal>("_relTol", std::numeric_limits<dtReal>::max());
+    dtReal const absTol =
+      config().lookupDef<dtReal>("_absTol", std::numeric_limits<dtReal>::max());
     dt__info(
       postUpdate(),
-      << "relTol = " << _relTol << std::endl
-      << "absTol = " << _absTol << std::endl
+      << "relTol = " << relTol << std::endl
+      << "absTol = " << absTol << std::endl
       << "lc = " << lc << std::endl
-      << "absTol / lc = " << _absTol / lc << std::endl
-      << "==> min(absTol / lc, relTol) = " << std::min(_absTol / lc, _relTol)
+      << "absTol / lc = " << absTol / lc << std::endl
+      << "==> min(absTol / lc, relTol) = " << std::min(absTol / lc, relTol)
     );
 
-    gm->removeDuplicateMeshVertices(std::min(_absTol / lc, _relTol));
+    gm->removeDuplicateMeshVertices(std::min(absTol / lc, relTol));
   }
 }
 } // namespace dtOO

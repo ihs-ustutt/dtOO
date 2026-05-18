@@ -48,6 +48,40 @@ combineGmsh::combineGmsh() : gmshBoundedVolume() {}
 
 combineGmsh::~combineGmsh() {}
 
+void combineGmsh::jInit(
+  jsonPrimitive const &jE,
+  baseContainer *const bC,
+  lvH_constValue const *const cV,
+  lvH_analyticFunction const *const aF,
+  lvH_analyticGeometry const *const aG,
+  lvH_boundedVolume const *const bV
+)
+{
+  gmshBoundedVolume::jInit(jE, bC, cV, aF, aG, bV);
+
+  //
+  // region
+  //
+  // std::vector<::QDomElement> wEl =
+  //  qtXmlPrimitive::getChildVector("boundedVolume", element);
+  std::vector<boundedVolume const *> sections =
+    config().lookupVecRaw<boundedVolume>("", bV);
+
+  //
+  // set current model
+  //
+  ::GModel::setCurrent(_gm);
+
+  _dtGM.resize(sections.size());
+  _bV.resize(sections.size());
+  dt__forAllIndex(sections, ii)
+  {
+    dt__ptrAss(_bV[ii], const_cast<boundedVolume *>(sections[ii]));
+
+    dt__ptrAss(_dtGM[ii], dtGmshModel::ConstDownCast(sections[ii]->getModel()));
+  }
+}
+
 void combineGmsh::init(
   ::QDomElement const &element,
   baseContainer *const bC,
@@ -57,50 +91,38 @@ void combineGmsh::init(
   lvH_boundedVolume const *const bV
 )
 {
-  //
-  // init gmshBoundedVolume
-  //
   gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
 
-  //
-  // region
-  //
-  std::vector<::QDomElement> wEl =
-    qtXmlPrimitive::getChildVector("boundedVolume", element);
+  jsonPrimitive jE;
 
-  //
-  // set current model
-  //
-  ::GModel::setCurrent(_gm);
-
-  _dtGM.resize(wEl.size());
-  _bV.resize(wEl.size());
-  dt__forAllIndex(wEl, ii)
+  lvH_boundedVolume lvH_bV;
+  dt__forAllRefAuto(
+    qtXmlPrimitive::getChildVector("boundedVolume", element), wEl
+  )
   {
-    dt__ptrAss(
-      _bV[ii], bV->get(qtXmlPrimitive::getAttributeStr("label", wEl[ii]))
-    );
-
-    dt__ptrAss(_dtGM[ii], dtGmshModel::ConstDownCast(_bV[ii]->getModel()));
+    lvH_bV.push_back(bV->get(qtXmlPrimitive::getAttributeStr("label", wEl)));
   }
+  jE.append<std::vector<boundedVolume *>>("", lvH_bV);
 
-  //
-  // get precision for removing duplicate vertices
-  //
-  _relTol = std::numeric_limits<dtReal>::max();
   if (dtXmlParserBase::hasAttribute("relative_tolerance", element))
   {
-    _relTol = dtXmlParserBase::getAttributeFloatMuParse(
-      "relative_tolerance", element, cV
+    jE.append<dtReal>(
+      "_relTol",
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "relative_tolerance", element, cV
+      )
     );
   }
-  _absTol = std::numeric_limits<dtReal>::max();
   if (dtXmlParserBase::hasAttribute("absolute_tolerance", element))
   {
-    _absTol = dtXmlParserBase::getAttributeFloatMuParse(
-      "absolute_tolerance", element, cV
+    jE.append<dtReal>(
+      "_absTol",
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "absolute_tolerance", element, cV
+      )
     );
   }
+  jInit(jE, bC, cV, aF, aG, bV);
 }
 
 void combineGmsh::makeGrid(void)
@@ -314,16 +336,20 @@ void combineGmsh::makeGrid(void)
   SBoundingBox3d bbox = _gm->bounds();
   dtReal lc = bbox.empty() ? 1. : norm(SVector3(bbox.max(), bbox.min()));
 
+  dtReal const relTol =
+    config().lookupDef<dtReal>("_relTol", std::numeric_limits<dtReal>::max());
+  dtReal const absTol =
+    config().lookupDef<dtReal>("_absTol", std::numeric_limits<dtReal>::max());
   dt__info(
     makeGrid(),
-    << "relTol = " << _relTol << std::endl
-    << "absTol = " << _absTol << std::endl
+    << "relTol = " << relTol << std::endl
+    << "absTol = " << absTol << std::endl
     << "lc = " << lc << std::endl
-    << "absTol / lc = " << _absTol / lc << std::endl
-    << "==> min(absTol / lc, relTol) = " << std::min(_absTol / lc, _relTol)
+    << "absTol / lc = " << absTol / lc << std::endl
+    << "==> min(absTol / lc, relTol) = " << std::min(absTol / lc, relTol)
   );
 
-  _gm->removeDuplicateMeshVertices(std::min(_absTol / lc, _relTol));
+  _gm->removeDuplicateMeshVertices(std::min(absTol / lc, relTol));
 
   //
   // mark as meshed

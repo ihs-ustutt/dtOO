@@ -23,7 +23,6 @@ License
 #include "bVOInterface.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
-#include <vector>
 
 namespace dtOO {
 class boundedVolume;
@@ -35,6 +34,15 @@ public:
   dt__classSelfCreate(bVOTransformMeshPoints);
   bVOTransformMeshPoints();
   virtual ~bVOTransformMeshPoints();
+  virtual void jInit(
+    jsonPrimitive const &jE,
+    baseContainer const *const bC,
+    lvH_constValue const *const cV,
+    lvH_analyticFunction const *const aF,
+    lvH_analyticGeometry const *const aG,
+    lvH_boundedVolume const *const bV,
+    boundedVolume *attachTo
+  );
   virtual void init(
     ::QDomElement const &element,
     baseContainer const *const bC,
@@ -47,10 +55,7 @@ public:
   virtual void postUpdate(void);
 
 private:
-  std::vector<dtTransformer const *> _dtT;
-  dtReal _relTol;
-  dtReal _absTol;
-  bool _copy;
+  dt__pVH(dtTransformer) _dtT;
   static bool _registrated;
 };
 } // namespace dtOO
