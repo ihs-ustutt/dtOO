@@ -45,10 +45,13 @@ of the :ref:`radial turbine <radial_turbine_demo>`.
   :members:
   :special-members: __init__
 
-..
-	.. automodule:: dtOOPythonApp.builder.analyticGeometry_layerRegion
-	  :members:
+.. _analyticGeometry_layerRegion:
 
+.. automodule:: dtOOPythonApp.builder.analyticGeometry_layerRegion
+  :members:
+  :special-members: __init__
+
+..
 	.. automodule:: dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers
 	  :members:
 

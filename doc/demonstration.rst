@@ -761,7 +761,7 @@ creates a segment of a flow channel. This flow channel consists of transfinite
 layer regions on the hub and shroud faces and an unstructured region in between.
 The following builder classes are used:
 
-    - `analyticGeometry_layerRegion`
+    - :ref:`analyticGeometry_layerRegion <analyticGeometry_layerRegion>`
     - `map3dTo3dGmsh_gridFromLayers`
 
 WORKFLOW DESCRIPTION AND CLASS DIAGRAM

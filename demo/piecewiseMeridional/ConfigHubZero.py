@@ -379,7 +379,7 @@ def run(*args, **kwargs):
     generate.createMeridional(configM, hubCurves, shroudCurves)
     #generate.createBlade(configGV)
     #generate.createBlade(configRu)
-    #generate.createLayerRegion(configL)
+    generate.createLayerRegion(configL)
 
     cc = generate.getContainer()
     

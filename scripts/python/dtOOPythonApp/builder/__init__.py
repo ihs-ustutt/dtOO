@@ -68,6 +68,9 @@ from .map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks import (
 from .rotatingMap2dTo3d_splitFitted import (
   rotatingMap2dTo3d_splitFitted
 )
+from .analyticGeometry_featureAxial import (
+  analyticGeometry_featureAxial
+)
 from .analyticGeometry_piecewiseMeridionalRotContour import (
   analyticGeometry_piecewiseMeridionalRotContour
 )

@@ -67,14 +67,14 @@ class radMeridional:
        Final geometries and meshes of this example, with guide vane (top right),
        runner (top left), and draft tube cone (bottom).
 
-    The meridional contour of the machine is defined with the method `createMeridional`
+    The meridional contour of the machine is defined with the method :meth:`createMeridional`
     through hub and shroud curves, as well as the interface definition. 
 
     The guide vane and runner channels are created from regular channels with 
-    the method `createBlade`.
+    the method :meth:`createBlade`.
 
     The draft tube cone is created from the special curves with the method
-    `createLayerRegion`.
+    :meth:`createLayerRegion`.
 
 
     Meridional Contour
@@ -300,7 +300,7 @@ class radMeridional:
     The mesh blocks are meshed transfinite, while the grid channel is 
     meshed unstructured.
 
-    The bladed channel is created with the method `createBlade`. 
+    The bladed channel is created with the method :meth:`createBlade`. 
     This method takes a configuration dictionary, which contains the necessary
     geometry parameters, as input.
 
@@ -414,7 +414,7 @@ class radMeridional:
     The mesh of the draft tube cone is created as a combination of an 
     unstructured region and transfinite regions on the hub and shroud 
     walls.
-    The method `createLayerRegion` is used for the generation and meshing 
+    The method :meth:`createLayerRegion` is used for the generation and meshing 
     of the geometry. Geometry settings for the layer region are passed to 
     the class through a configuration dictionary.
 
@@ -437,7 +437,7 @@ class radMeridional:
 
     The object ``container`` and the vector-handling objects for bounded 
     volumes ``bV`` and and cases ``dC`` can be returned with the getter methods 
-    `getContainer` and `getbVAnddC`.
+    :meth:`getContainer` and :meth:`getbVAnddC`.
     These can be used to create the mesh files in `GMSH` or `openFOAM` cases.
 
     Return ``container``, ``bV`` and ``dC`` from the ``generate`` object:
@@ -583,9 +583,6 @@ class radMeridional:
         -------
         None
 
-
-        Meridional Contour
-        ------------------
 
         The regular channels and the special hub and shroud curves are created 
         in this method.
@@ -767,9 +764,6 @@ class radMeridional:
         -------
         None 
 
-
-        Draft Tube Cone
-        ---------------
 
         The mesh of the draft tube cone consists of six- or five-sided layer
         regions on the hub and shroud walls, as well as a multiple bounded volume
@@ -1084,9 +1078,6 @@ class radMeridional:
         -------
         None
 
-
-        Bladed Channels
-        ---------------
         
         This method creates a bladed channel and applies mesh settings to it.
         The channel consists of six-sided mesh blocks which surround the blade geometry
@@ -1125,7 +1116,7 @@ class radMeridional:
         The constructor of a `scaOneD_scaCurve2dOneDPointConstruct` object requires a 
         list of `dtPoint2` objects as well as the function order as inputs.
 
-        To create these inputs, the lists are passed to the method `fillInputList`.
+        To create these inputs, the lists are passed to the method :meth:`fillInputList`.
         This method creates a list of `dtPoint2` objects, which in turn contain the 
         parameter values from the list and the percentage of the blade span at which 
         those values are applied. Furthermore, the function order is set in this method.
@@ -1789,7 +1780,7 @@ class radMeridional:
     def fillInputList(self, inList): 
         """Create inputs for scaOneD_scaCurve2dOneDPointConstruct class.
 
-        Takes the input lists for the `createBlade` method and transforms them
+        Takes the input lists for the :meth:`createBlade` method and transforms them
         into inputs of the scaOneD_scaCurve2dOneDPointConstruct class.
 
         Creates a list with dtPoint2 objects which contain the input values from
