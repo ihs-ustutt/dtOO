@@ -1,4 +1,13 @@
 import foamlib
+
+import logging
+logging.basicConfig(
+  format='[ %(asctime)s - %(levelname)8s - %(filename)s:%(lineno)d ]'
+         ' - %(message)s', 
+  datefmt='%d-%b-%y %H:%M:%S', 
+  level=logging.INFO
+)
+
 from pyDtOO import *
 
 import matplotlib.pyplot as plt
@@ -59,33 +68,33 @@ if False:
   
   fc.run()
   
-#fc.reconstruct_par()
-fc.run(["reconstructPar", '-time', '500,1990:'])
+fc.run(["reconstructPar", '-time', '500,2000'])
 
 _omega = np.abs(
-  foamlib.FoamFile(fc.path/'constant/MRFProperties')['MRF_ru_mesh_combined']['omega']
+  foamlib.FoamFile(fc.path/'constant/MRFProperties')['MRF_ru_mesh']['omega']
 )
 _rho = 997.
 _g = 9.81
 for var in ["U", "U:Transformed", "p",]:
   for patch in [
-          "gv_mesh_combined_inlet", "gv_mesh_combined_outlet", 
-          "ru_mesh_combined_inlet", "ru_mesh_combined_outlet", 
-          "meshLayers_combined_inlet", "meshLayers_combined_outlet", 
+          "gv_mesh_inlet", "gv_mesh_outlet", 
+          "ru_mesh_inlet", "ru_mesh_outlet", 
+          "meshLayers_inlet", "meshLayers_outlet", 
           "dt_mesh_inlet", "dt_mesh_outlet"
         ]:
     fc.run(["patchToCsv", var, patch])
 
-_time = fc[-1].name
+#_time = fc[-1].name
+_time = "2000"
 
-#patchToCsv U ru_mesh_combined_outlet
-UTrans_gv_in = dtAverageValueField(dtCylField(_case+"gv_mesh_combined_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
-UTrans_gv_out = dtAverageValueField(dtCylField(_case+"gv_mesh_combined_outlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
-UTrans_ru_in = dtAverageValueField(dtCylField(_case+"ru_mesh_combined_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
-UTrans_ru_out = dtAverageValueField(dtCylField(_case+"ru_mesh_combined_outlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
-UTrans_ml_in = dtAverageValueField(dtCylField(_case+"meshLayers_combined_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
-UTrans_ml_out = dtAverageValueField(dtCylField(_case+"meshLayers_combined_outlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
-UTrans_dt_in = dtAverageValueField(dtCylField(_case+"dt_mesh_combined_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
+#patchToCsv U ru_mesh_outlet
+UTrans_gv_in = dtAverageValueField(dtCylField(_case+"gv_mesh_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
+UTrans_gv_out = dtAverageValueField(dtCylField(_case+"gv_mesh_outlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
+UTrans_ru_in = dtAverageValueField(dtCylField(_case+"ru_mesh_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
+UTrans_ru_out = dtAverageValueField(dtCylField(_case+"ru_mesh_outlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
+UTrans_ml_in = dtAverageValueField(dtCylField(_case+"meshLayers_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
+UTrans_ml_out = dtAverageValueField(dtCylField(_case+"meshLayers_outlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
+UTrans_dt_in = dtAverageValueField(dtCylField(_case+"dt_mesh_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
 
 #UTrans_dt_out = dtValueField(dtField(_case+"dt_mesh_outlet_U:Transformed_"+_time+".csv").Read())
 
@@ -146,20 +155,20 @@ ax.grid(True)
 #ax.grid(True)
 
 
-pT_gv_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_gv_mesh_combined_inlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_gv_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_gv_mesh_combined_outlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_ru_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_ru_mesh_combined_inlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_ru_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_ru_mesh_combined_outlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_ml_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_meshLayers_combined_inlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_ml_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_meshLayers_combined_outlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_dt_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_dt_mesh_combined_inlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_dt_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_dt_mesh_combined_outlet").Read(pattern={"*.dat": ":,1:"}) )
+pT_gv_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_gv_mesh_inlet").Read(pattern={"*.dat": ":,1:"}) )
+pT_gv_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_gv_mesh_outlet").Read(pattern={"*.dat": ":,1:"}) )
+pT_ru_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_ru_mesh_inlet").Read(pattern={"*.dat": ":,1:"}) )
+pT_ru_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_ru_mesh_outlet").Read(pattern={"*.dat": ":,1:"}) )
+pT_ml_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_meshLayers_inlet").Read(pattern={"*.dat": ":,1:"}) )
+pT_ml_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_meshLayers_outlet").Read(pattern={"*.dat": ":,1:"}) )
+pT_dt_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_dt_mesh_inlet").Read(pattern={"*.dat": ":,1:"}) )
+pT_dt_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_dt_mesh_outlet").Read(pattern={"*.dat": ":,1:"}) )
 dh_gv0 = (pT_gv_out.MeanLast(10) - pT_gv_in.MeanLast(10))/_g
 dh_ru0 = (pT_ru_out.MeanLast(10) - pT_ru_in.MeanLast(10))/_g
 dh_ml0 = (pT_ml_out.MeanLast(10) - pT_ml_in.MeanLast(10))/_g
 dh_dt0 = (pT_dt_out.MeanLast(10) - pT_dt_in.MeanLast(10))/_g
 dh = dh_gv0 + dh_ru0 + dh_ml0 + dh_dt0
-F = dtForceDeveloping( dtDeveloping(_case+"postProcessing/F_ru_mesh_combined_blade").Read(pattern={'force.dat' : ':,4:10', 'moment.dat' : ':,4:10', '*.*' : ''}) )
+F = dtForceDeveloping( dtDeveloping(_case+"postProcessing/F_ru_mesh_blade").Read(pattern={'force.dat' : ':,4:10', 'moment.dat' : ':,4:10', '*.*' : ''}) )
 
 print("pT_ru_in = ", pT_ru_in.MeanLast(1))
 print("pT_ru_out = ", pT_ru_out.MeanLast(1))
@@ -177,20 +186,20 @@ print("dh = %f" % dh)
 print("F_z = %f" % F.MomentMeanLast(10)[2])
 
 
-U_gv_in = dtValueField(dtField(_case+"gv_mesh_combined_inlet_U_"+_time+".csv").Read())
-U_gv_out = dtValueField(dtField(_case+"gv_mesh_combined_outlet_U_"+_time+".csv").Read())
-p_gv_in = dtValueField(dtField(_case+"gv_mesh_combined_inlet_p_"+_time+".csv").Read())
-p_gv_out = dtValueField(dtField(_case+"gv_mesh_combined_outlet_p_"+_time+".csv").Read())
+U_gv_in = dtValueField(dtField(_case+"gv_mesh_inlet_U_"+_time+".csv").Read())
+U_gv_out = dtValueField(dtField(_case+"gv_mesh_outlet_U_"+_time+".csv").Read())
+p_gv_in = dtValueField(dtField(_case+"gv_mesh_inlet_p_"+_time+".csv").Read())
+p_gv_out = dtValueField(dtField(_case+"gv_mesh_outlet_p_"+_time+".csv").Read())
 Q_gv = np.abs(p_gv_in.IntQ())
 
 h_tot_gv_in = (p_gv_in.IntValueQ() / _g + U_gv_in.IntMagSquareQ() / (2.*_g))/Q_gv
 print("h_tot_gv_in = %f" % h_tot_gv_in)
 #h_tot_ru_out = (p_ru_out.IntValueQ() / _g + U_ru_out.IntMagSquareQ() / (2.*_g))/Q
 
-U_ru_in = dtValueField(dtField(_case+"ru_mesh_combined_inlet_U_"+_time+".csv").Read())
-U_ru_out = dtValueField(dtField(_case+"ru_mesh_combined_outlet_U_"+_time+".csv").Read())
-p_ru_in = dtValueField(dtField(_case+"ru_mesh_combined_inlet_p_"+_time+".csv").Read())
-p_ru_out = dtValueField(dtField(_case+"ru_mesh_combined_outlet_p_"+_time+".csv").Read())
+U_ru_in = dtValueField(dtField(_case+"ru_mesh_inlet_U_"+_time+".csv").Read())
+U_ru_out = dtValueField(dtField(_case+"ru_mesh_outlet_U_"+_time+".csv").Read())
+p_ru_in = dtValueField(dtField(_case+"ru_mesh_inlet_p_"+_time+".csv").Read())
+p_ru_out = dtValueField(dtField(_case+"ru_mesh_outlet_p_"+_time+".csv").Read())
 
 print("p_ru_in = ", p_ru_in.IntValueQ())
 print("p_ru_out = ", p_ru_out.IntValueQ())
