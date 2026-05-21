@@ -18,6 +18,7 @@ License
 #include "analyticSurface.h"
 
 #include "analyticCurve.h"
+#include "dtLinearAlgebra.h"
 #include "map1dTo3d.h"
 #include "map2dTo3dTransformed.h"
 #include "vec2dOneDInMap2dTo3d.h"
@@ -28,9 +29,11 @@ License
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/dtSurface.h>
+#include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_uvBounds.h>
 #include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 
@@ -200,10 +203,45 @@ dtPoint2 analyticSurface::reparamOnFace(dtPoint3 const &ppXYZ) const
   dtPoint2 ppUV = _dtS->reparam(ppXYZ);
   dtPoint3 ppXYZReparam = getPoint(ppUV.x(), ppUV.y());
 
-  dt__throwIf(
-    !analyticGeometry::inXYZTolerance(ppXYZ, ppXYZReparam), reparamOnFace()
-  );
+  dtReal dist = dtLinearAlgebra::distance(ppXYZ, ppXYZReparam);
 
+  if (!analyticGeometry::inXYZTolerance(dist))
+  {
+    if (logMe::isDebug())
+    {
+      std::string const fname(this->getLabel() + "_reparam");
+      
+      // write gmsh geo file
+      std::fstream of;
+      of.open(fname+".geo", std::ios::out | std::ios::trunc);
+      of << logMe::dtFormat("Point(1001) = { %16.8e, %16.8e, %16.8e };\n") %
+              ppXYZ.x() % ppXYZ.y() % ppXYZ.z();
+      of << logMe::dtFormat("Point(1002) = { %16.8e, %16.8e, %16.8e };\n") %
+              ppXYZReparam.x() % ppXYZReparam.y() % ppXYZReparam.z();
+      of << logMe::dtFormat("Line(1000) = { 1001, 1002 };\n");
+      of.close();
+
+      // write STEP file if possible
+      dtOCCSurface const *const dtOccS =
+        dtOCCSurface::ConstDownCast(this->ptrConstDtSurface());
+      if (dtOccS)
+      {
+        dtOccS->toSTEP(fname+".stp");
+      }
+    }
+    dt__throw(
+      reparamOnFace(),
+      << logMe::dtFormat("ppXYZ = %5.2e %5.2e %5.2e\n"
+                         "ppXYZReparam = %5.2e %5.2e %5.2e\n"
+                         "dist = %5.2e\n"
+                         "xyz_resolution = %5.2e") %
+             ppXYZ.x() % ppXYZ.y() % ppXYZ.z() % ppXYZReparam.x() %
+             ppXYZReparam.y() % ppXYZReparam.z() % dist %
+             staticPropertiesHandler::getInstance()->getOptionFloat(
+               "xyz_resolution"
+             )
+    );
+  }
   return ppUV;
 }
 
