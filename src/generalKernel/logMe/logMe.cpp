@@ -145,45 +145,45 @@ bool logMe::isError(void)
 {
   if (dtOO::logERROR > dtOO::FILELog::ReportingLevel())
   {
-    return true;
+    return false;
   }
-  return false;
+  return true;
 }
 
 bool logMe::isWarning(void)
 {
   if (dtOO::logWARNING > dtOO::FILELog::ReportingLevel())
   {
-    return true;
+    return false;
   }
-  return false;
+  return true;
 }
 
 bool logMe::isInfo(void)
 {
   if (dtOO::logINFO > dtOO::FILELog::ReportingLevel())
   {
-    return true;
+    return false;
   }
-  return false;
+  return true;
 }
 
 bool logMe::isDebug(void)
 {
   if (dtOO::logDEBUG > dtOO::FILELog::ReportingLevel())
   {
-    return true;
+    return false;
   }
-  return false;
+  return true;
 }
 
 bool logMe::isDDebug(void)
 {
   if (dtOO::logDDEBUG > dtOO::FILELog::ReportingLevel())
   {
-    return true;
+    return false;
   }
-  return false;
+  return true;
 }
 
 /**
