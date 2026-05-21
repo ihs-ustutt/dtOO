@@ -46,7 +46,8 @@ uv_geomSurfaceClosestPoint::uv_geomSurfaceClosestPoint(
     ),
     // clang-format on
     dtPoint2(0.001, 0.001),
-    staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
+    staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
+    1000
   );
   md.perform();
   _closestUV = dtS->uv_uvPercent(dtPoint2(md.result()[0], md.result()[1]));
