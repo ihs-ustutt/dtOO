@@ -119,6 +119,7 @@ public:
   ) const;
   dtPoint2 reparamPercent(dtPoint3 const point) const;
   static bool inXYZTolerance(dtPoint3 const &p0, dtPoint3 const &p1);
+  static bool inXYZTolerance(dtReal const &dist);
 };
 dt__H_addCloneForpVH(dtSurface);
 } // namespace dtOO
