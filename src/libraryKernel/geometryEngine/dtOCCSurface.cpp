@@ -39,9 +39,7 @@ License
 
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <STEPControl_Writer.hxx>
-//#include <ShapeBuild_Edge.hxx>
 #include <StepData_StepModel.hxx>
-// #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 
 namespace dtOO {

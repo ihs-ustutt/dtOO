@@ -257,10 +257,10 @@ dtPoint2 map2dTo3d::reparamOnFace(dtPoint3 const &ppXYZ) const
     if (logMe::isDebug())
     {
       std::string const fname(this->getLabel() + "_reparam");
-      
+
       // write gmsh geo file
       std::fstream of;
-      of.open(fname+".geo", std::ios::out | std::ios::trunc);
+      of.open(fname + ".geo", std::ios::out | std::ios::trunc);
       of << logMe::dtFormat("Point(1001) = { %16.8e, %16.8e, %16.8e };\n") %
               ppXYZ.x() % ppXYZ.y() % ppXYZ.z();
       of << logMe::dtFormat("Point(1002) = { %16.8e, %16.8e, %16.8e };\n") %
@@ -273,12 +273,14 @@ dtPoint2 map2dTo3d::reparamOnFace(dtPoint3 const &ppXYZ) const
       << logMe::dtFormat("ppXYZ = %5.2e %5.2e %5.2e\n"
                          "ppXYZReparam = %5.2e %5.2e %5.2e\n"
                          "dist = %5.2e\n"
-                         "xyz_resolution = %5.2e") %
+                         "xyz_resolution = %5.2e\n"
+                         "virtualClassName() = %s") %
              ppXYZ.x() % ppXYZ.y() % ppXYZ.z() % ppXYZReparam.x() %
              ppXYZReparam.y() % ppXYZReparam.z() % dist %
              staticPropertiesHandler::getInstance()->getOptionFloat(
                "xyz_resolution"
-             )
+             ) %
+             this->virtualClassName()
     );
   }
   return ppUV;
