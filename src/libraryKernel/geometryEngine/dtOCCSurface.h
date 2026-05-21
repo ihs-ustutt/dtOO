@@ -58,7 +58,8 @@ public:
   //
   //
   //
-  void toSTEP( std::string const &fname) const;
+  void toSTEP(std::string const &fname) const;
+
 private:
   ptrHandling<dtOCCSurfaceBase> _surface;
   Geom_Surface const *_ptr;

@@ -28,8 +28,8 @@ License
 #include <dtTransformerHeaven/dtTransformer.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtCurve2d.h>
-#include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtOCCSurface.h>
+#include <geometryEngine/dtSurface.h>
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_uvBounds.h>
 #include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -210,10 +210,10 @@ dtPoint2 analyticSurface::reparamOnFace(dtPoint3 const &ppXYZ) const
     if (logMe::isDebug())
     {
       std::string const fname(this->getLabel() + "_reparam");
-      
+
       // write gmsh geo file
       std::fstream of;
-      of.open(fname+".geo", std::ios::out | std::ios::trunc);
+      of.open(fname + ".geo", std::ios::out | std::ios::trunc);
       of << logMe::dtFormat("Point(1001) = { %16.8e, %16.8e, %16.8e };\n") %
               ppXYZ.x() % ppXYZ.y() % ppXYZ.z();
       of << logMe::dtFormat("Point(1002) = { %16.8e, %16.8e, %16.8e };\n") %
@@ -226,7 +226,7 @@ dtPoint2 analyticSurface::reparamOnFace(dtPoint3 const &ppXYZ) const
         dtOCCSurface::ConstDownCast(this->ptrConstDtSurface());
       if (dtOccS)
       {
-        dtOccS->toSTEP(fname+".stp");
+        dtOccS->toSTEP(fname + ".stp");
       }
     }
     dt__throw(
