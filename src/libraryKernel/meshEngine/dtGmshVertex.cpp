@@ -89,7 +89,7 @@ bool dtGmshVertex::isEqual(
 )
 {
   dtReal xyzRes =
-    staticPropertiesHandler::getInstance()->getOptionFloat("XYZ_resolution");
+    staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution");
   dtPoint3 v0(gv0->x(), gv0->y(), gv0->z());
   dtPoint3 v1(gv1->x(), gv1->y(), gv1->z());
   if (dtLinearAlgebra::distance(v0, v1) < xyzRes)
