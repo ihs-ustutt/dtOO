@@ -249,13 +249,14 @@ dtPoint2 dtOCCSurface::reparam(dtPoint3 const point) const
     static_cast<Standard_Real>(point.y()),
     static_cast<Standard_Real>(point.z())
   );
+  Standard_Real Tol = 1.e-02 * dtSurface::XYZTolerance();
 
   //
   // Reparam by Projection
   //
   Handle(Geom_Surface) surf = _surface->getOCC();
   GeomAPI_ProjectPointOnSurf proj;
-  dt__tryOcc(proj.Init(pp, surf);, << "Projection init fails.");
+  dt__tryOcc(proj.Init(pp, surf, Tol);, << "Projection init fails.");
 
   logContainer<dtOCCSurface> logC(logDEBUG, "reparam()");
 
@@ -289,16 +290,10 @@ dtPoint2 dtOCCSurface::reparam(dtPoint3 const point) const
   Standard_Real V2;
 
   _ptr->Bounds(U1, U2, V1, V2);
-  Standard_Real Utol =
-    static_cast<Standard_Real>(staticPropertiesHandler::getInstance()
-                                 ->getOptionFloat("reparamOnFace_precision"));
-  Standard_Real Vtol =
-    static_cast<Standard_Real>(staticPropertiesHandler::getInstance()
-                                 ->getOptionFloat("reparamOnFace_precision"));
   GeomAdaptor_Surface gas;
   Extrema_ExtPS ext;
   dt__tryOcc(gas.Load(_surface->getOCC());
-             ext.Initialize(gas, U1, U2, V1, V2, Utol, Vtol);
+             ext.Initialize(gas, U1, U2, V1, V2, Tol, Tol);
              ext.SetFlag(Extrema_ExtFlag::Extrema_ExtFlag_MIN);
              ext.SetAlgo(Extrema_ExtAlgo::Extrema_ExtAlgo_Grad);
              ext.Perform(pp);
