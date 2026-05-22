@@ -30,83 +30,17 @@ from typing import List, Tuple, Union, Dict
 class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
     """Create mesh's topology as map3dTo3dGmsh.
 
-    The topology of the mesh of from the channel reigion with Layers is build. 
-    The channel consists of of a multi bounded volume and a the layer volumes.
-    
-    The naming of the mesh regions is as follows:
-        
-        - unstruct3d    : multi bounded volume
-        - layer3d       : layer faces
-    
-    The multi bounded volume is meshed unstructured. The number of elements in this
-    region is deternined by the element counts of the surrounding layers.
-    The six sided layer volumes are meshed as transfinite regions in addition with 
-    recombining recursively.
-    If the layer volumes are five sided (the slice ends on a radius of zero) they are
-    meshed unstructured.
-    The layer volumes are differentiated in hub layers and shroud layers.
-    By looping over the layer list the layer regions can be added as volumes.
-    The layer list has the following format:
-    
-          layers = [[hub layer lists],[shroud layer list]]
-          with:
-          [layer lists] = [[3d layer domain], [bool list radius zero]]
-    
-          - List[3d layer domain]         : contains the layer volumes
-          - List[bool list radius zero]   : contains info if the volume is five sided
+    This class:
 
-    The layer faces for six sided layers are labeled as follows:
-    
-        - "periodic0_"+label+str(i_l)   : 1st peridoic face  
-        - "periodic1_"+label+str(i_l)   : 2nd periodic face
-        - "channel_"+label+str(i_l)     : channel wall face
-        - "parallel_"+label+str(i_l))   : face parallel to channel wall
-        - "ortho_"+label+str(i_l)       : face orthogonal to streamwise direction
+        - Creates a map3dTo3dGmsh topology object.
+        - Adds the unstructured region to the topology.
+        - Adds layer volumes to the topology.
+        - Manages layer faces in the topology.
+        - Applies mesh settings to the edges.
+        - Applies gradings and mesh rules.
+        - Renames faces.
+        - Applies mesh settings to topology.
 
-    The variable <label> is here correspondingly "hub" or "shroud". The iterator 
-    <i_l> corrseponds to the layer number in the layer list.
-    
-    The layer faces for five sided layers have the appendix "5s" to their name ie:
-
-        - "channel5s_"+label+str(i_l)     : channel wall face (five sided domain)
-
-    If the last layer of the hub or shroud layers are six sided the last orthogonal 
-    face will be named:
-
-        - "ortho_"+label+str(i_l + 1)   
-
-    In order to set the number of nodes and to apply a specific grading to an
-    edge of the layer volumes, the following groups of edges are extracted:
-    
-        - channelToParallelLines    : edges from channel face to parallel face, 
-                                      grading is applied
-        - swLines                   : edges extending in streamwise direction 
-                                      along channel and parallel faces
-        - circLines                 : edges extending in circunferential direction
-                                      along channel and parallel faces
-
-    If debug is enabled all edges are attached with prefix "debug_".
-
-    A grading is defined on channelToParallelLines with the number of elements of 
-    <nLayers> and a first element size of <firstElement>.
-    
-    The number of nodes on swLines and circLines is defined trough the mesh sizes
-    elementSize_sw and elementSize_circ. 
-    The number on elements in streamwise direction is calculated from the length
-    of a swLine on the channel wall and <elementSize_sw>.
-    To keep the element count in circumferential direction consistent on the 
-    hub and the shroud layers the number of elements is calculated from the longest
-    circLine of the hub and the shroud layer volumes.
-    Resulting of this meshing strategy the imput variables <elementSize_sw> and 
-    <elementSize_circ> represent the maximal mesh size on the channel surfaces.
-    
-    Added observers:
-
-        - bVOFaceToPatchRule
-
-        - bVOWriteMSH
-
-        - bVOOrientCellVolumes
 
     Attributes
     ----------
@@ -115,23 +49,78 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
     layerList_: List[List[List[analyticGeometry] | List[bool]]]
       Layer lists for hub and shroud with 3d regions and bool list.
     nLayers_: int
-      Number of elements in grading.
+      Number of elements normal to the walls in the layer volumes.
     firstElement_: float
-      size of first element in grading.
+      Size of first element on the walls.
     elementSizeSw_: float
-      Element size in streamwise direction
+      Element size in streamwise direction.
     elementSizeCirc_: float
-      Element size in circumferential direction
+      Element size in circumferential direction.
     unstructured_: analyticGeometry
-      Multi bounded volume of the unstructured region
+      Multi bounded volume of the unstructured region.
     unstructuredSurfaces_: List[analyticGeometry]
-      Bounding faces of the mult bounded voulume
+      Bounding faces of the mult bounded volume.
     map3dTo3dGmshJson_: jsonPrimitive
       JSON structure for map3dTo3dGmsh.
 
     Examples
     --------
+    None 
 
+    
+    The class is used to create the mesh topology of a flow channel consisting 
+    of five- or six-sided layer volumes on the hub and shroud walls and a 
+    multiple bound volume inside the flow domain, connecting to the layer 
+    volumes.
+    The layer volumes are meshed transfinite and the multiple bounded volume is
+    meshed unstructured.
+    
+    In the constructor the input parameters are instantiated. The multiple 
+    bounded volume is instantiated as ``unstructured_``. The list with its
+    bounding surfaces as ``unstructuredSurfaces_``.
+
+    The layer list is instantiated as ``layerList``. Its structure is as 
+    follows:
+
+    .. code-block:: python
+
+        layerList = List[
+            List[
+                List[analyticGeometry],
+                List[bool]
+            ]
+        ]
+
+    The entries correspond to the following values:
+
+    - ``layerList[0]``: Hub layers
+    - ``layerList[1]``: Shroud layers
+    - ``layerList[i][0]``: List of layer volumes.
+    - ``layerList[i][1]``: List of Boolean values indicating whether the corresponding
+      layer is located on a radius of zero.
+
+    The layers are meshed with a grading extending from the wall face into the
+    flow domain. The number of elements in the grading is defined as ``nLayers``.
+    The size of the first element on the wall is specified with ``firstElement_``.
+
+    The number layer elements in streamwise and circumferential direction is set with 
+    ``elementSizeSw_`` and ``elementSizeCirc_``. These parameters correspond to maximal
+    element sizes on the hub and shroud walls.
+
+    The size of the elements in the unstructured region is set with the minimal and 
+    maximal characteristic lengths ``charLengthMin`` and ``charLengthMax``.
+
+    The topology settings are defined with a `jsonPrimitive` object instantiated as 
+    ``map3dTo3dGmshJson_``. Here the characteristic lengths of the unstrucured mesh 
+    elements are applied.
+
+    With the :meth:`build` method the mesh settings are applied to the topology. The
+    methods :meth:`detectFistAndSecond` and :meth:`getCommonEdgesByPhysicalFaces` are
+    used to organize the faces and edges of the layer volumes.
+
+    The mesh topology is appended to the bounded volume container at the end of the
+    :meth:`build` method.
+    
     """
     def __init__(self,
                  mv: analyticGeometry, 
@@ -150,6 +139,10 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
         Parameters
         ----------
+        mv: analyticGeometry
+          Multi bounded volume of the unstructured region
+        bs: List[analyticGeometry]
+          Bounding faces of the mult bounded volume
         label: str
           Label.
         layers: List[List[List[analyticGeometry] | List[bool]]]
@@ -162,10 +155,10 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
           Element size in streamwise direction
         elementSize_circ: float
           Element size in circumferential direction
-        mv: analyticGeometry
-          Multi bounded volume of the unstructured region
-        bs: List[analyticGeometry]
-          Bounding faces of the mult bounded volume
+        charLengthMin: float
+          Minimal characteristic length of elements in unstructured region.
+        charLengthMax: float
+          Maximal characteristic length of elements in unstructured region.
         
         Returns
         -------
@@ -212,7 +205,19 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
     def build(self) -> None:
         """Build part.
+        
+        This method is the main method of the class. 
 
+            - Creates a map3dTo3dGmsh topology object.
+            - Adds the unstructured region to the topology.
+            - Adds layer volumes to the topology.
+            - Manages layer faces in the topology.
+            - Applies mesh settings to the edges.
+            - Applies gradings and mesh rules.
+            - Renames faces.
+            - Applies mesh settings to topology.
+
+        
         Parameters
         ----------
         None
@@ -220,7 +225,246 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         Returns
         -------
         None
+       
 
+        The topology object ``m3Gmsh`` is created with the settings in ``map3dTo3dGmsh_``.
+        
+        The labeled vector handling objects ``aG`` and ``aF`` are created to handle 
+        analytic geometries and functions in this method.
+
+        The bounding faces of the unstructured region in ``unstructuredSurfaces_`` are 
+        labeled in the getter method `getUnstructuredRegion` of the class
+        `analyticGeometry_layerRegion`. The labels are as follows:
+
+            - ``periodicUnstruct_0`` :  First periodic surface
+            - ``periodicUnsturct_1`` :  Second periodic surface
+            - ``interface_unstruct`` :  Inlet of the flow domains unstructured region
+            - ``outlet_unstruct`` :     Outlet of the flow domains unstructured region
+            - ``para + str(i)`` :       Connecting faces to the layer volumes
+
+        The bounding faces which are not labeled with the string ``para`` are pushed into
+        ``aG`` by iterating over the list.
+        
+        :numref:`gridLayersMeshFaces` shows the face ``outlet_unstruct`` in orange and
+        ``interface_unstruct`` in red. The faces labeled with ``para`` are equal to the
+        wall parallel faces of the layer volumes (purple). The periodic faces of the 
+        unstructured region are not shown.
+
+        .. _gridLayersMeshFaces:
+        .. figure:: meridionalFigs/layersMeshFaces.png
+           :width: 50%
+           :align: center
+
+           Faces in the layered flow domain.
+        
+        The multiple bounded volume of the unstructured region is added to the topology
+        and allocated in ``unstrct3d``.
+
+        In a nested loop over ``layerList_`` the layer volumes of the hub and shroud are 
+        added to the topology. The faces of the layers are added to ``aG``.
+        The activities inside the loop are illustrated in the following figure.
+
+        .. _gridLayers_activity0:
+        .. figure:: meridionalFigs/gridLayers_activity0.png
+           :width: 70%
+           :align: center
+
+           Activities for the adding of the layer volumes to the topology.
+
+        **The loop performs the following operations:**
+
+            The first level loop iterates over the hub and shroud date in ``layerList_``.
+            According to the iterator ``i_hs`` the ``label`` variable is set to the 
+            strings ``hub`` or ``shroud``.
+
+            The second level loop iterates over the hub or shroud layers in 
+            ``layerList_[i_hs]``. The iterator is ``i_l``
+     
+            With the method :meth:`detectFirstAndSecond` The faces of each layer are
+            found. The method takes the layer volume as `map3dTo3d` object and the 
+            parameter direction as integer value as inputs. By calling the function once 
+            for each parameter direction, all faces of the layer volume are returned.
+            The returned faces are allocated to the following parameters:
+
+                - ``ortho0`` and ``ortho1`` : Faces orthogonal to the wall (:numref:`gridLayersMeshFaces` dark blue)
+                - ``periodic0`` and ``periodic1`` : Periodic faces on the flow domain segment (:numref:`gridLayersMeshFaces` light blue (``periodic0`` not shown))
+                - ``channel`` :  Wall faces on hub and shroud (:numref:`gridLayersMeshFaces` green)
+                - ``parallel`` : Faces extending parallel to the wall (:numref:`gridLayersMeshFaces` purple)
+            
+            Here ``ortho0`` is the upstream face of each layer volume and ``ortho1`` the downstream face.
+            The faces ``ortho0`` and ``ortho1`` are labeled as follows:
+
+                - ``ortho0`` : ``"ortho_"+label+str(i_l)``
+                - ``ortho1`` : ``"ortho_"+label+str(i_l)+1``
+
+            The layer volumes are added to the topology ``m3dGmsh`` and get the region ID
+            ``rID``.
+
+            The labeling of the other faces depends on if the layer volume five or six
+            sided. A layer is five sided if it is located on the radius of zero.
+            This This is checked with the list in ``layerList_[i_hs][1]``.
+            
+            **The layer is six sided:**
+
+                The layer is six sided when ``layerList_[i_hs][1][i_l] == False`` applies.
+                In this case the naming of the faces will be as follows:
+
+                    - ``periodic1`` : ``"periodic0_"+label+str(i_l)``
+                    - ``periodic0`` : ``"periodic1_"+label+str(i_l)``
+                    - ``channel`` : ``"channel_"+label+str(i_l)``
+                    - ``parallel`` : ``"parallel_"+label+str(i_l)``
+
+                The mesh settings are set to transfinite and recursive.
+
+            **The layer is five sided:**
+
+                If the layer is five sided the layer the string ``5s`` is added to the face 
+                names:
+
+                    - ``periodic1`` : ``"periodic05s_"+label+str(i_l)``
+                    - ``periodic0`` : ``"periodic15s_"+label+str(i_l)``
+                    - ``channel`` : ``"channel5s_"+label+str(i_l)``
+                    - ``parallel`` : ``"parallel5s_"+label+str(i_l)``
+                
+                In this case the layer can not be meshed completely transfinite recursive.
+                Its mesh settings have to be set on the edges directly.
+
+            The labeled faces are pushed into ``aG``.
+            ``ortho0`` is pushed into ``aG`` in every iteration. ``ortho1`` is only 
+            pushed on the last iteration ``i_l == len(layerList_[i_hs][0])-1`` if the 
+            last layer is not on a radius of zero ``layerList_[i_hs][1][i_l] == False``.
+        
+        With an observer of the class ``bVOAnalyticGeometryToFace`` the labeled faces in
+        ``aG`` are added to the topology ``m3dGmsh``.
+
+        The mesh settings are applied to the edges of the layer volumes. The following 
+        figure shows the edges on which mesh settings are applied.
+
+        .. _layersMeshSetting:
+        .. figure:: meridionalFigs/layersMeshSetting.png
+           :width: 50%
+           :align: center
+
+           Edges in the flow domain on which mesh settings are applied.
+           ``channelToParallelLines`` (green), ``swLines`` (pink) and `circLines` (blue).
+           On grey lines no mesh settings are applied.
+
+        The grading on the hub and shroud walls is set on the edges extending from
+        the ``channel`` to ``parallel`` faces. The edges arestored in 
+        ``channelToParallelLines``. By iterating over these edges the grading is applied 
+        with the method `setGrading`. The first input in this method is the direction of
+        the grading, the scond one an identifier for the grading function.
+        The number of elements is set to ``nLayers_``.
+        
+        While iterating over the edges the sum of their edge length is calculated.
+        with the number of edges in ``channelToParallelLines`` the mean edge length
+        is calculated.
+        By dividing this value by ``nLayers_`` the mesh size ``meshSizeAtPoints`` at the 
+        connection face between the layer and the unstructured volume is estimated.
+
+        To set the number of elements on the edges in the streamwise 
+        (:numref:`layersMeshSetting` (pink)) and circumferential directions 
+        (:numref:`layersMeshSetting` (blue)) an iteration over the layer list is 
+        performed. The following figure illustrates the processes in an activity 
+        diagram.
+
+        .. _gridLayers_activity1:
+        .. figure:: meridionalFigs/gridLayers_activity1.png
+           :width: 90%
+           :align: center
+
+           Activities for the mesh settings in the streamwise and circumferential directions.
+           Pinke action blocks correspond to operations on the streamwise edges, blue action 
+           blocks correspond to operations on circumferential edges.
+
+        The list ``lChannel_circ = [0,0]`` is prepared. The two values in this list are 
+        used in the loop to store the maximum lengths of the circumferential edges on the
+        hub and the shroud walls.
+        
+        **First level loop:**
+
+            ``i_hs in range(len(layerList_))``
+
+            Similarily to the loop in :numref:`gridLayers_activity0` a nested loop over the 
+            two levels of ``layerList_`` is performed. The first level loop iterates over the
+            hub and shroud layers. The string value of ``label`` is set accordingly.
+        
+            **Second level loop:**
+
+                ``i_l in range(len(layerList_[i_hs][0]))``
+                        
+                The second level loop iterates over the specific layers in the hub or the shroud 
+                set.
+
+                The length ``lChannel_sw`` of the wall edge of the current layer in streamwise 
+                direction is calculated. 
+                The edge is returned as the common edge between the ``channel`` and the 
+                ``periodic0`` faces with the method :meth:`getCommonEdgesByPhysicalFaces`.
+
+                With this length the number of elements ``nE`` is calculated by dividing 
+                the length throuf the element size ``elementSizeSW_``. By rounding the ``nE``
+                to the next highest integer value, is is ensured, that ``elementSizeSW_`` is
+                the maximal element size on the wall face in streamwise direction.
+
+                The handling of six- and five sided layers is different here. With the value 
+                in ``layerList_[i_hs][1][i_l]`` this is checked.
+
+                **Layer is six sided**
+                    
+                    ``layerList_[i_hs][1][i_l] == False``
+
+                    The streamwise edges (:numref:`layersMeshSetting` (pink)) extending between 
+                    the ``ortho`` faces of the layer are returned by the method 
+                    `getDtGmshEdgeTagListByFromToPhysical` of the Gmsh model.
+                    
+                **Layer is five sided**
+
+                    ``layerList_[i_hs][1][i_l] == False``
+                    
+                    The four edges are returned by the method 
+                    :meth:`getCommonEdgesByPhysicalFaces`. Here the edges of the ``channel`` or 
+                    the ``parallel`` faces are compared with the ``periodic0`` and ``periodic1``
+                    faces. The common edges of these faces are stroed in the list ``swLines``.
+
+                    The meshing of the four sided faces ``ortho``, ``periodic0`` and ``periodic1``
+                    of the layer are set to be meshed transfinite with a recombine.
+
+                By iterating over ``swLines`` the number of elements ``nE`` is set to the edges.
+
+                The length l_ortho is returned of the upstream circumferential edge of the layer
+                volume. If the length is greater than the value stored in ``lChannel_circ`` the
+                value replaces this value in the list.
+
+                If the iteration is at the last layer and if the layer is not located on a radius
+                of zero, the length ``l_ortho`` is calculated and compared for the downstream 
+                circumferential edge.
+
+            After the second level loop for a layer region has concluded the number of
+            elements according to the maximal edge length is set on the circumferential 
+            edges.
+            The number of elements ``nE`` is calculated with the maximal edge length 
+            ``lChannel_circ[i_hs]`` and the element size ``elementSizeCirc_``. By rounding 
+            the value of ``nE`` to the next higher integer, it is ensured, that the specified 
+            element size represents a maximum size along the circumferential diection of 
+            the layer wall.
+
+            The circumferential edges ``circLines`` (:numref:`layersMeshSetting` (blue)) are 
+            extending between the ``periodic`` faces.
+            By iterating over ``circLines`` the number of elements is set.
+
+        The observer `bVOSetPrescribedMeshSizeAtPoints` is applied. This observer is used
+        to set the mesh size of the unstructured region at the connection points with the
+        layer volumes, to the value calculated in ``meshSizeAtPoints``.
+
+        The object of the grading function ``theRef`` is created with the `dtOO` class 
+        ``scaTanhGradingOneDCompound``. It is labeled ``aF_grading`` and pushed into 
+        ``aF``.
+
+        An observer of the class `bVOSetPrescribedElementSize` is created. This observer
+        combines the in ``theRef`` specified analytic grading function with the ``_type``
+        identifier and the size of the first element in the grading ``firstElement_``.
+        
+        The mesh rules are applied with the observer `bVOMeshRule`
         """
 
         m3dGmsh = map3dTo3dGmsh()
@@ -290,6 +534,10 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                 # setting labels
                 ortho0.setLabel("ortho_"+label+str(i_l))
                 ortho1.setLabel("ortho_"+label+str(i_l+1))
+
+                # adding the 3d layer as a region
+                rID = m3dGmsh.getModel().addIfRegionToGmshModel(layer3d)
+                
                 # labelling is different for six and five sided regions
                 #  they have to be treated differently during meshing
                 if self.layerList_[i_hs][1][i_l] == False:
@@ -298,6 +546,11 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                     periodic1.setLabel("periodic1_"+label+str(i_l))
                     channel.setLabel("channel_"+label+str(i_l))
                     parallel.setLabel("parallel_"+label+str(i_l))
+
+                    # only six sided regions can be meshed completely transfinite
+                    # Recursive means that all the edges and faces of the region are also tramsfinite
+                    m3dGmsh.getModel().getDtGmshRegionByTag( rID ).meshTransfiniteRecursive()
+                    m3dGmsh.getModel().getDtGmshRegionByTag( rID ).meshRecombineRecursive()
                 else:
                     logging.info("%s layer no. %i is five sided" % (label, i_l))
                     periodic0.setLabel("periodic05s_"+label+str(i_l))
@@ -315,15 +568,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                 aG.push_back(periodic1)
                 aG.push_back(channel)
                 aG.push_back(parallel)
-                
-                # adding the 3d layer as a region
-                rID = m3dGmsh.getModel().addIfRegionToGmshModel(layer3d)
-                # only six sided refions can be meshed completely transfinite
-                if self.layerList_[i_hs][1][i_l] == False:
-                    # Recursive means that all the edges and faces of the region are also tramsfinite
-                    m3dGmsh.getModel().getDtGmshRegionByTag( rID ).meshTransfiniteRecursive()
-                    m3dGmsh.getModel().getDtGmshRegionByTag( rID ).meshRecombineRecursive()
-                 
+                                 
         # initializing region labels
         #  later it will be iterated over the list in self (region labels are not used here)
         ob = bVONameRegions()
@@ -441,7 +686,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                         "periodic15s_"+label+str(i_l)+"*"
                     )
                     swLines = [line0[0].tag(), line1[0].tag(), line2[0].tag(), line3[0].tag()]
-                    
+
                     # setting the orthogonal and the periodic faces of the five sided region as transfinite
                     m3dGmsh.getModel().getDtGmshFaceByPhysical("ortho_"+label+str(i_l)+"*").meshTransfinite()
                     m3dGmsh.getModel().getDtGmshFaceByPhysical("ortho_"+label+str(i_l)+"*").meshRecombine()
@@ -518,6 +763,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
             .appendReal("_meshSize", meshSizeAtPoints),
           None, None, None, None, None, m3dGmsh
         )
+        #m3dGmsh.attachBVObserver(ob)
 
         # initializing grading 
         # scaTanhGradingOneD(c, g, gMin, gMax) -> f(x)=c[0]+c[1]*tanh(g*(c[2]+c[3]*x))/tanh(g)
@@ -595,16 +841,16 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         )
         m3dGmsh.attachBVObserver(ob)
          
-        ## useful debug statement to understand the naming of the layers and vizualize them
-        ##  especially for the bVOFaceToPatchRule
-        #for face in m3dGmsh.getModel().getDtGmshFaceListByPhysical("*"):
-        #    print(face.getPhysicalString())
-        #    self.appendAnalyticGeometry(
-        #        face.getMap2dTo3d(),
-        #        "debug_allFaces_"+face.getPhysicalString()
-        #    )
-        #print("length hub : ", str(len(self.layerList_[0][0])))
-        #print("length shroud : ", str(len(self.layerList_[1][0])))
+        # useful debug statement to understand the naming of the layers and vizualize them
+        #  especially for the bVOFaceToPatchRule
+        for face in m3dGmsh.getModel().getDtGmshFaceListByPhysical("*"):
+            print(face.getPhysicalString())
+            self.appendAnalyticGeometry(
+                face.getMap2dTo3d(),
+                "debug_allFaces_"+face.getPhysicalString()
+            )
+        print("length hub : ", str(len(self.layerList_[0][0])))
+        print("length shroud : ", str(len(self.layerList_[1][0])))
 
         # setting bVOFaceToPatchRule, renames all the added faces
         # this is done to set boundary conditions in the of case later

@@ -762,7 +762,7 @@ layer regions on the hub and shroud faces and an unstructured region in between.
 The following builder classes are used:
 
     - :ref:`analyticGeometry_layerRegion <analyticGeometry_layerRegion>`
-    - `map3dTo3dGmsh_gridFromLayers`
+    - :ref:`map3dTo3dGmsh_gridFromLayers <map3dTo3dGmsh_gridFromLayers>`
 
 WORKFLOW DESCRIPTION AND CLASS DIAGRAM
 

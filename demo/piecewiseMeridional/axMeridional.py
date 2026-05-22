@@ -264,7 +264,7 @@ class axMeridional:
         alpha_1_0 = 90.0 
         alpha_1_1 = 90.0 
         alpha_2_0 = 80.0 
-        alpha_2_1 = 80.0
+        alpha_2_1 = 40.0
 
         #
         # Return the regular channel from the radMeridionalContour object,
@@ -765,7 +765,7 @@ class axMeridional:
           ofOpenFOAMCase_setupWrapper
         )
 
-        dtOO.lVHOstateHandler().makeState("axial")
+        dtOO.lVHOstateHandler().makeState("axial_alpha2_1_40")
 
         self.container = ofOpenFOAMCase_turboMachine(
           label = "of",
@@ -822,7 +822,7 @@ class axMeridional:
               ofOpenFOAMCase_setupWrapper.cylindricalInletRuleString(
                 "ru_mesh_inlet", 
                 ["U"], 
-                [ [0,1,-2], ]
+                [ [0,-1,-2], ]
               ), 
               ofOpenFOAMCase_setupWrapper.inletRuleString(
                 "ru_mesh_inlet", 

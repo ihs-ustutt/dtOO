@@ -420,7 +420,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         # pushing them into the vector handler for the multiple bounded volume
         mbs_hub = multipleBoundedSurface(m2d_hub, hubCurves)
         mbs_shroud = multipleBoundedSurface(m2d_shr, shroudCurves)
-        
+         
         self.boundSurf_.push_back(mbs_hub.clone() << "hub")
         self.boundSurf_.push_back(mbs_shroud.clone() << "shroud")
          
@@ -444,6 +444,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
                 
         # creating grid channel as multi bounded volume
         self.gridChannel_ = multipleBoundedVolume(infinityMap3dTo3d(), self.boundSurf_)
+        
     #
     # return method for grid channel and its faces
     #

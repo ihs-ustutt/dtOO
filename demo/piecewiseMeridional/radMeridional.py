@@ -777,7 +777,7 @@ class radMeridional:
         as well as the inlet and outlet curves of the region.
         These curves are returned by the object of the class
         `analyticGeometry_piecewiseMeridionalRotContour`, which is created in the
-        `createMeridional` method.
+        :meth:`createMeridional` method.
 
         :numref:`speCurves` shows the curves that are passed to the
         `createLayerRegion` method from `createMeridional`.
@@ -792,10 +792,10 @@ class radMeridional:
            tube cone.
 
         The geometry generation is performed by the class `analyticGeometry_layerRegion`.
-        In this class, the layers are created as two-dimensional surfaces and then
-        rotated to generate volumetric layers.
-        The multiple bounded volume is created from the bounding surfaces in the
-        flow domain.
+        In this class, the layers are created as two-dimensional surfaces on the wall 
+        curves of the layer region and then rotated to generate volumetric layers.
+        The multiple bounded volume is created from the bounding surfaces to the layers 
+        in the flow domain.
 
         A two-dimensional layer face is built on each hub and shroud curve
         that is not located at a radius of zero.
@@ -862,13 +862,13 @@ class radMeridional:
         layers are five-sided is returned. 
         These lists are required to apply the mesh settings.
 
-        With the method ``getUnstructuredRegion``, the multiple bounded volume and a list
+        With the class method `getUnstructuredRegion`, the multiple bounded volume and a list
         of its bounding surfaces can be returned.
         The bounding faces consist of the inlet and outlet areas, which are not part of 
         the layer volumes, as well as the layer faces connecting to the flow domain.
 
         The periodic faces are created as multiple bounded surfaces, which are bounded by
-        the edges of the bounding faces and a hub curve located at a radius of zero, if 
+        the inner edges of the layer faces and a hub curve located at a radius of zero, if 
         it exists.
         The following figure shows the bounding surfaces of the multiple bounded volume;
         the periodic faces are not shown for clarity.

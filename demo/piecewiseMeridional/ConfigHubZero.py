@@ -192,7 +192,7 @@ class ConfigHubZero():
         self.configLayer = {
             "label" : "radMeridionalContour",
             "nSlices" : 15,
-            "layer_thickness" : 0.0775,
+            "layer_thickness" : 0.2,
             "layer_supports" : [0.5],
         }
 
@@ -385,7 +385,8 @@ def run(*args, **kwargs):
     
     rr = dtOOInParaVIEW( cc )
     
-    #bV, dC = generate.getbVAnddC()
+    bV, dC = generate.getbVAnddC()
+    bV["meshLayers"].makeGrid()
             
     #stateLbl = "test"
     #indiv = "0" 
@@ -409,9 +410,10 @@ if __name__ == "__main__":
     container = generate.getContainer()
     bV, dC = generate.getbVAnddC()
      
+    bV["meshLayers"].makeGrid()
     stateLbl = "hubZero"
     indiv = "0"
 
-    createOFCase(container, bV, dC, stateLbl, indiv)
+    #createOFCase(container, bV, dC, stateLbl, indiv)
 
     # ------------------- EOF ------------------- #

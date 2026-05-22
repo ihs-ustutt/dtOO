@@ -51,10 +51,12 @@ of the :ref:`radial turbine <radial_turbine_demo>`.
   :members:
   :special-members: __init__
 
-..
-	.. automodule:: dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers
-	  :members:
+.. _map3dTo3dGmsh_gridFromLayers:
 
+.. automodule:: dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers
+  :members:
+
+..
 	.. automodule:: dtOOPythonApp.builder.vec3dThreeD_skinAndSplit
 	  :members:
 
