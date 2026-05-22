@@ -267,9 +267,13 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
                 # getting the point on the offset curve and reparamtrizing it in channel
                 #  returns the uvw coordinates of the point in the channel
                 pCurve_uvw = self.channel_.reparamInVolume(offC.getPointPercent(uu)) 
-                
+                print("")
+                print("uu = ", uu)
+                print("pCurve_uvw.z() = ", pCurve_uvw.z())
+                print("self.channel_.u_percent(uu) = ", self.channel_.w_percent(uu))
+                print("")
                 # shifting the point on the offset curve to the current interface
-                pChannel_uvw = dtPoint3(pCurve_uvw.x(), vChannel, pCurve_uvw.z())
+                pChannel_uvw = dtPoint3(pCurve_uvw.x(), vChannel, self.channel_.w_percent(uu))
                 interfPoints.append( pChannel_uvw )
                 
                 # creating hub and shroud curves

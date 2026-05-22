@@ -168,6 +168,7 @@ class Config():
             "u_te" : [0.80],
 
             "adjustRadius" : False,
+            "orientation" : -1,
         }
 
         # config for gunner blade
@@ -235,6 +236,7 @@ class Config():
             "u_te" : [0.80],
 
             "adjustRadius" : True,
+            "orientation" : 1,
         }
 
         # config for generation of layer region
@@ -293,7 +295,7 @@ def run(*args, **kwargs):
     varList = config.getVarList()
     
     # individual which will be recreated
-    target_individual = 13
+    target_individual = 17
     
     stateLbl = "variation_ru10"
     evalFolder = "ofCase_eval"
@@ -349,14 +351,14 @@ def run(*args, **kwargs):
     # create runner
     generate.createBlade(configRunner)
 
-    # create layered region
-    generate.createLayerRegion(configLayer)
+    ## create layered region
+    #generate.createLayerRegion(configLayer)
     
-    container = generate.getContainer()
-    bV, dC = generate.getbVAnddC()
-    
-    # create the open foam case
-    createOFCase(container, bV, dC, stateLbl, individual, configMeas["h_inlet"], configMeas["h_shroud"])
+    #container = generate.getContainer()
+    #bV, dC = generate.getbVAnddC()
+    #
+    ## create the open foam case
+    #createOFCase(container, bV, dC, stateLbl, individual, configMeas["h_inlet"], configMeas["h_shroud"])
     
     # return bV and dC in order to generate the mesh files
     #bV["gv_mesh"].makeGrid()

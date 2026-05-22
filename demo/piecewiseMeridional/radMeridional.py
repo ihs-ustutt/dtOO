@@ -320,6 +320,9 @@ class radMeridional:
     a constant cross section of the blade along the spanwise direction.
     The parameter ``adjustRadius`` is set to ``False``.
 
+    The input ``orientation`` is used to set the orientation of the blade in 
+    the regular channel.
+
     >>> configGuideVane = {
     ...     "label" : "gv",
     ...     "regChannel" : 0,
@@ -342,6 +345,7 @@ class radMeridional:
     ...     "u_te" : [0.80],
     ... 
     ...     "adjustRadius" : False,
+    ...     "orientation" : -1,
     ... }
     
     Create the guide vane geometry:
@@ -402,6 +406,7 @@ class radMeridional:
     ...     "u_te" : [0.80],
     ... 
     ...     "adjustRadius" : True,
+    ...     "orientation" : 1,
     ... }
     
     Create the runner geometry:
@@ -1073,6 +1078,13 @@ class radMeridional:
 
           - **adjustRadius** (*bool*): 
             Enables adjusting the blades curvature along the channel radius.
+
+          - **orientation** (*int*): 
+            Orientation of the blade in the regular channel.
+            The values are:
+
+                - 1 : Blade is oriented in u-direction of the regular channel.
+                - -1: Blade is oriented in negative u-direction of the regular channel.
         
         Returns
         -------
@@ -1249,6 +1261,10 @@ class radMeridional:
         a multiple bounded volume in the class `multipleBoundedVolume_gridChannel`.
         The class returns the multiple bounded volume of the grid channel and a list containing 
         its bounding surfaces.
+        The input key ``orientation`` is handed to the constructor to handle the orientation of
+        the blade in the regular channel. If the orientaion of the blade in flow direction is 
+        in the positive u-direction of the regular channel the value is ``1``. If the blade
+        extends in the negative u-direction the value is ``-1``.
         :numref:`gridChannel` shows the bounding faces of the grid channel and the mesh blocks
         surrounding the blade; the hub and shroud faces are excluded for clarity.
 
@@ -1331,6 +1347,7 @@ class radMeridional:
         u_te = configB["u_te"]
         
         adjustRadius = configB["adjustRadius"]
+        orientation = configB["orientation"]
         
         #
         # Return the regular channel from the radMeridionalContour object,
@@ -1702,9 +1719,11 @@ class radMeridional:
             channel = self.aG["xyz_"+label+"_channel"],
             meanplanes = meanplaneFaces,
             couplings = couplingFaces,
-            nBlades = nBlades
+            nBlades = nBlades,
+            orientation = orientation
         ).enableDebug()
         self.container = gridChannel.buildExtract(self.container)
+        
         #
         # Return the multiple bounded volume of the grid channel as well
         # as the list with its boundary faces.
@@ -1713,7 +1732,7 @@ class radMeridional:
         self.aG.push_back(
             gc << "xyz_"+label+"_gridChannel"
         )
-        
+         
         #
         # Apply the mesh settings to the grid channel.
         #
@@ -1772,7 +1791,7 @@ class radMeridional:
         #    charLengthMin=0.04,
         #    meshTEBlocks = True,
         #).enableDebug().buildExtract( self.container )
-    
+        
     #
     # returns a list with dtPoint2 types and spline orders
     #  with spanwise cut percentage and blade input parameters

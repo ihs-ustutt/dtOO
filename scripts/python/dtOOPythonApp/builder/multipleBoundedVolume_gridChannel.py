@@ -6,6 +6,7 @@ from dtOOPythonSWIG import (
     rectangularTrimmedSurface_curveRotateConstructOCC,
     bSplineSurface_bSplineSurfaceSplitConstructOCC,
     dtPoint3,
+    vectorDtPoint3,
     analyticCurve,
     map2dTo3d,
     map3dTo3d,
@@ -17,6 +18,7 @@ from dtOOPythonSWIG import (
     multipleBoundedVolume,
     multipleBoundedSurface,
     partRotatingMap2dTo3d,
+    bSplineCurve_pointConstructOCC
     #bSplineCurve_curveConnectConstructOCC,
 )
 
@@ -85,7 +87,12 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
       Number of meanplane faces extending from the mesh blocks
       to the inlet and outlet each
     rotVector_: dtVector3
-      Rotation vector of the grid channel
+      Rotation vector of the grid channel.
+    orientation_: int
+      Orientation of the blade in the channel.
+      
+        - 1 : Blade is oriented in u-direction of channel
+        - -1 : Blade is oriented in negative u-direction of the channel
 
 
     Examples
@@ -249,26 +256,32 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         nBlades: int,
         nInOutSurfSuction: int = 2,
         rotVector: dtVector3 = dtVector3(0, 0, 1),
+        orientation: int = 1,
 
       ) -> None:
         """
         Parameters
         ----------
-        label_: str
+        label: str
           Label.
-        channel_: analyticGeometry
+        channel: analyticGeometry
           360° rotated channel domain
-        meanplanes_: List[analyticGeometry]
+        meanplanes: List[analyticGeometry]
           List of meanplane faces
-        couplings_: List[analyticGeometry]
+        couplings: List[analyticGeometry]
           List of coupling faces
-        nBlades_: int
+        nBlades: int
           Number of blades
-        nInOutSurfSuction_: int
+        nInOutSurfSuction: int
           Number of meanplane faces extending from the mesh blocks
           to the inlet and outlet each
-        rotVector_: dtVector3
+        rotVector: dtVector3
           Rotation vector of the grid channel
+        orientation: int
+          Orientation of the blade in the channel.
+          
+            - 1 : Blade is oriented in u-direction of channel
+            - -1 : Blade is oriented in negative u-direction of the channel
         """
         super(
           multipleBoundedVolume_gridChannel, self
@@ -282,6 +295,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         self.nBlades_ = nBlades
         self.nInOutSurf_ = nInOutSurfSuction
         self.rotVector_ = dtLinearAlgebra.normalize(rotVector)
+        self.orientation_ = orientation
 
     def build(self) -> None:
         """Build part.
@@ -295,6 +309,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         None
 
         """
+
         # vector handler for boundary surfaces
         self.boundSurf_ = labeledVectorHandlingAnalyticGeometry()
         
@@ -302,30 +317,53 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         hubCurves = vectorHandlingAnalyticGeometry()
         shroudCurves = vectorHandlingAnalyticGeometry()
         
+        # getting the hub and shroud points from the meanplane at the inlet or outlet 
+        if self.orientation_ > 0: 
+            # at the inlet
+            p0h = self.meanplanes_[-1].getPointPercent(1,0)
+            p0s = self.meanplanes_[-1].getPointPercent(1,1)
+        else:
+            # at the outlet
+            p0h = self.meanplanes_[0].getPointPercent(1,0)
+            p0s = self.meanplanes_[0].getPointPercent(1,1)
+        
+        # getting the u coordinates of these points in the channel
+        uHub = self.calcRotParams(p0h)
+        uShr = self.calcRotParams(p0s)
+        
         # generating bounding faces for multiple bounded surfaces
         # the face is a circular segment and not the whole rotating face
         #  because the rotation of 2*pi would be detected as degenerated face
         #  (starting and ending curve would be at the same point)
-        f = 0.66
-        angle = 2*np.pi*f 
-        m1d_hub = self.channel_.segmentConstWPercent(0).segmentConstUPercent(f)
+        angle = 2*np.pi * 0.95
+        m1d_hub = self.channel_.segmentConstWPercent(0).segmentConstUPercent(uHub)
         m2d_hub = analyticSurface(
                     rectangularTrimmedSurface_curveRotateConstructOCC(
                         analyticCurve.MustDownCast(m1d_hub).ptrDtCurve(),
                         dtPoint3(0, 0, 0),
-                        dtVector3(0, 0, 1),
+                        self.rotVector_,
                         angle
                     ).result()
                 ) 
-        m1d_shr = self.channel_.segmentConstWPercent(1).segmentConstUPercent(f)
+        m1d_shr = self.channel_.segmentConstWPercent(1).segmentConstUPercent(uShr)
         m2d_shr = analyticSurface(
                     rectangularTrimmedSurface_curveRotateConstructOCC(
                         analyticCurve.MustDownCast(m1d_shr).ptrDtCurve(),
                         dtPoint3(0, 0, 0),
-                        dtVector3(0, 0, 1),
+                        self.rotVector_,
                         angle
                     ).result()
                 )
+        
+        ## Debug statement to plot the hub and shroud faces
+        #self.appendAnalyticGeometry(
+        #        m2d_hub,
+        #        "TEST_m2d_hub_"+self.label_
+        #    )
+        #self.appendAnalyticGeometry(
+        #        m2d_shr,
+        #        "TEST_m2d_shr_"+self.label_
+        #    )
 
         # iterating over meanplane faces
         for i, face in enumerate(self.meanplanes_):
@@ -423,7 +461,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
          
         self.boundSurf_.push_back(mbs_hub.clone() << "hub")
         self.boundSurf_.push_back(mbs_shroud.clone() << "shroud")
-         
+        
         # appending boundaries if debug is enabeled
         if self.debug():
             for face in self.boundSurf_:
@@ -441,10 +479,25 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
                         curve,
                         "debug_"+self.label_+"_shroudCurve_"+str(i)
                     )
-                
+             
         # creating grid channel as multi bounded volume
         self.gridChannel_ = multipleBoundedVolume(infinityMap3dTo3d(), self.boundSurf_)
         
+
+    def calcRotParams(self, p0) -> float:
+        
+        # reparametrizing the point in uwv-parameters of the channel
+        # getting the u ccordinate in percent and adding 0.01 tolerance
+        uvwP0 = self.channel_.percent_u(
+                self.channel_.reparamInVolume(p0).x()
+            ) - 0.01
+        
+        # correcting if parameter is negative
+        if uvwP0 < 0.0:
+            uvwP0 = 1 + uvwP0
+         
+        return uvwP0
+
     #
     # return method for grid channel and its faces
     #

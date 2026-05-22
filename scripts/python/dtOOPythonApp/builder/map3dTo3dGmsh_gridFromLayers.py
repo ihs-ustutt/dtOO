@@ -464,7 +464,11 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         combines the in ``theRef`` specified analytic grading function with the ``_type``
         identifier and the size of the first element in the grading ``firstElement_``.
         
-        The mesh rules are applied with the observer `bVOMeshRule`
+        The mesh rules are applied with the observer `bVOMeshRule`, the rules 
+        ``dtMeshFreeGradingWdge``, ``dtMeshGFace`` and ``dtMeshGRegion`` are used for all
+        edges, surfaces and volumes.
+
+        The obeserver of the class ``bVOFaceToPatchRule`` is used to rename the faces  
         """
 
         m3dGmsh = map3dTo3dGmsh()
@@ -841,16 +845,16 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         )
         m3dGmsh.attachBVObserver(ob)
          
-        # useful debug statement to understand the naming of the layers and vizualize them
-        #  especially for the bVOFaceToPatchRule
-        for face in m3dGmsh.getModel().getDtGmshFaceListByPhysical("*"):
-            print(face.getPhysicalString())
-            self.appendAnalyticGeometry(
-                face.getMap2dTo3d(),
-                "debug_allFaces_"+face.getPhysicalString()
-            )
-        print("length hub : ", str(len(self.layerList_[0][0])))
-        print("length shroud : ", str(len(self.layerList_[1][0])))
+        ## useful debug statement to understand the naming of the layers and vizualize them
+        ##  especially for the bVOFaceToPatchRule
+        #for face in m3dGmsh.getModel().getDtGmshFaceListByPhysical("*"):
+        #    print(face.getPhysicalString())
+        #    self.appendAnalyticGeometry(
+        #        face.getMap2dTo3d(),
+        #        "debug_allFaces_"+face.getPhysicalString()
+        #    )
+        #print("length hub : ", str(len(self.layerList_[0][0])))
+        #print("length shroud : ", str(len(self.layerList_[1][0])))
 
         # setting bVOFaceToPatchRule, renames all the added faces
         # this is done to set boundary conditions in the of case later
