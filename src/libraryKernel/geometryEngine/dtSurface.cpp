@@ -234,6 +234,11 @@ dtPoint2 dtSurface::reparamPercent(dtPoint3 const point) const
   return dtPoint2(uPercent_u(ppUV.x()), vPercent_v(ppUV.y()));
 }
 
+dtReal dtSurface::XYZTolerance( void )
+{
+  return staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution");
+}
+
 bool dtSurface::inXYZTolerance(dtPoint3 const &p0, dtPoint3 const &p1)
 {
   dtReal xyzResolution =

@@ -73,6 +73,7 @@ public:
     bool output,
     dtReal inc
   );
+  static dtReal XYZTolerance(void);
   static bool inXYZTolerance(dtPoint3 const &p0, dtPoint3 const &p1);
   static bool inXYZTolerance(dtReal const dist, dtReal inc = 1.);
   bool degenerated(void) const;
