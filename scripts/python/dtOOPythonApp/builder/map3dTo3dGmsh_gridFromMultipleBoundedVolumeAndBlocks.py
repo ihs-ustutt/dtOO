@@ -56,7 +56,15 @@ import math
 
 class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
     """Create mesh's topology as map3dTo3dGmsh.
+    
+    This class:
 
+        - Creates the mesh toploogy of bladed channels-
+        - Adds the geometries of the unstructured region as a multiple bounded volume
+          and a list of bounding surfaces.
+        - Adds the mesh blocks.
+        - Applies Mesh settings.
+        - Returns the toplology into the container of the calling class.
       
     Attributes
     ----------
@@ -102,7 +110,9 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
     Examples
     --------
     
-
+    
+    The main method of this class is :meth:`build`.
+    
     The topology of the mesh is build from the channel as a multiple bounded 
     volume (MBV) ``channel_`` and blade mesh blocks, which are handed to the class
     in the list ``blocks_``. In this documentation ``N`` is used for the number of 
@@ -123,6 +133,9 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
     The multiple bounded volume is meshed unstructured with prismatic boundary layers. 
     The mesh block volumes are meshed as transfinite regions in addition with recombining 
     recursively.
+    
+    The settings of the topology are initialized as ``map3dTo3dGmshJson_``. The model is 
+    build as ``m3dGmsh``.
 
     The bounding surfaces of the multiple bounded volume are handed to the class through 
     the list ``channelFaces_``.
@@ -284,19 +297,33 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
     ``True``. The edges are collected in the list ``tEMeshList``. No gradings are 
     applied here.
     
+    The observer ``bVOFaceToPatchRule`` is applied to rename the following faces, to
+    fit the boundaries of the open foam case:
+        
+        - **Original name** : **Boundary name**
+        - ``"*hub*"`` : ``label_+"_hub:"``
+        - ``"*shroud*"`` : ``label_+"_shroud:"``
+        - ``"*blade*"`` : ``label_+"_blade:"``
+        - ``"*inlet*"`` : ``label_+"_inlet:"``
+        - ``"*outlet*"`` : ``label_+"_outlet:"``
+        - ``"*suction*"`` : ``label_+"_suction:"``
+        - ``"*block*"`` : ``label_+"_suction:"``
+        - ``"*pressure*"`` : ``label_+"_pressure:"``
+ 
     If debug is enabled all edges are attached with prefix ``debug_``.
 
-    Added observers:
+    The following observers are added further:
 
-        - bVOReadMSH
+        - ``bVOReadMSH``
 
-        - x bVOSetRotationalPeriodicity
+        - ``bVODumpModel``
 
-        - bVOFaceToPatchRule
+        - ``bVOWriteMSH``
 
-        - bVOWriteMSH
+        - ``bVOOrientCellVolumes``
 
-        - bVOOrientCellVolumes
+    The mesh topology is returned to the continers of the call class with 
+    ``appendBoundedVolume``.
     """
     def __init__( 
         self, 
