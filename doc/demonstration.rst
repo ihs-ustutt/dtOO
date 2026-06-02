@@ -751,10 +751,10 @@ The following builder classes are used:
     - `analyticSurface_threePointMeanplaneFromRatio`
     - `scaOneD_scaCurve2dOneDPointConstruct`
     - `vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution`
-    - `vec3dThreeD_skinAndSplit`
-    - `analyticSurface_inOutFeMeanplane`
-    - `multipleBoundedVolume_gridChannel`
-    - `map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks`
+    - :ref:`vec3dThreeD_skinAndSplit <vec3dThreeD_skinAndSplit>`
+    - :ref:`analyticSurface_inOutFeMeanplane <analyticSurface_inOutFeMeanplane>`
+    - :ref:`multipleBoundedVolume_gridChannel <multipleBoundedVolume_gridChannel>`
+    - :ref:`map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks <map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks>`
 
 The `createLayerRegion` method takes the special hub and shroud curves and
 creates a segment of a flow channel. This flow channel consists of transfinite

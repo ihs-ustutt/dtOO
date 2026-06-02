@@ -57,106 +57,6 @@ import math
 class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
     """Create mesh's topology as map3dTo3dGmsh.
 
-    The topology of the mesh is build from the channel as a multiple bounded 
-    volume (MBV) and all mesh blocks that surround the blade. 
-    The mesh block surfaces that connect the mesh blocks with the channel are
-    treated as coupling surfaces. The mesh block surfaces which dont connect to the
-    channel, the blade or hub and shroud are part of the suction boundary and are 
-    treated as block faces.
-    On the hub and shroud a prismatic boundary layer with nBoundaryLayers_ is created.
-
-    The numbering of the mesh regions is as follows:
-
-        - R_0    : channel
-
-        - R_1     : First mesh block
-
-        - ...
-
-        - R_(N-1) : (N-1)^th mesh block
-
-        - R_(N) : (N)^th mesh block
-
-    All mesh blocks are meshed as transfinite region in addition with 
-    recombining recursively. Topologies' faces are labelled as they are defined.
-    The periodic faces are built by rotating the suction boundary faces, which
-    are in turn defined by the number of mesh blocks nMeanplaneBlocks used for 
-    the generation in the meanplane, plus two faces extending from the mesh blocks 
-    towards the mesh channel inlet and outlet.
-    The resulting faces extending to the inlet and outlet and their periodic 
-    counterparts are meshed unstructured and labeled with "*_tri_*". The blockfaces 
-    are meshed transfinite and labeled with "block_*" and their periodic counterparts 
-    with "*_quad_*".
-    This means within the topology the following faces are available:
-
-        - hub_0 ... hub_(N)
-
-        - shroud_0 ... shroud_(N)
-
-        - inlet_0
-
-        - outlet_0
-
-        - suction_tri_0, suction_tri_1, suction_tri_(nMeanplaneBlocks+3), suction_tri_(nMeanplaneBlocks+4)
-
-        - block_0 ... block_(nMeanplaneBlocks)
-
-        - pressure_tri_0, pressure_tri_1, pressure_tri_(nMeanplaneBlocks+3), pressure_tri_(nMeanplaneBlocks+4)
-        
-        - pressure_quad_2 ... pressure_quad_(nMeanplaneBlocks+2)
-
-        - blade_0 ... blade_(M-1)
-
-        - coupling_0 ... coupling_(L-1)
-
-    If only one mesh face lies on the analyticGeometry, only one face ending
-    with "_0" is available. If multiple ("M" blade or "L" coupling ) faces lie 
-    on the corresponding analyticGeometry, also multiple faces are available.
-
-    In order to set the number of nodes and to apply a specific grading to an
-    edge, the following groups of edges are extracted:
-
-        - hubToShroudLines: edges from hub to shroud
-
-        - bladeLines: edges that belong to the blade
-
-        - hubLines: edges that belong to the hub 
-
-        - shroudLines: edges that belong to the shroud
-
-        - bladeToBlockLines: edges that share one vertex with blade and one with 
-          block or coupling faces
-
-        - bladeHubLines: edges that share both vertices with blade and hub
-
-        - bladeShroudLines: edges that share both vertices with blade and shroud
-
-    If debug is enabled all edges are attached with prefix "debug_".
-    For the meshing process the two compound gradings "hubToShroud" and
-    "normalBlade" are used. Additionally, each mesh block contains a grading
-    in tangential direction called "tangentialBlade_*". For "hubToShroud" and
-    "normalBlade" the attribute firstElementSizeHubToShroud_ and 
-    firstElementSizeNormalBlade_ is used, respectively. By providing a
-    function either the function bladeShroudElementSize_ or 
-    bladeHubElementSize_ the minimum number of elements for each edge is 
-    determined at start and end vertex. The blending factor 
-    bladeShroudElementScale_ and bladeHubElementScale_ are then used to 
-    interpolate between number of elements at both ends and, thus, define the 
-    number of elements for this edge. In order to have a smooth transition in 
-    element sizes, between consecutive edges the "angentialBlade_*" grading is 
-    adjusted for start and end vertex.
-
-    Added observers:
-
-        - bVOReadMSH
-
-        - bVOSetRotationalPeriodicity
-
-        - bVOFaceToPatchRule
-
-        - bVOWriteMSH
-
-        - bVOOrientCellVolumes
       
     Attributes
     ----------
@@ -177,19 +77,17 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
     nElementsSpanwise_: int
       Number of elements in spanwise direction.
     nElementsNormal_: int
-      Number of elements in normal to the blade direction.
+      Number of elements on the blade surface.
     firstElementSizeHubToShroud_: float
       Size of first element on hub and shroud.
     firstElementSizeNormalBlade_: float
       Size of first element at the blade in normal to the blade direction.
     bladeHubElementSize_: scaOneD
-      Function describing the element size versus the standardized unwrapped
-    length of the blade at the hub.
-      bladeHubElementScale_: float
-    Factor defining the number of elements at the hub for each mesh block.
-      bladeShroudElementSize_: scaOneD
-    Function describing the element size versus the standardized unwrapped
-      length of the blade at the shroud.
+      Function describing the element size versus the standardized unwrapped length of the blade at the hub.
+    bladeHubElementScale_: float
+      Factor defining the number of elements at the hub for each mesh block.
+    bladeShroudElementSize_: scaOneD
+      Function describing the element size versus the standardized unwrapped length of the blade at the shroud.
     bladeShroudElementScale_: float
       Factor defining the number of elements at the shroud for each mesh block.
     meshTEBlocks_: Bool
@@ -197,9 +95,208 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
     map3dTo3dGmshJson_: jsonPrimitive
       JSON structure for map3dTo3dGmsh.
 
+    Returns
+    -------
+    None
+
     Examples
     --------
+    
 
+    The topology of the mesh is build from the channel as a multiple bounded 
+    volume (MBV) ``channel_`` and blade mesh blocks, which are handed to the class
+    in the list ``blocks_``. In this documentation ``N`` is used for the number of 
+    mesh blocks ``len(blocks_)``.
+
+    The numbering of the mesh regions is as follows:
+
+        - ``R_0``    : channel
+
+        - ``R_1``     : First mesh block
+
+        - ...
+
+        - ``R_(N-1)`` : (N-1)^th mesh block
+
+        - ``R_(N)`` : (N)^th mesh block
+    
+    The multiple bounded volume is meshed unstructured with prismatic boundary layers. 
+    The mesh block volumes are meshed as transfinite regions in addition with recombining 
+    recursively.
+
+    The bounding surfaces of the multiple bounded volume are handed to the class through 
+    the list ``channelFaces_``.
+
+    The surfaces of the mesh topology are taken from ``channelFaces_`` or extracted from 
+    the block volumes in ``blocks_`` with the method :meth:`detectFirstAndSecond`.
+    The method takes the block volume as a ``map3dTo3d`` object and the parameter direction 
+    as an integer input. The return gives the faces at the normalized positions 0 and 1
+    of the specified parameter direction.
+
+    The blade surface is handed to the class as ``blade_``.
+
+    The following figure shows the surfaces in the mesh toplology. The hub and shroud 
+    surfaces are not shown.
+
+    .. _meshFaces:
+    .. figure:: bladeFigs/meshFaces_labeled.png
+       :width: 100%
+       :align: center
+    
+       Topology faces with labels in this class. Interfaces (red), periodic meanplane faces 
+       (yellow / green), coupling faces (cyan) and blade surfaces (grey).
+
+    By iterating over ``blocks_`` the surfaces are added. For every mesh block the blade
+    surface is added and labeled with the identifier ``"blade"``.
+    The number of mesh block surfaces, which are part of the meanplane are specified with 
+    the input ``nMeanplaneBlocks_``. They do not connect to the multiple bounded volume 
+    channel. In this class they are labeled with the identifier ``"block"``.
+
+    The other faces in :numref:`meshFaces` as well as  the hub and shroud and the coupling 
+    surfaces are added to the topology through ``channelFaces_`` the faces are labeled 
+    with the strings in the figure. 
+    The coupling faces between the mesh blocks and the multiple bounded volume of the 
+    channel are added with the string ``"coupling"``. The bounding surfaces of the hub 
+    and shroud are added with the identifiers ``"hub"`` and ``"shroud"``.
+    
+    The periodic faces of the topology are the faces labeled ``"suction"``, ``"pressure"``
+    and ``"block"``. The labels ``"suction"`` and ``"pressure"`` correspond to the suction
+    and pressure side of a turbine blade. 
+    The periodic faces which are meshed unstructured are labeled with the identifier 
+    ``"tri"``. 
+    The faces periodic to the ``"block"`` faces are meshed transfinite. They get the 
+    identifier ``"quad"``. The periodicity on these faces is set with the observer 
+    ``bVOSetRotationalPeriodicity``.
+    
+    with the boolean value in ``meshTEBlocks_`` the meshing of the trailing edge mesh
+    blocks is activated. If trailing edge mesh blocks are created, the input for this
+    variable has to be ``True``.
+
+    Each face identifier has an integer value for proper identification.
+    The following faces are added to the topology, if trailing edge mesh blocks are
+    enabeled:
+
+        - ``"hub_0"`` ... ``"hub_"+str(N)``
+
+        - ``"shroud_0"`` ... ``"shroud_"+str(N)``
+
+        - ``"inlet_0"``
+
+        - ``"outlet_0"``
+
+        - ``"suction_tri_0"``, ``"suction_tri_1"``, 
+          ``"suction_tri_"+str(nMeanplaneBlocks_+3)``, ``"suction_tri_"+str(nMeanplaneBlocks_+4)``
+
+        - ``"block_0"`` ... ``"block_"+str(nMeanplaneBlocks_)``
+
+        - ``"pressure_tri_0"``, ``"pressure_tri_1"``, 
+          ``"pressure_tri_"+str(nMeanplaneBlocks_+3)``, ``"pressure_tri_"+str(nMeanplaneBlocks_+4)``
+        
+        - ``"pressure_quad_2"`` ... ``"pressure_quad_"+str(nMeanplaneBlocks_+2)``
+
+        - ``"blade_0"`` ... ``"blade_"+str(N-1)``
+
+        - ``"coupling_0"`` ... ``"coupling_"+str(N+2-nMeanplaneBlocks_-1)``
+
+    
+    On the ``"hub"`` and ``"shroud"`` faces prismatic boundary layers are created.
+    The number of elements in theses layers is specified with ``nBoundaryLayers_``
+    The layers extend on the faces ``"inlet"``, ``"outlet"``, ``"suction"``, 
+    ``"pressure"`` and ``"coupling"`` of the multiple bounded volume.
+    The minimum and maximum characteristic mesh sizes in the unstructured mesh are 
+    set with the inputs ``charLengthMin`` and ``charLengthMax``.
+
+    The following figure shows the edge groups for which mesh settings are applied
+    in uniform colors.
+
+    .. _channelMeshing0:
+    .. figure:: bladeFigs/guideVane_channelMeshing.png
+       :width: 95%
+       :align: center
+
+       Edges of the bladed channel where mesh settings are applied:
+       ``hubToShroudLines`` (orange), ``bladeHubLines`` and ``bladeShoudLines`` (blue), 
+       ``bladeToBlockLines`` (green), and trailing edge mesh block edges in ``tEMeshList`` 
+       (pink). On the grey edges no direct mesh settings are applied.
+    
+    Gradings are applied to enable a mesh refinement on the hub and shroud as well as
+    the blade walls. The method :meth:`addGrading` is used to create the grading 
+    functions. With the methods :meth:`gradingsTypeTransfinite` and 
+    :meth:`gradingsGradingFunctions` the gradings are applied to the mesh setting
+    observer ``bVOMeshRule``.
+    
+    The following table shows the edge groups and their mesh parameters and settings:
+    
+    .. list-table:: Edges and their mesh parameters.
+       :header-rows: 1
+       :align: center
+
+       * - Edge group
+         - Number of elements /
+
+           Element size
+         - Grading label,
+
+           First element size
+
+       * - ``hubToShroudLines``
+         - ``nElementsSpanwise_``
+         - ``"hubToShroud"``
+
+           ``firstElementSizeHubToShroud_``
+
+       * - ``bladeHubLines``
+         - ``bladeHubElementSize_``
+         - ``"tangentialBlade_*"``
+
+       * - ``bladeShroudLines``
+         - ``bladeShroudElementSize_``
+         - ``"tangentialBlade_*"``
+
+       * - ``bladeToBlockLines``
+         - ``nElementsNormal_``
+         - ``"normalBlade"``
+
+           ``firstElementSizeNormalBlade_``
+
+       * - ``tEMeshList``
+         - ``nElementsNormal``
+         - no grading
+
+    The mesh parameters starting with ``nElements...`` give a fixed number of elements
+    on each edge. The parameters ``firstElementSize...`` are the size of the first 
+    elements on the wall where the grading is applied.
+    
+    With these mesh settings, a grading is applied on the hub and shroud walls and
+    the blade wall.
+
+    The mesh sizes along the blade contour (``bladeHubLines`` and ``bladeShroudLines``) 
+    are set by providing either the function ``bladeShroudElementSize_`` or 
+    ``bladeHubElementSize_`` the minimum number of elements for each edge is 
+    determined by start and end vertices. The blending factor 
+    ``bladeShroudElementScale_`` and ``bladeHubElementScale_`` are then used to 
+    interpolate between the number of elements at both ends and, thus, define the 
+    number of elements for this edge. In order to have a smooth transition in 
+    element sizes, between consecutive edges the ``"tangentialBlade_*"`` grading is 
+    adjusted for start and end vertex.
+
+    The trailing edge mesh blocks are only meshed if the input ``meshTEBlocks_`` is 
+    ``True``. The edges are collected in the list ``tEMeshList``. No gradings are 
+    applied here.
+    
+    If debug is enabled all edges are attached with prefix ``debug_``.
+
+    Added observers:
+
+        - bVOReadMSH
+
+        - x bVOSetRotationalPeriodicity
+
+        - bVOFaceToPatchRule
+
+        - bVOWriteMSH
+
+        - bVOOrientCellVolumes
     """
     def __init__( 
         self, 
@@ -249,13 +346,11 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         firstElementSizeNormalBlade: float
           Size of first element at the blade in normal to the blade direction.
         bladeHubElementSize: scaOneD
-          Function describing the element size versus the standardized unwrapped
-        length of the blade at the hub.
-          bladeHubElementScale: float
-        Factor defining the number of elements at the hub for each mesh block.
-          bladeShroudElementSize: scaOneD
-        Function describing the element size versus the standardized unwrapped
-          length of the blade at the shroud.
+          Function describing the element size versus the standardized unwrapped length of the blade at the hub.
+        bladeHubElementScale: float
+          Factor defining the number of elements at the hub for each mesh block.
+        bladeShroudElementSize: scaOneD
+          Function describing the element size versus the standardized unwrapped length of the blade at the shroud.
         bladeShroudElementScale: float
           Factor defining the number of elements at the shroud for each mesh block.
         charLengthMin: float
@@ -378,10 +473,10 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             bladeFace, blockFace = self.detectFirstAndSecond(block, 3)
             
             if self.meshTEBlocks_ == True: 
-                # bladeFace at i == 1 and i == len(self.blocks_)-1 are the same
+                # bladeFace at i == 0 and i == len(self.blocks_)-1 are the same
                 #  when trailing edge blocks were build.
                 # this face can only be added once
-                if i != 0: #and i < len(self.blocks_)-1:
+                if i != 0 and i < len(self.blocks_)-1:
                     aG.push_back(bladeFace << "blade_"+str(i))
             else:
                 aG.push_back(bladeFace << "blade_"+str(i))
@@ -484,9 +579,9 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         
         # untagging the face between the first and last TE block from the blade faces
         #  this face was needed to get all the bladeToBlockLines 
-        bladeFaces = m3dGmsh.getModel().getDtGmshFaceListByPhysical("*blade*")
-        l = len(bladeFaces)
-        m3dGmsh.getModel().untagPhysical(m3dGmsh.getModel().getDtGmshFaceByPhysical("*blade_"+str(l)+"*"))
+        #bladeFaces = m3dGmsh.getModel().getDtGmshFaceListByPhysical("*blade*")
+        #l = len(bladeFaces)
+        #m3dGmsh.getModel().untagPhysical(m3dGmsh.getModel().getDtGmshFaceByPhysical("*blade_"+str(l)+"*"))
         
         # organizing periodic faces
         #  the order is set by adding the faces seqentially and the naming
@@ -582,12 +677,12 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             #m3dGmsh.getModel().untagPhysical(m3dGmsh.getModel().getDtGmshFaceByPhysical("*blade_"+str(l)+"*"))
         
         #
-        # add debug faces and lines
+        # add debug faces and line<LeftMouse>
         #
         
         if self.debug():
             
-            # curves for visualisation purposes only
+            ## curves for visualisation purposes only
             #tEList = [tEHub[0], tEShroud[0], tEBlock0_Hub[0], tEBlock0_Shroud[0], tEBlock1_Hub[0], tEBlock1_Shroud[0]]
 
             #otherHubLines = set(hubLines) \
@@ -1108,6 +1203,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         theModel: dtGmshModel, 
         boundaryLayerDirCheck: List[ List[ Union[ map2dTo3d, List[int] ] ] ]
     ) -> int:
+        tol = 0.01
         boundaryLayerDir = []
         for faceLines in boundaryLayerDirCheck:
           for line in faceLines[1]:
@@ -1119,21 +1215,31 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
               theEdge.getMap1dTo3d().getPointPercent(1.0)
             )
             boundaryLayerDirT = 0
-            if ( not analyticGeometry.inUVWTolerance( p0_uv.x(), p1_uv.x() ) ):
+            ## Original code with dtOO tolerance check
+            ## some geometries fail due to high tolerances
+            #if ( not analyticGeometry.inUVWTolerance( p0_uv.x(), p1_uv.x() ) ):
+            #  boundaryLayerDirT = boundaryLayerDirT + 1
+            #if ( not analyticGeometry.inUVWTolerance( p0_uv.y(), p1_uv.y() ) ):
+            #  boundaryLayerDirT = boundaryLayerDirT + 2
+            if ( not map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.inTolerance(tol, p0_uv.x(), p1_uv.x() ) ):
               boundaryLayerDirT = boundaryLayerDirT + 1
-            if ( not analyticGeometry.inUVWTolerance( p0_uv.y(), p1_uv.y() ) ):
+            if ( not map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.inTolerance(tol, p0_uv.y(), p1_uv.y() ) ):
               boundaryLayerDirT = boundaryLayerDirT + 2
+            print("")
+            print("")
             logging.debug("face: %s" % faceLines[0].getLabel())
             logging.debug("p0_uv = (%f, %f)" % (p0_uv.x(), p0_uv.y()))
             logging.debug("p1_uv = (%f, %f)" % (p1_uv.x(), p1_uv.y()))
             logging.debug("boundaryLayerDirT = %d" % (boundaryLayerDirT))
+            print("")
             boundaryLayerDir.append( boundaryLayerDirT )
           boundaryLayerDir = list(dict.fromkeys(boundaryLayerDir))
         if len(boundaryLayerDir)!=1:
           raise ValueError("BoundaryLayerDirection is not equal in all faces.")
         boundaryLayerDir = boundaryLayerDir[0]
         logging.info("boundaryLayerDir = %d" % boundaryLayerDir)
-
+        print("")
+        print("")
         if boundaryLayerDir==1:
           return 0
         elif boundaryLayerDir ==2:
@@ -1157,6 +1263,23 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
           return 0
         else:
           return -1
+
+    def inTolerance(
+            tol: float,
+            p0: float,
+            p1: float
+        ) -> bool:
+
+        if p0 >= p1:
+            diff = p0-p1
+        else:
+            diff = p1-p0
+
+        if diff > tol:
+            return False
+        else:
+            return True
+
 
     def addGrading(
         self, 

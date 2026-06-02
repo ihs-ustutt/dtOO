@@ -1478,6 +1478,7 @@ class radMeridional:
         # Create a surface around the blade surface with a normal distance
         # specified by meshBlock_thickness.
         #
+        #meshBlock_thickness = 0.035
         meshBlock_thickness = 0.020 
         fRef = dtOO.vec3dMuParserTwoD(
           "1.0*"+str(meshBlock_thickness)+", xx, yy", "xx", "yy"

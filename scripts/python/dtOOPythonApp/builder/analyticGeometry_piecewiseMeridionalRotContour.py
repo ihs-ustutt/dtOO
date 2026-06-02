@@ -400,9 +400,9 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
 
         For the example shown in :numref:`hsCurves01`, the resulting ``cti`` lists are:
 
-        ``hub_cti = [0, 1, None, None, None]``
+            - ``hub_cti = [0, 1, None, None, None]``
 
-        ``shroud_cti = [0, None, 1, None, None]``
+            - ``shroud_cti = [0, None, 1, None, None]``
 
         The ``cti`` lists are passed to the method :meth:`propagate_interface_ids_next`, where the entries
         are matched to the regular channels to which the curves belong. The returned values overwrite the
@@ -410,7 +410,7 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
 
         The resulting ``shroud_cti`` list is:
 
-        ``shroud_cti = [0, 1, 1, None, None]``
+            - ``shroud_cti = [0, 1, 1, None, None]``
         
         In ``inOutCurves_``, the inlet and outlet curves of the meridional contour are stored.
         The inlet curve is created as a straight line between the start points of the first curves
@@ -721,16 +721,16 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
 
         The lists are unpacked as follows:
 
-            ``interface_hub[i]``: Start point of the i-th interface curve on the hub.
+            - ``interface_hub[i]``: Start point of the i-th interface curve on the hub.
 
-            ``interface_shroud[i]``: End point of the i-th interface curve on the shroud.
+            - ``interface_shroud[i]``: End point of the i-th interface curve on the shroud.
 
         The lower-level list entries define the hub and shroud curves and the procentual positions
         along those curves at which the interface start and end points are located:
 
-            ``interface_hub[i][0]``: Index of the hub curve on which the start point lies.
+            - ``interface_hub[i][0]``: Index of the hub curve on which the start point lies.
 
-            ``interface_hub[i][1]``: Percentage along the hub curve where the start point is located.
+            - ``interface_hub[i][1]``: Percentage along the hub curve where the start point is located.
 
         By iterating over the interface lists, the interface curves are constructed.
 
@@ -741,15 +741,15 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
         The list ``curve`` is structured as follows. The highest level corresponds to the interface
         index:
 
-            ``curve[i]``: Parameters of the i-th interface.
+            - ``curve[i]``: Parameters of the i-th interface.
 
         The lower level defines the curvature properties of the interface:
 
-            ``curve[i][0]``: Control point offset as a percentage of the length of ``MP_linear``.
+            - ``curve[i][0]``: Control point offset as a percentage of the length of ``MP_linear``.
 
-            ``curve[i][1]``: Control point base position as a percentage along ``MP_linear``.
+            - ``curve[i][1]``: Control point base position as a percentage along ``MP_linear``.
 
-            ``curve[i][2]``: Direction of the control point offset.
+            - ``curve[i][2]``: Direction of the control point offset.
 
         The following figure illustrates the creation of the interface curves, with emphasis on
         the curvature definition of the second interface curve.
@@ -983,10 +983,10 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
 
         The resulting ``intersectList`` is unpacked as follows:
 
-            ``intersectList[i]``: detected intersection between two curves
-            ``intersectList[i][0]``: ID of interface curve
-            ``intersectList[i][1]``: ID of curve in second list
-            ``intersectList[i][2]``: ``True`` if intersection is detected
+            - ``intersectList[i]``: detected intersection between two curves
+            - ``intersectList[i][0]``: ID of interface curve
+            - ``intersectList[i][1]``: ID of curve in second list
+            - ``intersectList[i][2]``: ``True`` if intersection is detected
 
         The intersection list is returned by the method.
         """
@@ -1073,11 +1073,11 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
 
         As an example, :meth:`createSplits` may return a ``cti`` list such as:
 
-            ``shroud_cti = [0, None, 1, None, None, None, None]``
+            - ``shroud_cti = [0, None, 1, None, None, None, None]``
 
         After propagation, this method modifies it to:
 
-            ``shroud_cti = [0, 1, 1, None, None, None, None]``
+            - ``shroud_cti = [0, 1, 1, None, None, None, None]``
 
         In this case, entries 1 and 2 can now be identified as belonging to regular channel 1.
 

@@ -295,7 +295,7 @@ def run(*args, **kwargs):
     varList = config.getVarList()
     
     # individual which will be recreated
-    target_individual = 17
+    target_individual = 0
     
     stateLbl = "variation_ru10"
     evalFolder = "ofCase_eval"

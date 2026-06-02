@@ -28,48 +28,13 @@ import logging
 import numpy as np
 
 class multipleBoundedVolume_gridChannel(dtBundleBuilder):
-    """ Create the grid channel as a multiple bounded volume
+    """ Create the grid channel as a multiple bounded volume.
     
-    The grid channel is build from the part of the mesh which
-    will be meshed unstructured.
-    The bounding faces of the multiple bounded volume are built 
-    by the rotation of the meanplane- and coupling faces.
-    
-    The angle of rotation is defined trough the number of blades
-    in the 360° channel.
-
-    The following faces are the bounding faces:
+    This class:
         
-        - inlet: inlet boundary
-
-        - outlet: outlet boundary
-
-        - suction_tri_(n) : suction boundary build from 
-                            meanplane faces
-
-        - coupling_(n) : boundary connecting to the blades'
-                         mesh block
-        
-        - pressure_tri_(n) : pressure boundary build from 
-                             rotated meanplane faces
-        
-        - pressure_quad_(n) : pressure boundary build from 
-                              rotated meanplane faces
-
-        - hub: multiple bounded surface of hub curves of the 
-               other boundary faces.
-        
-        - shroud: multiple bounded surface of shroud curves 
-                  of the other boundary faces.
-    
-    The marker "tri" and "quad" in the naming of pressure and
-    suction boundaries are used during meshing to identify which
-    faces are meshed unstructured with boundary layers or 
-    transfinite.
-    
-    The method getGridChannel() returns the grid channel with
-    the type multipleBoundedVolume and a list of the bounding 
-    faces.
+        - Creates multiple bounded surfaces on the hub and shroud.
+        - Creates bounding faces from the meanplane and coupling faces.
+        - Creates a multiple bounded volume of the grid channel.
 
     Attributes
     ----------
@@ -83,7 +48,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
       List of coupling faces
     nBlades_: int
       Number of blades
-    nInOutSurfSuction_: int
+    nInOutSurf_: int
       Number of meanplane faces extending from the mesh blocks
       to the inlet and outlet each
     rotVector_: dtVector3
@@ -93,6 +58,11 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
       
         - 1 : Blade is oriented in u-direction of channel
         - -1 : Blade is oriented in negative u-direction of the channel
+
+    boundSurf_: labeledVectorHandlingAnalyticGeometry
+      Container for bounding surfaces.
+    gridChannel_: analyticGeometry
+      Volume of the grid channel.
 
 
     Examples
@@ -161,7 +131,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     ...     1
     ... ).result()
     
-    Define copling curve
+    Define coupling curve
 
     >>> c_coup = dtOO.bSplineCurve_pointConstructOCC(
     ...     dtOO.vectorDtPoint3()
@@ -211,7 +181,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     ...         ).result()
     ...     )
 
-    Make a list containing the meanplane faces
+    Make a list containing the meanplane and coupling faces
 
     >>> meanplaneFaces = [
     ...        dtOO.map2dTo3d.MustDownCast(mp0),
@@ -224,7 +194,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     ...         dtOO.map2dTo3d.MustDownCast(coup1),
     ...     ]
 
-    create the grid channel
+    Create the grid channel
 
     >>> from dtOOPythonApp.builder import multipleBoundedVolume_gridChannel
     >>> gridChannel = multipleBoundedVolume_gridChannel(
@@ -237,7 +207,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     ... )
     >>> gridChannel.build()
     
-    return the multiple bounded volume and a list with the faces
+    Return the multiple bounded volume and a list with the bounding faces
 
     >>> gc, gcFaces = gridChannel.getGridChannel()
     
@@ -245,7 +215,144 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
 
     >>> gc.virtualClassName()
     'multipleBoundedVolume'
+    
+    The main method of this class is :meth:`build`.
 
+    The grid channel is built as a multiple bounded volume. It forms the part
+    of the channel mesh that is not occupied by the mesh blocks surrounding
+    the blade. The construction of the multiple bounded volume requires a set
+    of bounding surfaces.
+
+    The bounding surfaces ``boundSurfs_`` are based on the meanplane and
+    coupling faces provided to the class through the lists
+    ``meanplanes_`` and ``couplings_``.
+    The following figure shows the surfaces in ``meanplanes_`` and
+    ``couplings_``.
+
+    .. _meanplanesAndCouplings:
+    .. figure:: bladeFigs/gidChannel_meanplanesAndCouplings.png
+       :width: 100%
+       :align: center
+
+       Meanplane faces (yellow and green) and coupling faces (cyan) provided
+       to this class. The blade (grey) is shown for reference.
+
+    The complete flow channel forms a periodic segment and contains the
+    grid channel and the mesh blocks. The periodic boundaries are created
+    through rotational transformation of the meanplane faces.
+
+    The following figure shows the grid channel and mesh blocks together
+    with the periodic faces.
+
+    .. _mbv:
+    .. figure:: bladeFigs/gidChannel_mbv.png
+       :width: 100%
+       :align: center
+
+       Complete flow channel segment with mesh blocks. Periodic faces
+       (yellow and green), coupling faces (cyan), and inlet and outlet
+       faces (red). The bounding curves for the multiple bounded volumes
+       on the hub are shown in pink.
+
+    From the first and last faces in ``meanplanes_``, inlet and outlet
+    faces (:numref:`mbv`, red) are created.
+
+    The grid channel volume is bounded by the rotated meanplane surfaces as
+    well as the original meanplane faces
+    (:numref:`meanplanesAndCouplings`, yellow), which extend toward the
+    inlet and outlet of the flow domain and are not part of the mesh blocks.
+    By definition of ``meanplanes_``, these faces are located at the
+    beginning and end of the list. The parameter ``nInOutSurf_`` specifies
+    the number of such faces at both ends of the list.
+
+    The rotation angle is defined through the number of blades
+    ``nBlades_`` in the full 360° channel. The rotation vector is provided
+    through ``rotVector_``.
+
+    The coupling faces (:numref:`meanplanesAndCouplings`, cyan) connect the
+    grid channel volume to the mesh blocks. These faces are also added to
+    the boundary surfaces ``boundSurf_``.
+
+    The bounding surfaces on the hub and shroud are created as multiple
+    bounded surfaces. The required bounding curves (:numref:`mbv`, pink)
+    are generated from the bounding faces of the multiple bounded volume.
+    The bounding surfaces of the multiple bounded surface objects on hub and
+    shroud are defined on the channel geometry ``channel_``.
+
+    The input ``orientation_`` encodes the orientation of the blade within
+    the channel. The following values are supported:
+
+        - ``1``: Blade is oriented in the positive u-direction of the channel
+        - ``-1``: Blade is oriented in the negative u-direction of the channel
+
+    The method :meth:`calcRotParams` is used to ensure that the bounding
+    faces of the multiple bounded surfaces extend over the correct hub and
+    shroud regions.
+
+    The resulting boundary faces of the multiple bounded volume, excluding
+    the hub and shroud boundaries, are shown in the following figure.
+
+    .. _bounds:
+    .. figure:: bladeFigs/gidChannel_bound.png
+       :width: 100%
+       :align: center
+
+       Bounding faces of the grid channel (colored). Hub and shroud
+       boundaries are omitted for clarity. The blade (grey) is shown for
+       reference.
+
+    If debug mode is enabled, the bounding faces can be plotted using the
+    following naming convention:
+
+    ::
+
+        "debug_gridChannelFace_" + label_ + "_" + face.getLabel()
+
+    The following face labels are used:
+
+        - ``"inlet"``:
+          Inlet boundary (:numref:`bounds`, red)
+
+        - ``"outlet"``:
+          Outlet boundary (:numref:`bounds`, red)
+
+        - ``"suction_tri_" + str(i)``:
+          Suction boundary built from meanplane faces
+          (:numref:`bounds`, yellow)
+
+        - ``"coupling_" + str(i)``:
+          Boundary connecting to the blade mesh block
+          (:numref:`bounds`, cyan)
+
+        - ``"pressure_tri_" + str(i)``:
+          Pressure boundary built from rotated meanplane faces
+          (:numref:`bounds`, yellow)
+
+        - ``"pressure_quad_" + str(i)``:
+          Pressure boundary built from rotated meanplane faces
+          (:numref:`bounds`, green)
+
+        - ``"hub"``:
+          Multiple bounded surface on the hub
+
+        - ``"shroud"``:
+          Multiple bounded surface on the shroud
+
+    The strings ``"pressure"`` and ``"suction"`` correspond to the periodic
+    faces associated with the pressure and suction sides of a turbine
+    channel created with this class.
+
+    The markers ``"tri"`` and ``"quad"`` in the naming of the pressure and
+    suction boundaries are used to distinguish between faces meshed
+    unstructured with prism elements and faces meshed transfinite with
+    hexahedral elements.
+
+    The grid channel is created from the faces in ``boundSurf_`` and stored
+    in ``gridChannel_``.
+
+    The method :meth:`getGridChannel` returns the grid channel
+    ``gridChannel_`` together with a list of the bounding faces
+    ``boundSurf_``
     """
     def __init__(
         self,
@@ -300,6 +407,12 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     def build(self) -> None:
         """Build part.
 
+        This method:
+
+            - Creates multiple bounded surfaces on the hub and shroud.
+            - Creates bounding faces from the meanplane and coupling faces.
+            - Creates a multiple bounded volume representing the grid channel.
+
         Parameters
         ----------
         None
@@ -308,16 +421,134 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         -------
         None
 
-        """
 
+        This method creates the grid channel from the faces in ``meanplanes_``
+        and ``couplings_``. The following figure illustrates the operations
+        performed.
+
+        .. _mbvActivity:
+        .. figure:: bladeFigs/multipleBoundedVolume_gridChannel.png
+           :width: 100%
+           :align: center
+
+           Activity diagram of class `multipleBoundedVolume_gridChannel`.
+           Colors correspond to the creation of geometries shown in
+           :numref:`meanplanesAndCouplings`, :numref:`mbv`, and
+           :numref:`bounds`.
+
+        Three vector-handling containers are created. The container
+        ``boundSurf_`` stores the bounding surfaces of the multiple bounded
+        volume. The containers ``hubCurves`` and ``shroudCurves`` store the
+        bounding curves of the multiple bounded surfaces that define the hub
+        and shroud boundaries of the grid channel.
+
+        To create the multiple bounded surfaces, bounding faces on the hub and
+        shroud are required. To ensure that these surfaces extend over the full
+        grid channel domain, the hub and shroud points ``p0h`` and ``p0s`` at
+        the inlet or outlet, depending on ``orientation_``, are extracted from
+        ``meanplanes_``.
+
+        By passing these points to the method :meth:`calcRotParams`, their
+        u-coordinate within the channel, including a tolerance, is calculated.
+        The hub and shroud bounding faces ``m2d_hub`` and ``m2d_shr`` are then
+        created by rotating a segment of the channel ``channel_`` at this
+        u-coordinate on the hub or shroud around ``rotVector_``.
+
+        **Iterate over meanplane faces**
+
+            ::
+
+                for i, face in enumerate(meanplanes_):
+
+            The periodic faces as well as the inlet and outlet boundaries of
+            the grid channel are created by iterating over ``meanplanes_``.
+
+            A volume ``vol`` is created by rotating the current meanplane face 
+            ``face``. The bounding surfaces of the grid channel are extracted 
+            from ``vol`` as segments of constant parameter coordinates.
+
+            Initially, the string ``lab`` is set to ``"quad"``.
+
+            If the iteration processes the first or last meanplane face,
+
+            ::
+
+                i == 0 or i == len(meanplanes_) - 1
+
+            an inlet or outlet interface boundary is created. By definition of
+            ``meanplanes_``, the first entry ``i == 0`` contains the inlet
+            meanplane surface, while the last entry ``i == len(meanplanes_) - 1``
+            contains the outlet boundary.
+
+            The inlet and outlet boundaries are added to ``boundSurf_`` with
+            the labels ``"inlet"`` and ``"outlet"``, respectively.
+
+            The corresponding bounding curves on the hub and shroud are appended
+            to ``hubCurves`` and ``shroudCurves``.
+
+            The first and last ``n`` faces in ``meanplanes_`` are part of the
+            boundary surfaces (compare
+            :numref:`meanplanesAndCouplings` and :numref:`bounds`). The number
+            of these faces is specified by ``nInOutSurf_``.
+
+            If the iteration is processing one of these faces,
+
+            ::
+
+                i < nInOutSurf_ or i >= len(meanplanes_) - nInOutSurf_
+
+            the value of ``lab`` is changed to ``"tri"``. These faces are added
+            to ``boundSurf_`` with the label
+
+            ::
+
+                "suction_" + lab + "_" + str(i)
+
+            The corresponding bounding curves on the hub and shroud are also
+            added to the respective containers.
+
+            In every iteration, the rotated meanplane face is added to
+            ``boundSurf_`` with the label ``"pressure_" + lab + "_" + str(i)``
+
+            The associated bounding curves are appended to ``hubCurves`` and
+            ``shroudCurves``.
+
+        **Iterate over coupling faces**
+
+            ::
+
+                for i, face in enumerate(couplings_):
+
+            All coupling faces are part of the boundary surfaces. The last two
+            faces in ``couplings_`` correspond to the faces downstream of the
+            trailing edge and are oriented orthogonally to the flow direction.
+            These faces are oriented differently from the remaining coupling
+            faces.
+
+            The condition ``i >= len(couplings_) - 2``
+            identifies these faces and ensures that the correct bounding curves
+            are added to ``hubCurves`` and ``shroudCurves``.
+
+        The multiple bounded surfaces on the hub and shroud,
+        ``mbs_hub`` and ``mbs_shroud``, are created from ``m2d_hub`` and
+        ``m2d_shr`` together with the lists of bounding curves
+        ``hubCurves`` and ``shroudCurves``.
+
+        Finally, the grid channel volume is created using the ``dtOO`` class
+        ``multipleBoundedVolume`` from ``boundSurf_``. The resulting object is
+        stored in ``gridChannel_``.
+        """
+        #
+        # prepare container objects for geometires
+        #
         # vector handler for boundary surfaces
         self.boundSurf_ = labeledVectorHandlingAnalyticGeometry()
         
-        # vector handlers for multiple bounded surfaces of hub and shroud
+        # vector handlers for bounding curves of multiple bounded surfaces of hub and shroud
         hubCurves = vectorHandlingAnalyticGeometry()
         shroudCurves = vectorHandlingAnalyticGeometry()
         
-        # getting the hub and shroud points from the meanplane at the inlet or outlet 
+        # get the hub and shroud points from the meanplane at the inlet or outlet 
         if self.orientation_ > 0: 
             # at the inlet
             p0h = self.meanplanes_[-1].getPointPercent(1,0)
@@ -327,16 +558,21 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
             p0h = self.meanplanes_[0].getPointPercent(1,0)
             p0s = self.meanplanes_[0].getPointPercent(1,1)
         
-        # getting the u coordinates of these points in the channel
+        # get the u coordinates of these points in the channel
         uHub = self.calcRotParams(p0h)
         uShr = self.calcRotParams(p0s)
         
-        # generating bounding faces for multiple bounded surfaces
+        #
+        # generate bounding faces for multiple bounded surfaces
         # the face is a circular segment and not the whole rotating face
-        #  because the rotation of 2*pi would be detected as degenerated face
-        #  (starting and ending curve would be at the same point)
+        #  (rotation of 2*pi would be detected as degenerated face
+        #  (starting and ending curve would be at the same point))
+        #
         angle = 2*np.pi * 0.95
+
+        # curve segment at hub at calculated u coordinate
         m1d_hub = self.channel_.segmentConstWPercent(0).segmentConstUPercent(uHub)
+        # create the bounding face
         m2d_hub = analyticSurface(
                     rectangularTrimmedSurface_curveRotateConstructOCC(
                         analyticCurve.MustDownCast(m1d_hub).ptrDtCurve(),
@@ -345,6 +581,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
                         angle
                     ).result()
                 ) 
+        # do the same with the shroud
         m1d_shr = self.channel_.segmentConstWPercent(1).segmentConstUPercent(uShr)
         m2d_shr = analyticSurface(
                     rectangularTrimmedSurface_curveRotateConstructOCC(
@@ -365,23 +602,25 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         #        "TEST_m2d_shr_"+self.label_
         #    )
 
-        # iterating over meanplane faces
+        # iterate over meanplane faces
         for i, face in enumerate(self.meanplanes_):
             
-            # creating a volume by rotating the surface
+            # create a volume by rotating the surface
             vol = partRotatingMap2dTo3d(
                     self.rotVector_,
                     map2dTo3d.MustDownCast( face ),
                     0.00,
                     (1/self.nBlades_),
-                )
+                ) 
+            # Faces are found by cutting segments from the volume
             
-            # label "quad" for faces which have to be meshed quadratic
+            # label "quad" for faces which are meshed with hexagonal faces
             #  (faces with rotational periodicity to mesh blocks)
             lab = "quad"
-
-            ## Faces are found by cutting segments from the volume
-            # outlet or inlet boundary of region (first meanplane face)
+            
+            #
+            # outlet or inlet boundary of region (first or last meanplane face)
+            #
             if i == 0 or i == len(self.meanplanes_)-1:
                 if i == 0:
                     let = "outlet"
@@ -396,17 +635,9 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
                 shr = vol.segmentConstVPercent(1).segmentConstVPercent(1)
                 shroudCurves.push_back(shr)
 
-            ## inlet boundary of region (last meanplane face)
-            #elif i == len(self.meanplanes_)-1:
-            #    inl = vol.segmentConstVPercent(1)
-            #    self.boundSurf_.push_back(inl << "inlet")
-            #    
-            #    # boundary curves for multiple bounded surfaces at hub and shroud
-            #    hub = vol.segmentConstVPercent(1).segmentConstVPercent(0)
-            #    hubCurves.push_back(hub)
-            #    shr = vol.segmentConstVPercent(1).segmentConstVPercent(1)
-            #    shroudCurves.push_back(shr)
-            
+            #
+            # Periodic meanplane faces
+            #
             # special treatment for suction boundaries
             #  only the first two and last two faces are taken from the meanplane
             #  the other faces are the coupling faces
@@ -414,7 +645,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
             #  the mesh blocks and inlet or outlet
             if i < self.nInOutSurf_ or i >= len(self.meanplanes_)-self.nInOutSurf_:
                 
-                # label "tri" for faces which have to be meshed triangular
+                # label "tri" for faces which are meshed with prisms
                 #  (faces with rotational periodicity to suction and pressure)
                 lab = "tri"
 
@@ -442,27 +673,31 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
             shr = vol.segmentConstWPercent(1).segmentConstUPercent(1)
             shroudCurves.push_back(shr)
         
-        # adding coupling faces
+        #
+        # Iterate over coupling faces
+        #
         for i, face in enumerate(self.couplings_):
             self.boundSurf_.push_back(face << "coupling_"+str(i))
             
             # boundary curves for multiple bounded surfaces at hub and shroud
-            if i >= len(self.couplings_)-2: 
+            if i >= len(self.couplings_)-2:
+                # trailing edge faces orthogonal to the flow direction (oriented differently)
                 hubCurves.push_back(face.segmentConstUPercent(0))
                 shroudCurves.push_back(face.segmentConstUPercent(1))
             else:
+                # coupling faces surrounding blade
                 hubCurves.push_back(face.segmentConstVPercent(0))
                 shroudCurves.push_back(face.segmentConstVPercent(1))
         
-        # creating multiple bounded surfaces for hub and shroud
-        # pushing them into the vector handler for the multiple bounded volume
+        # create multiple bounded surfaces for hub and shroud
+        # push them into the vector handler for the multiple bounded volume
         mbs_hub = multipleBoundedSurface(m2d_hub, hubCurves)
         mbs_shroud = multipleBoundedSurface(m2d_shr, shroudCurves)
          
         self.boundSurf_.push_back(mbs_hub.clone() << "hub")
         self.boundSurf_.push_back(mbs_shroud.clone() << "shroud")
         
-        # appending boundaries if debug is enabeled
+        # append boundaries if debug is enabeled
         if self.debug():
             for face in self.boundSurf_:
                 self.appendAnalyticGeometry(
@@ -480,14 +715,32 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
                         "debug_"+self.label_+"_shroudCurve_"+str(i)
                     )
              
-        # creating grid channel as multi bounded volume
+        # creat grid channel as multi bounded volume
         self.gridChannel_ = multipleBoundedVolume(infinityMap3dTo3d(), self.boundSurf_)
         
 
     def calcRotParams(self, p0) -> float:
-        
-        # reparametrizing the point in uwv-parameters of the channel
-        # getting the u ccordinate in percent and adding 0.01 tolerance
+        """Calculate the u-parameter of a point within the channel.
+
+        This method:
+
+            - Reparametrizes a point in channel coordinates.
+            - Offsets the u-parameter by ``0.01``.
+            - Corrects the value if the parameter becomes negative.
+            - Returns the resulting u-parameter.
+
+        Parameters
+        ----------
+        p0 : dtPoint3
+            Cartesian point within the channel.
+
+        Returns
+        -------
+        uvwP0 : float
+            u-parameter of the point in the channel reduced by the tolerance.
+        """
+        # reparametrize the point in uwv-parameters of the channel
+        # get the u coordinate in percent and adding 0.01 tolerance
         uvwP0 = self.channel_.percent_u(
                 self.channel_.reparamInVolume(p0).x()
             ) - 0.01
@@ -502,7 +755,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     # return method for grid channel and its faces
     #
     def getGridChannel(self) -> Tuple[analyticGeometry, List[analyticGeometry]]:
-        """return method.
+        """Return the grid channel volume and its bounding surfaces
 
         Parameters
         ----------
@@ -512,7 +765,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         -------
         gridChannel_: analyticGeometry
           Multiple bounded volume of the grid channel
-        boundSurf_: List[analyticGeometry]
+        boundSurf_: labeledVectorHandlingAnalyticGeometry
           List of bounding faces
         """
         return self.gridChannel_, self.boundSurf_ 

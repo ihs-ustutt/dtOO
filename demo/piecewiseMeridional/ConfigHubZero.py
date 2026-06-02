@@ -25,6 +25,7 @@ class ConfigHubZero():
         l_shroud1 = 0.18
         angle_shroud1 = 90 * np.pi/180
 
+        #h_inlet = 0.18
         h_inlet = 0.36
         h_hub = 0.68
         h_shroud = 0.38
@@ -138,6 +139,8 @@ class ConfigHubZero():
             "u_te" : [0.80],
 
             "adjustRadius" : False,
+            "orientation" : -1,
+
         }
         self.configRunner = {
             "label" : "ru",
@@ -188,6 +191,8 @@ class ConfigHubZero():
             "u_te" : [0.80],
 
             "adjustRadius" : True,
+            "orientation" : 1,
+
         }
         self.configLayer = {
             "label" : "radMeridionalContour",
@@ -377,16 +382,18 @@ def run(*args, **kwargs):
     generate = radMeridional.radMeridional()
 
     generate.createMeridional(configM, hubCurves, shroudCurves)
-    #generate.createBlade(configGV)
+    generate.createBlade(configGV)
     #generate.createBlade(configRu)
-    generate.createLayerRegion(configL)
+    #generate.createLayerRegion(configL)
 
     cc = generate.getContainer()
     
     rr = dtOOInParaVIEW( cc )
     
     bV, dC = generate.getbVAnddC()
-    bV["meshLayers"].makeGrid()
+    #bV["meshLayers"].makeGrid()
+    #bV["gv_mesh"].makeGrid()
+    #bV["ru_mesh"].makeGrid()
             
     #stateLbl = "test"
     #indiv = "0" 

@@ -168,6 +168,8 @@ class Config():
             "u_te" : [0.80],
 
             "adjustRadius" : False,
+            "orientation" : -1,
+
         }
 
         # config for runner blade
@@ -235,6 +237,8 @@ class Config():
             "u_te" : [0.80],
 
             "adjustRadius" : True,
+            "orientation" : 1,
+
         }
 
         # config for generation of layer region

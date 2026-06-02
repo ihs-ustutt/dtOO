@@ -39,64 +39,7 @@ import logging
 import numpy as np
 
 class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
-    """Create the meanplane faces connecting to the interfaces
-
-    The interfaces are the inlet and the outlet of the channel domain.
-    The inlet is located at 0% and the outlet at 100% of the v-coordinate 
-    of the channel.
-    The hub is located at 0% and the shroud at 100% of the w-coordinate.
-    The rotational direction of the channel is the u-direction and extends
-    100%.
-
-    The created meanplane faces are build from a trans4SindedFace. 
-    They extend between the interfaces and the offset mesh block curves,
-    which were created in the class vec3dThreeD_skinAndSplit.
-
-    The offset mesh block curves extend from hub to shroud of the channel. 
-    They have the following naming convention:
-        
-    prefix+"_"+label+"_meshBlockCurve_in1" -> curve connecting to the inlet
-    prefix+"_"+label+"_meshBlockCurve_out1" -> curve connecting to the outlet
-
-    The class trans4SindedFace needs a closed loop of four edges. The direction
-    of those edges have to be consistent.
-    In order to keep the direction consistent the curves are defined with the 
-    following specification:
-        
-    Location            From -> To                      Naming
-    --------            ----------                      ------
-    hub                 interface -> mesh block curve   "hsCurve_u0_<in/out>
-    mesh block curve    hub -> shroud                   (see above)
-    shroud              mesh block curve -> interface   "hsCurve_u1_<in/out>
-    interface           shroud -> hub                   "interfCurve_<in/out>"
-
-    The curves are input in the constructor of the trans4SidedFace class in the same order.
-    This results in the following parameter directions of the tesulting meanplane faces:
-        
-        Direction   From -> To
-        ---------   ----------
-        u ->        mesh block curve -> interface
-        v -->       hub -> shroud
-
-    The following ASCII diagramm shows the curve directions and the resulting face 
-    directions in the channel.
-
-                        hub
-                      ------->
-                     ^     <- |                      
-                     |       ||  
-           interface |       || mesh block curve
-                     |       v|
-                     |        v
-                      <-------
-                       shroud
-
-    To enable the extention of the meanplane face over 0% of the u-coordinate of the channel
-    a check is implemented, which catches changes of the u-coordinate of the interface curve
-    points at hub and shroud.
-    If the u distance of these two poinst in the channel is greater than 50% the bigger of 
-    the two values will get its negative u-coordinate. Then the curve on the interface will
-    extend over the 0% u-boundary of the channel.
+    """Create the meanplane faces connecting to the interfaces of the regular channel.
 
     Attributes
     ----------
@@ -117,7 +60,7 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
 
     >>> import dtOOPythonSWIG as dtOO
     
-    Create three dimensional channel domain
+    Create three dimensional channel domain.
 
     >>> c0 = dtOO.bSplineCurve_pointConstructOCC(
     ...       dtOO.vectorDtPoint3()
@@ -154,7 +97,7 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
     ...             channel2d,
     ...         )
     
-    Create the mesh block curves
+    Create the mesh block curves.
     
     >>> c_in1 = dtOO.bSplineCurve_pointConstructOCC(
     ...           dtOO.vectorDtPoint3()
@@ -169,7 +112,7 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
     ...             1
     ...         ).result()
     
-    Push the mesh block curves into a vector handler
+    Push the mesh block curves into a vector handler.
     
     >>> meshBlockCurves = dtOO.labeledVectorHandlingAnalyticGeometry()
     >>> label = "test"    
@@ -180,7 +123,7 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
     ...     dtOO.analyticCurve( c_out1 ) << "xyz_"+label+"_meshBlockCurve_out1"
     ... )
     
-    Create the meanplane faces between the interfaces and the mesh block curves
+    Create the meanplane faces between the interfaces and the mesh block curves.
     
     >>> from dtOOPythonApp.builder import analyticSurface_inOutFeMeanplane 
     >>> feMeanplane = analyticSurface_inOutFeMeanplane(
@@ -191,11 +134,98 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
     ... )
     >>> feMeanplane.build()
 
-    Check the label of the last generated geometry
+    Check the label of the last generated geometry.
     
     >>> feMeanplane.lVH_aG().labels()[-1]
     'xyz_test_fe_meanplane_out1'
-    
+   
+
+    The main method of this class is :meth:`build`, where all operations of this 
+    class are performed.
+
+    The meanplane faces are created as objects of the ``dtOO`` class 
+    ``trans4SidedFace``. They extend between the interfaces and the corresponding 
+    offset mesh block curves, which are created in the class 
+    ``vec3dThreeD_skinAndSplit``.
+
+    The channel is converted to the type ``map3dTo3d`` and instantiated as 
+    ``channel_``. It has the following parametric directions:
+
+        - u : circumferential direction
+        - v : meridional direction
+        - w : hub-to-shroud direction
+
+    The interfaces represent the inlet and outlet of the channel domain.
+    The inlet is located at 0% and the outlet at 100% of the v-coordinate 
+    of the channel.
+    The hub is located at 0% and the shroud at 100% of the w-coordinate.
+
+    The string values of ``prefix_`` and ``label_`` are used to manage the 
+    names of the geometry objects in this class.
+
+    The offset meanplane curves are passed to the class through ``curves``. 
+    This container, of type ``labeledVectorHandlingAnalyticGeometry``, is 
+    instantiated as ``aG_``. The curves extend from the hub to the shroud of 
+    the channel and follow the naming convention below:
+
+        - Meanplane curve offset toward the inlet:
+          ``prefix_+"_"+label_+"_meshBlockCurve_in1"``
+        - Meanplane curve offset toward the outlet:
+          ``prefix_+"_"+label_+"_meshBlockCurve_out1"``
+
+    The offset meanplane curves are shown in the following figure.
+
+    .. _offsetCurves:
+    .. figure:: bladeFigs/inOutFEMeanplane_offsetCurves.png
+       :width: 100%
+       :align: center
+
+       Offset meanplane curves (blue). Labels correspond to the established
+       naming convention.
+
+    The class ``trans4SidedFace`` requires a closed loop of four bounding curves 
+    with consistent directions.
+    The following curves are used for the interfaces:
+
+        - Edge extending between the meanplane curve and the interface on the hub
+        - Offset meanplane curve
+        - Edge extending between the meanplane curve and the interface on the shroud
+        - Edge extending between the hub and shroud edges on the interface
+
+    The curves have the following locations, directions, and names:
+
+    .. _boundCurveTable:
+    .. csv-table:: Boundary curves of the ``trans4SidedFace``
+       :header: "Location", "From -> To", "Name in :meth:`build`"
+       :escape: #
+       :align: center
+
+       hub              , interface -> meanplane curve  , ``hsCurve_u0_<in/out>``
+       meanplane curve  , hub -> shroud                 , see above
+       shroud           , meanplane curve -> interface  , ``hsCurve_u1_<in/out>``
+       interface        , shroud -> hub                 , ``interfCurve_<in/out>``
+
+    By passing the curves to the constructor of ``trans4SidedFace`` in the order 
+    established in :numref:`boundCurveTable`, the resulting parameter directions 
+    are defined as follows:
+
+        - u : direction of the hub curve
+        - v : direction of the meanplane curve
+
+    The following figure shows the ``trans4SidedFace`` objects and their bounding 
+    curves.
+
+    .. _trans4SidedFace:
+    .. figure:: bladeFigs/inOutFEMeanplane_trans4SidedFace.png
+       :width: 100%
+       :align: center
+
+       Boundary curves (blue) and resulting ``trans4SidedFace`` (yellow). Arrows 
+       correspond to the curve directions, and labels correspond to the locations 
+       listed in :numref:`boundCurveTable`.
+
+    The created geometries are returned to the analytic geometry container of the 
+    calling class.
     """
     
     def __init__(
@@ -214,14 +244,14 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
           Prefix of label
         label: str
           Label.
-        channel: map3dTo3d
+        channel: analyyticGeometry
           Channel.
         curves: labeledVectorHandlingAnalyticGeometry
           Mesh block curves.
         Returns
         -------
         None
-        
+         
         """
         logging.info( "Initializing %s ..." % (label) )
         super(
@@ -235,6 +265,14 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
     def build(self) -> None:
         """Build part.
 
+        This method:
+
+            - Gets the offset meanplane curves from ``aG_``.
+            - Creates curves on the hub and shroud extending from the offset curves to the 
+              respective interfaces along the hub and shroud contours.
+            - Creates curves on the interfaces connecting the hub and shroud curves.
+            - Creates meanplane faces from the generated curves.
+
         Parameters
         ----------
         None
@@ -243,11 +281,119 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
         -------
         None
 
+
+        A meanplane face is created at the inlet and outlet interfaces in a loop that 
+        iterates over ``mpCurveList``. This list has the format 
+        ``List[Tuple[str, int]]``.
+        Two entries are defined in the list:
+
+            - ``mpCurveList[0]`` : inlet data
+            - ``mpCurveList[1]`` : outlet data
+
+        The tuple entries encode an identifier string 
+        ``mpCurveList[oc][0]`` and the normalized parameter coordinate 
+        ``mpCurveList[oc][1]`` of the interface.
+
+        The following diagram shows the activities performed in this method.
+
+        .. _inOutFEMeanplane:
+        .. figure:: bladeFigs/analyticSurface_inOutFEMeanplane.png
+           :width: 100%
+           :align: center
+
+           Activities during the creation of the meanplane face.
+
+        The offset meanplane curve of the current interface is allocated to ``offC``. 
+        The v-parameter of the channel interface is allocated to ``vChannel``.
+        A point container ``interfPoints`` is initialized as a 
+        ``vectorDtPoint3`` object.
+
+        The bounding curves extending along the hub and shroud are created in a loop 
+        over the parameter coordinates ``uu in [1, 0]``.
+
+        The curve is created from the points ``pCurve_uvw`` and ``pChannel_uvw``.
+        ``pCurve_uvw`` is the point on ``offC`` at the current value ``uu``. It is 
+        reparameterized in the parametric space of the channel ``channel_``.
+        The point ``pChannel_uvw`` has the same u-coordinate as ``pCurve_uvw``, while 
+        the v- and w-coordinates correspond to the coordinates of the current interface 
+        and the channel hub or shroud.
+
+        The following figure shows the points created in the iterations over the two 
+        loops.
+
+
+        .. _points:
+        .. figure:: bladeFigs/inOutFEMeanplane_points.png
+           :width: 100%
+           :align: center
+
+           Points which are created (blue). The labeled points 
+           ``pCurve_uvw`` and ``pChannel_uvw`` correspond to the points created 
+           at the outlet (``oc == 1``) on the hub contour (``uu == 0``).
+
+        The point ``pChannel_uvw`` is appended to ``interfPoints`` in each iteration.
+        Through the iteration over ``uu in [1, 0]``, the locations of the points in 
+        this container are as follows:
+
+            - ``interfPoints[0]`` : shroud
+            - ``interfPoints[1]`` : hub
+
+        From the points ``pCurve_uvw`` and ``pChannel_uvw``, the hub or shroud curve 
+        ``hsCurve`` is created.
+        Depending on whether the current iteration creates the hub or the shroud curve 
+        (``uu == 0`` or ``uu == 1``), the direction of the curve is reversed.
+        This results in the hub and shroud curve directions specified in 
+        :numref:`boundCurveTable`.
+
+        The curves are reparameterized in xyz-coordinates and pushed into ``aG_`` with 
+        the following naming convention:
+
+        ::
+
+            "hsCurve_"+"u"+str(uu)+"_"+str(mpCurveList[oc][0])
+
+        The bounding curve on the interface is created from the points in 
+        ``interfPoints`` on the hub and shroud walls.
+
+        To enable the extension of the interface boundary across 0% of the channel 
+        u-coordinate, a check is implemented that detects jumps in the u-coordinates 
+        ``u1`` and ``u2`` of ``interfPoints[0]`` and ``interfPoints[1]``.
+
+        If the normalized u-parameter range of these two points in the channel is 
+        greater than 50% (``abs(u1-u2) > 0.5``), the larger of the two values is 
+        subtracted by one. This shifts the value into the negative parameter range.
+        The shifted parameter is reassigned to ``interfPoints``.
+
+        The interface curve ``interfCurve`` is created from the points in 
+        ``interfPoints`` and mapped into ``channel_`` as ``interfCurveInChannel``.
+        Due to the definition of ``interfPoints``, the resulting curve extends from 
+        the shroud to the hub walls of the channel.
+        It is pushed into ``aG_`` with the following naming convention:
+
+        ::
+
+            "interfCurve_"+str(mpCurveList[oc][0])
+
+        The meanplane faces are constructed as ``trans4SidedFace`` objects using the 
+        curve sequence established in :numref:`boundCurveTable`.
+        The bounding curves are retrieved from ``aG_`` by their names.
+
+        The face is returned to the geometry container of the calling class with the 
+        following name:
+
+        ::
+
+            prefix_+"_"+label_+"_fe_meanplane_"+mpCurveList[oc][0]+str(1)
         """
+
+        #
+        # create list encoding the inlet and outlet regions
+        # iterate over the list
+        #
         mpCurveList = [["in", 0], ["out", 1]]
         for oc in range(len(mpCurveList)):
             
-            # current offset curve
+            # get current offset curve
             offC = map1dTo3d.MustDownCast(
                     self.aG_[self.prefix_+"_"+self.label_+"_meshBlockCurve_"+mpCurveList[oc][0]+"1"]
                 )
@@ -255,29 +401,32 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
             # v coordinate at outlet or inlet
             vChannel = self.channel_.v_percent(mpCurveList[oc][1])
             
+            # prepare point container
             interfPoints = vectorDtPoint3()
             
-            # Calculating Points and Curves at hub and shroud
-            # shroud: uu = 1 and hub: uu = 0 along meshBlockCurve
-            # shroud first and hub second so interfPoints is filled so the 
-            #  resulting curve from it will point from shroud to hub
+            #
+            # calculate points and curves at hub and shroud
+            # shroud: uu = 1
+            # hub: uu = 0 
+            #
+            # the shroud is computed first and the hub second so interfPoints is 
+            # filled so the resulting interfCurve extends from shroud to hub
+            #
             for uu in [1, 0]:
                 logging.info( "Meanplane extention curve at: %slet , v = %d" %(mpCurveList[oc][0], uu)  )
-                
-                # getting the point on the offset curve and reparamtrizing it in channel
-                #  returns the uvw coordinates of the point in the channel
+                 
+                # get the point on the offset curve and reparamtrize it in the channel
+                # returns the uvw coordinates of the point in the channel
                 pCurve_uvw = self.channel_.reparamInVolume(offC.getPointPercent(uu)) 
-                print("")
-                print("uu = ", uu)
-                print("pCurve_uvw.z() = ", pCurve_uvw.z())
-                print("self.channel_.u_percent(uu) = ", self.channel_.w_percent(uu))
-                print("")
-                # shifting the point on the offset curve to the current interface
+                
+                # shift the point on the offset curve to the current interface
                 pChannel_uvw = dtPoint3(pCurve_uvw.x(), vChannel, self.channel_.w_percent(uu))
                 interfPoints.append( pChannel_uvw )
                 
-                # creating hub and shroud curves
+                #
+                # create hub and shroud curves
                 # directions have to be reversed at hub and shroud
+                #
                 # at hub
                 if uu == 0:
                     hsCurve = bSplineCurve_pointConstructOCC(
@@ -294,7 +443,7 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
                               << pChannel_uvw,
                             1
                         ).result()
-                # parametrizung uvw hub/shroud curves in the xyz channel 
+                # parametrize uvw hub/shroud curves in the xyz channel 
                 hsCurveInChannel = vec3dOneDInMap3dTo3d(
                         vec3dOneD.MustConstDownCast(
                             vec3dCurveOneD(
@@ -303,7 +452,8 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
                         ), 
                         self.channel_
                     )
-                # pushing it into aG_
+
+                # push it into aG_
                 # naming convention hsCurve_u0_in
                 # hs -> hub or shroud
                 # u0 -> u coordinate on curve 0 -> hub, 1 -> shroud
@@ -312,8 +462,10 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
                         hsCurveInChannel << "hsCurve_"+"u"+str(uu)+"_"+str(mpCurveList[oc][0])
                     )
             
-            # exception if the interface curve goes trough the u coordinate of 100% (or 0%)
+            #
+            # exception if the interface curve extends over the u coordinate of 100% (or 0%)
             # checking the percentage of the u coordinate
+            #
             u1 = self.channel_.percent_u(interfPoints[0].x())
             u2 = self.channel_.percent_u(interfPoints[1].x())
             
@@ -325,35 +477,33 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
                 # shroud point is at a greater u coordinate
                 if u1 > u2:
                     logging.info("Changing shroud point to extend over u = 1 of channel")
-                    # calculating the negative u coordinate
+                    # calculate the negative u coordinate
                     u1 =  u1 - 1
                     logging.info("uShroud = %f" % u1)
-                    # changing the point to contain negative u coordinate
-                    pChannel_uvw = dtPoint3(
+                    # change the point to contain negative u coordinate
+                    interfPoints[0] = dtPoint3(
                             self.channel_.u_percent(u1), 
                             interfPoints[0].y(), 
                             interfPoints[0].z()
                         )
-                    interfPoints[0] = pChannel_uvw
                 else:
                     logging.info("Changing hub point to extend over u = 100% of channel")
                     # other way round if hub point has the greater u value
                     u2 = u2 - 1
                     logging.info("uHub = %f" % u2)
-                    pChannel_uvw = dtPoint3(
+                    interfPoints[1] = dtPoint3(
                             self.channel_.u_percent(u2), 
                             interfPoints[1].y(), 
                             interfPoints[1].z()
                         )
-                    interfPoints[1] = pChannel_uvw
                 
-            # creating the interface curve
+            # create the interface curve
             interfCurve = bSplineCurve_pointConstructOCC(
                     interfPoints,
                     1
                 ).result()
             
-            # mapping it to the channel and pushing it into aG_
+            # mapp it to the channel and pushing it into aG_
             interfCurveInChannel = vec3dOneDInMap3dTo3d(
                     vec3dOneD.MustConstDownCast(
                         vec3dCurveOneD(
@@ -366,7 +516,7 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
                     interfCurveInChannel << "interfCurve_"+str(mpCurveList[oc][0])
                 ) 
             
-            # creating the meanplane face at the outlet as a trans4SidedFace
+            # create the meanplane face at the outlet as a trans4SidedFace
             self.aG_.set(
               trans4SidedFace(
                 map1dTo3d.MustDownCast( self.aG_["hsCurve_u0_"+mpCurveList[oc][0]] ),
@@ -375,21 +525,24 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
                 map1dTo3d.MustDownCast( self.aG_["interfCurve_"+mpCurveList[oc][0]] )
               ) << self.label_+"_fe_meanplane_"+mpCurveList[oc][0]+str(1)
             )
-            # appending it to the geometry
+            # append it to the geometry
             self.appendAnalyticGeometry(
                     self.aG_[self.label_+"_fe_meanplane_"+mpCurveList[oc][0]+str(1)],
                     self.prefix_+"_"+self.label_+"_fe_meanplane_"+mpCurveList[oc][0]+str(1)
                 )
-
+            
         #
         # add debug faces and lines
         #
         if self.debug():
             for jj in ["interfCurve_*", "hsCurve_*"]:
+            #for jj in ["hsCurve_*"]:
                 for iNum in self.aG_.getIndices(jj):
                     ii = self.aG_.getLabel( iNum )
                     self.appendAnalyticGeometry(
                         self.aG_[ii],
                         "debug_"+ii
                     )
+
+        return
 

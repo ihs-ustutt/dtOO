@@ -45,6 +45,27 @@ of the :ref:`radial turbine <radial_turbine_demo>`.
   :members:
   :special-members: __init__
 
+
+.. _vec3dThreeD_skinAndSplit:
+
+.. automodule:: dtOOPythonApp.builder.vec3dThreeD_skinAndSplit
+  :members:
+
+.. _analyticSurface_inOutFeMeanplane:
+
+.. automodule:: dtOOPythonApp.builder.analyticSurface_inOutFeMeanplane
+  :members:
+
+.. _multipleBoundedVolume_gridChannel:
+
+.. automodule:: dtOOPythonApp.builder.multipleBoundedVolume_gridChannel
+  :members:
+
+.. _map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks:
+
+.. automodule:: dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks
+  :members:
+
 .. _analyticGeometry_layerRegion:
 
 .. automodule:: dtOOPythonApp.builder.analyticGeometry_layerRegion
@@ -56,15 +77,3 @@ of the :ref:`radial turbine <radial_turbine_demo>`.
 .. automodule:: dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers
   :members:
 
-..
-	.. automodule:: dtOOPythonApp.builder.vec3dThreeD_skinAndSplit
-	  :members:
-
-	.. automodule:: dtOOPythonApp.builder.analyticSurface_inOutFeMeanplane
-	  :members:
-
-	.. automodule:: dtOOPythonApp.builder.multipleBoundedVolume_gridChannel
-	  :members:
-
-	.. automodule:: dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks
-	  :members:
