@@ -1020,7 +1020,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                              channel: map3dTo3d, 
                              direction: int
         ) -> Tuple[map2dTo3d, map2dTo3d]:
-        """Detect first and second faces in a volume's direction.
+        """Detect first and second faces in a volume's parameter direction.
         
         This method returns the faces of a `map3dTo3d` object at 
         0 and 100 percent of the u-, v-, or w-paramter.
