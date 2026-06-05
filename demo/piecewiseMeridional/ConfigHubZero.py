@@ -417,10 +417,10 @@ if __name__ == "__main__":
     container = generate.getContainer()
     bV, dC = generate.getbVAnddC()
      
-    bV["meshLayers"].makeGrid()
+    #bV["meshLayers"].makeGrid()
     stateLbl = "hubZero"
     indiv = "0"
 
-    #createOFCase(container, bV, dC, stateLbl, indiv)
+    createOFCase(container, bV, dC, stateLbl, indiv)
 
     # ------------------- EOF ------------------- #

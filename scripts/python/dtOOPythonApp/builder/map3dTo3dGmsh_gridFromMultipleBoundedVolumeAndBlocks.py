@@ -371,6 +371,15 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
 
     Finally, the mesh topology is returned to the calling class through
     ``appendBoundedVolume``.
+    
+    A mesh resulting from this topology is shown in the following figure.
+
+    .. _gvMesh:
+    .. figure:: bladeFigs/guideVane_mesh.png
+       :width: 95%
+       :align: center
+
+       Mesh of a bladed channel resultuing from the described topology.
     """
     def __init__( 
         self, 

@@ -514,6 +514,15 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
         The method `appendBoundedVolume` is used to append the topology object
         ``m3dGmsh`` to the container objects in the main class.
+
+        A mesh resulting from this topology is shown in the following figure.
+
+        .. _layerMesh:
+        .. figure:: meridionalFigs/layersMesh.png
+           :width: 40%
+           :align: center
+
+           Mesh of a draft tube cone resulting from the described topology.
         """
         
         #

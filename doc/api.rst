@@ -44,36 +44,43 @@ of the :ref:`radial turbine <radial_turbine_demo>`.
 .. automodule:: dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour
   :members:
   :special-members: __init__
+  :member-order: bysource
 
 
 .. _vec3dThreeD_skinAndSplit:
 
 .. automodule:: dtOOPythonApp.builder.vec3dThreeD_skinAndSplit
   :members:
+  :member-order: bysource
 
 .. _analyticSurface_inOutFeMeanplane:
 
 .. automodule:: dtOOPythonApp.builder.analyticSurface_inOutFeMeanplane
   :members:
+  :member-order: bysource
 
 .. _multipleBoundedVolume_gridChannel:
 
 .. automodule:: dtOOPythonApp.builder.multipleBoundedVolume_gridChannel
   :members:
+  :member-order: bysource
 
 .. _map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks:
 
 .. automodule:: dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks
   :members:
+  :member-order: bysource
 
 .. _analyticGeometry_layerRegion:
 
 .. automodule:: dtOOPythonApp.builder.analyticGeometry_layerRegion
   :members:
   :special-members: __init__
+  :member-order: bysource
 
 .. _map3dTo3dGmsh_gridFromLayers:
 
 .. automodule:: dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers
   :members:
+  :member-order: bysource
 
