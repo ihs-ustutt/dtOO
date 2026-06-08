@@ -41,6 +41,14 @@ import numpy as np
 class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
     """Create the meanplane faces connecting to the interfaces of the regular channel.
 
+    This class:
+
+        - Gets the offset meanplane curves from ``aG_``.
+        - Creates curves on the hub and shroud extending from the offset curves to the 
+          respective interfaces along the hub and shroud contours.
+        - Creates curves on the interfaces connecting the hub and shroud curves.
+        - Creates meanplane faces extending to the inlet and outlet from the generated curves.
+
     Attributes
     ----------
     prefix_: str
@@ -187,7 +195,7 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
     with consistent directions.
     The following curves are used for the interfaces:
 
-        - Edge extending between the meanplane curve and the interface on the hub
+        - Edge extending between the offset meanplane curve and the interface on the hub
         - Offset meanplane curve
         - Edge extending between the meanplane curve and the interface on the shroud
         - Edge extending between the hub and shroud edges on the interface
@@ -302,88 +310,104 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
            :align: center
 
            Activities during the creation of the meanplane face.
+        
+        **Iterate over Inlet and Outlet**
 
-        The offset meanplane curve of the current interface is allocated to ``offC``. 
-        The v-parameter of the channel interface is allocated to ``vChannel``.
-        A point container ``interfPoints`` is initialized as a 
-        ``vectorDtPoint3`` object.
+            The offset meanplane curve of the current interface is allocated to ``offC``. 
+            The v-parameter of the channel interface is allocated to ``vChannel``.
+            A point container ``interfPoints`` is initialized as a 
+            ``vectorDtPoint3`` object.
+        
+            **Iterate over Hub and Shroud Positions**
 
-        The bounding curves extending along the hub and shroud are created in a loop 
-        over the parameter coordinates ``uu in [1, 0]``.
+                The bounding curves extending along the hub and shroud are created in a loop 
+                over the parameter coordinates ``uu in [1, 0]``.
+            
+                **Create Points on the current Position**
 
-        The curve is created from the points ``pCurve_uvw`` and ``pChannel_uvw``.
-        ``pCurve_uvw`` is the point on ``offC`` at the current value ``uu``. It is 
-        reparameterized in the parametric space of the channel ``channel_``.
-        The point ``pChannel_uvw`` has the same u-coordinate as ``pCurve_uvw``, while 
-        the v- and w-coordinates correspond to the coordinates of the current interface 
-        and the channel hub or shroud.
+                    The hub and shroud curves are created from the points ``pCurve_uvw`` and 
+                    ``pChannel_uvw``. ``pCurve_uvw`` is the point on ``offC`` at the current 
+                    value ``uu``. It is reparameterized in the parametric space of the channel 
+                    ``channel_``.
 
-        The following figure shows the points created in the iterations over the two 
-        loops.
+                    The point ``pChannel_uvw`` is created with the same u-coordinate as ``pCurve_uvw``, while 
+                    the v- and w-coordinates correspond to the coordinates of the current interface 
+                    on the channel's hub or shroud position.
 
+                    The following figure shows the points created in the iterations over the two 
+                    loops.
 
-        .. _points:
-        .. figure:: bladeFigs/inOutFEMeanplane_points.png
-           :width: 100%
-           :align: center
+                    .. _points:
+                    .. figure:: bladeFigs/inOutFEMeanplane_points.png
+                       :width: 100%
+                       :align: center
 
-           Points which are created (blue). The labeled points 
-           ``pCurve_uvw`` and ``pChannel_uvw`` correspond to the points created 
-           at the outlet (``oc == 1``) on the hub contour (``uu == 0``).
+                       Points which are created (blue). The labeled points 
+                       ``pCurve_uvw`` and ``pChannel_uvw`` correspond to the points created 
+                       at the outlet (``oc == 1``) on the hub contour (``uu == 0``).
 
-        The point ``pChannel_uvw`` is appended to ``interfPoints`` in each iteration.
-        Through the iteration over ``uu in [1, 0]``, the locations of the points in 
-        this container are as follows:
+                    The point ``pChannel_uvw`` is appended to ``interfPoints`` in each iteration.
+                    Through the iteration over ``uu in [1, 0]``, the locations of the points in 
+                    this container are as follows:
 
-            - ``interfPoints[0]`` : shroud
-            - ``interfPoints[1]`` : hub
+                        - ``interfPoints[0]`` : shroud
+                        - ``interfPoints[1]`` : hub
+                
+                **Create Hub or Shroud Curve**
 
-        From the points ``pCurve_uvw`` and ``pChannel_uvw``, the hub or shroud curve 
-        ``hsCurve`` is created.
-        Depending on whether the current iteration creates the hub or the shroud curve 
-        (``uu == 0`` or ``uu == 1``), the direction of the curve is reversed.
-        This results in the hub and shroud curve directions specified in 
-        :numref:`boundCurveTable`.
+                    From the points ``pCurve_uvw`` and ``pChannel_uvw``, the hub or shroud curve 
+                    ``hsCurve`` is created.
+                    Depending on whether the current iteration creates the hub or the shroud curve 
+                    (``uu == 0`` or ``uu == 1``), the direction of the curve is reversed.
+                    This results in the hub and shroud curve directions specified in 
+                    :numref:`boundCurveTable`.
 
-        The curves are reparameterized in xyz-coordinates and pushed into ``aG_`` with 
-        the following naming convention:
+                    The curves are reparameterized in xyz-coordinates and pushed into ``aG_`` with 
+                    the following naming convention:
 
-        ::
+                    ::
 
-            "hsCurve_"+"u"+str(uu)+"_"+str(mpCurveList[oc][0])
+                        "hsCurve_"+"u"+str(uu)+"_"+str(mpCurveList[oc][0])
 
-        The bounding curve on the interface is created from the points in 
-        ``interfPoints`` on the hub and shroud walls.
+            **Check if the Interface Curve Extends over u = 100% of the Channel**
 
-        To enable the extension of the interface boundary across 0% of the channel 
-        u-coordinate, a check is implemented that detects jumps in the u-coordinates 
-        ``u1`` and ``u2`` of ``interfPoints[0]`` and ``interfPoints[1]``.
+                The bounding curve on the interface is created from the points in 
+                ``interfPoints`` on the hub and shroud walls.
 
-        If the normalized u-parameter range of these two points in the channel is 
-        greater than 50% (``abs(u1-u2) > 0.5``), the larger of the two values is 
-        subtracted by one. This shifts the value into the negative parameter range.
-        The shifted parameter is reassigned to ``interfPoints``.
+                To enable the extension of the interface meanplane surface across 0% of the channel 
+                u-coordinate, a check is implemented that detects jumps in the u-coordinates 
+                ``u1`` and ``u2`` of ``interfPoints[0]`` and ``interfPoints[1]``.
 
-        The interface curve ``interfCurve`` is created from the points in 
-        ``interfPoints`` and mapped into ``channel_`` as ``interfCurveInChannel``.
-        Due to the definition of ``interfPoints``, the resulting curve extends from 
-        the shroud to the hub walls of the channel.
-        It is pushed into ``aG_`` with the following naming convention:
+                If the normalized u-parameter range of these two points in the channel is 
+                greater than 50% (``abs(u1-u2) > 0.5``), the larger of the two values is 
+                subtracted by one. This shifts the value into the negative parameter range.
+                The shifted parameter is reassigned to ``interfPoints``.
+            
+            **Create the Interface Curve**
 
-        ::
+                The interface curve ``interfCurve`` is created from the points in 
+                ``interfPoints`` and mapped into ``channel_`` as ``interfCurveInChannel``.
+                Due to the definition of ``interfPoints``, the resulting curve extends from 
+                the shroud to the hub walls of the channel.
+                It is pushed into ``aG_`` with the following naming convention:
 
-            "interfCurve_"+str(mpCurveList[oc][0])
+                ::
 
-        The meanplane faces are constructed as ``trans4SidedFace`` objects using the 
-        curve sequence established in :numref:`boundCurveTable`.
-        The bounding curves are retrieved from ``aG_`` by their names.
+                    "interfCurve_"+str(mpCurveList[oc][0])
+            
+            **Create the Meanplane Face**
 
-        The face is returned to the geometry container of the calling class with the 
-        following name:
+                The meanplane faces are constructed as ``trans4SidedFace`` objects (see 
+                :numref:`trans4SidedFace`) using the curve sequence established in 
+                :numref:`boundCurveTable`. The bounding curves are retrieved from 
+                ``aG_`` by their names.
 
-        ::
+                The face is returned to the geometry container of the calling class with the 
+                following name:
 
-            prefix_+"_"+label_+"_fe_meanplane_"+mpCurveList[oc][0]+str(1)
+                ::
+
+                    prefix_+"_"+label_+"_fe_meanplane_"+mpCurveList[oc][0]+str(1)
         """
 
         #

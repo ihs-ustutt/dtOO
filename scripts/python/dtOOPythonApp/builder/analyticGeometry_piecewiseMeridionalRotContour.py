@@ -189,8 +189,9 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
    
      
     The main method of this class is the constructor.
-    The inputs are the hub and shroud curves, as well as the lists
-    defining the interface parameters.
+    The inputs are the hub and shroud curves (``hubCurves`` and ``shroudCurves``), 
+    as well as the lists defining the interface parameters 
+    (``interface_hub``, ``interface_shroud`` and ``interface_curvature``).
 
     The normal axis ``normalAxis_`` of the flow channel's cross-section 
     is returned by the method :meth:`calculateNormalAxis`.
@@ -324,163 +325,178 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
 
         The constructor of this class is used to partition the hub and shroud curves into regular
         channel segments and special hub and shroud curves.
-
-        The input lists named ``hubCurves`` and ``shroudCurves`` define the two-dimensional
-        cross-section of the channel. The curves must be created such that their direction is
-        consistent with the downstream direction of the flow machine. Furthermore, the ordering
-        of the curves in the lists must also follow the downstream direction of the machine.
-
-        The following figure shows the hub and shroud curves:
-
-        .. _hsCurves0:
-        .. figure:: meridionalFigs/hsCurve_noInterface.png
-           :width: 50%
-           :align: center
-
-           Hub and shroud curves of the meridional channel.
-           Numbering corresponds to the indices in the ``hubCurves`` and ``shroudCurves`` lists.
-
-        The method :meth:`calculateNormalAxis` is used to compute the normal axis of the cross-section,
-        stored in ``normalAxis_``.
-
-        By passing ``hubCurves``, ``shroudCurves``, ``interface_hub``, ``interface_shroud``, and
-        ``interface_curvature``, together with the computed normal axis, to :meth:`createInterface`,
-        the interface curves are created. The method returns a list of interface curves, which is
-        stored in ``interfaces_``. The index of each interface in this list also serves as its
-        interface ID.
-
-        The hub and shroud curves are split at their intersection points with the interface curves.
-        For this purpose, the lists ``hubSplits_`` and ``shroudSplits_`` are created, where each entry
-        is initialized as an empty list. The number of entries corresponds to the number of hub and
-        shroud curves.
-
-        By iterating over the interfaces, each split position together with the corresponding interface
-        ID is stored as a tuple in the respective curve entry at the location where the split occurs.
-
-        The resulting ``hubSplits_`` and ``shroudSplits_`` are of type ``List[List[Tuple[float, int]]]``.
-
-        The values in this nested list represent:
-
-        - ``hubSplits_[i][n]``: n-th split on the i-th hub curve.
-        - ``hubSplits_[i][n][0]``: Percentual position along the curve span where the split occurs.
-        - ``hubSplits_[i][n][1]``: ID of the interface that creates the split.
-
-        The splits for the hub and the shroud curves are applied using the method
-        :meth:`createSplits`. The hub and shroud curves are split independently by calling
-        the method once for the hub curves and once for the shroud curves.
-
-        The method takes the split data lists ``hubSplits_`` or ``shroudSplits_`` and the
-        corresponding curve lists ``hubCurves`` or ``shroudCurves`` as input. Additionally,
-        a label is passed to the method.
-
-        The method returns the split hub and shroud curve lists as well as ``cti`` (curve-to-interface)
-        lists. If no split is performed on a curve, or if the split position lies at 0 or 100 percent
-        of the curve span, no new split is created and the original curve is appended as a copy.
-
-        The resulting curve lists are stored as ``hubCurves_`` and ``shroudCurves_``.
-
-        The following figure shows the meridional contour with interface, inlet, and outlet curves.
-        The curves ``hubCurves[1]`` and ``shroudCurves[2]`` (see :numref:`hsCurves0`) are split into
-        two curves each by the interface curve ``interfaces_[1]``. The resulting curves are stored as
-        ``hubCurves_[1]`` and ``hubCurves_[2]`` as well as ``shroudCurves_[2]`` and ``shroudCurves_[3]``
-        in the instantiated curve lists.
-
-        .. _hsCurves01:
-        .. figure:: meridionalFigs/hsCurves.png
-           :width: 50%
-           :align: center
-
-           Meridional channel with interface (red) and inlet and outlet curves (orange).
-           Numbering of the hub and shroud curves (black) corresponds to the indices in the
-           ``hubCurves_`` and ``shroudCurves_`` lists.
-
-        The ``cti`` lists (curve-to-interface) track which hub and shroud curves are upstream of which
-        interface. The lists contain one entry per hub or shroud curve. If a curve endpoint lies on an
-        interface curve, the corresponding entry stores the interface ID; otherwise the entry is ``None``.
-
-        For the example shown in :numref:`hsCurves01`, the resulting ``cti`` lists are:
-
-            - ``hub_cti = [0, 1, None, None, None]``
-
-            - ``shroud_cti = [0, None, 1, None, None]``
-
-        The ``cti`` lists are passed to the method :meth:`propagate_interface_ids_next`, where the entries
-        are matched to the regular channels to which the curves belong. The returned values overwrite the
-        original ``cti`` lists.
-
-        The resulting ``shroud_cti`` list is:
-
-            - ``shroud_cti = [0, 1, 1, None, None]``
         
-        In ``inOutCurves_``, the inlet and outlet curves of the meridional contour are stored.
-        The inlet curve is created as a straight line between the start points of the first curves
-        in the hub and shroud curve lists. The outlet curve is created in the same way, using the
-        end points of the last hub and shroud curves.
+        **Input Curves**
 
-        The number of regular channels corresponds to the number of defined interfaces. The first
-        regular channel is created between the inlet curve and the first interface. Subsequent
-        regular channels are created between adjacent interfaces in flow direction.
+            The input lists named ``hubCurves`` and ``shroudCurves`` define the two-dimensional
+            cross-section of the channel. The curves must be created such that their direction is
+            consistent with the downstream direction of the flow machine. Furthermore, the ordering
+            of the curves in the lists must also follow the downstream direction of the machine.
 
-        The regular channel surfaces are created by iterating over the number of interfaces.
+            The following figure shows the hub and shroud curves:
 
-        For each regular channel, the hub and shroud curves belonging to that channel are determined
-        using the method :meth:`findChannelCurves`. This method is called once for the hub curves
-        and once for the shroud curves. The inputs are the instantiated curve lists ``hubCurves_``
-        or ``shroudCurves_``, the ``cti`` lists ``hub_cti`` and ``shroud_cti``, and the ID of the
-        regular channel, as well as a label. The curves belonging to a channel are identified by
-        matching the channel ID against the ``cti`` list entries and are combined into a single curve.
+            .. _hsCurves0:
+            .. figure:: meridionalFigs/hsCurve_noInterface.png
+               :width: 50%
+               :align: center
 
-        The upstream interface, or in the case of the first regular channel the inlet of the meridional
-        channel, forms the inlet boundary of each regular channel. The downstream interface forms the
-        outlet boundary.
+               Hub and shroud curves of the meridional channel.
+               Numbering corresponds to the indices in the ``hubCurves`` and ``shroudCurves`` lists.
+        
+        **Interface Curves**
 
-        The surfaces are constructed using a ``bSplineSurface_bSplineCurveFillConstructOCC`` object
-        from the inlet, outlet, and the combined hub and shroud curves of the regular channel.
+            The method :meth:`calculateNormalAxis` is used to compute the normal axis of the cross-section,
+            stored in ``normalAxis_``.
 
-        To ensure consistent orientation, the curves are passed to the construct object in the following
-        order:
+            By passing ``hubCurves``, ``shroudCurves``, ``interface_hub``, ``interface_shroud``, and
+            ``interface_curvature``, together with the computed normal axis, to :meth:`createInterface`,
+            the interface curves are created. The method returns a list of interface curves, which is
+            stored in ``interfaces_``. The index of each interface in this list also serves as its
+            interface ID.
 
-            1. combined hub curve
-            2. inlet of the regular channel
-            3. combined shroud curve
-            4. outlet of the regular channel
+        **Splitting of Hub and Shroud Curves**
 
-        This results in a regular channel whose uvw-directions after rotation are:
+            The hub and shroud curves are split at their intersection points with the interface curves.
+            For this purpose, the lists ``hubSplits_`` and ``shroudSplits_`` are created, where each entry
+            is initialized as an empty list. The number of entries corresponds to the number of hub and
+            shroud curves.
 
-            - u : circumferential direction
-            - v : meridional direction
-            - w : hub-to-shroud direction
+            By iterating over the interfaces, each split position together with the corresponding interface
+            ID is stored as a tuple in the respective curve entry at the location where the split occurs.
 
-        The regular channel surfaces are stored in the list ``regChannels_``. The following figure
-        shows the surfaces of the regular channels.
+            The resulting lists ``hubSplits_`` and ``shroudSplits_`` are of type ``List[List[Tuple[float, int]]]``.
 
-        .. _regChannels:
-        .. figure:: meridionalFigs/regChannels.png
-           :width: 50%
-           :align: center
+            The values in this nested list represent:
 
-           Regular channels (yellow, green) between the interfaces.
-           Special hub and shroud curves are not part of the regular channels.
+            - ``hubSplits_[i][n]``: n-th split on the i-th hub curve.
+            - ``hubSplits_[i][n][0]``: Percentual position along the curve span where the split occurs.
+            - ``hubSplits_[i][n][1]``: ID of the interface that creates the split.
 
-        Curves that are not part of the regular channels have a value of ``None`` in their ``cti`` list.
-        By iterating over the ``cti`` list and checking for ``None`` values, the special hub and shroud
-        curves are identified and stored in the lists ``speHub_`` and ``speShroud_``. These special curves
-        are used for the layered flow channel.
+            The splits for the hub and the shroud curves are applied using the method
+            :meth:`createSplits`. The hub and shroud curves are split independently by calling
+            the method once for the hub curves and once for the shroud curves.
 
-        The inlet of the layered flow channel is formed by the last interface curve, and the outlet is
-        formed by the outlet of the meridional channel. These curves are stored in the list ``inOutLayerReg_``.
+            The method takes the split data lists ``hubSplits_`` or ``shroudSplits_`` and the
+            corresponding curve lists ``hubCurves`` or ``shroudCurves`` as input. Additionally,
+            a label is passed to the method.
 
-        The following figure shows the special curves and the inlet and outlet of the layered flow channel
-        contour.
+            The method returns the split hub and shroud curve lists as well as ``cti`` (curve-to-interface)
+            lists. If no split is performed on a curve, or if the split position lies at 0 or 100 percent
+            of the curve span, no new split is created and the original curve is appended as a copy.
 
-        .. _speCurvesClass:
-        .. figure:: meridionalFigs/speCurvesClass.png
-           :width: 55%
-           :align: center
+            The resulting curve lists are stored as ``hubCurves_`` and ``shroudCurves_``.
 
-           Special hub and shroud curves with numbering according to their positions in the
-           ``speHub_`` and ``speShroud_`` lists.
-           Inlet and outlet of the layered flow channel.
+            The following figure shows the meridional contour with interface, inlet, and outlet curves.
+            The curves ``hubCurves[1]`` and ``shroudCurves[2]`` (see :numref:`hsCurves0`) are split into
+            two curves each by the interface curve ``interfaces_[1]``. The resulting curves are stored as
+            ``hubCurves_[1]`` and ``hubCurves_[2]`` as well as ``shroudCurves_[2]`` and ``shroudCurves_[3]``
+            in the instantiated curve lists.
+
+            .. _hsCurves01:
+            .. figure:: meridionalFigs/hsCurves.png
+               :width: 50%
+               :align: center
+
+               Meridional channel with interface (red) and inlet and outlet curves (orange).
+               Numbering of the hub and shroud curves (black) corresponds to the indices in the
+               ``hubCurves_`` and ``shroudCurves_`` lists.
+        
+        **Curve-to-Interface Lists**
+            
+            The ``cti`` lists (curve-to-interface) track which hub and shroud curves are upstream of which
+            interface. The lists contain one entry per hub or shroud curve. If a curve endpoint lies on an
+            interface curve, the corresponding entry stores the interface ID; otherwise the entry is ``None``.
+
+            For the example shown in :numref:`hsCurves01`, the resulting ``cti`` lists are:
+
+                - ``hub_cti = [0, 1, None, None, None]``
+
+                - ``shroud_cti = [0, None, 1, None, None]``
+
+            The ``cti`` lists are passed to the method :meth:`propagate_interface_ids_next`, where the entries
+            are matched to the regular channels to which the curves belong. The returned values overwrite the
+            original ``cti`` lists.
+
+            The resulting ``shroud_cti`` list is:
+
+                - ``shroud_cti = [0, 1, 1, None, None]``
+
+        **Inlet and Outlet Curves of the Meridional Contour**
+        
+            In ``inOutCurves_``, the inlet and outlet curves of the meridional contour are stored.
+            The inlet curve is created as a straight line between the start points of the first curves
+            in the hub and shroud curve lists. The outlet curve is created in the same way, using the
+            end points of the last hub and shroud curves.
+
+        **Regular Channels**
+
+            The number of regular channels corresponds to the number of defined interfaces. The first
+            regular channel is created between the inlet curve and the first interface. Subsequent
+            regular channels are created between adjacent interfaces in flow direction.
+
+            The regular channel surfaces are created by iterating over the number of interfaces.
+
+            For each regular channel, the hub and shroud curves belonging to that channel are determined
+            using the method :meth:`findChannelCurves`. This method is called once for the hub curves
+            and once for the shroud curves. The inputs are the instantiated curve lists ``hubCurves_``
+            or ``shroudCurves_``, the ``cti`` lists ``hub_cti`` or ``shroud_cti``, and the ID of the
+            regular channel, as well as a label. The curves belonging to a channel are identified by
+            matching the channel ID against the ``cti`` list entries and are combined into a single curve.
+
+            The upstream interface, or in the case of the first regular channel the inlet of the meridional
+            channel, forms the inlet boundary of each regular channel. The downstream interface forms the
+            outlet boundary.
+
+            The surfaces are constructed using a ``bSplineSurface_bSplineCurveFillConstructOCC`` object
+            from the inlet, outlet, and the combined hub and shroud curves of the regular channel.
+
+            To ensure consistent orientation of the resulting surfaces and volumes, the curves are passed 
+            to the construct object in the following order:
+
+                1. combined hub curve
+                2. inlet of the regular channel
+                3. combined shroud curve
+                4. outlet of the regular channel
+
+            This results in a regular channel volume whose uvw-directions after rotation are:
+
+                - u : circumferential direction
+                - v : meridional direction
+                - w : hub-to-shroud direction
+
+            The regular channel surfaces are stored in the list ``regChannels_``. The following figure
+            shows the surfaces of the regular channels.
+
+            .. _regChannels:
+            .. figure:: meridionalFigs/regChannels.png
+               :width: 50%
+               :align: center
+
+               Regular channels (yellow, green) between the interfaces.
+               Special hub and shroud curves are not part of the regular channels.
+
+        **Layer Region Curves**
+
+            The curves downstream of the last interface are not part of the regular channels. Their value in 
+            the propagated ``cti`` list is ``None``.
+            By iterating over the ``cti`` list and checking for ``None`` values, the special hub and shroud
+            curves are identified and stored in the lists ``speHub_`` and ``speShroud_``. These special curves
+            are used for the layered flow channel.
+
+            The inlet of the layered flow channel is formed by the last interface curve, and the outlet is
+            formed by the outlet of the meridional channel. These curves are stored in the list ``inOutLayerReg_``.
+
+            The following figure shows the special curves and the inlet and outlet of the layered flow channel
+            contour.
+
+            .. _speCurvesClass:
+            .. figure:: meridionalFigs/speCurvesClass.png
+               :width: 55%
+               :align: center
+
+               Special hub and shroud curves with numbering according to their positions in the
+               ``speHub_`` and ``speShroud_`` lists.
+               The inlet and outlet curves of the layered flow channel are stored in ``inOutLayerReg_``.
  
         """
         
@@ -806,7 +822,7 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
         It is stored in the list ``interfaces``, along with the other interface curves created
         within this loop.
 
-        The method :meth:`detectIntersect` is used to detect intersections between the interface
+        The method :meth:`detectIntersect` is used to detect possible intersections between the interface
         curves and the hub and shroud curves. The inputs to this method are the list of interface
         curves and a list of curves against which intersections are checked.
 
@@ -969,8 +985,8 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
         in ``intersectList``.
 
         The method iterates over all interface curves in ``interfaces``. Each interface is trimmed
-        at 5% and 95% of its parameter range to avoid detecting artificial intersections at the
-        interface endpoints where they meet the hub or shroud curves. The resulting trimmed curve
+        at 5% and 95% of its parameter range to avoid detecting the intersections at the
+        interface endpoints where they connect to the hub or shroud curves. The resulting trimmed curve
         is stored as ``cut_interface``.
 
         For each ``cut_interface``, all curves in the input list ``curves`` are checked for
@@ -1045,9 +1061,9 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
         
         This method:
 
-            - takes the ``cti`` (curve-to-interface) lists created in :meth:`createSplits`
-            - propagates interface IDs to upstream curve segments
-            - returns the updated (propagated) lists
+            - Takes the ``cti`` (curve-to-interface) lists created in :meth:`createSplits`
+            - Propagates interface IDs to upstream curve segments
+            - Returns the propagated lists
 
         Parameters
         ----------
@@ -1172,8 +1188,9 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
         The list ``curves`` contains the curves that form either the hub or the shroud
         of the channel surface.
 
-        The list ``cti`` contains, for each curve in ``curves``, the ID of the regular
-        channel it belongs to (or ``None`` if it is not part of a regular channel).
+        The list ``cti`` contains one entry for each curve in ``curves``. The entries 
+        are the IDs of the regular channels the corresponding curves belong to 
+        (or ``None`` if the curve is not part of a regular channel).
 
         By iterating over ``curves`` and checking whether the corresponding entry in
         ``cti`` matches ``ii``, the relevant curves are identified.
@@ -1280,7 +1297,7 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
         where ``splits[i][n][0]`` defines the split position and ``splits[i][n][1]``
         defines the corresponding interface ID.
 
-        The following figure shows an activity diagram of this method.
+        The following figure shows the activity diagram of this method.
 
         .. _createSplits:
         .. figure:: meridionalFigs/createSplits.png
@@ -1325,7 +1342,7 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
 
            The full curve is appended to ``outCurves`` without modification.
            The corresponding entry in ``curve_to_interface`` is handled in the
-           subsequent iteration, where Case 1 applies.
+           subsequent iteration, where case 1 applies.
 
         3. **Regular split case**
 
@@ -1625,7 +1642,7 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
 
 
         This getter method is used to return a regular channel specified by the channel ID
-        with ``pos``. The rotation angle can be set with``nSlices`` which 
+        with ``pos``. The rotation angle can be set with ``nSlices`` which 
         determines how many partitions the flow domain will have.
 
         If the number of slices is set to one, a whole 360 degree volume of the flow 
@@ -1640,7 +1657,7 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
  
         .. _regChannels3d:
         .. figure:: meridionalFigs/regChannels3d.png
-           :width: 60%
+           :width: 50%
            :align: center
 
            Regular channel volumes created by rotating the first (yellow) and second 

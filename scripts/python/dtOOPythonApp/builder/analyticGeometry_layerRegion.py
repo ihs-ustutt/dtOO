@@ -626,41 +626,9 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
            Hub curves of the `draft tube cone` example in ``layerCurve`` (black)
            and the inlet curve in ``boundsGlob[0]`` (red).
 
-        A copy of ``inOutCurves`` is created and assigned to ``boundsGlob``.
-        This list contains the global boundary curves that form part of the
-        boundary curves of the first and last layer faces.
-
-        The layer faces are constructed from four boundary curves.
-        The following empty lists are prepared to store the layer boundary
-        curves. The numbering *first*, *second*, *third*, and *fourth*
-        corresponds to the definition given in the constructor documentation
-        :meth:`__init__`.
-
-        - ``layerStreamOrtho``:
-          List containing the second and fourth boundary curves, which extend
-          from the wall into the flow domain.
-
-        - ``layerParallel``:
-          List containing the third boundary curves, which extend approximately
-          parallel to the wall.
-
-        - ``returnBounds``:
-          List containing all boundary curves of the layer faces.
-
-        - ``on_rad_zero``:
-          List tracking which curves in ``layerCurve`` are located on a radius
-          of zero.
-
-        In the first loop, a check is performed to determine which curves in
-        ``layerCurve`` are located on a radius of zero. This check is carried
-        out using the method :meth:`rz_xyz`, which takes a point as input and
-        performs a coordinate transformation from Cartesian coordinates into a
-        cylindrical coordinate system defined by the origin ``origin_`` and the
-        rotation axis ``rotAxis_``.
-
-        The method returns the radius and axial position of the point in
-        cylindrical coordinates.
-
+        In a first loop checks are performed, which of the curves in ``layerCurve``
+        get a layer region. This is only the case for curves which are not located 
+        on a radius of zero.
         The following figure shows the activity diagram of the first loop.
 
         .. _createLayerBounds_activity0:
@@ -669,54 +637,98 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
            :align: center
 
            Activity diagram of the first loop in :meth:`createLayerBounds`.
+        
+        **Initialize Lists**
 
-        The check is performed on the radii of the start and end points of each
-        curve using the method ``inXYZTolerance`` of the class
-        ``analyticGeometry``. This method returns ``True`` if the radius lies
-        within the tolerance of zero.
-        Two cases are handeled.
+            A copy of ``inOutCurves`` is created and assigned to ``boundsGlob``.
+            This list contains the global boundary curves that form part of the
+            boundary curves of the first and last layer faces.
 
-        **The curve is on a radius of zero:**
+            The layer faces are constructed from four boundary curves.
+            The following empty lists are prepared to store the layer boundary
+            curves. The numbering *first*, *second*, *third*, and *fourth*
+            corresponds to the definition given in the constructor documentation
+            :meth:`__init__`.
 
-            Case: ``onRotAxis_0 and onRotAxis_1``
+            - ``layerStreamOrtho``:
+              List containing the second and fourth boundary curves, which extend
+              from the wall into the flow domain.
 
-            If the check returns ``True`` for both points, the curve is considered
-            to lie on a radius of zero. In this case, the outlet curve in
-            ``boundsGlob[-1]`` is replaced by the current curve. This replacement
-            is necessary because the curve forms the second boundary curve of the last
-            layer face on the corresponding wall.
+            - ``layerParallel``:
+              List containing the third boundary curves, which extend approximately
+              parallel to the wall.
 
-            The last entry of the list ``on_rad_zero`` is then set to ``True``.
+            - ``returnBounds``:
+              List containing all boundary curves of the layer faces.
 
-            A curve extending from the layer thickness position to the end of the
-            curve located on the rotation axis is created and assigned to the
-            variable ``unstructOnRotAxis``. This curve is required as a boundary
-            curve of the unstructured region.
+            - ``on_rad_zero``:
+              List tracking which curves in ``layerCurve`` are located on a radius
+              of zero.
+        
+        **Iterate over Curves**
 
-            The curve located on the radius of zero is then removed from the list
-            of layer curves, and the loop is terminated.
+            In the first loop, a check is performed to determine which curves in
+            ``layerCurve`` are located on a radius of zero. This check is carried
+            out using the method :meth:`rz_xyz`, which takes a point as input and
+            performs a coordinate transformation from Cartesian coordinates into a
+            cylindrical coordinate system defined by the origin ``origin_`` and the
+            rotation axis ``rotAxis_``.
 
-        **The curve is not on a radius of zero:**
-            
-            Case: ``else``
+            The method returns the radius and axial position of the point in
+            cylindrical coordinates.
 
-            If the curve is not located on a radius of zero, the list
-            ``on_rad_zero`` is extended with a value of ``False``.
 
-        The following figure shows the hub curves together with their assigned
-        Boolean values in ``on_rad_zero`` and the global layer boundaries stored
-        in ``boundsGlob``.
+            The check is performed on the radii of the start and end points of each
+            curve using the method ``inXYZTolerance`` of the class
+            ``analyticGeometry``. This method returns ``True`` if the radius lies
+            within the tolerance of zero.
+            Two cases are handeled.
 
-        .. _createLayerBounds1:
-        .. figure:: meridionalFigs/createLayerBounds1.png
-           :width: 70%
-           :align: center
+            **The curve is on a radius of zero:**
 
-           Hub curves of the `draft tube cone` example together with their
-           assigned Boolean values in the ``on_rad_zero`` list. The curves that
-           are part of the global layer boundaries are shown in red.
+                ::
 
-        In the second loop, curves with a continuous transition at their
+                    onRotAxis_0 and onRotAxis_1
+
+                If the check returns ``True`` for both points, the curve is considered
+                to lie on a radius of zero. In this case, the outlet curve in
+                ``boundsGlob[-1]`` is replaced by the current curve. This replacement
+                is necessary because the curve forms the second boundary curve of the last
+                layer face on the corresponding wall.
+
+                The last entry of the list ``on_rad_zero`` is then set to ``True``.
+
+                A curve extending from the layer thickness position to the end of the
+                curve located on the rotation axis is created and assigned to the
+                variable ``unstructOnRotAxis``. This curve is required as a boundary
+                curve of the unstructured region.
+
+                The curve located on the radius of zero is then removed from the list
+                of layer curves, and the loop is terminated.
+
+            **The curve is not on a radius of zero:**
+                
+                ::
+
+                    else
+
+                If the curve is not located on a radius of zero, the list
+                ``on_rad_zero`` is extended with a value of ``False``.
+
+            The following figure shows the hub curves together with their assigned
+            Boolean values in ``on_rad_zero`` and the global layer boundaries stored
+            in ``boundsGlob``.
+
+            .. _createLayerBounds1:
+            .. figure:: meridionalFigs/createLayerBounds1.png
+               :width: 70%
+               :align: center
+
+               Hub curves of the `draft tube cone` example together with their
+               assigned Boolean values in the ``on_rad_zero`` list. The curves that
+               are part of the global layer boundaries are shown in red.
+
+        In a second loop, curves with a continuous transition at their
         connection points are combined within a specified tolerance range.
 
         The following figure shows the activity diagram of this loop.
@@ -727,28 +739,30 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
            :align: center
 
            Activity diagram of the second loop in :meth:`createLayerBounds`.
+        
+        **Itreate over Curves**
 
-        In the loop, the tangent vectors, at the transition points, of two 
-        consecutive curves ``v0`` and ``v1`` are calculated. This
-        transition point corresponds to the end point of ``v0`` and the start
-        point of ``v1``.
+            In the loop, the tangent vectors, at the transition points, of two 
+            consecutive curves ``v0`` and ``v1`` are calculated. This
+            transition point corresponds to the end point of ``v0`` and the start
+            point of ``v1``.
 
-        Using the angle between the tangent vectors ``v0_firstDer`` and
-        ``v1_firstDer``, a continuity condition ``is_steady`` is formulated.
-        This condition evaluates to ``True`` if the angular deviation between
-        the two curves is less than or equal to two degrees.
+            Using the angle between the tangent vectors ``v0_firstDer`` and
+            ``v1_firstDer``, a continuity condition ``is_steady`` is formulated.
+            This condition evaluates to ``True`` if the angular deviation between
+            the two curves is less than or equal to two degrees.
 
-        If the condition evaluates to ``True``, the curves are combined and
-        stored in the variable ``current_curve``, which is then used in the next
-        iteration. Furthermore, the corresponding flag in the ``on_rad_zero``
-        list is removed.
+            If the condition evaluates to ``True``, the curves are combined and
+            stored in the variable ``current_curve``, which is then used in the next
+            iteration. Furthermore, the corresponding flag in the ``on_rad_zero``
+            list is removed.
 
-        If the condition evaluates to ``False``, the current curve is appended
-        to the list ``speCurve`` and the consecutive curve is assigned to
-        ``current_curve``.
+            If the condition evaluates to ``False``, the current curve is appended
+            to the list ``speCurve`` and the consecutive curve is assigned to
+            ``current_curve``.
 
-        After the loop has finished, all curves for which layer faces are
-        generated are stored in ``speCurve``.
+            After the loop has finished, all curves for which layer faces are
+            generated are stored in ``speCurve``.
 
         The boundary curves for the layers are generated in the third loop,
         which iterates over ``speCurve``. The following figure shows the
@@ -768,7 +782,9 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
 
         #. **The first layer face along the wall**
 
-            The condition ``i == 0`` applies.
+            ::
+
+                i == 0``
 
             The fourth boundary curve of the first layer face is formed by the
             inlet curve stored in ``boundsGlob[0]``. This boundary curve is
@@ -795,7 +811,9 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
 
         #. **The last layer face along the wall**
 
-            The condition ``i == len(speCurve)`` applies.
+            ::
+
+                i == len(speCurve)
 
             The second boundary curve of the last layer face is formed by the
             second global boundary ``boundsGlob[-1]``. This boundary can either
@@ -816,7 +834,9 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
 
         #. **Regular layer face**
 
-            Cases 1 and 2 do not apply.
+            ::
+
+                else
 
             In this case, the wall curve in each iteration is
             ``speCurve[i-1]``. For each wall curve, the second and third layer
@@ -825,117 +845,131 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
             using the method :meth:`layerCurve`. The fourth boundary curve is
             taken from the second boundary curve generated in the previous
             iteration.
+            
+            **Get Cuves v0 and v1**
 
-            The second layer boundary curve is constructed so it extends
-            in the mean normal direction :math:`\mathbf{v_{mean}}` between the
-            curves ``speCurve[i-1]`` and ``speCurve[i]`` at their shared point
-            :math:`P_0`. The curves are assigned to the variables ``v0`` and
-            ``v1``.
+                The second layer boundary curve is constructed so it extends
+                in the mean normal direction :math:`\mathbf{v_{mean}}` between the
+                curves ``speCurve[i-1]`` and ``speCurve[i]`` at their shared point
+                :math:`P_0`. The curves are assigned to the variables ``v0`` and
+                ``v1``.
+            
+            **Caluclate the direction of the second boundary curve**
 
-            The mean normal direction is calculated as follows:
+                The mean normal direction is calculated as follows:
 
-            .. math:: 
+                .. math:: 
 
-               \\mathbf{v_{mean}} = \\frac{\\mathbf{n_0} + \\mathbf{n_1}}{\\|\\mathbf{n_0} + \\mathbf{n_1}\\|}
+                   \\mathbf{v_{mean}} = \\frac{\\mathbf{n_0} + \\mathbf{n_1}}{\\|\\mathbf{n_0} + \\mathbf{n_1}\\|}
 
-            The normal directions of the curves
-            (:math:`\mathbf{n_0}` and :math:`\mathbf{n_1}`) at the shared point
-            are calculated as the cross products of the normal axis of the
-            channel cross-section ``normalAxis_``
-            (:math:`\mathbf{n_{global}}`) and the tangential directions of the
-            curves at the shared point
-            (:math:`\mathbf{t_0}` and :math:`\mathbf{t_1}`).
+                The normal directions of the curves
+                (:math:`\mathbf{n_0}` and :math:`\mathbf{n_1}`) at the shared point
+                are calculated as the cross products of the normal axis of the
+                channel cross-section ``normalAxis_``
+                (:math:`\mathbf{n_{global}}`) and the tangential directions of the
+                curves at the shared point
+                (:math:`\mathbf{t_0}` and :math:`\mathbf{t_1}`).
 
-            .. math:: 
+                .. math:: 
 
-               \\mathbf{n} = \\frac{\\mathbf{t} \\times \\mathbf{n_{global}}}{\\|\\mathbf{t} \\times \\mathbf{n_{global}}\\|}
+                   \\mathbf{n} = \\frac{\\mathbf{t} \\times \\mathbf{n_{global}}}{\\|\\mathbf{t} \\times \\mathbf{n_{global}}\\|}
 
-            The resulting vector :math:`\mathbf{v_{mean}}` is stored in the
-            variable ``layerVec``.
+                The resulting vector :math:`\mathbf{v_{mean}}` is stored in the
+                variable ``layerVec``.
 
-            The following figure illustrates the generation of the second layer
-            boundary curves.
+                The following figure illustrates the generation of the second layer
+                boundary curves.
 
-            .. _createLayerBounds2:
-            .. figure:: meridionalFigs/createLayerBounds2.png
-               :width: 70%
-               :align: center
+                .. _createLayerBounds2:
+                .. figure:: meridionalFigs/createLayerBounds2.png
+                   :width: 70%
+                   :align: center
 
-               Creation of the second and fourth layer boundary curves (blue) extending from the wall curves into the flow domain.
+                   Creation of the second and fourth layer boundary curves (blue) extending from the wall curves into the flow domain.
+            
+            **Calculate a Vector Pointing Into the Center**
 
-            The vector ``insideVec`` is created by subtracting the global center
-            point ``speCenter_`` from the shared point of the two wall curves. This
-            results in a vector pointing from the shared point toward the interior
-            of the flow domain.
+                The vector ``insideVec`` is created by subtracting the global center
+                point ``speCenter_`` from the shared point of the two wall curves. This
+                results in a vector pointing from the shared point toward the interior
+                of the flow domain.
+            
+            **Calculate the Normal Vector, Check the Direction and Calculate the Length**
 
-            The normal vector ``normalVec`` of curve ``v0`` at the shared
-            point is defined with the length specified with ``thickness`` 
-            (:math:`t_{Layer}`). 
-            By calculating the dot product of the vectors ``normalVec`` and
-            ``insideVec``, it can be determined whether ``normalVec`` points toward
-            the interior or exterior of the flow domain. If the dot product is
-            negative, the direction of ``normalVec`` is reversed by multiplying it
-            with ``-1``.
+                The normal vector ``normalVec`` of curve ``v0`` at the shared
+                point is defined with the length specified with ``thickness`` 
+                (:math:`t_{Layer}`). 
+                By calculating the dot product of the vectors ``normalVec`` and
+                ``insideVec``, it can be determined whether ``normalVec`` points toward
+                the interior or exterior of the flow domain. If the dot product is
+                negative, the direction of ``normalVec`` is reversed by multiplying it
+                with ``-1``.
+            
+                The length of the layer boundary curve is calculated from the length of
+                ``normalVec`` and the angle between ``normalVec`` and ``layerVec``
+                (see :numref:`createLayerBounds2`).
+            
+            **Create the Layer Boundary**
 
-            The length of the layer boundary curve is calculated from the length of
-            ``normalVec`` and the angle between ``normalVec`` and ``layerVec``
-            (see :numref:`createLayerBounds2`).
+                The layer boundary curve is constructed between the points
+                :math:`P_0` and :math:`P_1`. The point :math:`P_1` is calculated from
+                the point :math:`P_0` by adding the direction vector ``layerVec``
+                (:math:`\mathbf{v_{mean}}`) multiplied by the required layer thickness.
 
-            The layer boundary curve is constructed between the points
-            :math:`P_0` and :math:`P_1`. The point :math:`P_1` is calculated from
-            the point :math:`P_0` by adding the direction vector ``layerVec``
-            (:math:`\mathbf{v_{mean}}`) multiplied by the required layer thickness.
+                .. math:: 
+                 
+                   P_1 = P_0 + \\mathbf{v_{mean}} * t_{Layer} / cos(\lambda)
 
-            .. math:: 
-             
-               P_1 = P_0 + \\mathbf{v_{mean}} * t_{Layer} / cos(\lambda)
+                The resulting curve is stored in the list ``layerStreamOrtho``.
+            
+            **Create third Boundary Curve**
 
-            The resulting curve is stored in the list ``layerStreamOrtho``.
+                The third boundary curve is generated using the method
+                :meth:`layerCurve`. The method takes the list
+                ``layerStreamOrtho``, the current wall curve ``v0``, and the current
+                iteration index ``i`` as input arguments.
 
-            The third boundary curve is generated using the method
-            :meth:`layerCurve`. The method takes the list
-            ``layerStreamOrtho``, the current wall curve ``v0``, and the current
-            iteration index ``i`` as input arguments.
+                The generation of the curve is controlled by the layer thickness
+                ``thickness`` and the support point positions defined in ``supports``.
+                The returned curve ``ext`` is stored in the list
+                ``layerParallel``.
 
-            The generation of the curve is controlled by the layer thickness
-            ``thickness`` and the support point positions defined in ``supports``.
-            The returned curve ``ext`` is stored in the list
-            ``layerParallel``.
+                The creation of the third layer boundary curve is illustrated in the
+                following figure.
 
-            The creation of the third layer boundary curve is illustrated in the
-            following figure.
+                .. _createLayerBounds3:
+                .. figure:: meridionalFigs/createLayerBounds3.png
+                   :width: 75%
+                   :align: center
 
-            .. _createLayerBounds3:
-            .. figure:: meridionalFigs/createLayerBounds3.png
-               :width: 75%
-               :align: center
+                   Creation of the third layer boundary curve (blue) extending into the
+                   flow domain.
+            
+            **Append List of Boundary Curves**
 
-               Creation of the third layer boundary curve (blue) extending into the
-               flow domain.
+                The boundary curves of the current layer face are stored in the list
+                ``newLayer``. In this list, the boundary curves are ordered according
+                to the numbering convention used throughout this documentation, with the
+                wall curve ``v0`` forming the first entry.
 
-            The boundary curves of the current layer face are stored in the list
-            ``newLayer``. In this list, the boundary curves are ordered according
-            to the numbering convention used throughout this documentation, with the
-            wall curve ``v0`` forming the first entry.
+                The second entry contains the curve in ``layerStreamOrtho`` generated in
+                the current iteration. The fourth entry contains the curve in
+                ``layerStreamOrtho`` generated in the previous iteration. The third
+                entry contains the curve stored in ``layerParallel``.
 
-            The second entry contains the curve in ``layerStreamOrtho`` generated in
-            the current iteration. The fourth entry contains the curve in
-            ``layerStreamOrtho`` generated in the previous iteration. The third
-            entry contains the curve stored in ``layerParallel``.
+                The following figure shows all boundary curves surrounding the layer
+                faces together with their orientations. For the first layer face, the
+                numbering of the boundary curves is shown explicitly.
 
-            The following figure shows all boundary curves surrounding the layer
-            faces together with their orientations. For the first layer face, the
-            numbering of the boundary curves is shown explicitly.
+                .. _createLayerBounds4:
+                .. figure:: meridionalFigs/createLayerBounds4.png
+                   :width: 70%
+                   :align: center
 
-            .. _createLayerBounds4:
-            .. figure:: meridionalFigs/createLayerBounds4.png
-               :width: 70%
-               :align: center
+                   All layer boundary curves surrounding the layer face (blue).
 
-               All layer boundary curves surrounding the layer face (blue).
-
-            The list ``newLayer`` is appended to the list ``returnBounds``.
-
+                The list ``newLayer`` is appended to the list ``returnBounds``.
+        
         After the loop has concluded, the curve ``unstructOnRotAxis`` is
         appended to the list ``layerParallel`` if it exists.
 
@@ -1280,65 +1314,71 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
 
            Creation of the third layer boundary curve (blue) using the method
            :meth:`layerCurve`.
+        
+        **Get second and fourth Boundary Curves**
 
-        The iteration index is used to retrieve the second and fourth boundary
-        curves of the current layer from ``layerStreamOrtho``. These curves are
-        assigned to the variables ``bound0`` and ``bound1``.
+            The iteration index ``i`` is used to retrieve the second and fourth boundary
+            curves of the current layer from ``layerStreamOrtho``. These curves are
+            assigned to the variables ``bound0`` and ``bound1``.
+        
+        **Calculate Offset Direction**
 
-        Using the method :meth:`calculateNormalAxis`, the center point of the
-        bounding box surrounding the two boundary curves and the wall curve is
-        calculated and stored in ``layerCenter``.
+            Using the method :meth:`calculateNormalAxis`, the center point of the
+            bounding box surrounding the two boundary curves and the wall curve is
+            calculated and stored in ``layerCenter``.
 
-        This point is used to define the vector ``insideVec``, which points from
-        the point located at 50 % of the parameter range of ``curve`` toward the
-        interior of the layer face.
+            This point is used to define the vector ``insideVec``, which points from
+            the point located at 50 % of the parameter range of ``curve`` toward the
+            interior of the layer face.
 
-        The vector ``normalVec`` is created to point in the normal direction of
-        the wall curve at 50 % of its parameter span. It is calculated as the
-        cross product of the tangent vector of the curve at this point and the
-        global normal axis ``normalAxis_``.
+            The vector ``normalVec`` is created to point in the normal direction of
+            the wall curve at 50 % of its parameter span. It is calculated as the
+            cross product of the tangent vector of the curve at this point and the
+            global normal axis ``normalAxis_``.
 
-        Using the dot product of ``normalVec`` and ``insideVec``, the offset
-        direction from the wall curve is determined through the variable
-        ``direction``, which is assigned either ``1`` or ``-1``.
+            Using the dot product of ``normalVec`` and ``insideVec``, the offset
+            direction from the wall curve is determined through the variable
+            ``direction``, which is assigned either ``1`` or ``-1``.
+        
+        **Create Boundary Curve**
 
-        A container object of the `dtOO` class ``vectorDtPoint3`` is created.
-        The end point of the fourth layer boundary curve ``bound0`` is appended
-        to this container.
+            A container object of the `dtOO` class ``vectorDtPoint3`` is created.
+            The end point of the fourth layer boundary curve ``bound0`` is appended
+            to this container.
 
-        By iterating over ``supports``, the support points :math:`P_s` are
-        generated. Each entry in ``supports`` contains a floating-point value
-        defining a relative parameter position along the wall curve.
+            By iterating over ``supports``, the support points :math:`P_s` are
+            generated. Each entry in ``supports`` contains a floating-point value
+            defining a relative parameter position along the wall curve.
 
-        For each support value, a base point :math:`P_0` is calculated on the
-        wall curve.
+            For each support value, a base point :math:`P_0` is calculated on the
+            wall curve.
 
-        The support point is then created by offsetting :math:`P_0` in the
-        normal direction of the wall curve at :math:`P_0`.
+            The support point is then created by offsetting :math:`P_0` in the
+            normal direction of the wall curve at :math:`P_0`.
 
-        The normal direction is defined as the cross product between the tangent
-        direction :math:`\mathbf{t}` at :math:`P_0` and the global normal axis
-        ``normalAxis_`` (:math:`\mathbf{n_{global}}`).
+            The normal direction is defined as the cross product between the tangent
+            direction :math:`\mathbf{t}` at :math:`P_0` and the global normal axis
+            ``normalAxis_`` (:math:`\mathbf{n_{global}}`).
 
-        The offset length is prescribed by ``layer_thickness``
-        (:math:`t_{Layer}`). The value of ``direction`` (:math:`k`) ensures
-        that the support points are generated inside the flow domain.
+            The offset length is prescribed by ``layer_thickness``
+            (:math:`t_{Layer}`). The value of ``direction`` (:math:`k`) ensures
+            that the support points are generated inside the flow domain.
 
-        The following equation describes the calculation of a support point:
+            The following equation describes the calculation of a support point:
 
 
-        .. math::
+            .. math::
 
-           P_s = P_0 + \\frac{\\mathbf{t} \\times \\mathbf{n_{global}}}{\\|\\mathbf{t} \\times \\mathbf{n_{global}}\\|} * t_{Layer} * k
+               P_s = P_0 + \\frac{\\mathbf{t} \\times \\mathbf{n_{global}}}{\\|\\mathbf{t} \\times \\mathbf{n_{global}}\\|} * t_{Layer} * k
 
-        The generated support points are appended to the point container.
+            The generated support points are appended to the point container.
 
-        After all support points have been generated, the end point of the
-        second layer boundary curve ``bound1`` is appended to the container.
+            After all support points have been generated, the end point of the
+            second layer boundary curve ``bound1`` is appended to the container.
 
-        The third layer boundary curve is then created as a
-        ``bSplineCurve_pointConstructOCC`` object using the points stored in the
-        container.
+            The third layer boundary curve is then created as a
+            ``bSplineCurve_pointConstructOCC`` object using the points stored in the
+            container.
 
         The method returns the generated curve.
         """
@@ -1754,92 +1794,100 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
         The unstructured region is created as an object of the `dtOO` class
         ``multipleBoundedVolume``. The multiple-bounded volume is defined by
         its boundary surfaces.
+        
+        **Create Boundary Surfaces through the Rotation of Curves**
 
-        The inlet and outlet surfaces, together with the surfaces connecting
-        the multiple-bounded volume to the layer volumes, are created from the
-        curves stored in the vector handler ``unstructVH_``.
+            The inlet and outlet surfaces, together with the surfaces connecting
+            the multiple-bounded volume to the layer volumes, are created from the
+            curves stored in the vector handler ``unstructVH_``.
 
-        The surfaces are generated using the `dtOO` class
-        ``rectangularTrimmedSurface_curveRotateConstructOCC``. This class
-        creates surfaces by rotating curves around the rotation vector
-        ``rotVector_`` over the angle ``rotAngle`` defined as:
+            The surfaces are generated using the `dtOO` class
+            ``rectangularTrimmedSurface_curveRotateConstructOCC``. This class
+            creates surfaces by rotating curves around the rotation vector
+            ``rotVector_`` over the angle ``rotAngle`` defined as:
 
-        .. math::
+            .. math::
 
-           {360^\circ}/{n_{Slices}}
+               {360^\circ}/{n_{Slices}}
 
-        Conditional statements are used to assign labels to the generated
-        surfaces. Due to the ordering of curves in ``unstructVH_``, the first
-        and last curves define the inlet and outlet surfaces of the
-        unstructured region. These surfaces receive the labels
-        ``interface_unstruct`` and ``outlet_unstruct``.
+            Conditional statements are used to assign labels to the generated
+            surfaces. Due to the ordering of curves in ``unstructVH_``, the first
+            and last curves define the inlet and outlet surfaces of the
+            unstructured region. These surfaces receive the labels
+            ``interface_unstruct`` and ``outlet_unstruct``.
 
-        The remaining surfaces connect the unstructured region to the layer
-        regions and are labeled as ``para`` followed by their position in the
-        vector handler.
+            The remaining surfaces connect the unstructured region to the layer
+            regions and are labeled as ``para`` followed by their position in the
+            vector handler.
 
-        Using the method ``degenerated`` of the `dtOO` class
-        ``analyticSurface``, a check is performed to determine whether any of
-        the rotated surfaces are degenerated. Degenerated surfaces occur when
-        the corresponding curve lies on a radius of zero.
+            Using the method ``degenerated`` of the `dtOO` class
+            ``analyticSurface``, a check is performed to determine whether any of
+            the rotated surfaces are degenerated. Degenerated surfaces occur when
+            the corresponding curve lies on a radius of zero.
 
-        Only non-degenerated surfaces are appended to the
-        ``vectorHandlingAnalyticGeometry`` object ``boundSurf``.
+            Only non-degenerated surfaces are appended to the
+            ``vectorHandlingAnalyticGeometry`` object ``boundSurf``.
 
-        The following figure shows the boundary surfaces created from the
-        curves stored in ``unstructVH_``.
+            The following figure shows the boundary surfaces created from the
+            curves stored in ``unstructVH_``.
 
-        .. _mbvBounds0:
-        .. figure:: meridionalFigs/boundingSurfs.png
-           :width: 50%
-           :align: center
+            .. _mbvBounds0:
+            .. figure:: meridionalFigs/boundingSurfs.png
+               :width: 50%
+               :align: center
 
-           Boundary surfaces of the multiple-bounded volume with inlet (red),
-           outlet (orange), and layer connection surfaces (blue). The periodic
-           multiple-bounded surfaces are not shown.
+               Boundary surfaces of the multiple-bounded volume with inlet (red),
+               outlet (orange), and layer connection surfaces (blue). The periodic
+               multiple-bounded surfaces are not shown.
+        
+        **Create Periodic Faces as Multiple Boundes Surfaces**
 
-        The periodic surfaces of the unstructured region slice are created as
-        multiple-bounded surfaces. These surfaces are generated using the
-        `dtOO` class ``multipleBoundedSurface``, which takes a set of boundary
-        curves together with a surrounding bounding box as input.
+            The periodic surfaces of the unstructured region slice are created as
+            multiple-bounded surfaces. These surfaces are generated using the
+            `dtOO` class ``multipleBoundedSurface``, which takes a set of boundary
+            curves together with a surrounding bounding box as input.
 
-        The bounding box is created from the minimum and maximum vertices
-        stored in ``speBb_``. Based on these vertices, a bounding box
-        ``m2d`` is generated for the first multiple-bounded surface, extending
-        0.1 units beyond ``speBb_`` in all directions.
+            The bounding box is created from the minimum and maximum vertices
+            stored in ``speBb_``. Based on these vertices, a bounding box
+            ``m2d`` is generated for the first multiple-bounded surface, extending
+            0.1 units beyond ``speBb_`` in all directions.
 
-        The first periodic surface ``mbs1`` is created from ``m2d`` and the
-        boundary curves stored in ``unstructVH_`` using the class
-        ``multipleBoundedSurface``. The surface is assigned the label
-        ``periodicUnstruct_0`` and appended to ``boundSurf``.
+            The first periodic surface ``mbs1`` is created from ``m2d`` and the
+            boundary curves stored in ``unstructVH_`` using the class
+            ``multipleBoundedSurface``. The surface is assigned the label
+            ``periodicUnstruct_0`` and appended to ``boundSurf``.
 
-        To create the second periodic surface, a rotational transformation is
-        applied to both the bounding box and the boundary curves.
+            To create the second periodic surface, a rotational transformation is
+            applied to both the bounding box and the boundary curves.
 
-        For this purpose, a `dtTransformer` object is initialized. The
-        transformation configuration is defined in the ``jsonPrimitive`` object
-        ``cfg``, where the rotation vector, origin, and rotation angle are set
-        to ``rotVector_``, ``origin_``, and ``rotAngle``, respectively.
+            For this purpose, a `dtTransformer` object is initialized. The
+            transformation configuration is defined in the ``jsonPrimitive`` object
+            ``cfg``, where the rotation vector, origin, and rotation angle are set
+            to ``rotVector_``, ``origin_``, and ``rotAngle``, respectively.
 
-        The resulting rotation object is stored in ``rot``.
+            The resulting rotation object is stored in ``rot``.
 
-        By applying ``rot`` to ``m2d``, the rotated bounding box ``m2d_rot``
-        is created. By iterating over ``unstructVH_`` and applying the same
-        rotational transformation, the rotated boundary curves are generated and
-        stored in ``unstructVH_rot``.
+            By applying ``rot`` to ``m2d``, the rotated bounding box ``m2d_rot``
+            is created. By iterating over ``unstructVH_`` and applying the same
+            rotational transformation, the rotated boundary curves are generated and
+            stored in ``unstructVH_rot``.
 
-        The second multiple-bounded surface is created analogously to the
-        first one using ``m2d_rot`` and ``unstructVH_rot``. This surface is
-        assigned the label ``periodicUnstruct_1`` and appended to
-        ``boundSurf``.
+            The second multiple-bounded surface is created analogously to the
+            first one using ``m2d_rot`` and ``unstructVH_rot``. This surface is
+            assigned the label ``periodicUnstruct_1`` and appended to
+            ``boundSurf``.
+        
+        **Create Unstructured Region as Multiple Bounded Volume**
 
-        The unstructured region itself is finally created using the class
-        ``multipleBoundedVolume``. Its bounding volume is defined as an
-        ``infinityMap3dTo3d`` object, while the vector handler ``boundSurf``
-        is provided as the collection of boundary surfaces.
+            The unstructured region itself is finally created using the class
+            ``multipleBoundedVolume``. Its bounding volume is defined as an
+            ``infinityMap3dTo3d`` object, while the vector handler ``boundSurf``
+            is provided as the collection of boundary surfaces.
+        
+        **Returns**
 
-        The method returns both the multiple-bounded volume and the vector
-        handler ``boundSurf`` containing all generated boundary surfaces.
+            The method returns both the multiple-bounded volume and the vector
+            handler ``boundSurf`` containing all generated boundary surfaces.
         """
 
         logging.info("Request Volume of unstructured Region: %i Slices" % nSlices)

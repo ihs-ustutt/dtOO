@@ -299,68 +299,74 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
 
            Workflow of the main loop in :meth:`vec3dThreeD_skinAndSplit`.
 
-        **Main loop**
+        **Iterate over Splits**
             
             ::
 
                 for split in splits_
+            
+            All the following operations are performed in the main loop.
 
-            For each entry in ``splits_``, the surface functions ``aFOne_`` and
-            ``aFTwo_`` are split within the parameter range defined by
-            ``split[0]`` and ``split[1]``. This operation is performed using the
-            ``dtOO`` class ``bSplineSurface_bSplineSurfaceSplitConstructOCC``.
+            **Split the Surfaces and Skin the Volumes**
 
-            The resulting surfaces are stored in the variables ``bladeSurf`` and
-            ``blockSurf`` as ``vec3dSurfaceTwoD`` objects. These surfaces are then
-            skinned into a volume using the ``dtOO`` class
-            ``vec3dTransVolThreeD_skinBSplineSurfaces`` and appended to the
-            container.
+                For each entry in ``splits_``, the surface functions ``aFOne_`` and
+                ``aFTwo_`` are split within the parameter range defined by
+                ``split[0]`` and ``split[1]``. This operation is performed using the
+                `dtOO` class `bSplineSurface_bSplineSurfaceSplitConstructOCC`.
 
-            The following figure illustrates the blade and the surrounding blade
-            mesh blocks. In the following documentation, the direction specified by
-            ``splitDim_`` corresponds to the u-direction of the blade surface.
+                The resulting surfaces are stored in the variables ``bladeSurf`` and
+                ``blockSurf`` as ``vec3dSurfaceTwoD`` objects. These surfaces are then
+                skinned into a volume using the `dtOO` class
+                `vec3dTransVolThreeD_skinBSplineSurfaces` and appended to the
+                container.
 
-            .. _meshBlockMeth:
-            .. figure:: bladeFigs/guideVane_meshBlocks.png
-               :width: 50%
-               :align: center
+                The following figure illustrates the blade and the surrounding blade
+                mesh blocks. In the following documentation, the direction specified by
+                ``splitDim_`` corresponds to the u-direction of the blade surface.
 
-               Blade surface (grey) surrounded by mesh blocks.
+                .. _meshBlockMeth:
+                .. figure:: bladeFigs/guideVane_meshBlocks.png
+                   :width: 50%
+                   :align: center
 
-            By skinning the blade surfaces with the surrounding surfaces, the
-            resulting volume parameter directions are defined as follows:
+                   Blade surface (grey) surrounded by mesh blocks.
 
-                - u: direction along the blade surface
-                - v: direction from hub to shroud
-                - w: direction from the blade surface towards the surrounding
-                  surface
+                By skinning the blade surfaces with the surrounding surfaces, the
+                resulting volume parameter directions are defined as follows:
 
-            The volumes surrounding the blade are labeled according to the following
-            convention:
+                    - u: direction along the blade surface
+                    - v: direction from hub to shroud
+                    - w: direction from the blade surface towards the surrounding
+                      surface
 
-            ::
+                The volumes surrounding the blade are labeled according to the following
+                convention:
 
-                label_ + "_" + str(cc + 1)
+                ::
 
-            With this convention, the first blade mesh block in the direction of
-            ``splitDim_`` is assigned the suffix ``_1``.
+                    label_ + "_" + str(cc + 1)
 
-            The generation of the trailing-edge mesh block curves, as well as the
-            creation of the meanplane curves, is performed using the method
-            :meth:`teOffsetCurves_vec3dSurfaceTwoD`.
+                With this convention, the first blade mesh block in the direction of
+                ``splitDim_`` is assigned the suffix ``_1``.
+            
+            
+            **Creation of Offset Curves**
 
-            The method takes a mesh block surface as input. The first input argument
-            defines the normalized parametric position of the base curve on the
-            surface. An integer argument specifies the parameter direction in which
-            the base curve is extracted and offset. By providing a thickness value,
-            the offset distance is defined.
+                The generation of the trailing-edge mesh block curves, as well as the
+                creation of the meanplane curves, is performed using the method
+                :meth:`teOffsetCurves_vec3dSurfaceTwoD`.
 
-            The method returns the base curve together with a ``vectorDtPoint3``
-            object containing the points of the offset curve.
+                The method takes a mesh block surface as input. The first input argument
+                defines the normalized parametric position of the base curve on the
+                surface. An integer argument specifies the parameter direction in which
+                the base curve is extracted and offset. By providing a thickness value,
+                the offset distance is defined.
 
-            Several conditional checks are performed within the loop to ensure that
-            the correct curves are generated.
+                The method returns the base curve together with a ``vectorDtPoint3``
+                object containing the points of the offset curve.
 
+                Several conditional checks are performed within the loop to ensure that
+                the correct curves are generated.
 
             **Trailing-edge mesh block curves**
 
@@ -499,89 +505,101 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
 
             After each iteration of the loop, the iterator is incremented 
             (``cc = cc + 1``)
+        
+        **Trailing Edge Mesh Blocks**
+
+            The trailing-edge volumes are generated from the trailing-edge curves.
+            The following operations are performed only if ``thickness_ != None`` 
+            applies.
             
-        The trailing-edge volumes are generated from the trailing-edge curves.
-        The following operations are performed only if ``thickness_ != None`` 
-        applies.
+            **Offset Curves at Trailing Edge**
 
-        From the ``vectorDtPoint3`` objects of the two trailing-edge mesh blocks
-        on the blade side, ``bladeOffset0`` and ``bladeOffset1``, the mean
-        points ``meanPoints`` are computed. Using these points, a mean offset
-        curve ``meanBladeOffsetCurve`` is generated, which defines the offset
-        surface of the trailing edge.
+                From the ``vectorDtPoint3`` objects of the two trailing-edge mesh blocks
+                on the blade side, ``bladeOffset0`` and ``bladeOffset1``, the mean
+                points ``meanPoints`` are computed. Using these points, a mean offset
+                curve ``meanBladeOffsetCurve`` is generated, which defines the offset
+                surface of the trailing edge.
 
-        The ``vectorDtPoint3`` objects of the block offsets are converted into
-        the curves ``blockOffsetCurve_0`` and ``blockOffsetCurve_1``.
+                The ``vectorDtPoint3`` objects of the block offset curves are converted into
+                the curves ``blockOffsetCurve_0`` and ``blockOffsetCurve_1``.
+            
+            **Trailing Edge Mesh Block Surfaces**
 
-        The trailing-edge volumes are generated using the method
-        :meth:`createBlockFaces`. The method expects an input list with the
-        following structure:
+                The trailing-edge mesh block surfaces extending from the blade and from the mesh block surfaces 
+                are generated using the method :meth:`createBlockFaces`. The method expects an input 
+                list with the following structure:
 
-        .. code-block:: python
+                .. code-block:: python
 
-            blockEdges = Tuple[
-                Tuple[
-                    analyticGeometry, analyticGeometry
-                ],
-                Tuple[
-                    analyticGeometry, analyticGeometry
-                ]
-            ]
+                    blockEdges = Tuple[
+                        Tuple[
+                            analyticGeometry, analyticGeometry
+                        ],
+                        Tuple[
+                            analyticGeometry, analyticGeometry
+                        ]
+                    ]
 
-        The method returns a
-        ``vectorHandlingConstAnalyticFunction`` object ``vh_aF`` containing
-        analytic surface functions generated by skinning the curves within each
-        second-level ``Tuple`` entry.
+                The method returns a
+                ``vectorHandlingConstAnalyticFunction`` object ``vh_aF`` containing
+                analytic surface functions generated by skinning the curves within each
+                second-level ``Tuple`` entry.
 
-        The skinning directions are defined as follows:
+                The skinning directions are defined as follows:
 
-            - ``vh_aF[0]``: from ``blockEdges[0][0]`` to ``blockEdges[0][1]``
-            - ``vh_aF[1]``: from ``blockEdges[1][0]`` to ``blockEdges[1][1]``
+                    - ``vh_aF[0]``: from ``blockEdges[0][0]`` to ``blockEdges[0][1]``
+                    - ``vh_aF[1]``: from ``blockEdges[1][0]`` to ``blockEdges[1][1]``
 
-        The returned vector handler is passed to the ``dtOO`` class
-        ``vec3dTransVolThreeD_skinBSplineSurfaces`` to create the trailing-edge
-        mesh block volumes ``theRef``.
+                By applying the `dtOO` class `bSplineSurface_exchangeSurfaceConstructOCC` 
+                on the skinned surface in the method, the parameter directions of the
+                surfaces are kept consistent with the blade and mesh block surfaces.
+            
+            **Trailing Edge Mesh Block Volumes**
 
-        The volume skinning direction is defined as follows:
+                The returned vector handler is passed to the ``dtOO`` class
+                ``vec3dTransVolThreeD_skinBSplineSurfaces`` to create the trailing-edge
+                mesh block volumes ``theRef``.
 
-            - ``theRef``: from ``vh_aF[0]`` to ``vh_aF[1]``
+                The volume skinning direction is defined as follows:
 
-        The following figure illustrates the skinning of the curves and surfaces.
+                    - ``theRef``: from ``vh_aF[0]`` to ``vh_aF[1]``
 
-        .. _meshBlockSkinning:
-        .. figure:: bladeFigs/tEMesBlock_skinning.png
-           :width: 100%
-           :align: center
+                The following figure illustrates the skinning of the curves and surfaces.
 
-           Skinning of the first trailing-edge mesh block. Surface skinning is
-           shown on the left, and volume skinning on the right. The arrows
-           indicate the skinning directions.
+                .. _meshBlockSkinning:
+                .. figure:: bladeFigs/tEMesBlock_skinning.png
+                   :width: 80%
+                   :align: center
 
-        By arranging the order of the curves in the input list passed to
-        :meth:`createBlockFaces`, the parameter directions of the trailing-edge
-        mesh block volumes remain consistent with those of the blade mesh
-        blocks.
+                   Skinning of the first trailing-edge mesh block. Surface skinning is
+                   shown on the left, and volume skinning on the right. The arrows
+                   indicate the skinning directions.
 
-        The generated volumes are appended to the analytic function container
-        using the same naming convention as the blade mesh blocks.
+                By arranging the order of the curves in the input list passed to
+                :meth:`createBlockFaces`, the parameter directions of the trailing-edge
+                mesh block volumes remain consistent with those of the blade mesh
+                blocks.
 
-        The first trailing-edge mesh block is labeled with the index zero:
+                The generated volumes are appended to the analytic function container
+                using the same naming convention as the blade mesh blocks.
 
-            ``label_ + "_0"``
+                The first trailing-edge mesh block is labeled with the index zero:
 
-        The last trailing-edge mesh block receives the label:
+                    ``label_ + "_0"``
 
-            ``label_ + "_" + str(len(splits_) + 1)``
+                The last trailing-edge mesh block receives the label:
 
-        The following figure shows the resulting mesh block volumes.
+                    ``label_ + "_" + str(len(splits_) + 1)``
 
-        .. _TEmeshBlockMeth:
-        .. figure:: bladeFigs/guideVane_TEmeshBlocks.png
-           :width: 50%
-           :align: center
+                The following figure shows the resulting mesh block volumes.
 
-           Blade surface (grey) with blade mesh blocks and trailing-edge mesh
-           blocks.
+                .. _TEmeshBlockMeth:
+                .. figure:: bladeFigs/guideVane_TEmeshBlocks.png
+                   :width: 50%
+                   :align: center
+
+                   Blade surface (grey) with blade mesh blocks and trailing-edge mesh
+                   blocks.
 
         """
         logging.info( "Building %s ..." % (self.label_) )
@@ -855,11 +873,8 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
         in the u- or v-direction of the surface. The following convention is
         used:
 
-            - u-direction: ``1``
-            - v-direction: ``0``
-
-        Depending on the value of ``segPercent``, the offset direction factor
-        ``f`` is assigned either ``-1`` or ``1``.
+            - u-direction: ``0``
+            - v-direction: ``1``
 
         The parameter ``blockThickness`` defines the offset distance.
 
@@ -871,34 +886,45 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
            :align: center
 
            Workflow of method :meth:`teOffsetCurves_vec3dSurfaceTwoD`.
+        
+        **Set Direction**
 
-        Depending on ``splitDim``, the base curve ``curve`` is extracted from
-        ``surf`` at either a constant u-parameter or a constant v-parameter.
-        The normalized position ``segPercent`` is assigned to either ``uu`` or
-        ``vv`` as the constant parameter value.
+            Depending on the value of ``segPercent``, the offset direction factor
+            ``f`` is assigned either ``-1`` or ``1``.
+        
+        **Check splitDim**
 
-        The extracted ``curve`` is converted into a B-spline curve using the
-        ``dtOO`` class ``dtOCCBSplineCurve``. This allows the control point
-        count of the curve to be queried and stored in ``n``.
+            Depending on ``splitDim``, the base curve ``curve`` is extracted from
+            ``surf`` at either a constant u-parameter or a constant v-parameter.
+            The normalized position ``segPercent`` is assigned to either ``uu`` or
+            ``vv`` as the constant parameter value.
+        
+        **Get Number of Control Points and Create Container**
 
-        The output container ``offsetPoints`` of type ``vectorDtPoint3`` is then
-        initialized.
+            The extracted ``curve`` is converted into a B-spline curve using the
+            ``dtOO`` class ``dtOCCBSplineCurve``. This allows the control point
+            count of the curve to be queried and stored in ``n``.
 
-        The offset points are computed by iterating over the control point
-        indices. Depending on ``splitDim``, tangent vectors in either the
-        u-direction or the v-direction of the surface are evaluated at the
-        surface coordinates defined by ``uu`` and ``vv``.
+            The output container ``offsetPoints`` of type ``vectorDtPoint3`` is then
+            initialized.
+        
+        **Iterate over Control Points**
 
-        One parameter value remains constant, while the second parameter value
-        is computed from the normalized iterator expression ``i / (n - 1)``.
+            The offset points are computed by iterating over the control point
+            indices. Depending on ``splitDim``, tangent vectors in either the
+            u-direction or the v-direction of the surface are evaluated at the
+            surface coordinates defined by ``uu`` and ``vv``.
 
-        The offset point is computed as the surface point evaluated at
-        ``(uu, vv)`` plus the corresponding tangent vector multiplied by
-        ``blockThickness`` and the direction factor ``f``.
+            One parameter value remains constant, while the second parameter value
+            is computed from the normalized iterator expression ``i / (n - 1)``.
 
-        Each computed point is appended to ``offsetPoints``.
+            The offset point is computed as the surface point evaluated at
+            ``(uu, vv)`` plus the corresponding tangent vector multiplied by
+            ``blockThickness`` and the direction factor ``f`` (see :numref:`meshBlockCurves`).
 
-        The method returns ``curve`` and ``offsetPoints``.
+            Each computed point is appended to ``offsetPoints``.
+
+            The method returns ``curve`` and ``offsetPoints``.
         """
    
         # set direction f of the offset based on splitDim
@@ -1003,10 +1029,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
 
         Parameters
         ----------
-        curves : Tuple[
-            Tuple[analyticGeometry, analyticGeometry],
-            Tuple[analyticGeometry, analyticGeometry]
-        ]
+        curves : Tuple[Tuple[analyticGeometry, analyticGeometry],Tuple[analyticGeometry, analyticGeometry]]
             Collection of curve pairs to be skinned with each other.
 
         Returns

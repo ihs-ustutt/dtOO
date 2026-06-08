@@ -128,8 +128,6 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
 
         - ``R_(N-1)`` : (N-1)th mesh block
 
-        - ``R_N``     : Nth mesh block
-
     The multiple bounded volume is meshed using an unstructured mesh with
     prismatic boundary layers. The mesh block volumes are meshed as
     transfinite regions with recursive recombination.
@@ -514,237 +512,254 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         The model is initialized as ``m3dGmsh`` from ``map3dTo3dGmshJson_``.
         The container ``aG`` of type ``labeledVectorHandlingAnalyticGeometry``
         is created to manage the analytic geometries.
-
-        The multiple bounded volume ``channel_`` is added to the model.
-        Its bounding faces are added by iterating over the list
-        ``channelFaces_``. Regular faces, for which
-        ``multipleBoundedSurface.ConstDownCast(face) == None`` applies, are added
-        directly to ``aG``. The hub and shroud faces are of the type
-        ``multipleBoundedSurface``. For these faces, the ``else`` branch is
-        executed and their bounding surfaces are added individually.
-
-        The face labels are assigned during the generation of the multiple
-        bounded volume in the class `multipleBoundedVolume_gridChannel`.
-
-        The block volumes and their faces are added by iterating over
-        ``blocks_`` using ``i, block in enumerate(blocks_)``.
-        The block faces on the blade wall and the surrounding surfaces are
-        extracted using the method :meth:`detectFirstAndSecond`.
-        The faces on the blade wall are labeled ``"blade_" + str(i)``, while the
-        surrounding surfaces are labeled ``"block_" + str(i)``.
-
-        The block volumes are ordered so that their sequence in ``blocks_``
-        follows the u-direction of the blade surface ``blade_``.
-        If trailing-edge mesh blocks exist, they correspond to the first and
-        last entries of ``blocks_``.
-
-        If trailing-edge mesh blocks are enabled
-        (``meshTEBlocks_ == True``), the blade faces of the first and last mesh
-        blocks are not added to ``aG``. Only block faces that are part of the
-        mean plane are added to ``aG`` (``i <= nMeanplaneBlocks_``),
-        corresponding to the ``"block"`` faces shown in :numref:`meshFaces`.
-
-        The block volumes are added to the model as ``dtRegion`` objects and
-        configured to be meshed using transfinite meshing with recursive
-        recombination.
-
-        The observer ``bVONameRegions`` is added to establish the naming
-        convention of the regions.
-
-        The edges of the trailing-edge mesh blocks (shown in pink in
-        :numref:`channelMeshing0`) are extracted by first obtaining the blade
-        and block faces of ``blocks_[0]`` and ``blocks_[-1]`` using
-        :meth:`detectFirstAndSecond`. Their hub and shroud edges are then
-        identified using :meth:`extractEdgesInFirstAndSecond`.
-
-        Using these edges, the list ``tEMeshList`` is constructed with the
-        following structure:
-
-        .. code-block:: python
-
-            tEMeshList = List[
-                Tuple[
-                    Tuple[List[int], List[int]],
-                    int
-                ]
-            ]
-
-        The top-level list entries have the following meaning:
-
-            - ``tEMeshList[0]`` : Edges extending directly from the blade
-
-            - ``tEMeshList[1]`` : Edges extending from the outer wall of the first mesh block
-
-            - ``tEMeshList[2]`` : Edges extending from the outer wall of the last mesh block
-
-        The lower-level entries of ``tEMeshList`` are defined as follows:
-
-            - ``tEMeshList[i][0]`` : Tuple containing lists of edge identifiers
-
-            - ``tEMeshList[i][0][0]`` : List of edge identifiers on the hub
-
-            - ``tEMeshList[i][0][1]`` : List of edge identifiers on the shroud
-
-            - ``tEMeshList[i][1]`` : Integer specifying the edge direction
-
-        The observer ``bVOAnalyticGeometryToFace`` is added to implement the
-        faces stored in ``aG`` within ``m3dGmsh``.
-
-        The periodic faces (shown in yellow and green in :numref:`meshFaces`)
-        are organized in the list ``periodics``. The list is constructed such
-        that each entry ``periodics[i]`` is a ``Tuple`` containing a pair of
-        periodic faces. The suction-side boundary is stored in
-        ``periodics[i][0]`` and the corresponding pressure-side boundary in
-        ``periodics[i][1]``.
-
-        The faces that are meshed unstructured, and
-        their hub-to-shroud edges, are stored in the list
-        ``unstrFacesAndh2sLines``. These faces are identified in ``aG`` by
-        their physical labels ``"inlet"``, ``"outlet"``, ``"suction_tri"``,
-        and ``"pressure_tri"`` (see :numref:`meshFaces`).
-
-        The list has the following structure:
-
-        .. code-block:: python
-
-            unstrFacesAndh2sLines = List[
-                List[
-                    map2dTo3d,
-                    List[int]
-                ]
-            ]
-
-        Each entry contains an unstructured face,
-        ``unstrFacesAndh2sLines[i][0]``, and the list of its edges that extend
-        from hub to shroud, ``unstrFacesAndh2sLines[i][1]``.
-
-        The edges to which mesh settings are applied (see
-        :numref:`channelMeshing0`) are identified by extracting and organizing
-        lists of edge identifiers returned by the ``dtGmshModel``.
-
-        The following edge-identifier lists are used to define the mesh
-        settings:
-
-            - ``hubToShroudLines``
-
-            - ``bladeToBlockLines``
-
-            - ``bladeHubLines``
-
-            - ``bladeShroudLines``
         
-        The dictionary ``gradings`` is created, and grading functions for the
-        edges in ``hubToShroudLines`` and ``bladeToBlockLines`` are added using
-        the method :meth:`addGrading`.
+        **Add the Grid Channel Volume and Faces**
 
-        This method takes the ``gradings`` dictionary, a grading function, a
-        label, the model, and the size of the first element in the grading as
-        input.
+            The multiple bounded volume  of the grid channel``channel_`` is added to the model.
+            Its bounding faces are added by iterating over the list
+            ``channelFaces_``. Regular faces, for which
+            ``multipleBoundedSurface.ConstDownCast(face) == None`` applies, are added
+            directly to ``aG``. The hub and shroud faces are of the type
+            ``multipleBoundedSurface``. For these faces, the ``else`` branch is
+            executed and their bounding surfaces are added individually.
 
-        The grading associated with ``hubToShroudLines`` is assigned the label
-        ``"hubToShroud"`` and uses the first-element size
-        ``firstElementSizeHubToShroud_``. The grading associated with
-        ``bladeToBlockLines`` is assigned the label ``"normalBlade"`` and uses
-        the first-element size ``firstElementSizeNormalBlade_``.
+            The face labels are assigned during the generation of the multiple
+            bounded volume in the class `multipleBoundedVolume_gridChannel`.
+        
+        **Add the Mesh Block Volumes and Faces**
 
-        The number of elements and the grading functions are then applied to the
-        edges according to the specifications listed in :numref:`edgeMeshTab`.
+            The block volumes and their faces are added by iterating over
+            ``blocks_`` using ``i, block in enumerate(blocks_)``.
+            The block faces on the blade wall and the surrounding surfaces are
+            extracted using the method :meth:`detectFirstAndSecond`.
+            The faces on the blade wall are labeled ``"blade_" + str(i)``, while the
+            surrounding surfaces are labeled ``"block_" + str(i)``.
 
-        The mesh settings for the blade edges ``bladeShroudLines`` and
-        ``bladeHubLines`` are applied by iterating over the corresponding edge
-        lists.
+            The block volumes are ordered so that their sequence in ``blocks_``
+            follows the u-direction of the blade surface ``blade_``.
+            If trailing-edge mesh blocks exist, they correspond to the first and
+            last entries of ``blocks_``.
 
-        The orientation of the blade edges is determined using
-        :meth:`boundaryEdgeDirection`. The method is provided with
-        ``m3dGmsh.getModel()`` and a list containing the blade surface
-        ``blade_`` together with the corresponding edge lists.
+            If trailing-edge mesh blocks are enabled
+            (``meshTEBlocks_ == True``), the blade faces of the first and last mesh
+            blocks are not added to ``aG``. Only block faces that are part of the
+            mean plane are added to ``aG`` (``i <= nMeanplaneBlocks_``),
+            corresponding to the ``"block"`` faces shown in :numref:`meshFaces`.
 
-        For each edge, the edge length ``eL`` is computed and the start and end
-        vertices ``v0`` and ``v1`` are identified. These points are
-        reparameterized onto the blade surface ``blade_``, yielding the surface
-        parameter coordinates ``p0_uv`` and ``p1_uv``.
+            The block volumes are added to the model as ``dtRegion`` objects and
+            configured to be meshed using transfinite meshing with recursive
+            recombination.
 
-        Depending on the iteration the element-size functions 
-        ``bladeHubElementSize_`` or ``bladeShroudElementSize_`` are then 
-        evaluated at the corresponding parameter coordinates to obtain the 
-        local element sizes ``ms_0`` and ``ms_1`` in the appropriate parameter 
-        direction.
+            The observer ``bVONameRegions`` is added to establish the naming
+            convention of the regions.
+        
+        **Organize Edges of the Trailing-Edge Mesh Blocks**
 
-        Using these element sizes and the edge length ``eL``, the required
-        numbers of elements, ``nE_0`` and ``nE_1``, are computed and rounded up
-        to the next integer.
+            The edges of the trailing-edge mesh blocks (shown in pink in
+            :numref:`channelMeshing0`) are extracted by first obtaining the blade
+            and block faces of ``blocks_[0]`` and ``blocks_[-1]`` using
+            :meth:`detectFirstAndSecond`. Their hub and shroud edges are then
+            identified using :meth:`extractEdgesInFirstAndSecond`.
 
-        The final number of elements assigned to the blade edge is calculated as
+            Using these edges, the list ``tEMeshList`` is constructed with the
+            following structure:
 
-        .. code-block:: python
+            .. code-block:: python
 
-            nE = math.ceil(
-                min(nE_0, nE_1) + elementScale * abs(nE_1 - nE_0)
-            )
+                tEMeshList = List[
+                    Tuple[
+                        Tuple[List[int], List[int]],
+                        int
+                    ]
+                ]
 
-        The floating-point value ``elementScale`` corresponds to either
-        ``bladeShroudElementScale_`` or ``bladeHubElementScale_``, depending on
-        the current iteration.
+            The top-level list entries have the following meaning:
 
-        For each edge, a grading function with the label
-        ``"tangentialBlade_*"`` is created. The start and end element sizes of
-        the grading are set to ``ms_0`` and ``ms_1``, respectively.
+                - ``tEMeshList[0]`` : Edges extending directly from the blade
 
-        Mesh settings for the trailing-edge mesh-block edges are applied only if
-        ``meshTEBlocks_ == True``.
+                - ``tEMeshList[1]`` : Edges extending from the outer wall of the first mesh block
 
-        The observers ``bVOReadMSH`` and ``bVODumpModel`` are then added.
+                - ``tEMeshList[2]`` : Edges extending from the outer wall of the last mesh block
 
-        To define rotational periodicity, a reference coordinate system
-        ``theT`` is created and added to the base container object ``bC``.
-        The periodic boundary conditions are established by iterating over
-        ``periodics`` and creating a ``bVOSetRotationalPeriodicity`` observer
-        for each pair of periodic faces.
+            The lower-level entries of ``tEMeshList`` are defined as follows:
 
-        The boundary-layer directions of the unstructured faces stored in
-        ``unstrFacesAndh2sLines`` are determined using
-        :meth:`detectBoundaryLayerDir`, which returns the list
-        ``boundaryLayerDir``.
+                - ``tEMeshList[i][0]`` : Tuple containing lists of edge identifiers
 
-        The mesh rules are defined using the observer ``bVOMeshRule``.
-        The methods :meth:`gradingsTypeTransfinite` and
-        :meth:`gradingsGradingFunction` are used to retrieve the appropriate
-        grading information from the ``gradings`` dictionary and pass it to the
-        observer.
+                - ``tEMeshList[i][0][0]`` : List of edge identifiers on the hub
 
-        Meshing of the unstructured region is performed using the rules
-        ``"dtMeshGFaceWithTransfiniteLayer"`` and
-        ``"dtMeshGRegionWithBoundaryLayer"``.
+                - ``tEMeshList[i][0][1]`` : List of edge identifiers on the shroud
 
-        The rule ``"dtMeshGFaceWithTransfiniteLayer"`` is applied to the faces
-        that are meshed unstructured, namely ``"*inlet*"``,
-        ``"*outlet*"``, ``"*suction_tri*"`` and ``"*pressure_tri*"``.
+                - ``tEMeshList[i][1]`` : Integer specifying the edge direction
+        
+        **Manage Faces**
 
-        The rule ``"dtMeshGRegionWithBoundaryLayer"`` is applied to the region
-        corresponding to the multiple bounded volume, ``"R_0"``.
-        The hub and shroud faces, ``"hub_0"`` and ``"shroud_0"``, on which the
-        boundary layers are generated, are added to the ``"_faceLabel"``
-        entry.
+            The observer ``bVOAnalyticGeometryToFace`` is added to implement the
+            faces stored in ``aG`` within ``m3dGmsh``.
 
-        The boundary layers extend onto the faces of ``"R_0"`` labeled
-        ``"*inlet*"``, ``"*outlet*"``, ``"*pressure_*"``,
-        ``"*suction_*"``, and ``"*coupling_*"``. These faces are added to the
-        ``"_slidableFaceLabel"`` entry.
+            The periodic faces (shown in yellow and green in :numref:`meshFaces`)
+            are organized in the list ``periodics``. The list is constructed such
+            that each entry ``periodics[i]`` is a ``Tuple`` containing a pair of
+            periodic faces. The suction-side boundary is stored in
+            ``periodics[i][0]`` and the corresponding pressure-side boundary in
+            ``periodics[i][1]``.
 
-        The number of boundary-layer elements is specified by
-        ``nBoundaryLayers_``, while the boundary-layer orientation is defined by
-        ``boundaryLayerDir``.
+            The faces that are meshed unstructured, and
+            their hub-to-shroud edges, are stored in the list
+            ``unstrFacesAndh2sLines``. These faces are identified in ``aG`` by
+            their physical labels ``"inlet"``, ``"outlet"``, ``"suction_tri"``,
+            and ``"pressure_tri"`` (see :numref:`meshFaces`).
 
-        The faces are renamed to match the boundary-condition naming convention
-        used in an OpenFOAM case through the observer
-        ``bVOFaceToPatchRule``. The corresponding renaming rules are summarized
-        in :numref:`faceToPatchTable`.
+            The list has the following structure:
 
-        The observer ``bVOWriteMSH`` controls the generation of the mesh file.
-        The observer ``bVOOrientCellVolumes`` ensures that all mesh cell volumes
-        have a positive orientation.
+            .. code-block:: python
 
-        Finally, the created mesh topology ``m3dGmsh`` is returned to the
+                unstrFacesAndh2sLines = List[
+                    List[
+                        map2dTo3d,
+                        List[int]
+                    ]
+                ]
+
+            Each entry contains an unstructured face,
+            ``unstrFacesAndh2sLines[i][0]``, and the list of its edges that extend
+            from hub to shroud, ``unstrFacesAndh2sLines[i][1]``.
+        
+        **Manage Edges and Set Number of Elements**
+
+            The edges to which mesh settings are applied (see
+            :numref:`channelMeshing0`) are identified by extracting and organizing
+            lists of edge identifiers returned by the ``dtGmshModel``.
+
+            The following edge-identifier lists are used to define the mesh
+            settings:
+
+                - ``hubToShroudLines``
+
+                - ``bladeToBlockLines``
+
+                - ``bladeHubLines``
+
+                - ``bladeShroudLines``
+            
+            The dictionary ``gradings`` is created, and grading functions for the
+            edges in ``hubToShroudLines`` and ``bladeToBlockLines`` are added using
+            the method :meth:`addGrading`.
+
+            This method takes the ``gradings`` dictionary, a grading function, a
+            label, the model, and the size of the first element in the grading as
+            input.
+
+            The grading associated with ``hubToShroudLines`` is assigned the label
+            ``"hubToShroud"`` and uses the first-element size
+            ``firstElementSizeHubToShroud_``. The grading associated with
+            ``bladeToBlockLines`` is assigned the label ``"normalBlade"`` and uses
+            the first-element size ``firstElementSizeNormalBlade_``.
+
+            The number of elements and the grading functions are then applied to the
+            edges according to the specifications listed in :numref:`edgeMeshTab`.
+
+            The mesh settings for the blade edges ``bladeShroudLines`` and
+            ``bladeHubLines`` are applied by iterating over the corresponding edge
+            lists.
+        
+            Mesh settings for the trailing-edge mesh-block edges are applied only if
+            ``meshTEBlocks_ == True``.
+        
+        **Mesh Settings along the Blade**
+
+            The orientation of the blade edges is determined using
+            :meth:`boundaryEdgeDirection`. The method is provided with
+            ``m3dGmsh.getModel()`` and a list containing the blade surface
+            ``blade_`` together with the corresponding edge lists.
+
+            For each edge, the edge length ``eL`` is computed and the start and end
+            vertices ``v0`` and ``v1`` are identified. These points are
+            reparameterized onto the blade surface ``blade_``, yielding the surface
+            parameter coordinates ``p0_uv`` and ``p1_uv``.
+
+            Depending on the iteration the element-size functions 
+            ``bladeHubElementSize_`` or ``bladeShroudElementSize_`` are then 
+            evaluated at the corresponding parameter coordinates to obtain the 
+            local element sizes ``ms_0`` and ``ms_1`` in the appropriate parameter 
+            direction.
+
+            Using these element sizes and the edge length ``eL``, the required
+            numbers of elements, ``nE_0`` and ``nE_1``, are computed and rounded up
+            to the next integer.
+
+            The final number of elements assigned to the blade edge is calculated as
+
+            .. code-block:: python
+
+                nE = math.ceil(
+                    min(nE_0, nE_1) + elementScale * abs(nE_1 - nE_0)
+                )
+
+            The floating-point value ``elementScale`` corresponds to either
+            ``bladeShroudElementScale_`` or ``bladeHubElementScale_``, depending on
+            the current iteration.
+
+            For each edge, a grading function with the label
+            ``"tangentialBlade_*"`` is created. The start and end element sizes of
+            the grading are set to ``ms_0`` and ``ms_1``, respectively.
+ 
+        **Set Mesh Rules**
+
+            The boundary-layer directions of the unstructured faces stored in
+            ``unstrFacesAndh2sLines`` are determined using
+            :meth:`detectBoundaryLayerDir`, which returns the list
+            ``boundaryLayerDir``.
+
+            The mesh rules are defined using the observer ``bVOMeshRule``.
+            The methods :meth:`gradingsTypeTransfinite` and
+            :meth:`gradingsGradingFunction` are used to retrieve the appropriate
+            grading information from the ``gradings`` dictionary and pass it to the
+            observer.
+
+            Meshing of the unstructured region is performed using the rules
+            ``"dtMeshGFaceWithTransfiniteLayer"`` and
+            ``"dtMeshGRegionWithBoundaryLayer"``.
+
+            The rule ``"dtMeshGFaceWithTransfiniteLayer"`` is applied to the faces
+            that are meshed unstructured, namely ``"*inlet*"``,
+            ``"*outlet*"``, ``"*suction_tri*"`` and ``"*pressure_tri*"``.
+
+            The rule ``"dtMeshGRegionWithBoundaryLayer"`` is applied to the region
+            corresponding to the multiple bounded volume, ``"R_0"``.
+            The hub and shroud faces, ``"hub_0"`` and ``"shroud_0"``, on which the
+            boundary layers are generated, are added to the ``"_faceLabel"``
+            entry.
+
+            The boundary layers extend onto the faces of ``"R_0"`` labeled
+            ``"*inlet*"``, ``"*outlet*"``, ``"*pressure_*"``,
+            ``"*suction_*"``, and ``"*coupling_*"``. These faces are added to the
+            ``"_slidableFaceLabel"`` entry.
+
+            The number of boundary-layer elements is specified by
+            ``nBoundaryLayers_``, while the boundary-layer orientation is defined by
+            ``boundaryLayerDir``.
+
+
+        **Define Observers**
+
+            The observers ``bVOReadMSH`` and ``bVODumpModel`` are then added.
+
+            To define rotational periodicity, a reference coordinate system
+            ``theT`` is created and added to the base container object ``bC``.
+            The periodic boundary conditions are established by iterating over
+            ``periodics`` and creating a ``bVOSetRotationalPeriodicity`` observer
+            for each pair of periodic faces.
+        
+            The faces are renamed to match the boundary-condition naming convention
+            used in an OpenFOAM case through the observer
+            ``bVOFaceToPatchRule``. The corresponding renaming rules are summarized
+            in :numref:`faceToPatchTable`.
+
+            The observer ``bVOWriteMSH`` controls the generation of the mesh file.
+            The observer ``bVOOrientCellVolumes`` ensures that all mesh cell volumes
+            have a positive orientation.
+
+        The created mesh topology ``m3dGmsh`` is returned to the
         calling class using the method ``appendBoundedVolume``. 
         """
         logging.info( "Building %s ..." % (self.label_) )
@@ -1604,8 +1619,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         the list ``boundaryLayerDir``.
 
         At the end of each outer-loop iteration, duplicate entries in
-        ``boundaryLayerDir`` are removed using
-
+        ``boundaryLayerDir`` are removed using 
         ``boundaryLayerDir = list(dict.fromkeys(boundaryLayerDir))``.
 
         Within this workflow, all boundary-layer directions must be oriented
