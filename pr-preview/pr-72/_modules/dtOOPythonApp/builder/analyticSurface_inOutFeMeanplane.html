@@ -1,0 +1,684 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dtOOPythonApp.builder.analyticSurface_inOutFeMeanplane &mdash; dtOO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/dtoo-logo-inv-nbg.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demonstration.html">Demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../test.html">Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/ihs-ustutt/dtOO">Back to GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">dtOO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dtOOPythonApp.builder.analyticSurface_inOutFeMeanplane</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dtOOPythonApp.builder.analyticSurface_inOutFeMeanplane</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.tools.dtBundleTools</span><span class="w"> </span><span class="kn">import</span> <span class="n">dtBundleBuilder</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+  <span class="n">map2dTo3d</span><span class="p">,</span>
+  <span class="n">map3dTo3d</span><span class="p">,</span>
+  <span class="n">scaOneD</span><span class="p">,</span>
+  <span class="n">map1dTo3d</span><span class="p">,</span>
+  <span class="n">dtPoint3</span> <span class="p">,</span>
+  <span class="n">dtPoint2</span><span class="p">,</span>
+  <span class="n">dtVector3</span><span class="p">,</span>
+  <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">,</span>
+  <span class="n">bSplineSurface_skinConstructOCC</span><span class="p">,</span>
+  <span class="n">bSplineSurface_exchangeSurfaceConstructOCC</span><span class="p">,</span>
+  <span class="n">bSplineSurface_bSplineCurveFillConstructOCC</span><span class="p">,</span>
+  <span class="n">vectorDtPoint3</span><span class="p">,</span>
+  <span class="n">vectorHandlingConstDtCurve</span><span class="p">,</span>
+  <span class="n">labeledVectorHandlingAnalyticGeometry</span><span class="p">,</span>
+  <span class="n">vec3dSurfaceTwoD</span><span class="p">,</span>
+  <span class="n">vec3dCurveOneD</span><span class="p">,</span>
+  <span class="n">vec3dMuParserOneD</span><span class="p">,</span>
+  <span class="n">vec3dTwoDInMap3dTo3d</span><span class="p">,</span>
+  <span class="n">vec3dOneDInMap3dTo3d</span><span class="p">,</span>
+  <span class="n">dtLinearAlgebra</span><span class="p">,</span>
+  <span class="n">analyticGeometry</span><span class="p">,</span>
+  <span class="n">analyticSurface</span><span class="p">,</span>
+  <span class="n">analyticCurve</span><span class="p">,</span>
+  <span class="n">vec3dTwoD</span><span class="p">,</span>
+  <span class="n">vec3dOneD</span><span class="p">,</span>
+  <span class="n">vec3dThreeDInMap3dTo3d</span><span class="p">,</span>
+  <span class="n">dtOCCBSplineSurface</span><span class="p">,</span>
+  <span class="n">dtSurface</span><span class="p">,</span>
+  <span class="n">analyticCurve</span><span class="p">,</span>
+  <span class="n">trans4SidedFace</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<div class="viewcode-block" id="analyticSurface_inOutFeMeanplane">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticSurface_inOutFeMeanplane.analyticSurface_inOutFeMeanplane">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">analyticSurface_inOutFeMeanplane</span><span class="p">(</span><span class="n">dtBundleBuilder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the meanplane faces connecting to the interfaces of the regular channel.</span>
+
+<span class="sd">    This class:</span>
+
+<span class="sd">        - Gets the offset meanplane curves from ``aG_``.</span>
+<span class="sd">        - Creates curves on the hub and shroud extending from the offset curves to the </span>
+<span class="sd">          respective interfaces along the hub and shroud contours.</span>
+<span class="sd">        - Creates curves on the interfaces connecting the hub and shroud curves.</span>
+<span class="sd">        - Creates meanplane faces extending to the inlet and outlet from the generated curves.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    prefix_: str</span>
+<span class="sd">      Prefix of label</span>
+<span class="sd">    label_: str</span>
+<span class="sd">      Label.</span>
+<span class="sd">    channel_: map3dTo3d</span>
+<span class="sd">      Channel.</span>
+<span class="sd">    aG_: labeledVectorHandlingAnalyticGeometry</span>
+<span class="sd">      Mesh block curves.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import dtOOPythonSWIG as dtOO</span>
+<span class="sd">    </span>
+<span class="sd">    Create three dimensional channel domain.</span>
+
+<span class="sd">    &gt;&gt;&gt; c0 = dtOO.bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...       dtOO.vectorDtPoint3()</span>
+<span class="sd">    ...         &lt;&lt; dtOO.dtPoint3(+1.00, +0.00, 0.50)</span>
+<span class="sd">    ...         &lt;&lt; dtOO.dtPoint3(+0.50, +0.00, 0.50),</span>
+<span class="sd">    ...         1</span>
+<span class="sd">    ...     ).result()</span>
+<span class="sd">    &gt;&gt;&gt; c1 = dtOO.bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...       dtOO.vectorDtPoint3()</span>
+<span class="sd">    ...         &lt;&lt; dtOO.dtPoint3(+0.50, +0.00, 0.50)</span>
+<span class="sd">    ...         &lt;&lt; dtOO.dtPoint3(+0.30, +0.00, 0.25)</span>
+<span class="sd">    ...         &lt;&lt; dtOO.dtPoint3(+0.50, +0.00, 0.00),</span>
+<span class="sd">    ...         2</span>
+<span class="sd">    ...     ).result()</span>
+<span class="sd">    &gt;&gt;&gt; c2 = dtOO.bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...       dtOO.vectorDtPoint3()</span>
+<span class="sd">    ...         &lt;&lt; dtOO.dtPoint3(+0.50, +0.00, 0.00)</span>
+<span class="sd">    ...         &lt;&lt; dtOO.dtPoint3(+1.00, +0.00, 0.00),</span>
+<span class="sd">    ...         1</span>
+<span class="sd">    ...     ).result()</span>
+<span class="sd">    &gt;&gt;&gt; c3 = dtOO.bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...       dtOO.vectorDtPoint3()</span>
+<span class="sd">    ...         &lt;&lt; dtOO.dtPoint3(+1.00, +0.00, 0.00)</span>
+<span class="sd">    ...         &lt;&lt; dtOO.dtPoint3(+1.00, +0.00, 0.50),</span>
+<span class="sd">    ...         1</span>
+<span class="sd">    ...     ).result()</span>
+<span class="sd">    &gt;&gt;&gt; channel2d = dtOO.analyticSurface(</span>
+<span class="sd">    ...         dtOO.bSplineSurface_bSplineCurveFillConstructOCC(</span>
+<span class="sd">    ...             c0, c1, c2, c3</span>
+<span class="sd">    ...         ).result()</span>
+<span class="sd">    ...     )</span>
+<span class="sd">    &gt;&gt;&gt; channel = dtOO.rotatingMap2dTo3d(</span>
+<span class="sd">    ...             dtOO.dtVector3(0,0,1),</span>
+<span class="sd">    ...             channel2d,</span>
+<span class="sd">    ...         )</span>
+<span class="sd">    </span>
+<span class="sd">    Create the mesh block curves.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; c_in1 = dtOO.bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...           dtOO.vectorDtPoint3()</span>
+<span class="sd">    ...             &lt;&lt; dtOO.dtPoint3(+0.90, +0.20, 0.00)</span>
+<span class="sd">    ...             &lt;&lt; dtOO.dtPoint3(+0.90, +0.20, 0.50),</span>
+<span class="sd">    ...             1</span>
+<span class="sd">    ...         ).result()</span>
+<span class="sd">    &gt;&gt;&gt; c_out1 = dtOO.bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...           dtOO.vectorDtPoint3()</span>
+<span class="sd">    ...             &lt;&lt; dtOO.dtPoint3(+0.60, +0.05, 0.00)</span>
+<span class="sd">    ...             &lt;&lt; dtOO.dtPoint3(+0.65, -0.05, 0.50),</span>
+<span class="sd">    ...             1</span>
+<span class="sd">    ...         ).result()</span>
+<span class="sd">    </span>
+<span class="sd">    Push the mesh block curves into a vector handler.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; meshBlockCurves = dtOO.labeledVectorHandlingAnalyticGeometry()</span>
+<span class="sd">    &gt;&gt;&gt; label = &quot;test&quot;    </span>
+<span class="sd">    &gt;&gt;&gt; meshBlockCurves.push_back(</span>
+<span class="sd">    ...     dtOO.analyticCurve( c_in1 ) &lt;&lt; &quot;xyz_&quot;+label+&quot;_meshBlockCurve_in1&quot;</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; meshBlockCurves.push_back(</span>
+<span class="sd">    ...     dtOO.analyticCurve( c_out1 ) &lt;&lt; &quot;xyz_&quot;+label+&quot;_meshBlockCurve_out1&quot;</span>
+<span class="sd">    ... )</span>
+<span class="sd">    </span>
+<span class="sd">    Create the meanplane faces between the interfaces and the mesh block curves.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; from dtOOPythonApp.builder import analyticSurface_inOutFeMeanplane </span>
+<span class="sd">    &gt;&gt;&gt; feMeanplane = analyticSurface_inOutFeMeanplane(</span>
+<span class="sd">    ...     prefix = &quot;xyz&quot;,</span>
+<span class="sd">    ...     label = label,</span>
+<span class="sd">    ...     channel = channel,</span>
+<span class="sd">    ...     curves = meshBlockCurves</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; feMeanplane.build()</span>
+
+<span class="sd">    Check the label of the last generated geometry.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; feMeanplane.lVH_aG().labels()[-1]</span>
+<span class="sd">    &#39;xyz_test_fe_meanplane_out1&#39;</span>
+<span class="sd">   </span>
+
+<span class="sd">    The main method of this class is :meth:`build`, where all operations of this </span>
+<span class="sd">    class are performed.</span>
+
+<span class="sd">    The meanplane faces are created as objects of the ``dtOO`` class </span>
+<span class="sd">    ``trans4SidedFace``. They extend between the interfaces and the corresponding </span>
+<span class="sd">    offset mesh block curves, which are created in the class </span>
+<span class="sd">    ``vec3dThreeD_skinAndSplit``.</span>
+
+<span class="sd">    The channel is converted to the type ``map3dTo3d`` and instantiated as </span>
+<span class="sd">    ``channel_``. It has the following parametric directions:</span>
+
+<span class="sd">        - u : circumferential direction</span>
+<span class="sd">        - v : meridional direction</span>
+<span class="sd">        - w : hub-to-shroud direction</span>
+
+<span class="sd">    The interfaces represent the inlet and outlet of the channel domain.</span>
+<span class="sd">    The inlet is located at 0% and the outlet at 100% of the v-coordinate </span>
+<span class="sd">    of the channel.</span>
+<span class="sd">    The hub is located at 0% and the shroud at 100% of the w-coordinate.</span>
+
+<span class="sd">    The string values of ``prefix_`` and ``label_`` are used to manage the </span>
+<span class="sd">    names of the geometry objects in this class.</span>
+
+<span class="sd">    The offset meanplane curves are passed to the class through ``curves``. </span>
+<span class="sd">    This container, of type ``labeledVectorHandlingAnalyticGeometry``, is </span>
+<span class="sd">    instantiated as ``aG_``. The curves extend from the hub to the shroud of </span>
+<span class="sd">    the channel and follow the naming convention below:</span>
+
+<span class="sd">        - Meanplane curve offset toward the inlet:</span>
+<span class="sd">          ``prefix_+&quot;_&quot;+label_+&quot;_meshBlockCurve_in1&quot;``</span>
+<span class="sd">        - Meanplane curve offset toward the outlet:</span>
+<span class="sd">          ``prefix_+&quot;_&quot;+label_+&quot;_meshBlockCurve_out1&quot;``</span>
+
+<span class="sd">    The offset meanplane curves are shown in the following figure.</span>
+
+<span class="sd">    .. _offsetCurves:</span>
+<span class="sd">    .. figure:: bladeFigs/inOutFEMeanplane_offsetCurves.png</span>
+<span class="sd">       :width: 100%</span>
+<span class="sd">       :align: center</span>
+
+<span class="sd">       Offset meanplane curves (blue). Labels correspond to the established</span>
+<span class="sd">       naming convention.</span>
+
+<span class="sd">    The class ``trans4SidedFace`` requires a closed loop of four bounding curves </span>
+<span class="sd">    with consistent directions.</span>
+<span class="sd">    The following curves are used for the interfaces:</span>
+
+<span class="sd">        - Edge extending between the offset meanplane curve and the interface on the hub</span>
+<span class="sd">        - Offset meanplane curve</span>
+<span class="sd">        - Edge extending between the meanplane curve and the interface on the shroud</span>
+<span class="sd">        - Edge extending between the hub and shroud edges on the interface</span>
+
+<span class="sd">    The curves have the following locations, directions, and names:</span>
+
+<span class="sd">    .. _boundCurveTable:</span>
+<span class="sd">    .. csv-table:: Boundary curves of the ``trans4SidedFace``</span>
+<span class="sd">       :header: &quot;Location&quot;, &quot;From -&gt; To&quot;, &quot;Name in :meth:`build`&quot;</span>
+<span class="sd">       :escape: #</span>
+<span class="sd">       :align: center</span>
+
+<span class="sd">       hub              , interface -&gt; meanplane curve  , ``hsCurve_u0_&lt;in/out&gt;``</span>
+<span class="sd">       meanplane curve  , hub -&gt; shroud                 , see above</span>
+<span class="sd">       shroud           , meanplane curve -&gt; interface  , ``hsCurve_u1_&lt;in/out&gt;``</span>
+<span class="sd">       interface        , shroud -&gt; hub                 , ``interfCurve_&lt;in/out&gt;``</span>
+
+<span class="sd">    By passing the curves to the constructor of ``trans4SidedFace`` in the order </span>
+<span class="sd">    established in :numref:`boundCurveTable`, the resulting parameter directions </span>
+<span class="sd">    are defined as follows:</span>
+
+<span class="sd">        - u : direction of the hub curve</span>
+<span class="sd">        - v : direction of the meanplane curve</span>
+
+<span class="sd">    The following figure shows the ``trans4SidedFace`` objects and their bounding </span>
+<span class="sd">    curves.</span>
+
+<span class="sd">    .. _trans4SidedFace:</span>
+<span class="sd">    .. figure:: bladeFigs/inOutFEMeanplane_trans4SidedFace.png</span>
+<span class="sd">       :width: 100%</span>
+<span class="sd">       :align: center</span>
+
+<span class="sd">       Boundary curves (blue) and resulting ``trans4SidedFace`` (yellow). Arrows </span>
+<span class="sd">       correspond to the curve directions, and labels correspond to the locations </span>
+<span class="sd">       listed in :numref:`boundCurveTable`.</span>
+
+<span class="sd">    The created geometries are returned to the analytic geometry container of the </span>
+<span class="sd">    calling class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">channel</span><span class="p">:</span> <span class="n">analyticGeometry</span><span class="p">,</span>
+        <span class="n">curves</span><span class="p">:</span> <span class="n">labeledVectorHandlingAnalyticGeometry</span>
+      <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Constructor</span>
+
+<span class="sd">        Parameters </span>
+<span class="sd">        ----------</span>
+<span class="sd">        prefix: str</span>
+<span class="sd">          Prefix of label</span>
+<span class="sd">        label: str</span>
+<span class="sd">          Label.</span>
+<span class="sd">        channel: analyyticGeometry</span>
+<span class="sd">          Channel.</span>
+<span class="sd">        curves: labeledVectorHandlingAnalyticGeometry</span>
+<span class="sd">          Mesh block curves.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">         </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">&quot;Initializing </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span>
+          <span class="n">analyticSurface_inOutFeMeanplane</span><span class="p">,</span> <span class="bp">self</span>
+        <span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix_</span> <span class="o">=</span> <span class="n">prefix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel_</span> <span class="o">=</span> <span class="n">map3dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aG_</span> <span class="o">=</span> <span class="n">curves</span>
+    
+<div class="viewcode-block" id="analyticSurface_inOutFeMeanplane.build">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticSurface_inOutFeMeanplane.analyticSurface_inOutFeMeanplane.build">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build part.</span>
+
+<span class="sd">        This method:</span>
+
+<span class="sd">            - Gets the offset meanplane curves from ``aG_``.</span>
+<span class="sd">            - Creates curves on the hub and shroud extending from the offset curves to the </span>
+<span class="sd">              respective interfaces along the hub and shroud contours.</span>
+<span class="sd">            - Creates curves on the interfaces connecting the hub and shroud curves.</span>
+<span class="sd">            - Creates meanplane faces from the generated curves.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+
+<span class="sd">        A meanplane face is created at the inlet and outlet interfaces in a loop that </span>
+<span class="sd">        iterates over ``mpCurveList``. This list has the format </span>
+<span class="sd">        ``List[Tuple[str, int]]``.</span>
+<span class="sd">        Two entries are defined in the list:</span>
+
+<span class="sd">            - ``mpCurveList[0]`` : inlet data</span>
+<span class="sd">            - ``mpCurveList[1]`` : outlet data</span>
+
+<span class="sd">        The tuple entries encode an identifier string </span>
+<span class="sd">        ``mpCurveList[oc][0]`` and the normalized parameter coordinate </span>
+<span class="sd">        ``mpCurveList[oc][1]`` of the interface.</span>
+
+<span class="sd">        The following diagram shows the activities performed in this method.</span>
+
+<span class="sd">        .. _inOutFEMeanplane:</span>
+<span class="sd">        .. figure:: bladeFigs/analyticSurface_inOutFEMeanplane.png</span>
+<span class="sd">           :width: 100%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Activities during the creation of the meanplane face.</span>
+<span class="sd">        </span>
+<span class="sd">        **Iterate over Inlet and Outlet**</span>
+
+<span class="sd">            The offset meanplane curve of the current interface is allocated to ``offC``. </span>
+<span class="sd">            The v-parameter of the channel interface is allocated to ``vChannel``.</span>
+<span class="sd">            A point container ``interfPoints`` is initialized as a </span>
+<span class="sd">            ``vectorDtPoint3`` object.</span>
+<span class="sd">        </span>
+<span class="sd">            **Iterate over Hub and Shroud Positions**</span>
+
+<span class="sd">                The bounding curves extending along the hub and shroud are created in a loop </span>
+<span class="sd">                over the parameter coordinates ``uu in [1, 0]``.</span>
+<span class="sd">            </span>
+<span class="sd">                **Create Points on the current Position**</span>
+
+<span class="sd">                    The hub and shroud curves are created from the points ``pCurve_uvw`` and </span>
+<span class="sd">                    ``pChannel_uvw``. ``pCurve_uvw`` is the point on ``offC`` at the current </span>
+<span class="sd">                    value ``uu``. It is reparameterized in the parametric space of the channel </span>
+<span class="sd">                    ``channel_``.</span>
+
+<span class="sd">                    The point ``pChannel_uvw`` is created with the same u-coordinate as ``pCurve_uvw``, while </span>
+<span class="sd">                    the v- and w-coordinates correspond to the coordinates of the current interface </span>
+<span class="sd">                    on the channel&#39;s hub or shroud position.</span>
+
+<span class="sd">                    The following figure shows the points created in the iterations over the two </span>
+<span class="sd">                    loops.</span>
+
+<span class="sd">                    .. _points:</span>
+<span class="sd">                    .. figure:: bladeFigs/inOutFEMeanplane_points.png</span>
+<span class="sd">                       :width: 100%</span>
+<span class="sd">                       :align: center</span>
+
+<span class="sd">                       Points which are created (blue). The labeled points </span>
+<span class="sd">                       ``pCurve_uvw`` and ``pChannel_uvw`` correspond to the points created </span>
+<span class="sd">                       at the outlet (``oc == 1``) on the hub contour (``uu == 0``).</span>
+
+<span class="sd">                    The point ``pChannel_uvw`` is appended to ``interfPoints`` in each iteration.</span>
+<span class="sd">                    Through the iteration over ``uu in [1, 0]``, the locations of the points in </span>
+<span class="sd">                    this container are as follows:</span>
+
+<span class="sd">                        - ``interfPoints[0]`` : shroud</span>
+<span class="sd">                        - ``interfPoints[1]`` : hub</span>
+<span class="sd">                </span>
+<span class="sd">                **Create Hub or Shroud Curve**</span>
+
+<span class="sd">                    From the points ``pCurve_uvw`` and ``pChannel_uvw``, the hub or shroud curve </span>
+<span class="sd">                    ``hsCurve`` is created.</span>
+<span class="sd">                    Depending on whether the current iteration creates the hub or the shroud curve </span>
+<span class="sd">                    (``uu == 0`` or ``uu == 1``), the direction of the curve is reversed.</span>
+<span class="sd">                    This results in the hub and shroud curve directions specified in </span>
+<span class="sd">                    :numref:`boundCurveTable`.</span>
+
+<span class="sd">                    The curves are reparameterized in xyz-coordinates and pushed into ``aG_`` with </span>
+<span class="sd">                    the following naming convention:</span>
+
+<span class="sd">                    ::</span>
+
+<span class="sd">                        &quot;hsCurve_&quot;+&quot;u&quot;+str(uu)+&quot;_&quot;+str(mpCurveList[oc][0])</span>
+
+<span class="sd">            **Check if the Interface Curve Extends over u = 100% of the Channel**</span>
+
+<span class="sd">                The bounding curve on the interface is created from the points in </span>
+<span class="sd">                ``interfPoints`` on the hub and shroud walls.</span>
+
+<span class="sd">                To enable the extension of the interface meanplane surface across 0% of the channel </span>
+<span class="sd">                u-coordinate, a check is implemented that detects jumps in the u-coordinates </span>
+<span class="sd">                ``u1`` and ``u2`` of ``interfPoints[0]`` and ``interfPoints[1]``.</span>
+
+<span class="sd">                If the normalized u-parameter range of these two points in the channel is </span>
+<span class="sd">                greater than 50% (``abs(u1-u2) &gt; 0.5``), the larger of the two values is </span>
+<span class="sd">                subtracted by one. This shifts the value into the negative parameter range.</span>
+<span class="sd">                The shifted parameter is reassigned to ``interfPoints``.</span>
+<span class="sd">            </span>
+<span class="sd">            **Create the Interface Curve**</span>
+
+<span class="sd">                The interface curve ``interfCurve`` is created from the points in </span>
+<span class="sd">                ``interfPoints`` and mapped into ``channel_`` as ``interfCurveInChannel``.</span>
+<span class="sd">                Due to the definition of ``interfPoints``, the resulting curve extends from </span>
+<span class="sd">                the shroud to the hub walls of the channel.</span>
+<span class="sd">                It is pushed into ``aG_`` with the following naming convention:</span>
+
+<span class="sd">                ::</span>
+
+<span class="sd">                    &quot;interfCurve_&quot;+str(mpCurveList[oc][0])</span>
+<span class="sd">            </span>
+<span class="sd">            **Create the Meanplane Face**</span>
+
+<span class="sd">                The meanplane faces are constructed as ``trans4SidedFace`` objects (see </span>
+<span class="sd">                :numref:`trans4SidedFace`) using the curve sequence established in </span>
+<span class="sd">                :numref:`boundCurveTable`. The bounding curves are retrieved from </span>
+<span class="sd">                ``aG_`` by their names.</span>
+
+<span class="sd">                The face is returned to the geometry container of the calling class with the </span>
+<span class="sd">                following name:</span>
+
+<span class="sd">                ::</span>
+
+<span class="sd">                    prefix_+&quot;_&quot;+label_+&quot;_fe_meanplane_&quot;+mpCurveList[oc][0]+str(1)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1">#</span>
+        <span class="c1"># create list encoding the inlet and outlet regions</span>
+        <span class="c1"># iterate over the list</span>
+        <span class="c1">#</span>
+        <span class="n">mpCurveList</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;out&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+        <span class="k">for</span> <span class="n">oc</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mpCurveList</span><span class="p">)):</span>
+            
+            <span class="c1"># get current offset curve</span>
+            <span class="n">offC</span> <span class="o">=</span> <span class="n">map1dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">aG_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_meshBlockCurve_&quot;</span><span class="o">+</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;1&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+            
+            <span class="c1"># v coordinate at outlet or inlet</span>
+            <span class="n">vChannel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_</span><span class="o">.</span><span class="n">v_percent</span><span class="p">(</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            
+            <span class="c1"># prepare point container</span>
+            <span class="n">interfPoints</span> <span class="o">=</span> <span class="n">vectorDtPoint3</span><span class="p">()</span>
+            
+            <span class="c1">#</span>
+            <span class="c1"># calculate points and curves at hub and shroud</span>
+            <span class="c1"># shroud: uu = 1</span>
+            <span class="c1"># hub: uu = 0 </span>
+            <span class="c1">#</span>
+            <span class="c1"># the shroud is computed first and the hub second so interfPoints is </span>
+            <span class="c1"># filled so the resulting interfCurve extends from shroud to hub</span>
+            <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">uu</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">&quot;Meanplane extention curve at: </span><span class="si">%s</span><span class="s2">let , v = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">uu</span><span class="p">)</span>  <span class="p">)</span>
+                 
+                <span class="c1"># get the point on the offset curve and reparamtrize it in the channel</span>
+                <span class="c1"># returns the uvw coordinates of the point in the channel</span>
+                <span class="n">pCurve_uvw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_</span><span class="o">.</span><span class="n">reparamInVolume</span><span class="p">(</span><span class="n">offC</span><span class="o">.</span><span class="n">getPointPercent</span><span class="p">(</span><span class="n">uu</span><span class="p">))</span> 
+                
+                <span class="c1"># shift the point on the offset curve to the current interface</span>
+                <span class="n">pChannel_uvw</span> <span class="o">=</span> <span class="n">dtPoint3</span><span class="p">(</span><span class="n">pCurve_uvw</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">vChannel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_</span><span class="o">.</span><span class="n">w_percent</span><span class="p">(</span><span class="n">uu</span><span class="p">))</span>
+                <span class="n">interfPoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">pChannel_uvw</span> <span class="p">)</span>
+                
+                <span class="c1">#</span>
+                <span class="c1"># create hub and shroud curves</span>
+                <span class="c1"># directions have to be reversed at hub and shroud</span>
+                <span class="c1">#</span>
+                <span class="c1"># at hub</span>
+                <span class="k">if</span> <span class="n">uu</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">hsCurve</span> <span class="o">=</span> <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
+                            <span class="n">vectorDtPoint3</span><span class="p">()</span>
+                              <span class="o">&lt;&lt;</span> <span class="n">pChannel_uvw</span>
+                              <span class="o">&lt;&lt;</span> <span class="n">pCurve_uvw</span><span class="p">,</span>
+                            <span class="mi">1</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                <span class="c1"># at shroud</span>
+                <span class="k">elif</span> <span class="n">uu</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">hsCurve</span> <span class="o">=</span> <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
+                            <span class="n">vectorDtPoint3</span><span class="p">()</span>
+                              <span class="o">&lt;&lt;</span> <span class="n">pCurve_uvw</span>
+                              <span class="o">&lt;&lt;</span> <span class="n">pChannel_uvw</span><span class="p">,</span>
+                            <span class="mi">1</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                <span class="c1"># parametrize uvw hub/shroud curves in the xyz channel </span>
+                <span class="n">hsCurveInChannel</span> <span class="o">=</span> <span class="n">vec3dOneDInMap3dTo3d</span><span class="p">(</span>
+                        <span class="n">vec3dOneD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
+                            <span class="n">vec3dCurveOneD</span><span class="p">(</span>
+                                <span class="n">hsCurve</span>
+                            <span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+                        <span class="p">),</span> 
+                        <span class="bp">self</span><span class="o">.</span><span class="n">channel_</span>
+                    <span class="p">)</span>
+
+                <span class="c1"># push it into aG_</span>
+                <span class="c1"># naming convention hsCurve_u0_in</span>
+                <span class="c1"># hs -&gt; hub or shroud</span>
+                <span class="c1"># u0 -&gt; u coordinate on curve 0 -&gt; hub, 1 -&gt; shroud</span>
+                <span class="c1"># in / out at inlet or outlet</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">aG_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span>
+                        <span class="n">hsCurveInChannel</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;hsCurve_&quot;</span><span class="o">+</span><span class="s2">&quot;u&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">uu</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="p">)</span>
+            
+            <span class="c1">#</span>
+            <span class="c1"># exception if the interface curve extends over the u coordinate of 100% (or 0%)</span>
+            <span class="c1"># checking the percentage of the u coordinate</span>
+            <span class="c1">#</span>
+            <span class="n">u1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_</span><span class="o">.</span><span class="n">percent_u</span><span class="p">(</span><span class="n">interfPoints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">())</span>
+            <span class="n">u2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_</span><span class="o">.</span><span class="n">percent_u</span><span class="p">(</span><span class="n">interfPoints</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">())</span>
+            
+            <span class="c1"># if the u coordinates of the start and end points of the interface curve are</span>
+            <span class="c1">#  far apart (blade stretches over u = 100% of the channel) </span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">u1</span> <span class="o">-</span> <span class="n">u2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.50</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;WARNING: Blade </span><span class="si">%s</span><span class="s2"> extends over 0.5 of channel u&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;uShroud = </span><span class="si">%f</span><span class="s2">, uHub = </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">))</span>
+                <span class="c1"># shroud point is at a greater u coordinate</span>
+                <span class="k">if</span> <span class="n">u1</span> <span class="o">&gt;</span> <span class="n">u2</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Changing shroud point to extend over u = 1 of channel&quot;</span><span class="p">)</span>
+                    <span class="c1"># calculate the negative u coordinate</span>
+                    <span class="n">u1</span> <span class="o">=</span>  <span class="n">u1</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;uShroud = </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">u1</span><span class="p">)</span>
+                    <span class="c1"># change the point to contain negative u coordinate</span>
+                    <span class="n">interfPoints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">dtPoint3</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">channel_</span><span class="o">.</span><span class="n">u_percent</span><span class="p">(</span><span class="n">u1</span><span class="p">),</span> 
+                            <span class="n">interfPoints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">(),</span> 
+                            <span class="n">interfPoints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">z</span><span class="p">()</span>
+                        <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Changing hub point to extend over u = 100</span><span class="si">% o</span><span class="s2">f channel&quot;</span><span class="p">)</span>
+                    <span class="c1"># other way round if hub point has the greater u value</span>
+                    <span class="n">u2</span> <span class="o">=</span> <span class="n">u2</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;uHub = </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">u2</span><span class="p">)</span>
+                    <span class="n">interfPoints</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">dtPoint3</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">channel_</span><span class="o">.</span><span class="n">u_percent</span><span class="p">(</span><span class="n">u2</span><span class="p">),</span> 
+                            <span class="n">interfPoints</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">(),</span> 
+                            <span class="n">interfPoints</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">z</span><span class="p">()</span>
+                        <span class="p">)</span>
+                
+            <span class="c1"># create the interface curve</span>
+            <span class="n">interfCurve</span> <span class="o">=</span> <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
+                    <span class="n">interfPoints</span><span class="p">,</span>
+                    <span class="mi">1</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            
+            <span class="c1"># mapp it to the channel and pushing it into aG_</span>
+            <span class="n">interfCurveInChannel</span> <span class="o">=</span> <span class="n">vec3dOneDInMap3dTo3d</span><span class="p">(</span>
+                    <span class="n">vec3dOneD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
+                        <span class="n">vec3dCurveOneD</span><span class="p">(</span>
+                            <span class="n">interfCurve</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+                    <span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">channel_</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aG_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span>
+                    <span class="n">interfCurveInChannel</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;interfCurve_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="p">)</span> 
+            
+            <span class="c1"># create the meanplane face at the outlet as a trans4SidedFace</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aG_</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+              <span class="n">trans4SidedFace</span><span class="p">(</span>
+                <span class="n">map1dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG_</span><span class="p">[</span><span class="s2">&quot;hsCurve_u0_&quot;</span><span class="o">+</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="p">),</span>
+                <span class="n">map1dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix_</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_meshBlockCurve_&quot;</span><span class="o">+</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;1&quot;</span><span class="p">]</span> <span class="p">),</span>
+                <span class="n">map1dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG_</span><span class="p">[</span><span class="s2">&quot;hsCurve_u1_&quot;</span><span class="o">+</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="p">),</span>
+                <span class="n">map1dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG_</span><span class="p">[</span><span class="s2">&quot;interfCurve_&quot;</span><span class="o">+</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="p">)</span>
+              <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_fe_meanplane_&quot;</span><span class="o">+</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1"># append it to the geometry</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">aG_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_fe_meanplane_&quot;</span><span class="o">+</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="mi">1</span><span class="p">)],</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">prefix_</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_fe_meanplane_&quot;</span><span class="o">+</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="p">)</span>
+            
+        <span class="c1">#</span>
+        <span class="c1"># add debug faces and lines</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;interfCurve_*&quot;</span><span class="p">,</span> <span class="s2">&quot;hsCurve_*&quot;</span><span class="p">]:</span>
+            <span class="c1">#for jj in [&quot;hsCurve_*&quot;]:</span>
+                <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG_</span><span class="o">.</span><span class="n">getIndices</span><span class="p">(</span><span class="n">jj</span><span class="p">):</span>
+                    <span class="n">ii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG_</span><span class="o">.</span><span class="n">getLabel</span><span class="p">(</span> <span class="n">iNum</span> <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">aG_</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span>
+                        <span class="s2">&quot;debug_&quot;</span><span class="o">+</span><span class="n">ii</span>
+                    <span class="p">)</span>
+
+        <span class="k">return</span></div>
+</div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Alexander Tismer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

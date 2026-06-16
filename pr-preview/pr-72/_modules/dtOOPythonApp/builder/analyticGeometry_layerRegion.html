@@ -1,0 +1,2119 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dtOOPythonApp.builder.analyticGeometry_layerRegion &mdash; dtOO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/dtoo-logo-inv-nbg.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demonstration.html">Demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../test.html">Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/ihs-ustutt/dtOO">Back to GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">dtOO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dtOOPythonApp.builder.analyticGeometry_layerRegion</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dtOOPythonApp.builder.analyticGeometry_layerRegion</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1"># dtOO &lt; design tool Object-Oriented &gt;</span>
+<span class="c1">#</span>
+<span class="c1">#   Copyright (C) 2024 A. Tismer.</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1"># License</span>
+<span class="c1">#   This file is part of dtOO.</span>
+<span class="c1">#</span>
+<span class="c1">#   dtOO is distributed in the hope that it will be useful, but WITHOUT</span>
+<span class="c1">#   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or</span>
+<span class="c1">#   FITNESS FOR A PARTICULAR PURPOSE.  See the LICENSE.txt file in the</span>
+<span class="c1">#   dtOO root directory for more details.</span>
+<span class="c1">#</span>
+<span class="c1">#   You should have received a copy of the License along with dtOO.</span>
+<span class="c1">#</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.tools.dtBundleTools</span><span class="w"> </span><span class="kn">import</span> <span class="n">dtBundleBuilder</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">dtLinearAlgebra</span><span class="p">,</span>
+    <span class="n">analyticGeometry</span><span class="p">,</span>
+    <span class="n">jsonPrimitive</span><span class="p">,</span>
+    <span class="n">rotate</span><span class="p">,</span>
+    <span class="n">analyticCurve</span><span class="p">,</span>
+    <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">,</span>
+    <span class="n">analyticSurface</span><span class="p">,</span>
+    <span class="n">dtPoint2</span><span class="p">,</span>
+    <span class="n">dtPoint3</span><span class="p">,</span>
+    <span class="n">dtVector3</span><span class="p">,</span>
+    <span class="n">vectorDtPoint3</span><span class="p">,</span>
+    <span class="n">rotatingMap2dTo3d</span><span class="p">,</span>
+    <span class="n">partRotatingMap2dTo3d</span><span class="p">,</span>
+    <span class="n">trimmedCurve_uBounds</span><span class="p">,</span>
+    <span class="n">geomCurve_curveReverseConstructOCC</span><span class="p">,</span>
+    <span class="n">multipleBoundedVolume</span><span class="p">,</span>
+    <span class="n">infinityMap3dTo3d</span><span class="p">,</span>
+    <span class="n">curveCurveDist</span><span class="p">,</span>
+    <span class="n">gslMinFloatAttr</span><span class="p">,</span>
+    <span class="n">vectorReal</span><span class="p">,</span>
+    <span class="n">vectorHandlingConstDtCurve</span><span class="p">,</span>
+    <span class="n">vectorHandlingAnalyticGeometry</span><span class="p">,</span>
+    <span class="n">rectangularTrimmedSurface_curveRotateConstructOCC</span><span class="p">,</span>
+    <span class="n">multipleBoundedSurface</span><span class="p">,</span>
+    <span class="n">bSplineSurface_bSplineCurveFillConstructOCC</span><span class="p">,</span>
+    <span class="n">bSplineCurve_curveConnectConstructOCC</span>
+<span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+
+
+<div class="viewcode-block" id="analyticGeometry_layerRegion">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">analyticGeometry_layerRegion</span><span class="p">(</span><span class="n">dtBundleBuilder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create flow channel as five or six sided layer regions on the walls </span>
+<span class="sd">    and a multiple bounded volume inside the flow domain.</span>
+<span class="sd">    </span>
+<span class="sd">    This class:</span>
+<span class="sd">        </span>
+<span class="sd">        - Takes hub, shroud, inlet and outlet curves of the layered region.</span>
+<span class="sd">        - Creates layer boundary curves on the hub and shroud walls.</span>
+<span class="sd">        - Creates layer faces from the boundary curves.</span>
+<span class="sd">        - Creates layer volumes by rotating the boundaries.</span>
+<span class="sd">        - Creates a multiple bounded volume in the flow channel connecting to the layers.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    label_: str</span>
+<span class="sd">      Label.</span>
+<span class="sd">    rotVector_: dtVector3</span>
+<span class="sd">      Rotation vector.</span>
+<span class="sd">    origin_: dtPoint3</span>
+<span class="sd">      Origin.</span>
+<span class="sd">    normalAxis_: dtVector3</span>
+<span class="sd">      Normal direction of the 2d region curves.</span>
+<span class="sd">    speCenter_: dtPoint3</span>
+<span class="sd">      Center point of the bounding box of the region.</span>
+<span class="sd">    speBb_: pairDtPoint3</span>
+<span class="sd">      Bounding box of the whole region.</span>
+<span class="sd">    hubLayerCurves_: List[analyticGeometry]</span>
+<span class="sd">      Boundary curves of the hub wall.</span>
+<span class="sd">    hubRadZero_: List[Bool]</span>
+<span class="sd">      List containing information about which hub curves are on a radius of zero.</span>
+<span class="sd">    hubUnstructBounds_: List[analyticGeometry]</span>
+<span class="sd">      Boundary curves of the multiple bounded volume at the hub.</span>
+<span class="sd">    shroudLayerCurves_: List[List[analyticGeometry]]</span>
+<span class="sd">      Boundary curves of the shroud Layer regions.</span>
+<span class="sd">    shroudRadZero_: List[Bool]</span>
+<span class="sd">      List containing information about which shroud curves are on a radius of zero.</span>
+<span class="sd">    shroudUnstructBounds_: List[analyticGeometry]</span>
+<span class="sd">      Boundary curves of the multiple bounded volume at the shroud.</span>
+<span class="sd">    interfaceUnstructBound_: analyticGeometry</span>
+<span class="sd">      Inlet boundary curve of the multiple bounded volume.</span>
+<span class="sd">    outletUnstructBound_: analyticGeometry</span>
+<span class="sd">      Outlet boundary curve of the multiple bounded volume.</span>
+<span class="sd">    unstructVH_: vectorHandlingAnalyticGeometry</span>
+<span class="sd">      vector handler containing all boundary curves of the multiple bounded volume.</span>
+<span class="sd">    hubLayers_: List[analyticGeometry]</span>
+<span class="sd">      List containing the faces of the six sided hub layers.</span>
+<span class="sd">    shroudLayers_: List[analyticGeometry]</span>
+<span class="sd">      List containing the faces of the six sided shroud layers.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import dtOOPythonSWIG as dtOO</span>
+<span class="sd">    </span>
+<span class="sd">    Define inlet, outlet, hub and shroud curves of the layer.</span>
+
+<span class="sd">    &gt;&gt;&gt; inlet = dtOO.analyticCurve(</span>
+<span class="sd">    ...   dtOO.bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...     dtOO.vectorDtPoint3()</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(0.50, +0.00, 0.80)</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(0.75, +0.00, 0.80)</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(1.00, +0.00, 1.00),</span>
+<span class="sd">    ...     2</span>
+<span class="sd">    ...   ).result()</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; outlet = dtOO.analyticCurve(</span>
+<span class="sd">    ...   dtOO.bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...     dtOO.vectorDtPoint3()</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(0.00, +0.00, 0.00)</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(1.10, +0.00, 0.00),</span>
+<span class="sd">    ...     1</span>
+<span class="sd">    ...   ).result()</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; hub0 = dtOO.analyticCurve(</span>
+<span class="sd">    ...   dtOO.bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...     dtOO.vectorDtPoint3()</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(0.50, +0.00, 0.80)</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(0.25, +0.00, 0.60)</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(0.00, +0.00, 0.40),</span>
+<span class="sd">    ...     2</span>
+<span class="sd">    ...   ).result()</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; hub1 = dtOO.analyticCurve(</span>
+<span class="sd">    ...   dtOO.bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...     dtOO.vectorDtPoint3()</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(0.00, +0.00, 0.40)</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(0.00, +0.00, 0.00),</span>
+<span class="sd">    ...     1</span>
+<span class="sd">    ...   ).result()</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; shroud0 = dtOO.analyticCurve(</span>
+<span class="sd">    ...   dtOO.bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...     dtOO.vectorDtPoint3()</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(1.00, +0.00, 1.00)</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(1.10, +0.00, 0.00),</span>
+<span class="sd">    ...     1</span>
+<span class="sd">    ...   ).result()</span>
+<span class="sd">    ... )</span>
+<span class="sd">    </span>
+<span class="sd">    Create the input lists with the boundary curves.</span>
+
+<span class="sd">    &gt;&gt;&gt; speHub = [hub0, hub1]</span>
+<span class="sd">    &gt;&gt;&gt; speShroud = [shroud0]</span>
+<span class="sd">    &gt;&gt;&gt; inOutCurves = [inlet, outlet]</span>
+<span class="sd">    </span>
+<span class="sd">    Initialize the builder.</span>
+
+<span class="sd">    &gt;&gt;&gt; from dtOOPythonApp.builder import analyticGeometry_layerRegion</span>
+<span class="sd">    &gt;&gt;&gt; builder = analyticGeometry_layerRegion(</span>
+<span class="sd">    ...   label = &quot;test&quot;,</span>
+<span class="sd">    ...   speHub = speHub,</span>
+<span class="sd">    ...   speShroud = speShroud,</span>
+<span class="sd">    ...   inOutCurves = inOutCurves,</span>
+<span class="sd">    ...   layer_thickness = 0.2,</span>
+<span class="sd">    ...   layer_supports = [0.33, 0.66]</span>
+<span class="sd">    ... ).enableDebug()</span>
+<span class="sd">    &gt;&gt;&gt; builder.build()</span>
+<span class="sd">    </span>
+<span class="sd">    Build the multiple bounded volume of the layer region.</span>
+
+<span class="sd">    &gt;&gt;&gt; unstrReg, surf = builder.getUnstructuredRegion(10)</span>
+<span class="sd">    </span>
+<span class="sd">    Check the virtual class name.</span>
+
+<span class="sd">    &gt;&gt;&gt; unstrReg.virtualClassName()</span>
+<span class="sd">    &#39;multipleBoundedVolume&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    This class is used to create the geometry of a flow channel consisting of five- or six-</span>
+<span class="sd">    sided layer volumes on the hub and shroud walls, as well as a multiple-bounded volume</span>
+<span class="sd">    that expands inside the flow domain and connects to the layers.</span>
+<span class="sd">    In this documentation, the region formed by the multiple-bounded volume is referred to </span>
+<span class="sd">    as the *unstructured region*.</span>
+
+<span class="sd">    The main method of this class is the constructor, from which the remaining methods are</span>
+<span class="sd">    called. The rotational vector and the point of origin are initialized as</span>
+<span class="sd">    ``rotVector_`` and ``origin_``.</span>
+
+<span class="sd">    The method :meth:`calculateNormalAxis` is used to calculate the normal axis </span>
+<span class="sd">    ``normalAxis_`` on the flow domain cross-section from the hub and shroud </span>
+<span class="sd">    curves. Furthermore, the method returns the cross-section bounding box </span>
+<span class="sd">    ``speBb_`` and its center point ``speCenter_``.</span>
+
+<span class="sd">    The bounding curves of the layers are created using the method</span>
+<span class="sd">    :meth:`createLayerBounds`. This method is called twice to create the bounds of the hub</span>
+<span class="sd">    and shroud wall layer faces. The return values of the two calls are stored in the lists</span>
+<span class="sd">    ``hubLayerCurves_``, ``hubRadZero_``, and ``hubUnstructBounds_`` for the hub layer,</span>
+<span class="sd">    and ``shroudLayerCurves_``, ``shroudRadZero_``, and ``shroudUnstructBounds_`` for the</span>
+<span class="sd">    shroud layer.</span>
+
+<span class="sd">    The lists ``hubLayerCurves_`` and ``shroudLayerCurves_`` contain the bounding curves</span>
+<span class="sd">    of the corresponding layer faces. Within :meth:`createLayerBounds`, the method</span>
+<span class="sd">    :meth:`layerCurve` is called.</span>
+
+<span class="sd">    The lists ``hubRadZero_`` and ``shroudRadZero_`` contain Boolean values corresponding</span>
+<span class="sd">    to the number of layers created on the hub or shroud. These Boolean values indicate</span>
+<span class="sd">    which layers are located on a radius of zero. The method :meth:`rz_xyz` is used to</span>
+<span class="sd">    perform this check.</span>
+
+<span class="sd">    The lists ``hubUnstructBounds_`` and ``shroudUnstructBounds_`` contain the layer</span>
+<span class="sd">    boundary curves that extend into the flow domain and form the interfaces between the</span>
+<span class="sd">    unstructured multiple-bounded volume and the layers.</span>
+
+<span class="sd">    The inlet and outlet curves of the flow domain cross-section are shared between the</span>
+<span class="sd">    hub and shroud layer regions and the unstructured region. By splitting these curves,</span>
+<span class="sd">    the inlet boundary of the unstructured region is assigned to the variable</span>
+<span class="sd">    ``interfaceUnstructBound_`` and the outlet boundary to ``outletUnstructBound_``.</span>
+
+<span class="sd">    The vector handler ``unstructVH_`` acts as a container for all hub and shroud boundary</span>
+<span class="sd">    curves of the unstructured region. The curves in ``hubUnstructBounds_`` and</span>
+<span class="sd">    ``shroudUnstructBounds_``, as well as the curves</span>
+<span class="sd">    ``interfaceUnstructBound_`` and ``outletUnstructBound_``, are stored in this vector</span>
+<span class="sd">    handler.</span>
+
+<span class="sd">    From the bounding curves of the hub and shroud layers, layer faces are created and</span>
+<span class="sd">    stored in ``hubLayers_`` and ``shroudLayers_``.</span>
+
+<span class="sd">    The layer volumes are created by rotating the layer faces around the rotation axis and</span>
+<span class="sd">    are returned by the method :meth:`getLayerList`. The method returns a list with the</span>
+<span class="sd">    following structure:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        layerList = List[</span>
+<span class="sd">            List[</span>
+<span class="sd">                List[analyticGeometry],</span>
+<span class="sd">                List[bool]</span>
+<span class="sd">            ]</span>
+<span class="sd">        ]</span>
+
+<span class="sd">    The entries correspond to the following values:</span>
+
+<span class="sd">    - ``layerList[0]``: Hub layers</span>
+<span class="sd">    - ``layerList[1]``: Shroud layers</span>
+<span class="sd">    - ``layerList[i][0]``: List of layer volumes</span>
+<span class="sd">    - ``layerList[i][1]``: List of Boolean values indicating whether the corresponding</span>
+<span class="sd">      layer is located on a radius of zero</span>
+
+<span class="sd">    The unstructured region is created in the method</span>
+<span class="sd">    :meth:`getUnstructuredRegion`. This method returns the multiple-bounded volume of the</span>
+<span class="sd">    unstructured region together with a list containing its boundary surfaces.</span>
+
+<span class="sd">    The :meth:`build` method is used to visualize the created geometries in `ParaView`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="analyticGeometry_layerRegion.__init__">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">speHub</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">],</span>
+        <span class="n">speShroud</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">],</span>
+        <span class="n">inOutCurves</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">],</span>
+        <span class="n">layer_thickness</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">layer_supports</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="n">rotVector</span><span class="p">:</span> <span class="n">dtVector3</span> <span class="o">=</span> <span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">origin</span><span class="p">:</span> <span class="n">dtPoint3</span> <span class="o">=</span> <span class="n">dtPoint3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor.</span>
+<span class="sd">        </span>
+<span class="sd">        This method:</span>
+
+<span class="sd">            - Creates layer boundary curves.</span>
+<span class="sd">            - Creates layer faces.</span>
+<span class="sd">            - Creates boundary curves of the unstructured region.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        label: str</span>
+<span class="sd">          Label.</span>
+<span class="sd">        speHub: List[analyticGeometry]</span>
+<span class="sd">          Hub curves of the flow domain.</span>
+<span class="sd">        speShroud: List[analyticGeometry]</span>
+<span class="sd">          Shroud curves of the flow domain.</span>
+<span class="sd">        inOutCurves: List[analyticGeometry]</span>
+<span class="sd">          Inlet and outlet curves of the flow domain.</span>
+<span class="sd">        layer_thickness: float</span>
+<span class="sd">          Thickness of mesh layers in unstructured domain.</span>
+<span class="sd">        layer_supports: List[float]</span>
+<span class="sd">          Number and position of support points on channel curves for layer creation.</span>
+<span class="sd">        rotVector: dtVector3</span>
+<span class="sd">          Rotation vector.</span>
+<span class="sd">        origin: dtPoint3</span>
+<span class="sd">          Origin.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+
+<span class="sd">        The boundary curves of the channel are passed to the constructor through the lists</span>
+<span class="sd">        ``speHub``, ``speShroud``, and ``inOutCurves``. These lists contain the curves of</span>
+<span class="sd">        the hub and shroud walls, as well as the inlet and outlet curves of the flow</span>
+<span class="sd">        channel cross-section.</span>
+
+<span class="sd">        The following figure shows the cross-section and the corresponding curves.</span>
+
+<span class="sd">        .. _speCurves0:</span>
+<span class="sd">        .. figure:: meridionalFigs/speCurves.png</span>
+<span class="sd">           :width: 50%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Special hub (``speHub``) and special shroud (``speShroud``) curves (black),</span>
+<span class="sd">           together with the inlet (red) and outlet (orange) curves of the draft tube</span>
+<span class="sd">           cone.</span>
+
+<span class="sd">        The rotation vector and the origin point are stored in the variables</span>
+<span class="sd">        ``rotVector_`` and ``origin_``.</span>
+
+<span class="sd">        The hub and shroud curves are passed to the method</span>
+<span class="sd">        :meth:`calculateNormalAxis`. This method creates and returns the bounding box</span>
+<span class="sd">        ``speBb_`` surrounding the curves. Furthermore, the center point</span>
+<span class="sd">        ``speCenter_`` and the normal axis ``normalAxis_`` of the bounding box are</span>
+<span class="sd">        calculated and returned.</span>
+
+<span class="sd">        The boundary curves of the layers are created using the method</span>
+<span class="sd">        :meth:`createLayerBounds`. This method is called once for the hub layers and</span>
+<span class="sd">        once for the shroud layers.</span>
+
+<span class="sd">        As input, the wall curve lists ``speHub`` or ``speShroud`` and the inlet and</span>
+<span class="sd">        outlet curves ``inOutCurves`` are passed to the method. The layer generation</span>
+<span class="sd">        is defined by the layer thickness ``layer_thickness`` (:math:`t_{Layer}`) and</span>
+<span class="sd">        the list of support point positions along the spans of the wall curves</span>
+<span class="sd">        ``layer_supports``. The label parameter is used to assign physical names to the</span>
+<span class="sd">        generated geometries for visualization.</span>
+
+<span class="sd">        The return values are the layer boundary curves ``hubLayerCurves_`` and</span>
+<span class="sd">        ``shroudLayerCurves_``, the lists encoding whether a layer is located on a</span>
+<span class="sd">        radius of zero (``hubRadZero_`` and ``shroudRadZero_``), and the connecting</span>
+<span class="sd">        curves to the unstructured region (``hubUnstructBounds_`` and</span>
+<span class="sd">        ``shroudUnstructBounds_``).</span>
+
+<span class="sd">        Each wall curve that is not located on a radius of zero generates one layer</span>
+<span class="sd">        face. Each layer face consists of four boundary curves. The first boundary</span>
+<span class="sd">        curve corresponds to the respective hub or shroud wall curve.</span>
+
+<span class="sd">        The second and fourth boundary curves extend from the start and end points </span>
+<span class="sd">        of the wall curves into the flow channel. For the first and last layer faces </span>
+<span class="sd">        at the hub and shroud, these curves correspond either to the inlet or outlet </span>
+<span class="sd">        curves or to a wall curve located on a radius of zero. At the intersection </span>
+<span class="sd">        points of two wall curves, boundary curves extending into the flow channel </span>
+<span class="sd">        are constructed such that they follow the mean normal direction of both </span>
+<span class="sd">        curves.</span>
+
+<span class="sd">        The third boundary curve connects the second and fourth boundary curves inside</span>
+<span class="sd">        the flow channel. It is constructed from the end points of the second and</span>
+<span class="sd">        fourth boundary curves together with additional support points. These support</span>
+<span class="sd">        points are calculated by translating points on the hub and shroud curves in the</span>
+<span class="sd">        normal direction of the curves. The positions of these points along the hub and</span>
+<span class="sd">        shroud curves are defined by the list ``layer_supports``.</span>
+
+<span class="sd">        The lists ``hubLayerCurves_`` and ``shroudLayerCurves_`` have the structure</span>
+<span class="sd">        ``List[List[analyticGeometry]]``. In this structure, each first-level list</span>
+<span class="sd">        contains the four boundary curves of one layer face stored in the corresponding</span>
+<span class="sd">        second-level list.</span>
+
+<span class="sd">        The arrangement of the boundary curves in the second-level list is as follows:</span>
+
+<span class="sd">        #. ``hubLayerCurves_[i][0]``: Wall curve of the *i*-th special hub curve.</span>
+<span class="sd">        #. ``hubLayerCurves_[i][1]``: Downstream curve extending from the wall into</span>
+<span class="sd">           the flow channel or, for the last layer, along the outlet or a wall curve</span>
+<span class="sd">           located on a radius of zero.</span>
+<span class="sd">        #. ``hubLayerCurves_[i][2]``: Curve extending inside the flow channel.</span>
+<span class="sd">        #. ``hubLayerCurves_[i][3]``: Upstream curve extending from the wall into the</span>
+<span class="sd">           flow channel or, for the first layer, along the inlet interface.</span>
+
+<span class="sd">        This ordering results in the following parameter directions of the layer</span>
+<span class="sd">        volumes after rotation:</span>
+
+<span class="sd">        - ``u``: Circumferential direction</span>
+<span class="sd">        - ``v``: Streamwise direction</span>
+<span class="sd">        - ``w``: Direction from the wall toward the flow domain</span>
+
+<span class="sd">        The following figure shows the boundary curves of the layers in black</span>
+<span class="sd">        and the layer faces in blue.</span>
+<span class="sd">        As an example of the numbering convention of the boundary curves, the indices of</span>
+<span class="sd">        the second-level list in ``hubLayerCurves_[0]`` are shown.</span>
+
+<span class="sd">        .. _layer2d_numbering:</span>
+<span class="sd">        .. figure:: meridionalFigs/layers2d_numbering.png</span>
+<span class="sd">           :width: 40%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Two-dimensional layer faces (blue) in the draft tube cone.</span>
+
+<span class="sd">        The lists containing Boolean values, ``hubRadZero_`` and ``shroudRadZero_``,</span>
+<span class="sd">        contain a value of ``True`` for layers located on a radius of zero. These</span>
+<span class="sd">        layers form the last layer face on the corresponding wall. Their second</span>
+<span class="sd">        boundary curve is formed by a section of the subsequent boundary curve located</span>
+<span class="sd">        on the radius of zero. In the figures above, this applies to the curve in</span>
+<span class="sd">        ``speHub[1]``.</span>
+
+<span class="sd">        The curves in ``hubUnstructBounds_`` and ``shroudUnstructBounds_`` are copies</span>
+<span class="sd">        of the third boundary curves of the layer faces. These curves are used to</span>
+<span class="sd">        construct the multiple-bounded volume of the unstructured region.</span>
+
+<span class="sd">        The inlet of the flow domain created in this class corresponds to the curve in</span>
+<span class="sd">        ``inOutCurves[0]``. A section of this curve is used as the inlet boundary of</span>
+<span class="sd">        the unstructured region.</span>
+
+<span class="sd">        The curve is trimmed according to the layer thicknesses</span>
+<span class="sd">        ``layer_thickness`` using the `dtOO` class ``trimmedCurve_uBounds``. The</span>
+<span class="sd">        resulting trimmed curve is stored in ``interfaceUnstructBound_``.</span>
+
+<span class="sd">        To trim the outlet curve in ``inOutCurves[1]``, it must first be determined</span>
+<span class="sd">        whether a layer exists on the last hub curve. No layer is created on the last</span>
+<span class="sd">        hub curve if the hub extends to a radius of zero. In this case,</span>
+<span class="sd">        ``hubRadZero_[-1] == True`` applies, and the first trim parameter is set to</span>
+<span class="sd">        zero. Otherwise, the trim parameters on both the hub and shroud sides are</span>
+<span class="sd">        determined using ``layer_thickness``. The resulting trimmed curve is stored in</span>
+<span class="sd">        ``outletUnstructBound_``.</span>
+
+<span class="sd">        The object ``unstructVH_`` of the `dtOO` class</span>
+<span class="sd">        ``vectorHandlingAnalyticGeometry`` is instantiated to contain all boundary</span>
+<span class="sd">        curves describing the contour of the unstructured region. The curves in</span>
+<span class="sd">        ``hubUnstructBounds_`` and ``shroudUnstructBounds_`` are added to this object,</span>
+<span class="sd">        while ``interfaceUnstructBound_`` is prepended and</span>
+<span class="sd">        ``outletUnstructBound_`` is appended.</span>
+
+<span class="sd">        The faces of the hub and shroud layers are created by iterating over the lists</span>
+<span class="sd">        ``hubLayerCurves_`` and ``shroudLayerCurves_``. During each iteration, the</span>
+<span class="sd">        second-level boundary curves are inserted into a vector handler object named</span>
+<span class="sd">        ``layer_vhc``.</span>
+
+<span class="sd">        The layer faces are then generated using the `dtOO` class</span>
+<span class="sd">        ``bSplineSurface_bSplineCurveFillConstructOCC`` with ``layer_vhc`` as input.</span>
+<span class="sd">        The resulting layer faces are stored in the lists ``hubLayers_`` and</span>
+<span class="sd">        ``shroudLayers_``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initializing </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">analyticGeometry_layerRegion</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">=</span> <span class="n">label</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotVector_</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">rotVector</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">origin_</span> <span class="o">=</span> <span class="n">origin</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># calculating the centerpoint of the special curves</span>
+        <span class="c1"># will be later used in order to make sure the layer boundaries are pointing inside the domain</span>
+        <span class="c1"># the bounding box of the special curves self.speBb_ will be used to generate </span>
+        <span class="c1">#  the multi bounded volume of the unstructured region</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalAxis_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">speCenter_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">speBb_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateNormalAxis</span><span class="p">(</span><span class="n">speHub</span> <span class="o">+</span> <span class="n">speShroud</span><span class="p">)</span>
+        
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;### Creating Hub Layer Curves&quot;</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="c1"># Creating the boundary curves for the layers</span>
+        <span class="c1"># each layer is defined by four curves those returned through self.hubLayerCurves_</span>
+        <span class="c1"># the hubLayerCurves_ list has the following format:</span>
+        <span class="c1"># self.hubLayerCurve = [</span>
+        <span class="c1">#                        [channel curve, </span>
+        <span class="c1">#                        streamwise boundary 1, </span>
+        <span class="c1">#                        parallel to channel curve, </span>
+        <span class="c1">#                        streamwise boundary 0],</span>
+        <span class="c1">#                        ...</span>
+        <span class="c1">#                      ]</span>
+        <span class="c1"># </span>
+        <span class="c1"># self.hubRadZero_ contains booleans which will show true for layers which have a radius of zero</span>
+        <span class="c1">#  this is used for meshing later</span>
+        <span class="c1">#</span>
+        <span class="c1"># self.hubUnstructBounds_ contains all the hub  boundaries of the unstructured region </span>
+        <span class="c1">#  these will be the curves parallel to the channel curves or the channel curves if they are on</span>
+        <span class="c1">#  a radius of zero</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hubLayerCurves_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hubRadZero_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hubUnstructBounds_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createLayerBounds</span><span class="p">(</span>
+                <span class="n">speHub</span><span class="p">,</span> 
+                <span class="n">inOutCurves</span><span class="p">,</span>
+                <span class="n">layer_thickness</span><span class="p">,</span> 
+                <span class="n">layer_supports</span><span class="p">,</span>
+                <span class="s1">&#39;Hub&#39;</span>
+            <span class="p">)</span>
+        
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;### Creating Shroud Layer Curves&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shroudLayerCurves_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shroudRadZero_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shroudUnstructBounds_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createLayerBounds</span><span class="p">(</span>
+                <span class="n">speShroud</span><span class="p">,</span>  
+                <span class="n">inOutCurves</span><span class="p">,</span>
+                <span class="n">layer_thickness</span><span class="p">,</span>
+                <span class="n">layer_supports</span><span class="p">,</span>
+                <span class="s1">&#39;Shroud&#39;</span>
+            <span class="p">)</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># trimming the inlet curve between the layerthicknesses</span>
+        <span class="c1">#  this curve will be used as a boundary for the unstructured region</span>
+        <span class="c1">#</span>
+        <span class="n">interf</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">inOutCurves</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interfaceUnstructBound_</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="p">(</span>
+                <span class="n">trimmedCurve_uBounds</span><span class="p">(</span>
+                    <span class="n">interf</span><span class="p">,</span> 
+                    <span class="n">interf</span><span class="o">.</span><span class="n">u_l</span><span class="p">(</span><span class="n">layer_thickness</span><span class="p">),</span> 
+                    <span class="n">interf</span><span class="o">.</span><span class="n">u_l</span><span class="p">(</span><span class="n">interf</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">-</span> <span class="n">layer_thickness</span><span class="p">)</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="p">)</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># trimming the outlet curve</span>
+        <span class="c1">#</span>
+        <span class="c1"># deciding the trimm position of the outlet curve at the hub</span>
+        <span class="n">outlet_trim</span> <span class="o">=</span> <span class="n">layer_thickness</span>
+        <span class="c1"># if the outlet curve hub curve at the outlet has a radius of zero</span>
+        <span class="c1">#  the following condtion will be fulfilled:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hubRadZero_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1"># sets the trim length to zero</span>
+            <span class="n">outlet_trim</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># trimming the outlet curve for the boundary of the unstructured domain</span>
+        <span class="n">outl</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">inOutCurves</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outletUnstructBound_</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="p">(</span>
+                <span class="n">trimmedCurve_uBounds</span><span class="p">(</span>
+                    <span class="n">outl</span><span class="p">,</span>
+                    <span class="n">outl</span><span class="o">.</span><span class="n">u_l</span><span class="p">(</span><span class="n">outlet_trim</span><span class="p">),</span>
+                    <span class="n">outl</span><span class="o">.</span><span class="n">u_l</span><span class="p">(</span><span class="n">outl</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">-</span> <span class="n">layer_thickness</span><span class="p">)</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="p">)</span>
+        
+        <span class="c1"># adding the boundary curves of the unstructured regions to a VH</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unstructVH_</span> <span class="o">=</span> <span class="n">vectorHandlingAnalyticGeometry</span><span class="p">()</span>
+        
+        <span class="c1"># adding the interface curve first</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unstructVH_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interfaceUnstructBound_</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+        <span class="c1"># adding the region bounds (the curves named parallel in the createLayerBounds function)</span>
+        <span class="k">for</span> <span class="n">bound</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hubUnstructBounds_</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">shroudUnstructBounds_</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unstructVH_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">bound</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+        <span class="c1"># adding the outlet boundary last</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unstructVH_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outletUnstructBound_</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span> 
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;###   Creating Hub Layer Faces&quot;</span><span class="p">)</span>
+        <span class="c1"># creatig the layer faces from the curves </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hubLayers_</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hubLayerCurves_</span><span class="p">)):</span>
+            <span class="n">layer_vhc</span> <span class="o">=</span> <span class="n">vectorHandlingConstDtCurve</span><span class="p">()</span>
+            <span class="c1"># pushing the individual curves in a vhc</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hubLayerCurves_</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+                <span class="n">layer_vhc</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hubLayerCurves_</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">n</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">())</span>
+            <span class="c1"># creating the faces by filling the curves</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hubLayers_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>                                        
+                <span class="n">analyticSurface</span><span class="p">(</span>                                            
+                    <span class="n">bSplineSurface_bSplineCurveFillConstructOCC</span><span class="p">(</span><span class="n">layer_vhc</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="p">)</span> 
+            <span class="k">del</span> <span class="n">layer_vhc</span>
+        
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;###   Creating Shroud Layer Faces&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shroudLayers_</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shroudLayerCurves_</span><span class="p">)):</span>
+            <span class="n">layer_vhc</span> <span class="o">=</span> <span class="n">vectorHandlingConstDtCurve</span><span class="p">()</span>
+            
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shroudLayerCurves_</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+                <span class="n">layer_vhc</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shroudLayerCurves_</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">n</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">())</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">shroudLayers_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>                                        
+                <span class="n">analyticSurface</span><span class="p">(</span>                                            
+                    <span class="n">bSplineSurface_bSplineCurveFillConstructOCC</span><span class="p">(</span><span class="n">layer_vhc</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="p">)</span>  
+            <span class="k">del</span> <span class="n">layer_vhc</span></div>
+
+         
+<div class="viewcode-block" id="analyticGeometry_layerRegion.createLayerBounds">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.createLayerBounds">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">createLayerBounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layerCurve</span><span class="p">,</span> <span class="n">inOutCurves</span><span class="p">,</span> <span class="n">thickness</span><span class="p">,</span> <span class="n">supports</span><span class="p">,</span> <span class="n">lab</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create boundary curves of the layer faces.</span>
+<span class="sd">        </span>
+<span class="sd">        This method:</span>
+<span class="sd">            </span>
+<span class="sd">            - Iterates over the wall curves and checks if they are on a radius of zero.</span>
+<span class="sd">            - Iterates over curves and combines them if they have a steady transition.</span>
+<span class="sd">            - Iterates over curves and creates boundary curves of the layer faces.</span>
+<span class="sd">            - Returns the lists with layer bounds and boundary curves for the </span>
+<span class="sd">              unstructured region as well as a list telling which layers are on a radius </span>
+<span class="sd">              of zero.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        layerCurve: List[analyticGeometry]</span>
+<span class="sd">          List of wall curves.</span>
+<span class="sd">        inOutCurves: List[analyticGeometry]</span>
+<span class="sd">          List with inlet and outlet curves.</span>
+<span class="sd">        thickness: float</span>
+<span class="sd">          Layer thickness.</span>
+<span class="sd">        supports: List[float]</span>
+<span class="sd">          List with positions of support points in percent along the parametrized span of</span>
+<span class="sd">          the wall curve.</span>
+<span class="sd">        lab: string</span>
+<span class="sd">          label</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        returnBounds: List[List[analyticGeometry]]</span>
+<span class="sd">          Boundary curves of each layer on the wall curves.</span>
+<span class="sd">        on_rad_zero: List[Bool]</span>
+<span class="sd">          Information for each layer, telling if the radius is on zero.</span>
+<span class="sd">        layerParallel: List[analyticGeometry]</span>
+<span class="sd">          Inner boundary curves of the layers, used for the multiple bounded volume.</span>
+
+
+<span class="sd">        This method takes a list of wall curves ``layerCurve``</span>
+<span class="sd">        (either hub or shroud) together with the inlet and outlet curves</span>
+<span class="sd">        ``inOutCurves`` as input.</span>
+
+<span class="sd">        Furthermore, the layer thickness ``layer_thickness`` and the list of</span>
+<span class="sd">        support point positions ``supports`` are passed to the method.</span>
+<span class="sd">        ``supports`` defines both the number of support points and their</span>
+<span class="sd">        positions on each wall curve, for the creation of the third bounding </span>
+<span class="sd">        curves, in the method :meth:`layerCurve`.</span>
+
+<span class="sd">        The label ``lab`` is used to assign names to the generated geometries.</span>
+
+<span class="sd">        The following figure shows the hub curves of the draft tube example</span>
+<span class="sd">        stored in ``layerCurve`` (black) together with their numbering in the</span>
+<span class="sd">        list. ``layerCurve[2]`` and the inlet curve ``inOutCurves[0]`` (red)</span>
+<span class="sd">        are trimmed.</span>
+
+<span class="sd">        .. _createLayerBounds0:</span>
+<span class="sd">        .. figure:: meridionalFigs/createLayerBounds0.png</span>
+<span class="sd">           :width: 70%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Hub curves of the `draft tube cone` example in ``layerCurve`` (black)</span>
+<span class="sd">           and the inlet curve in ``boundsGlob[0]`` (red).</span>
+
+<span class="sd">        In a first loop checks are performed, which of the curves in ``layerCurve``</span>
+<span class="sd">        get a layer region. This is only the case for curves which are not located </span>
+<span class="sd">        on a radius of zero.</span>
+<span class="sd">        The following figure shows the activity diagram of the first loop.</span>
+
+<span class="sd">        .. _createLayerBounds_activity0:</span>
+<span class="sd">        .. figure:: meridionalFigs/createLayerBounds_activity0.png</span>
+<span class="sd">           :width: 70%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Activity diagram of the first loop in :meth:`createLayerBounds`.</span>
+<span class="sd">        </span>
+<span class="sd">        **Initialize Lists**</span>
+
+<span class="sd">            A copy of ``inOutCurves`` is created and assigned to ``boundsGlob``.</span>
+<span class="sd">            This list contains the global boundary curves that form part of the</span>
+<span class="sd">            boundary curves of the first and last layer faces.</span>
+
+<span class="sd">            The layer faces are constructed from four boundary curves.</span>
+<span class="sd">            The following empty lists are prepared to store the layer boundary</span>
+<span class="sd">            curves. The numbering *first*, *second*, *third*, and *fourth*</span>
+<span class="sd">            corresponds to the definition given in the constructor documentation</span>
+<span class="sd">            :meth:`__init__`.</span>
+
+<span class="sd">            - ``layerStreamOrtho``:</span>
+<span class="sd">              List containing the second and fourth boundary curves, which extend</span>
+<span class="sd">              from the wall into the flow domain.</span>
+
+<span class="sd">            - ``layerParallel``:</span>
+<span class="sd">              List containing the third boundary curves, which extend approximately</span>
+<span class="sd">              parallel to the wall.</span>
+
+<span class="sd">            - ``returnBounds``:</span>
+<span class="sd">              List containing all boundary curves of the layer faces.</span>
+
+<span class="sd">            - ``on_rad_zero``:</span>
+<span class="sd">              List tracking which curves in ``layerCurve`` are located on a radius</span>
+<span class="sd">              of zero.</span>
+<span class="sd">        </span>
+<span class="sd">        **Iterate over Curves**</span>
+
+<span class="sd">            In the first loop, a check is performed to determine which curves in</span>
+<span class="sd">            ``layerCurve`` are located on a radius of zero. This check is carried</span>
+<span class="sd">            out using the method :meth:`rz_xyz`, which takes a point as input and</span>
+<span class="sd">            performs a coordinate transformation from Cartesian coordinates into a</span>
+<span class="sd">            cylindrical coordinate system defined by the origin ``origin_`` and the</span>
+<span class="sd">            rotation axis ``rotAxis_``.</span>
+
+<span class="sd">            The method returns the radius and axial position of the point in</span>
+<span class="sd">            cylindrical coordinates.</span>
+
+
+<span class="sd">            The check is performed on the radii of the start and end points of each</span>
+<span class="sd">            curve using the method ``inXYZTolerance`` of the class</span>
+<span class="sd">            ``analyticGeometry``. This method returns ``True`` if the radius lies</span>
+<span class="sd">            within the tolerance of zero.</span>
+<span class="sd">            Two cases are handeled.</span>
+
+<span class="sd">            **The curve is on a radius of zero:**</span>
+
+<span class="sd">                ::</span>
+
+<span class="sd">                    onRotAxis_0 and onRotAxis_1</span>
+
+<span class="sd">                If the check returns ``True`` for both points, the curve is considered</span>
+<span class="sd">                to lie on a radius of zero. In this case, the outlet curve in</span>
+<span class="sd">                ``boundsGlob[-1]`` is replaced by the current curve. This replacement</span>
+<span class="sd">                is necessary because the curve forms the second boundary curve of the last</span>
+<span class="sd">                layer face on the corresponding wall.</span>
+
+<span class="sd">                The last entry of the list ``on_rad_zero`` is then set to ``True``.</span>
+
+<span class="sd">                A curve extending from the layer thickness position to the end of the</span>
+<span class="sd">                curve located on the rotation axis is created and assigned to the</span>
+<span class="sd">                variable ``unstructOnRotAxis``. This curve is required as a boundary</span>
+<span class="sd">                curve of the unstructured region.</span>
+
+<span class="sd">                The curve located on the radius of zero is then removed from the list</span>
+<span class="sd">                of layer curves, and the loop is terminated.</span>
+
+<span class="sd">            **The curve is not on a radius of zero:**</span>
+<span class="sd">                </span>
+<span class="sd">                ::</span>
+
+<span class="sd">                    else</span>
+
+<span class="sd">                If the curve is not located on a radius of zero, the list</span>
+<span class="sd">                ``on_rad_zero`` is extended with a value of ``False``.</span>
+
+<span class="sd">            The following figure shows the hub curves together with their assigned</span>
+<span class="sd">            Boolean values in ``on_rad_zero`` and the global layer boundaries stored</span>
+<span class="sd">            in ``boundsGlob``.</span>
+
+<span class="sd">            .. _createLayerBounds1:</span>
+<span class="sd">            .. figure:: meridionalFigs/createLayerBounds1.png</span>
+<span class="sd">               :width: 70%</span>
+<span class="sd">               :align: center</span>
+
+<span class="sd">               Hub curves of the `draft tube cone` example together with their</span>
+<span class="sd">               assigned Boolean values in the ``on_rad_zero`` list. The curves that</span>
+<span class="sd">               are part of the global layer boundaries are shown in red.</span>
+
+<span class="sd">        In a second loop, curves with a continuous transition at their</span>
+<span class="sd">        connection points are combined within a specified tolerance range.</span>
+
+<span class="sd">        The following figure shows the activity diagram of this loop.</span>
+
+<span class="sd">        .. _createLayerBounds_activity1:</span>
+<span class="sd">        .. figure:: meridionalFigs/createLayerBounds_activity1.png</span>
+<span class="sd">           :width: 70%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Activity diagram of the second loop in :meth:`createLayerBounds`.</span>
+<span class="sd">        </span>
+<span class="sd">        **Itreate over Curves**</span>
+
+<span class="sd">            In the loop, the tangent vectors, at the transition points, of two </span>
+<span class="sd">            consecutive curves ``v0`` and ``v1`` are calculated. This</span>
+<span class="sd">            transition point corresponds to the end point of ``v0`` and the start</span>
+<span class="sd">            point of ``v1``.</span>
+
+<span class="sd">            Using the angle between the tangent vectors ``v0_firstDer`` and</span>
+<span class="sd">            ``v1_firstDer``, a continuity condition ``is_steady`` is formulated.</span>
+<span class="sd">            This condition evaluates to ``True`` if the angular deviation between</span>
+<span class="sd">            the two curves is less than or equal to two degrees.</span>
+
+<span class="sd">            If the condition evaluates to ``True``, the curves are combined and</span>
+<span class="sd">            stored in the variable ``current_curve``, which is then used in the next</span>
+<span class="sd">            iteration. Furthermore, the corresponding flag in the ``on_rad_zero``</span>
+<span class="sd">            list is removed.</span>
+
+<span class="sd">            If the condition evaluates to ``False``, the current curve is appended</span>
+<span class="sd">            to the list ``speCurve`` and the consecutive curve is assigned to</span>
+<span class="sd">            ``current_curve``.</span>
+
+<span class="sd">            After the loop has finished, all curves for which layer faces are</span>
+<span class="sd">            generated are stored in ``speCurve``.</span>
+
+<span class="sd">        The boundary curves for the layers are generated in the third loop,</span>
+<span class="sd">        which iterates over ``speCurve``. The following figure shows the</span>
+<span class="sd">        activity diagram of this loop.</span>
+
+<span class="sd">        .. _createLayerBounds_activity2:</span>
+<span class="sd">        .. figure:: meridionalFigs/createLayerBounds_activity2.png</span>
+<span class="sd">           :width: 100%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Activity diagram of the third loop in</span>
+<span class="sd">           :meth:`createLayerBounds`. Orange action blocks correspond to the</span>
+<span class="sd">           creation of the second and fourth boundary curves, while blue action</span>
+<span class="sd">           blocks correspond to the creation of the third boundary curves.</span>
+
+<span class="sd">        Three different conditions may apply for each curve within the loop.</span>
+
+<span class="sd">        #. **The first layer face along the wall**</span>
+
+<span class="sd">            ::</span>
+
+<span class="sd">                i == 0``</span>
+
+<span class="sd">            The fourth boundary curve of the first layer face is formed by the</span>
+<span class="sd">            inlet curve stored in ``boundsGlob[0]``. This boundary curve is</span>
+<span class="sd">            created by trimming the inlet curve from its shared point with the</span>
+<span class="sd">            layer curve ``speCurve[i]`` to the layer thickness specified by</span>
+<span class="sd">            ``layer_thickness``.</span>
+
+<span class="sd">            The connection point must correspond to the start of the parameter</span>
+<span class="sd">            span (0 %) of the global boundary curve. Depending on whether hub or</span>
+<span class="sd">            shroud wall layers are created, this is not always the case.</span>
+
+<span class="sd">            To ensure that both curves share the same start point, the distance</span>
+<span class="sd">            between their start points is computed and checked against the</span>
+<span class="sd">            geometric tolerance. The distance is calculated using the method</span>
+<span class="sd">            ``distance`` of the `dtOO` class ``dtLinearAlgebra``. The tolerance</span>
+<span class="sd">            check is performed using</span>
+<span class="sd">            ``analyticGeometry.inXYZTolerance``.</span>
+
+<span class="sd">            If the distance exceeds the tolerance, the global boundary curve is</span>
+<span class="sd">            reversed.</span>
+
+<span class="sd">            The resulting trimmed curve is appended to the list</span>
+<span class="sd">            ``layerStreamOrtho``.</span>
+
+<span class="sd">        #. **The last layer face along the wall**</span>
+
+<span class="sd">            ::</span>
+
+<span class="sd">                i == len(speCurve)</span>
+
+<span class="sd">            The second boundary curve of the last layer face is formed by the</span>
+<span class="sd">            second global boundary ``boundsGlob[-1]``. This boundary can either</span>
+<span class="sd">            be on the the outlet curve of the layered region or on a curve located</span>
+<span class="sd">            on the radius of zero.</span>
+
+<span class="sd">            The layer boundary is created similarly to case 1. In this case, the</span>
+<span class="sd">            distance between the end point of the wall curve</span>
+<span class="sd">            ``speCurve[i-1]`` and the start point of the global boundary curve</span>
+<span class="sd">            is used to orient the global boundary curve correctly.</span>
+
+<span class="sd">            The third layer boundary curve, extending approximately parallel to</span>
+<span class="sd">            the wall, is created using the method :meth:`layerCurve`. The</span>
+<span class="sd">            resulting curve is appended to the list ``layerParallel``.</span>
+
+<span class="sd">            The list ``newLayer`` is created. This list contains the four</span>
+<span class="sd">            boundary curves of the last layer face.</span>
+
+<span class="sd">        #. **Regular layer face**</span>
+
+<span class="sd">            ::</span>
+
+<span class="sd">                else</span>
+
+<span class="sd">            In this case, the wall curve in each iteration is</span>
+<span class="sd">            ``speCurve[i-1]``. For each wall curve, the second and third layer</span>
+<span class="sd">            boundary curves are created. The second boundary curve is generated</span>
+<span class="sd">            directly within the loop, while the third boundary curve is created</span>
+<span class="sd">            using the method :meth:`layerCurve`. The fourth boundary curve is</span>
+<span class="sd">            taken from the second boundary curve generated in the previous</span>
+<span class="sd">            iteration.</span>
+<span class="sd">            </span>
+<span class="sd">            **Get Cuves v0 and v1**</span>
+
+<span class="sd">                The second layer boundary curve is constructed so it extends</span>
+<span class="sd">                in the mean normal direction :math:`\mathbf{v_{mean}}` between the</span>
+<span class="sd">                curves ``speCurve[i-1]`` and ``speCurve[i]`` at their shared point</span>
+<span class="sd">                :math:`P_0`. The curves are assigned to the variables ``v0`` and</span>
+<span class="sd">                ``v1``.</span>
+<span class="sd">            </span>
+<span class="sd">            **Caluclate the direction of the second boundary curve**</span>
+
+<span class="sd">                The mean normal direction is calculated as follows:</span>
+
+<span class="sd">                .. math:: </span>
+
+<span class="sd">                   \\mathbf{v_{mean}} = \\frac{\\mathbf{n_0} + \\mathbf{n_1}}{\\|\\mathbf{n_0} + \\mathbf{n_1}\\|}</span>
+
+<span class="sd">                The normal directions of the curves</span>
+<span class="sd">                (:math:`\mathbf{n_0}` and :math:`\mathbf{n_1}`) at the shared point</span>
+<span class="sd">                are calculated as the cross products of the normal axis of the</span>
+<span class="sd">                channel cross-section ``normalAxis_``</span>
+<span class="sd">                (:math:`\mathbf{n_{global}}`) and the tangential directions of the</span>
+<span class="sd">                curves at the shared point</span>
+<span class="sd">                (:math:`\mathbf{t_0}` and :math:`\mathbf{t_1}`).</span>
+
+<span class="sd">                .. math:: </span>
+
+<span class="sd">                   \\mathbf{n} = \\frac{\\mathbf{t} \\times \\mathbf{n_{global}}}{\\|\\mathbf{t} \\times \\mathbf{n_{global}}\\|}</span>
+
+<span class="sd">                The resulting vector :math:`\mathbf{v_{mean}}` is stored in the</span>
+<span class="sd">                variable ``layerVec``.</span>
+
+<span class="sd">                The following figure illustrates the generation of the second layer</span>
+<span class="sd">                boundary curves.</span>
+
+<span class="sd">                .. _createLayerBounds2:</span>
+<span class="sd">                .. figure:: meridionalFigs/createLayerBounds2.png</span>
+<span class="sd">                   :width: 70%</span>
+<span class="sd">                   :align: center</span>
+
+<span class="sd">                   Creation of the second and fourth layer boundary curves (blue) extending from the wall curves into the flow domain.</span>
+<span class="sd">            </span>
+<span class="sd">            **Calculate a Vector Pointing Into the Center**</span>
+
+<span class="sd">                The vector ``insideVec`` is created by subtracting the global center</span>
+<span class="sd">                point ``speCenter_`` from the shared point of the two wall curves. This</span>
+<span class="sd">                results in a vector pointing from the shared point toward the interior</span>
+<span class="sd">                of the flow domain.</span>
+<span class="sd">            </span>
+<span class="sd">            **Calculate the Normal Vector, Check the Direction and Calculate the Length**</span>
+
+<span class="sd">                The normal vector ``normalVec`` of curve ``v0`` at the shared</span>
+<span class="sd">                point is defined with the length specified with ``thickness`` </span>
+<span class="sd">                (:math:`t_{Layer}`). </span>
+<span class="sd">                By calculating the dot product of the vectors ``normalVec`` and</span>
+<span class="sd">                ``insideVec``, it can be determined whether ``normalVec`` points toward</span>
+<span class="sd">                the interior or exterior of the flow domain. If the dot product is</span>
+<span class="sd">                negative, the direction of ``normalVec`` is reversed by multiplying it</span>
+<span class="sd">                with ``-1``.</span>
+<span class="sd">            </span>
+<span class="sd">                The length of the layer boundary curve is calculated from the length of</span>
+<span class="sd">                ``normalVec`` and the angle between ``normalVec`` and ``layerVec``</span>
+<span class="sd">                (see :numref:`createLayerBounds2`).</span>
+<span class="sd">            </span>
+<span class="sd">            **Create the Layer Boundary**</span>
+
+<span class="sd">                The layer boundary curve is constructed between the points</span>
+<span class="sd">                :math:`P_0` and :math:`P_1`. The point :math:`P_1` is calculated from</span>
+<span class="sd">                the point :math:`P_0` by adding the direction vector ``layerVec``</span>
+<span class="sd">                (:math:`\mathbf{v_{mean}}`) multiplied by the required layer thickness.</span>
+
+<span class="sd">                .. math:: </span>
+<span class="sd">                 </span>
+<span class="sd">                   P_1 = P_0 + \\mathbf{v_{mean}} * t_{Layer} / cos(\lambda)</span>
+
+<span class="sd">                The resulting curve is stored in the list ``layerStreamOrtho``.</span>
+<span class="sd">            </span>
+<span class="sd">            **Create third Boundary Curve**</span>
+
+<span class="sd">                The third boundary curve is generated using the method</span>
+<span class="sd">                :meth:`layerCurve`. The method takes the list</span>
+<span class="sd">                ``layerStreamOrtho``, the current wall curve ``v0``, and the current</span>
+<span class="sd">                iteration index ``i`` as input arguments.</span>
+
+<span class="sd">                The generation of the curve is controlled by the layer thickness</span>
+<span class="sd">                ``thickness`` and the support point positions defined in ``supports``.</span>
+<span class="sd">                The returned curve ``ext`` is stored in the list</span>
+<span class="sd">                ``layerParallel``.</span>
+
+<span class="sd">                The creation of the third layer boundary curve is illustrated in the</span>
+<span class="sd">                following figure.</span>
+
+<span class="sd">                .. _createLayerBounds3:</span>
+<span class="sd">                .. figure:: meridionalFigs/createLayerBounds3.png</span>
+<span class="sd">                   :width: 75%</span>
+<span class="sd">                   :align: center</span>
+
+<span class="sd">                   Creation of the third layer boundary curve (blue) extending into the</span>
+<span class="sd">                   flow domain.</span>
+<span class="sd">            </span>
+<span class="sd">            **Append List of Boundary Curves**</span>
+
+<span class="sd">                The boundary curves of the current layer face are stored in the list</span>
+<span class="sd">                ``newLayer``. In this list, the boundary curves are ordered according</span>
+<span class="sd">                to the numbering convention used throughout this documentation, with the</span>
+<span class="sd">                wall curve ``v0`` forming the first entry.</span>
+
+<span class="sd">                The second entry contains the curve in ``layerStreamOrtho`` generated in</span>
+<span class="sd">                the current iteration. The fourth entry contains the curve in</span>
+<span class="sd">                ``layerStreamOrtho`` generated in the previous iteration. The third</span>
+<span class="sd">                entry contains the curve stored in ``layerParallel``.</span>
+
+<span class="sd">                The following figure shows all boundary curves surrounding the layer</span>
+<span class="sd">                faces together with their orientations. For the first layer face, the</span>
+<span class="sd">                numbering of the boundary curves is shown explicitly.</span>
+
+<span class="sd">                .. _createLayerBounds4:</span>
+<span class="sd">                .. figure:: meridionalFigs/createLayerBounds4.png</span>
+<span class="sd">                   :width: 70%</span>
+<span class="sd">                   :align: center</span>
+
+<span class="sd">                   All layer boundary curves surrounding the layer face (blue).</span>
+
+<span class="sd">                The list ``newLayer`` is appended to the list ``returnBounds``.</span>
+<span class="sd">        </span>
+<span class="sd">        After the loop has concluded, the curve ``unstructOnRotAxis`` is</span>
+<span class="sd">        appended to the list ``layerParallel`` if it exists.</span>
+
+<span class="sd">        The method returns the lists ``returnBounds``, ``on_rad_zero``, and</span>
+<span class="sd">        ``layerParallel``.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># preparing lists</span>
+        <span class="c1">#</span>
+
+        <span class="c1"># global boundaries of the flow domain</span>
+        <span class="n">boundsGlob</span> <span class="o">=</span> <span class="n">inOutCurves</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="c1"># second and fourth layer boundaries between the special curves</span>
+        <span class="c1"># will extend from the channel curves inside the domain, orthogonally to streamwise direction</span>
+        <span class="n">layerStreamOrtho</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c1"># third layer boundaries</span>
+        <span class="c1"># layerboundaries which will be parallel to channel curves</span>
+        <span class="n">layerParallel</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># list for return of the boundaries (will be explained later)</span>
+        <span class="n">returnBounds</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c1"># list which tracks if the layer will end on a radius of zero </span>
+        <span class="c1"># will be used for mesh generation later</span>
+        <span class="n">on_rad_zero</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">unstructOnRotAxis</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># first loop</span>
+        <span class="c1"># iterating over all curves and deciding which curves get Layers</span>
+        <span class="c1">#</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">layerCurve</span><span class="p">)):</span>
+            <span class="c1">#</span>
+            <span class="c1"># checking if the curve has a radius of zero</span>
+            <span class="c1">#</span>
+            <span class="n">rz_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rz_xyz</span><span class="p">(</span><span class="n">layerCurve</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getPointPercent</span><span class="p">(</span><span class="mf">0.0</span><span class="p">))</span>
+            <span class="n">rz_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rz_xyz</span><span class="p">(</span><span class="n">layerCurve</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getPointPercent</span><span class="p">(</span><span class="mf">1.0</span><span class="p">))</span>
+            <span class="n">onRotAxis_0</span> <span class="o">=</span> <span class="n">analyticGeometry</span><span class="o">.</span><span class="n">inXYZTolerance</span><span class="p">(</span><span class="n">rz_0</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">onRotAxis_1</span> <span class="o">=</span> <span class="n">analyticGeometry</span><span class="o">.</span><span class="n">inXYZTolerance</span><span class="p">(</span><span class="n">rz_1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;speHub: |&lt;- </span><span class="si">%5.2f</span><span class="s2"> --- </span><span class="si">%5.2f</span><span class="s2"> -&gt;|&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rz_0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rz_1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="c1"># if the radius is zero the curve will be assigned as the second global boundary</span>
+            <span class="c1"># the layers will end here in streamwise direction</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="n">onRotAxis_0</span> <span class="ow">and</span> <span class="n">onRotAxis_1</span><span class="p">:</span>                    
+                
+                <span class="c1"># overwrites the outlet curve as global boundary</span>
+                <span class="n">boundsGlob</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">layerCurve</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Set </span><span class="si">%s</span><span class="s2"> curve no. </span><span class="si">%i</span><span class="s2"> as the global layer boundary&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+                <span class="n">on_rad_zero</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                
+                <span class="c1"># saving the segment of the curve from the thickness to the maximum </span>
+                <span class="c1">#  will later be a curve for the segment of the unstructured mesh</span>
+                <span class="n">lc</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">layerCurve</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">()</span>
+                <span class="n">unstructOnRotAxis</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="p">(</span>
+                    <span class="n">trimmedCurve_uBounds</span><span class="p">(</span>
+                        <span class="n">lc</span><span class="p">,</span> <span class="n">lc</span><span class="o">.</span><span class="n">u_l</span><span class="p">(</span><span class="n">thickness</span><span class="p">),</span> <span class="n">lc</span><span class="o">.</span><span class="n">getUMax</span><span class="p">()</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                <span class="p">)</span>
+
+                <span class="k">del</span> <span class="n">layerCurve</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">break</span>
+
+            <span class="c1">#</span>
+            <span class="c1"># else False is appended to on_rad_zero</span>
+            <span class="c1">#</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">on_rad_zero</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># second loop</span>
+        <span class="c1"># iterating over curves and deciding between which curves a layerStreamOrtho curve </span>
+        <span class="c1"># should be created and which curves should be combined</span>
+        <span class="c1">#</span>
+        <span class="n">speCurve</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">current_curve</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">layerCurve</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># iterating over the curves</span>
+        <span class="c1"># if defined curve segments have a steady transition and are not created as a split</span>
+        <span class="c1">#  the curves will be combined and no layer boundary is defined between them</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">layerCurve</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+
+            <span class="n">v0</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">layerCurve</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">v1</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">layerCurve</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+
+            <span class="n">v0_firstDer</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">v0</span><span class="o">.</span><span class="n">firstDerUPercent</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">v1_firstDer</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">v1</span><span class="o">.</span><span class="n">firstDerUPercent</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+            <span class="n">angle</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">v0_firstDer</span><span class="p">,</span> <span class="n">v1_firstDer</span><span class="p">)</span>
+            
+            <span class="c1"># condition for combining the curves:</span>
+            <span class="n">is_steady</span> <span class="o">=</span> <span class="p">(</span><span class="n">angle</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">))</span>
+            
+            <span class="c1"># if the condition is fulfilled the curves will be combined</span>
+            <span class="c1"># no splits will be made here</span>
+            <span class="k">if</span> <span class="n">is_steady</span><span class="p">:</span>
+                <span class="n">current_curve</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="p">(</span>
+                    <span class="n">bSplineCurve_curveConnectConstructOCC</span><span class="p">(</span>
+                        <span class="n">current_curve</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">(),</span>
+                        <span class="n">v1</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">()</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                <span class="p">)</span>
+                <span class="k">del</span> <span class="n">on_rad_zero</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Combining curves </span><span class="si">%i</span><span class="s2"> and </span><span class="si">%i</span><span class="s2"> to make one layer&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+            <span class="c1"># else the curves will be appended</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">speCurve</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_curve</span><span class="p">)</span>
+                <span class="n">current_curve</span> <span class="o">=</span> <span class="n">v1</span>
+
+        <span class="c1"># appending the last curve outside of the loop</span>
+        <span class="c1"># speCurve will be used in the rest of this method</span>
+        <span class="n">speCurve</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_curve</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating </span><span class="si">%i</span><span class="s2"> Layers on </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">speCurve</span><span class="p">),</span> <span class="n">lab</span><span class="p">))</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># third loop</span>
+        <span class="c1"># iterate over all curves and create the bounding curves</span>
+        <span class="c1">#</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">speCurve</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            
+            <span class="c1"># the first layer boundary is built from the first global boundary</span>
+            <span class="c1">#  (the last interface in streamwise direction)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># check if the direction of the interface is correct</span>
+                <span class="c1">#  if its not correct, the curve will be reversed for trimming</span>
+                <span class="n">base</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">speCurve</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">()</span>  
+                <span class="n">dc</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">boundsGlob</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">()</span>
+                <span class="n">distance</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span>
+                    <span class="n">base</span><span class="o">.</span><span class="n">pointPercent</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">dc</span><span class="o">.</span><span class="n">pointPercent</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">analyticGeometry</span><span class="o">.</span><span class="n">inXYZTolerance</span><span class="p">(</span><span class="n">distance</span><span class="p">):</span>                  
+                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Reverse direction. distance = </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">distance</span><span class="p">))</span> 
+                    <span class="n">dc</span> <span class="o">=</span> <span class="n">geomCurve_curveReverseConstructOCC</span><span class="p">(</span><span class="n">dc</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                    <span class="n">direction</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>          
+                
+                <span class="c1"># trimms the global boundary at the thickness of the layer</span>
+                <span class="n">layerStreamOrtho</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">analyticCurve</span><span class="p">(</span>
+                        <span class="n">trimmedCurve_uBounds</span><span class="p">(</span>
+                            <span class="n">dc</span><span class="p">,</span> <span class="n">dc</span><span class="o">.</span><span class="n">getUMin</span><span class="p">(),</span> <span class="n">dc</span><span class="o">.</span><span class="n">u_l</span><span class="p">(</span><span class="n">thickness</span><span class="p">)</span> 
+                        <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Created orthogonal layer boundary no. </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+            
+            <span class="c1"># the last layer boundary is built from the second global boundary</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">speCurve</span><span class="p">):</span>
+                <span class="n">base</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">speCurve</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">()</span>  
+                <span class="n">dc</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">boundsGlob</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">()</span>
+                <span class="n">distance</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span>
+                    <span class="n">base</span><span class="o">.</span><span class="n">pointPercent</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">dc</span><span class="o">.</span><span class="n">pointPercent</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">analyticGeometry</span><span class="o">.</span><span class="n">inXYZTolerance</span><span class="p">(</span><span class="n">distance</span><span class="p">):</span>                  
+                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Reverse direction. distance = </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">distance</span><span class="p">))</span> 
+                    <span class="n">dc</span> <span class="o">=</span> <span class="n">geomCurve_curveReverseConstructOCC</span><span class="p">(</span><span class="n">dc</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                    <span class="n">direction</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+                
+                <span class="n">layerStreamOrtho</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">analyticCurve</span><span class="p">(</span>
+                        <span class="n">trimmedCurve_uBounds</span><span class="p">(</span>  
+                            <span class="n">dc</span><span class="p">,</span> <span class="n">dc</span><span class="o">.</span><span class="n">getUMin</span><span class="p">(),</span> <span class="n">dc</span><span class="o">.</span><span class="n">u_l</span><span class="p">(</span><span class="n">thickness</span><span class="p">)</span>          
+                        <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Created orthogonal layer boundary no. </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+                <span class="c1"># calculates the parallel curve to the channel curve</span>
+                <span class="n">v0</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">speCurve</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layerCurve</span><span class="p">(</span>
+                        <span class="n">layerStreamOrtho</span><span class="p">,</span> 
+                        <span class="n">i</span><span class="p">,</span>
+                        <span class="n">v0</span><span class="p">,</span> 
+                        <span class="n">thickness</span><span class="p">,</span> 
+                        <span class="n">supports</span><span class="p">,</span>
+                        <span class="n">lab</span>
+                <span class="p">)</span>   
+                <span class="n">layerParallel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Created parallel layer boundary on curve no. </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+                <span class="c1"># appends the boundary curves for this boundary to the return list</span>
+                <span class="n">newLayer</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">v0</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span> 
+                        <span class="n">layerStreamOrtho</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span> 
+                        <span class="n">layerParallel</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span> 
+                        <span class="n">layerStreamOrtho</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+                    <span class="p">]</span>
+                <span class="n">returnBounds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newLayer</span><span class="p">)</span>
+
+ 
+            <span class="c1"># for the curves inbetween the global boundrries the layers curves othogonal to the </span>
+            <span class="c1">#  streamwise direction have to be calculated</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># get the two curves which are in sequence to each other</span>
+                <span class="n">v0</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">speCurve</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">v1</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">speCurve</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                
+                <span class="c1"># calculates the resulting vector of the gradients at the intersect point</span>
+                <span class="c1"># WARNING: this will retun the wrong vector if both curves have the same gradient </span>
+                <span class="c1">#layerVec = dtLinearAlgebra.normalize(</span>
+                <span class="c1">#    dtLinearAlgebra.normalize(v0.firstDerUPercent(1.0))</span>
+                <span class="c1">#    + dtLinearAlgebra.normalize(v1.firstDerUPercent(0.0))*(-1)</span>
+                <span class="c1">#)</span>
+
+                <span class="c1"># calculates the direction of the layer curve as the sum of the normals </span>
+                <span class="c1">#  of the curves at the intersect point</span>
+                <span class="n">layerVec</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span>
+                        <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span>
+                            <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">crossProduct</span><span class="p">(</span>
+                                <span class="n">v0</span><span class="o">.</span><span class="n">firstDerUPercent</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalAxis_</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="o">+</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span>
+                            <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">crossProduct</span><span class="p">(</span>
+                                <span class="n">v1</span><span class="o">.</span><span class="n">firstDerUPercent</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalAxis_</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
+                <span class="c1"># this vector connects the start point of the layer curve </span>
+                <span class="c1">#  with the center of the bounding box of the special channel</span>
+                <span class="c1"># it will be used to check if the layer curve points inside the domain</span>
+                <span class="n">insideVec</span> <span class="o">=</span> <span class="n">dtVector3</span><span class="p">(</span>
+                    <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">v0</span><span class="p">)</span><span class="o">.</span><span class="n">getPointPercent</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">speCenter_</span>
+                <span class="p">)</span>
+                
+                <span class="c1"># calculating a normalvector on the origin point of the layer </span>
+                <span class="c1"># this vector will have the length of the layer thickness</span>
+                <span class="n">normalVec</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span>
+                    <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">crossProduct</span><span class="p">(</span>
+                        <span class="n">v0</span><span class="o">.</span><span class="n">firstDerUPercent</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalAxis_</span>
+                    <span class="p">)</span>
+                <span class="p">)</span> <span class="o">*</span> <span class="n">thickness</span>
+                
+                <span class="c1"># comparing the vectors </span>
+                <span class="c1"># if the dot product is smaller than zero the normalvector </span>
+                <span class="c1">#  points out of the domain and has to be reversed (times -1)</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">dotProduct</span><span class="p">(</span><span class="n">normalVec</span><span class="p">,</span> <span class="n">insideVec</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">direction</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                    <span class="n">normalVec</span> <span class="o">=</span> <span class="n">normalVec</span><span class="o">*</span><span class="n">direction</span>
+                
+                <span class="c1"># extracting the length of the layer boundary </span>
+                <span class="c1">#  so the thickness of the layer is consistent with the normal vector</span>
+                <span class="n">angle</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">layerVec</span><span class="p">,</span> <span class="n">normalVec</span><span class="p">)</span>
+                <span class="n">length</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">normalVec</span><span class="p">)</span><span class="o">/</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+                
+                <span class="c1"># creating the layer boundary curve </span>
+                <span class="c1"># the lenth of the curve is set so the thickens is consistent at the </span>
+                <span class="c1">#  normal at 100 percent of the curve</span>
+                <span class="n">layerStreamOrtho</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">analyticCurve</span><span class="p">(</span>
+                        <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
+                            <span class="n">vectorDtPoint3</span><span class="p">()</span>
+                            <span class="o">&lt;&lt;</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">v0</span><span class="p">)</span><span class="o">.</span><span class="n">getPointPercent</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="o">&lt;&lt;</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">v0</span><span class="p">)</span><span class="o">.</span><span class="n">getPointPercent</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">layerVec</span> <span class="o">*</span> <span class="n">length</span><span class="p">),</span>
+                            <span class="mi">1</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Created orthogonal layer boundary no. </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+
+                <span class="c1"># creating the layer curve parallel to the channel curve</span>
+                <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layerCurve</span><span class="p">(</span><span class="n">layerStreamOrtho</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">thickness</span><span class="p">,</span> <span class="n">supports</span><span class="p">,</span> <span class="n">lab</span><span class="p">)</span>
+                <span class="n">layerParallel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Created parallel layer boundary on curve no. </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+
+                <span class="c1"># appending the curves for return</span>
+                <span class="c1"># the curves of one layer are appended in clockwise direction</span>
+                <span class="n">newLayer</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">v0</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>                     <span class="c1"># channel segment</span>
+                        <span class="n">layerStreamOrtho</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>    <span class="c1"># ortho0</span>
+                        <span class="n">layerParallel</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>     <span class="c1"># parallel to channel</span>
+                        <span class="n">layerStreamOrtho</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>   <span class="c1"># ortho1</span>
+                    <span class="p">]</span>
+                <span class="n">returnBounds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newLayer</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished creating </span><span class="si">%s</span><span class="s2"> layer curves&quot;</span> <span class="o">%</span> <span class="n">lab</span><span class="p">)</span> 
+            
+        <span class="c1"># appending the curve on radius 0 if it exists</span>
+        <span class="c1"># the parallel boundaries and the radius 0 curve are needed as boundaries for the</span>
+        <span class="c1">#  unstructured mesh</span>
+        <span class="k">if</span> <span class="n">unstructOnRotAxis</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">layerParallel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unstructOnRotAxis</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">returnBounds</span><span class="p">,</span> <span class="n">on_rad_zero</span><span class="p">,</span> <span class="n">layerParallel</span> </div>
+
+
+    <span class="c1"># creates the layer curve parallel to the channel curves</span>
+    <span class="c1"># the curve is created from the two points at 100 percent of the matching </span>
+    <span class="c1">#  curves orthogonally to the streamwise direction and offsets from the points </span>
+    <span class="c1">#  of the channel curve at the support points</span>
+<div class="viewcode-block" id="analyticGeometry_layerRegion.layerCurve">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.layerCurve">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">layerCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layerStreamOrtho</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">curve</span><span class="p">,</span> <span class="n">thickness</span><span class="p">,</span> <span class="n">supports</span><span class="p">,</span> <span class="n">lab</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create third boundary curve extending paralell to the wall.</span>
+
+<span class="sd">        This method:</span>
+
+<span class="sd">            - Creates third layer bounding curve from the end points of the second and</span>
+<span class="sd">              third bounding curves and support points.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        layerStreamOrtho: List[analyticGeometry]</span>
+<span class="sd">          Boundary curves of the layer faces orthogonal to the wall curve.</span>
+<span class="sd">        i: int</span>
+<span class="sd">          Iterator, iD of the wall curve.</span>
+<span class="sd">        curve: analyticGeometry</span>
+<span class="sd">          Wall curve</span>
+<span class="sd">        thickness: float</span>
+<span class="sd">          Layer thickness</span>
+<span class="sd">        supports: List[float]</span>
+<span class="sd">          List with positions of support points in percent along wall curve</span>
+<span class="sd">        lab: string</span>
+<span class="sd">          label</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ext: analyticGeometry</span>
+<span class="sd">          Created layer curve inside the layer region</span>
+
+<span class="sd">        </span>
+<span class="sd">        The inputs to this method are the list of second and fourth layer</span>
+<span class="sd">        boundary curves ``layerStreamOrtho``, the wall curve ``curve`` for</span>
+<span class="sd">        which the third boundary curve is created, and the iteration index</span>
+<span class="sd">        ``i`` of this curve within the loop in</span>
+<span class="sd">        :meth:`createLayerBounds`.</span>
+
+<span class="sd">        The generation of the boundary curve is controlled by the layer</span>
+<span class="sd">        thickness ``thickness`` and the number and positions of support points</span>
+<span class="sd">        specified in ``supports``.</span>
+
+<span class="sd">        The following figure illustrates the creation of the third layer</span>
+<span class="sd">        boundary curve.</span>
+
+<span class="sd">        .. _layerCurve:</span>
+<span class="sd">        .. figure:: meridionalFigs/layerCurve.png</span>
+<span class="sd">           :width: 60%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Creation of the third layer boundary curve (blue) using the method</span>
+<span class="sd">           :meth:`layerCurve`.</span>
+<span class="sd">        </span>
+<span class="sd">        **Get second and fourth Boundary Curves**</span>
+
+<span class="sd">            The iteration index ``i`` is used to retrieve the second and fourth boundary</span>
+<span class="sd">            curves of the current layer from ``layerStreamOrtho``. These curves are</span>
+<span class="sd">            assigned to the variables ``bound0`` and ``bound1``.</span>
+<span class="sd">        </span>
+<span class="sd">        **Calculate Offset Direction**</span>
+
+<span class="sd">            Using the method :meth:`calculateNormalAxis`, the center point of the</span>
+<span class="sd">            bounding box surrounding the two boundary curves and the wall curve is</span>
+<span class="sd">            calculated and stored in ``layerCenter``.</span>
+
+<span class="sd">            This point is used to define the vector ``insideVec``, which points from</span>
+<span class="sd">            the point located at 50 % of the parameter range of ``curve`` toward the</span>
+<span class="sd">            interior of the layer face.</span>
+
+<span class="sd">            The vector ``normalVec`` is created to point in the normal direction of</span>
+<span class="sd">            the wall curve at 50 % of its parameter span. It is calculated as the</span>
+<span class="sd">            cross product of the tangent vector of the curve at this point and the</span>
+<span class="sd">            global normal axis ``normalAxis_``.</span>
+
+<span class="sd">            Using the dot product of ``normalVec`` and ``insideVec``, the offset</span>
+<span class="sd">            direction from the wall curve is determined through the variable</span>
+<span class="sd">            ``direction``, which is assigned either ``1`` or ``-1``.</span>
+<span class="sd">        </span>
+<span class="sd">        **Create Boundary Curve**</span>
+
+<span class="sd">            A container object of the `dtOO` class ``vectorDtPoint3`` is created.</span>
+<span class="sd">            The end point of the fourth layer boundary curve ``bound0`` is appended</span>
+<span class="sd">            to this container.</span>
+
+<span class="sd">            By iterating over ``supports``, the support points :math:`P_s` are</span>
+<span class="sd">            generated. Each entry in ``supports`` contains a floating-point value</span>
+<span class="sd">            defining a relative parameter position along the wall curve.</span>
+
+<span class="sd">            For each support value, a base point :math:`P_0` is calculated on the</span>
+<span class="sd">            wall curve.</span>
+
+<span class="sd">            The support point is then created by offsetting :math:`P_0` in the</span>
+<span class="sd">            normal direction of the wall curve at :math:`P_0`.</span>
+
+<span class="sd">            The normal direction is defined as the cross product between the tangent</span>
+<span class="sd">            direction :math:`\mathbf{t}` at :math:`P_0` and the global normal axis</span>
+<span class="sd">            ``normalAxis_`` (:math:`\mathbf{n_{global}}`).</span>
+
+<span class="sd">            The offset length is prescribed by ``layer_thickness``</span>
+<span class="sd">            (:math:`t_{Layer}`). The value of ``direction`` (:math:`k`) ensures</span>
+<span class="sd">            that the support points are generated inside the flow domain.</span>
+
+<span class="sd">            The following equation describes the calculation of a support point:</span>
+
+
+<span class="sd">            .. math::</span>
+
+<span class="sd">               P_s = P_0 + \\frac{\\mathbf{t} \\times \\mathbf{n_{global}}}{\\|\\mathbf{t} \\times \\mathbf{n_{global}}\\|} * t_{Layer} * k</span>
+
+<span class="sd">            The generated support points are appended to the point container.</span>
+
+<span class="sd">            After all support points have been generated, the end point of the</span>
+<span class="sd">            second layer boundary curve ``bound1`` is appended to the container.</span>
+
+<span class="sd">            The third layer boundary curve is then created as a</span>
+<span class="sd">            ``bSplineCurve_pointConstructOCC`` object using the points stored in the</span>
+<span class="sd">            container.</span>
+
+<span class="sd">        The method returns the generated curve.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;creating layer curve no. </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span> 
+        <span class="c1"># finding the correct curves for the layer</span>
+        <span class="c1"># bound is the curve orthogonal to the streamwise direction</span>
+        <span class="n">bound0</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">layerStreamOrtho</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">()</span>
+        <span class="n">bound1</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">layerStreamOrtho</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">()</span>
+        <span class="n">curve0</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">()</span>
+        
+
+        <span class="c1"># setting the direction of the offset by checking the direction of the normalvector</span>
+        <span class="c1"># as insideVector the centerpoint of the layer is used</span>
+        <span class="n">layer_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">layerStreamOrtho</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">layerStreamOrtho</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">curve</span><span class="p">]</span>
+        <span class="n">layerBox</span><span class="p">,</span> <span class="n">layerCenter</span><span class="p">,</span> <span class="n">unusedBb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateNormalAxis</span><span class="p">(</span><span class="n">layer_list</span><span class="p">)</span>
+        <span class="n">insideVec</span> <span class="o">=</span> <span class="n">dtVector3</span><span class="p">(</span>
+            <span class="n">curve</span><span class="o">.</span><span class="n">getPointPercent</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">-</span> <span class="n">layerCenter</span>
+        <span class="p">)</span>
+        <span class="n">normalVec</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">crossProduct</span><span class="p">(</span>
+            <span class="n">curve0</span><span class="o">.</span><span class="n">firstDerPercent</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalAxis_</span>
+        <span class="p">)</span>
+        <span class="n">direction</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">dotProduct</span><span class="p">(</span><span class="n">normalVec</span><span class="p">,</span> <span class="n">insideVec</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;changing offset direction&quot;</span><span class="p">)</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                
+        <span class="c1"># Create point container;</span>
+        <span class="c1"># first and last points are set as the 100 percent points of the orthogonal curves</span>
+        <span class="c1"># the points inbetween are created from an offset of the support points of the channel curves</span>
+        <span class="n">container</span> <span class="o">=</span> <span class="n">vectorDtPoint3</span><span class="p">()</span>
+        <span class="c1"># first point</span>
+        <span class="n">container</span> <span class="o">=</span> <span class="n">container</span> <span class="o">&lt;&lt;</span> <span class="n">bound0</span><span class="o">.</span><span class="n">pointPercent</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="c1"># support points</span>
+        <span class="k">for</span> <span class="n">support</span> <span class="ow">in</span> <span class="n">supports</span><span class="p">:</span>                                    
+            <span class="n">container</span> <span class="o">=</span> <span class="n">container</span> <span class="o">&lt;&lt;</span> <span class="p">(</span>
+                <span class="n">curve0</span><span class="o">.</span><span class="n">pointPercent</span><span class="p">(</span><span class="n">support</span><span class="p">)</span>   
+                <span class="o">+</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span>
+                    <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">crossProduct</span><span class="p">(</span>
+                        <span class="n">curve0</span><span class="o">.</span><span class="n">firstDerPercent</span><span class="p">(</span><span class="n">support</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalAxis_</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="o">*</span> <span class="n">thickness</span>
+                <span class="o">*</span> <span class="n">direction</span>
+            <span class="p">)</span>
+
+            <span class="c1">## debug statement to plot the vectors from the channel wall to the parallels</span>
+            <span class="c1">#self.appendAnalyticGeometry(</span>
+            <span class="c1">#    analyticCurve(</span>
+            <span class="c1">#        bSplineCurve_pointConstructOCC(</span>
+            <span class="c1">#            vectorDtPoint3()</span>
+            <span class="c1">#              &lt;&lt; curve0.pointPercent(support)</span>
+            <span class="c1">#              &lt;&lt; (curve0.pointPercent(support)</span>
+            <span class="c1">#                    + dtLinearAlgebra.normalize(</span>
+            <span class="c1">#                        dtLinearAlgebra.crossProduct(</span>
+            <span class="c1">#                            curve0.firstDerPercent(support), </span>
+            <span class="c1">#                            self.normalAxis_</span>
+            <span class="c1">#                        )</span>
+            <span class="c1">#                    )</span>
+            <span class="c1">#                * thickness * direction</span>
+            <span class="c1">#                ),</span>
+            <span class="c1">#              1</span>
+            <span class="c1">#        ).result()</span>
+            <span class="c1">#    ),</span>
+            <span class="c1">#    &quot;debug_supportVector_&quot;+lab+str(i)+&quot;_&quot;+str(support)</span>
+            <span class="c1">#)</span>
+        <span class="c1"># last point</span>
+        <span class="n">container</span> <span class="o">=</span> <span class="n">container</span> <span class="o">&lt;&lt;</span> <span class="n">bound1</span><span class="o">.</span><span class="n">pointPercent</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>          
+
+        <span class="c1"># creating the curve from the point container</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="p">(</span>
+                <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ext</span></div>
+
+
+<div class="viewcode-block" id="analyticGeometry_layerRegion.rz_xyz">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.rz_xyz">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rz_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pp</span><span class="p">:</span> <span class="n">dtPoint3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dtPoint2</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform a point in cartesian coordinates into cylindric coordinates.</span>
+
+<span class="sd">        This method:</span>
+
+<span class="sd">            - Transforms a point in the xyz-coordinates into cylindric coordinates.</span>
+<span class="sd">            - Returns radius and z-position of the point.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pp: dtPoint3</span>
+<span class="sd">          Point in xyz-coordinates.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        : dtPoint2</span>
+<span class="sd">          dtPoint2 object containing the radius and z-position of pp</span>
+
+<span class="sd">        The point ``pp`` in carthesian coordinates is reparametrized in cylindirc </span>
+<span class="sd">        coordinates based on the origin point ``origin_`` and the rotational vector </span>
+<span class="sd">        ``rotVector_``. </span>
+
+<span class="sd">        Returns the radius ``rr`` and the z-coordinate ``zz`` in a `dtPoint2` </span>
+<span class="sd">        object.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vv</span> <span class="o">=</span> <span class="n">pp</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_</span>
+        <span class="n">zz</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">dotProduct</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotVector_</span><span class="p">)</span>
+        <span class="n">rr</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">vv</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotVector_</span> <span class="o">*</span> <span class="n">zz</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dtPoint2</span><span class="p">(</span><span class="n">rr</span><span class="p">,</span> <span class="n">zz</span><span class="p">)</span></div>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># calculate the normal axis of the whole domain </span>
+    <span class="c1">#</span>
+<div class="viewcode-block" id="analyticGeometry_layerRegion.calculateNormalAxis">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.calculateNormalAxis">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculateNormalAxis</span><span class="p">(</span><span class="n">curves</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the bounding box and normal axis of curves in one plane.</span>
+<span class="sd">        </span>
+<span class="sd">        This method:</span>
+<span class="sd">            </span>
+<span class="sd">            - Creates a bounding box around the curves.</span>
+<span class="sd">            - Calculates the normal axis on the bounding box.</span>
+<span class="sd">            - Calculates the center of the bounding box.</span>
+<span class="sd">            - Returns normal axis, center and bounding box.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        curves: List[analyticGeometry]</span>
+<span class="sd">          List of curves.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        normalAxis: dtVector3</span>
+<span class="sd">          Normal axis of the bounding box.</span>
+<span class="sd">        bbCenter: dtPoint3</span>
+<span class="sd">          Center point of the bounding box.</span>
+<span class="sd">        bb: pairDtPoint3</span>
+<span class="sd">          Bounding box points.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">vv</span> <span class="o">=</span> <span class="n">vectorDtPoint3</span><span class="p">()</span>                 
+        <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="n">curves</span><span class="p">:</span>
+            <span class="n">vv</span> <span class="o">=</span> <span class="n">vv</span> <span class="o">&lt;&lt;</span> <span class="n">curve</span><span class="o">.</span><span class="n">getPointPercent</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">curve</span><span class="o">.</span><span class="n">getPointPercent</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span> 
+        <span class="c1"># calculates a bounding box of all the start and endpoints of the curves</span>
+        <span class="n">bb</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">boundingBox</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span>                                    
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Create bounding box from </span><span class="si">%d</span><span class="s2"> points.&quot;</span> <span class="o">%</span> <span class="n">vv</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;  bb[0] : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;  bb[1] : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;  dist  : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dist</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dist</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="c1"># calculates the normal axis</span>
+        <span class="n">normalAxis</span> <span class="o">=</span> <span class="n">dtVector3</span><span class="p">(</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">analyticGeometry</span><span class="o">.</span><span class="n">inXYZTolerance</span><span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">analyticGeometry</span><span class="o">.</span><span class="n">inXYZTolerance</span><span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">analyticGeometry</span><span class="o">.</span><span class="n">inXYZTolerance</span><span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="mi">2</span><span class="p">])),</span>
+        <span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;  -&gt; normalAxis = (</span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">)&quot;</span>
+            <span class="o">%</span> <span class="p">(</span><span class="n">normalAxis</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">normalAxis</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">normalAxis</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>     <span class="c1"># normal axis to bounding box</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># calculationg center point of bounding box</span>
+        <span class="n">bbCenter</span> <span class="o">=</span> <span class="n">dtPoint3</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Centerpoint : [</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bbCenter</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bbCenter</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">bbCenter</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">normalAxis</span><span class="p">,</span> <span class="n">bbCenter</span><span class="p">,</span> <span class="n">bb</span></div>
+
+    
+<div class="viewcode-block" id="analyticGeometry_layerRegion.build">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.build">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the instantiated geometries in paraview if debug is enabeled.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+
+<span class="sd">        This method allows the instantiated geometries to be plotted in `ParaView`, by</span>
+<span class="sd">        adding them to the analytic geometry container.</span>
+<span class="sd">        If the code is run in paraview, the geometries can be found with the </span>
+<span class="sd">        `FindAndShow` method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Building </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>        
+                <span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hubLayers_</span><span class="p">:</span>   
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
+                        <span class="n">layer</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
+                        <span class="s2">&quot;debug_hubLayer_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">shroudLayers_</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
+                        <span class="n">layer</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
+                        <span class="s2">&quot;debug_shroudLayer_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">aCurve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unstructVH_</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
+                        <span class="n">aCurve</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
+                        <span class="s2">&quot;debug_unstructBound_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span><span class="o">+</span><span class="mi">1</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hubLayerCurves_</span><span class="p">)):</span>
+                    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hubLayerCurves_</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span> <span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">hubLayerCurves_</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
+                        <span class="s2">&quot;debug_hubLayerCurve_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shroudLayerCurves_</span><span class="p">)):</span>
+                    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shroudLayerCurves_</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span> <span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">shroudLayerCurves_</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
+                        <span class="s2">&quot;debug_shroudLayerCurve_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="c1"># defines which channels will be rotatetd for the debug geometries</span>
+                <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="p">(</span>                
+                    <span class="bp">self</span><span class="o">.</span><span class="n">hubLayers_</span>
+                    <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">shroudLayers_</span>
+                <span class="p">):</span>
+                    <span class="n">off</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.10</span>      <span class="c1"># rotational offset of each channel</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
+                        <span class="n">partRotatingMap2dTo3d</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">rotVector_</span><span class="p">,</span>
+                            <span class="n">channel</span><span class="p">,</span>
+                            <span class="n">off</span> <span class="o">-</span> <span class="mf">0.05</span><span class="p">,</span>         <span class="c1"># min segment in percent </span>
+                            <span class="n">off</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">,</span>         <span class="c1"># max segment in percent</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
+                        <span class="s2">&quot;debug_layer_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">return</span></div>
+
+    
+    <span class="c1"># returns a list containing the hub and shroud layers as well as information </span>
+    <span class="c1">#  on what kind of layer it is</span>
+<div class="viewcode-block" id="analyticGeometry_layerRegion.getLayerList">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.getLayerList">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getLayerList</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">nSlices</span><span class="p">:</span> <span class="nb">int</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span>
+                <span class="n">List</span><span class="p">[</span>
+                    <span class="n">List</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+                <span class="p">]</span>
+            <span class="p">]:</span>      
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the layer volumes and return the layer data.</span>
+
+<span class="sd">        This method:</span>
+
+<span class="sd">            - Rotates the hub and shroud layer faces to create volumes.</span>
+<span class="sd">            - Returns the generated layer data in structured lists.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        nSlices : int</span>
+<span class="sd">            Number of rotationally periodic slices.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        layerList : List[List[List[analyticGeometry] | List[bool]]]</span>
+<span class="sd">            List containing the generated layer volumes and information about</span>
+<span class="sd">            whether a layer is located on a radius of zero.</span>
+
+<span class="sd">            The entries correspond to the following values:</span>
+
+<span class="sd">            - ``layerList[0]``: Hub layers</span>
+<span class="sd">            - ``layerList[1]``: Shroud layers</span>
+<span class="sd">            - ``layerList[i][0]``: List of layer volumes</span>
+<span class="sd">            - ``layerList[i][1]``: List of Boolean values indicating whether</span>
+<span class="sd">              the corresponding layer is located on a radius of zero</span>
+
+
+<span class="sd">        The layer faces stored in ``hubLayers_`` and ``shroudLayers_`` are</span>
+<span class="sd">        rotated around ``rotVector_``. The rotation angle is defined by the</span>
+<span class="sd">        number of slices as:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">           {360^\circ}/{n_{Slices}}</span>
+
+<span class="sd">        The generated layer volumes are stored in the lists ``hubLayer3d`` and</span>
+<span class="sd">        ``shroudLayer3d``.</span>
+
+<span class="sd">        The following figure shows the resulting volumes of the draft tube cone.</span>
+
+<span class="sd">        .. _layers3d0:</span>
+<span class="sd">        .. figure:: meridionalFigs/layers3d.png</span>
+<span class="sd">           :width: 50%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Volumes of the draft tube cone.</span>
+<span class="sd">           Layer faces (blue), inlet (red), and outlet (orange).</span>
+
+<span class="sd">        The hub and shroud layer volumes together with the lists</span>
+<span class="sd">        ``hubRadZero_`` and ``shroudRadZero_`` are returned in the following</span>
+<span class="sd">        format:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            layerList = List[</span>
+<span class="sd">                List[</span>
+<span class="sd">                    List[analyticGeometry],</span>
+<span class="sd">                    List[bool]</span>
+<span class="sd">                ]</span>
+<span class="sd">            ]</span>
+
+<span class="sd">        The entries correspond to the following values:</span>
+
+<span class="sd">        - ``layerList[0]``: Hub layers</span>
+<span class="sd">        - ``layerList[1]``: Shroud layers</span>
+<span class="sd">        - ``layerList[i][0]``: List of layer volumes</span>
+<span class="sd">        - ``layerList[i][1]``: List of Boolean values indicating whether the</span>
+<span class="sd">          corresponding layer is located on a radius of zero</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Request Layer Volumes: </span><span class="si">%i</span><span class="s2"> Slices&quot;</span> <span class="o">%</span> <span class="n">nSlices</span><span class="p">)</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># Create the layer volumes</span>
+        <span class="c1"># partRotatingMap2dTo3d takes the rotation angle in %</span>
+        <span class="c1">#</span>
+        <span class="n">hubLayer3d</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hubLayers_</span><span class="p">:</span>
+            <span class="n">hubLayer3d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">partRotatingMap2dTo3d</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">rotVector_</span><span class="p">,</span> 
+                        <span class="n">layer</span><span class="p">,</span>
+                        <span class="mf">0.00</span><span class="p">,</span>
+                        <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">nSlices</span><span class="p">),</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+                <span class="p">)</span>
+        <span class="n">shroudLayer3d</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">shroudLayers_</span><span class="p">:</span>
+            <span class="n">shroudLayer3d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">partRotatingMap2dTo3d</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">rotVector_</span><span class="p">,</span> 
+                        <span class="n">layer</span><span class="p">,</span>
+                        <span class="mf">0.00</span><span class="p">,</span>
+                        <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">nSlices</span><span class="p">),</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+                <span class="p">)</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># return the layer data in the following nested list:</span>
+        <span class="c1"># layers = [[hub layer lists],[shroud layer list]]</span>
+        <span class="c1"># with:</span>
+        <span class="c1"># [hub layer lists] = [[3d layer domain], [bool list radius zero]]</span>
+        <span class="c1">#</span>
+        <span class="n">layerList</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">[</span><span class="n">hubLayer3d</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hubRadZero_</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">shroudLayer3d</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shroudRadZero_</span><span class="p">]</span>
+                <span class="p">]</span>
+   
+        <span class="k">return</span> <span class="n">layerList</span></div>
+
+    
+    <span class="c1"># returns a multiple bounded volume of the unstructured region</span>
+<div class="viewcode-block" id="analyticGeometry_layerRegion.getUnstructuredRegion">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.getUnstructuredRegion">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getUnstructuredRegion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nSlices</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">]]:</span> 
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create and return the unstructured region together with its</span>
+<span class="sd">        bounding surfaces.</span>
+
+<span class="sd">        This method:</span>
+
+<span class="sd">            - Creates the boundary surfaces of the unstructured region that</span>
+<span class="sd">              connect to the layer volumes.</span>
+<span class="sd">            - Creates the periodic boundary surfaces of the unstructured region</span>
+<span class="sd">              as multiple-bounded surfaces.</span>
+<span class="sd">            - Creates the unstructured region as a multiple-bounded volume.</span>
+<span class="sd">            - Returns the multiple-bounded volume together with its boundary</span>
+<span class="sd">              surfaces.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        nSlices : int</span>
+<span class="sd">            Number of rotationally periodic slices.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        multBoundedVol : multipleBoundedVolume</span>
+<span class="sd">            Unstructured region located between the hub and shroud layers.</span>
+
+<span class="sd">        boundSurf : vectorHandlingAnalyticGeometry</span>
+<span class="sd">            Vector handler containing the boundary surfaces of the</span>
+<span class="sd">            multiple-bounded volume.</span>
+
+
+<span class="sd">        The unstructured region is created as an object of the `dtOO` class</span>
+<span class="sd">        ``multipleBoundedVolume``. The multiple-bounded volume is defined by</span>
+<span class="sd">        its boundary surfaces.</span>
+<span class="sd">        </span>
+<span class="sd">        **Create Boundary Surfaces through the Rotation of Curves**</span>
+
+<span class="sd">            The inlet and outlet surfaces, together with the surfaces connecting</span>
+<span class="sd">            the multiple-bounded volume to the layer volumes, are created from the</span>
+<span class="sd">            curves stored in the vector handler ``unstructVH_``.</span>
+
+<span class="sd">            The surfaces are generated using the `dtOO` class</span>
+<span class="sd">            ``rectangularTrimmedSurface_curveRotateConstructOCC``. This class</span>
+<span class="sd">            creates surfaces by rotating curves around the rotation vector</span>
+<span class="sd">            ``rotVector_`` over the angle ``rotAngle`` defined as:</span>
+
+<span class="sd">            .. math::</span>
+
+<span class="sd">               {360^\circ}/{n_{Slices}}</span>
+
+<span class="sd">            Conditional statements are used to assign labels to the generated</span>
+<span class="sd">            surfaces. Due to the ordering of curves in ``unstructVH_``, the first</span>
+<span class="sd">            and last curves define the inlet and outlet surfaces of the</span>
+<span class="sd">            unstructured region. These surfaces receive the labels</span>
+<span class="sd">            ``interface_unstruct`` and ``outlet_unstruct``.</span>
+
+<span class="sd">            The remaining surfaces connect the unstructured region to the layer</span>
+<span class="sd">            regions and are labeled as ``para`` followed by their position in the</span>
+<span class="sd">            vector handler.</span>
+
+<span class="sd">            Using the method ``degenerated`` of the `dtOO` class</span>
+<span class="sd">            ``analyticSurface``, a check is performed to determine whether any of</span>
+<span class="sd">            the rotated surfaces are degenerated. Degenerated surfaces occur when</span>
+<span class="sd">            the corresponding curve lies on a radius of zero.</span>
+
+<span class="sd">            Only non-degenerated surfaces are appended to the</span>
+<span class="sd">            ``vectorHandlingAnalyticGeometry`` object ``boundSurf``.</span>
+
+<span class="sd">            The following figure shows the boundary surfaces created from the</span>
+<span class="sd">            curves stored in ``unstructVH_``.</span>
+
+<span class="sd">            .. _mbvBounds0:</span>
+<span class="sd">            .. figure:: meridionalFigs/boundingSurfs.png</span>
+<span class="sd">               :width: 50%</span>
+<span class="sd">               :align: center</span>
+
+<span class="sd">               Boundary surfaces of the multiple-bounded volume with inlet (red),</span>
+<span class="sd">               outlet (orange), and layer connection surfaces (blue). The periodic</span>
+<span class="sd">               multiple-bounded surfaces are not shown.</span>
+<span class="sd">        </span>
+<span class="sd">        **Create Periodic Faces as Multiple Boundes Surfaces**</span>
+
+<span class="sd">            The periodic surfaces of the unstructured region slice are created as</span>
+<span class="sd">            multiple-bounded surfaces. These surfaces are generated using the</span>
+<span class="sd">            `dtOO` class ``multipleBoundedSurface``, which takes a set of boundary</span>
+<span class="sd">            curves together with a surrounding bounding box as input.</span>
+
+<span class="sd">            The bounding box is created from the minimum and maximum vertices</span>
+<span class="sd">            stored in ``speBb_``. Based on these vertices, a bounding box</span>
+<span class="sd">            ``m2d`` is generated for the first multiple-bounded surface, extending</span>
+<span class="sd">            0.1 units beyond ``speBb_`` in all directions.</span>
+
+<span class="sd">            The first periodic surface ``mbs1`` is created from ``m2d`` and the</span>
+<span class="sd">            boundary curves stored in ``unstructVH_`` using the class</span>
+<span class="sd">            ``multipleBoundedSurface``. The surface is assigned the label</span>
+<span class="sd">            ``periodicUnstruct_0`` and appended to ``boundSurf``.</span>
+
+<span class="sd">            To create the second periodic surface, a rotational transformation is</span>
+<span class="sd">            applied to both the bounding box and the boundary curves.</span>
+
+<span class="sd">            For this purpose, a `dtTransformer` object is initialized. The</span>
+<span class="sd">            transformation configuration is defined in the ``jsonPrimitive`` object</span>
+<span class="sd">            ``cfg``, where the rotation vector, origin, and rotation angle are set</span>
+<span class="sd">            to ``rotVector_``, ``origin_``, and ``rotAngle``, respectively.</span>
+
+<span class="sd">            The resulting rotation object is stored in ``rot``.</span>
+
+<span class="sd">            By applying ``rot`` to ``m2d``, the rotated bounding box ``m2d_rot``</span>
+<span class="sd">            is created. By iterating over ``unstructVH_`` and applying the same</span>
+<span class="sd">            rotational transformation, the rotated boundary curves are generated and</span>
+<span class="sd">            stored in ``unstructVH_rot``.</span>
+
+<span class="sd">            The second multiple-bounded surface is created analogously to the</span>
+<span class="sd">            first one using ``m2d_rot`` and ``unstructVH_rot``. This surface is</span>
+<span class="sd">            assigned the label ``periodicUnstruct_1`` and appended to</span>
+<span class="sd">            ``boundSurf``.</span>
+<span class="sd">        </span>
+<span class="sd">        **Create Unstructured Region as Multiple Bounded Volume**</span>
+
+<span class="sd">            The unstructured region itself is finally created using the class</span>
+<span class="sd">            ``multipleBoundedVolume``. Its bounding volume is defined as an</span>
+<span class="sd">            ``infinityMap3dTo3d`` object, while the vector handler ``boundSurf``</span>
+<span class="sd">            is provided as the collection of boundary surfaces.</span>
+<span class="sd">        </span>
+<span class="sd">        **Returns**</span>
+
+<span class="sd">            The method returns both the multiple-bounded volume and the vector</span>
+<span class="sd">            handler ``boundSurf`` containing all generated boundary surfaces.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Request Volume of unstructured Region: </span><span class="si">%i</span><span class="s2"> Slices&quot;</span> <span class="o">%</span> <span class="n">nSlices</span><span class="p">)</span>
+
+        <span class="c1"># rotation angle defined by the number of slices</span>
+        <span class="n">rotAngle</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">nSlices</span>
+        
+        <span class="n">vv</span> <span class="o">=</span> <span class="n">vectorDtPoint3</span><span class="p">()</span>
+        <span class="n">boundSurf</span> <span class="o">=</span> <span class="n">vectorHandlingAnalyticGeometry</span><span class="p">()</span>
+        <span class="c1"># iterating over the boundary curves of the unstructured region</span>
+        <span class="c1">#  extracts the start and end points of all curves for a bounding box</span>
+        <span class="c1">#  creates surfaces of the boundary curves by rotationg them</span>
+        <span class="n">ib</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">bound</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unstructVH_</span><span class="p">:</span>
+            
+            <span class="c1"># rotating the boundary curves, pushing them in boundSurf</span>
+            <span class="n">bs</span> <span class="o">=</span> <span class="n">analyticSurface</span><span class="p">(</span>
+                    <span class="n">rectangularTrimmedSurface_curveRotateConstructOCC</span><span class="p">(</span>
+                        <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">bound</span><span class="p">)</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">(),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">origin_</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">rotVector_</span><span class="p">,</span>
+                        <span class="n">rotAngle</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="c1"># setting labels for the interface and the outlet surface</span>
+            <span class="k">if</span> <span class="n">ib</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">bs</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;interface_unstruct&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">ib</span> <span class="o">==</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unstructVH_</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">bs</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;outlet_unstruct&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bs</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;para&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ib</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">bs</span><span class="o">.</span><span class="n">degenerated</span><span class="p">():</span>
+                <span class="n">boundSurf</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">bs</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Degenerated MBV boundary: </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="n">bs</span><span class="o">.</span><span class="n">getLabel</span><span class="p">())</span>
+
+            <span class="n">ib</span> <span class="o">=</span> <span class="n">ib</span> <span class="o">+</span> <span class="mi">1</span>
+        
+        <span class="c1"># building a bounding box surface for the 2d unstructured region</span>
+        <span class="c1"># using the bounding box of the special hub and shroud curves</span>
+        <span class="n">unstructBB</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speBb_</span>
+        <span class="n">BB_dist</span> <span class="o">=</span> <span class="n">unstructBB</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">unstructBB</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  
+
+        <span class="c1"># creating a rectangular surface which extends over the bounding box by 0.1</span>
+        <span class="n">P0</span> <span class="o">=</span> <span class="n">dtPoint3</span><span class="p">(</span><span class="n">unstructBB</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">unstructBB</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">unstructBB</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">)</span>
+        <span class="n">P1</span> <span class="o">=</span> <span class="n">dtPoint3</span><span class="p">(</span><span class="n">P0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">BB_dist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="n">P0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">P2</span> <span class="o">=</span> <span class="n">dtPoint3</span><span class="p">(</span><span class="n">P1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.00</span><span class="p">,</span> <span class="n">P1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">BB_dist</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">P3</span> <span class="o">=</span> <span class="n">dtPoint3</span><span class="p">(</span><span class="n">P0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.00</span><span class="p">,</span> <span class="n">P2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">m2d</span> <span class="o">=</span> <span class="n">analyticSurface</span><span class="p">(</span>
+                <span class="n">bSplineSurface_bSplineCurveFillConstructOCC</span><span class="p">(</span>
+                <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">P0</span><span class="p">,</span> <span class="n">P1</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">(),</span>
+                <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">P1</span><span class="p">,</span> <span class="n">P2</span> <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">(),</span>
+                <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">P2</span><span class="p">,</span> <span class="n">P3</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">(),</span>
+                <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">P3</span><span class="p">,</span> <span class="n">P0</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># creating the first multi bounded surface  and pushing it into the VH</span>
+        <span class="n">mbs1</span> <span class="o">=</span> <span class="n">multipleBoundedSurface</span><span class="p">(</span><span class="n">m2d</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unstructVH_</span><span class="p">)</span>
+        <span class="n">mbs1</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;periodicUnstruct_0&quot;</span><span class="p">)</span>
+        <span class="n">boundSurf</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">mbs1</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+        
+        <span class="c1"># initializing a rotation dtTransformer</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">jsonPrimitive</span><span class="p">()</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">appendDtPoint3</span><span class="p">(</span><span class="s2">&quot;_origin&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">appendDtVector3</span><span class="p">(</span><span class="s2">&quot;_rotVector&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotVector_</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">appendReal</span><span class="p">(</span><span class="s2">&quot;_angle&quot;</span><span class="p">,</span> <span class="n">rotAngle</span><span class="p">)</span>
+        
+        <span class="c1"># creating transformer object</span>
+        <span class="n">rot</span> <span class="o">=</span> <span class="n">rotate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+        
+        <span class="c1"># rotating the 2d bounding box</span>
+        <span class="n">m2d_rot</span> <span class="o">=</span> <span class="p">(</span><span class="n">rot</span><span class="o">.</span><span class="n">applyAnalyticGeometry</span><span class="p">(</span><span class="n">m2d</span><span class="p">))</span>
+        
+        <span class="c1"># rotating the boundary curves of the unstructured region</span>
+        <span class="n">unstructVH_rot</span> <span class="o">=</span> <span class="n">vectorHandlingAnalyticGeometry</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unstructVH_</span><span class="p">:</span>
+            <span class="n">unstructVH_rot</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">rot</span><span class="o">.</span><span class="n">applyAnalyticGeometry</span><span class="p">(</span><span class="n">curve</span><span class="p">))</span>
+        
+        <span class="c1"># creating the rotated mbs and pushing it</span>
+        <span class="n">mbs2</span> <span class="o">=</span> <span class="n">multipleBoundedSurface</span><span class="p">(</span><span class="n">m2d_rot</span><span class="p">,</span> <span class="n">unstructVH_rot</span><span class="p">)</span>
+        <span class="n">mbs2</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;periodicUnstruct_1&quot;</span><span class="p">)</span>
+        <span class="n">boundSurf</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">mbs2</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+ 
+        <span class="c1"># generating the multiple bounded volume</span>
+        <span class="n">multBoundedVol</span> <span class="o">=</span> <span class="n">multipleBoundedVolume</span><span class="p">(</span><span class="n">infinityMap3dTo3d</span><span class="p">(),</span> <span class="n">boundSurf</span><span class="p">)</span>
+        
+        <span class="c1"># adding the multi bounded surfaces to the vhs</span>
+        <span class="c1">#boundSurf.push_back(mbs1.clone())</span>
+        <span class="c1">#boundSurf.push_back(mbs2.clone())</span>
+       
+
+        <span class="c1"># returning the multi bounded volume and its boundary surfaces</span>
+        <span class="k">return</span> <span class="n">multBoundedVol</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span> <span class="n">boundSurf</span></div>
+</div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Alexander Tismer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
