@@ -141,6 +141,51 @@ std::string logMe::Backtrace(void)
   return trace_buf.str();
 }
 
+bool logMe::isError(void)
+{
+  if (dtOO::logERROR > dtOO::FILELog::ReportingLevel())
+  {
+    return false;
+  }
+  return true;
+}
+
+bool logMe::isWarning(void)
+{
+  if (dtOO::logWARNING > dtOO::FILELog::ReportingLevel())
+  {
+    return false;
+  }
+  return true;
+}
+
+bool logMe::isInfo(void)
+{
+  if (dtOO::logINFO > dtOO::FILELog::ReportingLevel())
+  {
+    return false;
+  }
+  return true;
+}
+
+bool logMe::isDebug(void)
+{
+  if (dtOO::logDEBUG > dtOO::FILELog::ReportingLevel())
+  {
+    return false;
+  }
+  return true;
+}
+
+bool logMe::isDDebug(void)
+{
+  if (dtOO::logDDEBUG > dtOO::FILELog::ReportingLevel())
+  {
+    return false;
+  }
+  return true;
+}
+
 /**
  *
  * @todo Make me template.

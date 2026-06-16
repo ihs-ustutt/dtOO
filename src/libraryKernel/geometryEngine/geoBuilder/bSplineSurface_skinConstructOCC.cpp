@@ -43,7 +43,7 @@ bSplineSurface_skinConstructOCC::bSplineSurface_skinConstructOCC(
   vectorHandling<dtCurve const *> cL;
   cL.push_back(c0);
   cL.push_back(c1);
-  _dtS.reset(bSplineSurface_skinConstructOCC(cL).result());
+  _dtS.reset(bSplineSurface_skinConstructOCC(cL, 1, 1, 0).result());
 }
 
 bSplineSurface_skinConstructOCC::bSplineSurface_skinConstructOCC(

@@ -51,6 +51,7 @@ public:
   virtual dtReal l_u(dtReal const &uu) const;
   virtual dtReal u_l(dtReal const &ll) const;
   virtual vectorHandling<renderInterface *> getRender(void) const;
+  virtual dtReal reparamOnEdge(dtPoint3 const &ppXYZ) const;
   //
   //
   //
@@ -58,6 +59,7 @@ public:
   dtVector3 firstDerUPercent(dtReal const &uP) const;
   map1dTo3d *segmentPercent(dtReal const &u0, dtReal const &u1) const;
   dtInt getRenderResolutionU(void) const;
+  dtReal reparamPercentOnEdge(dtPoint3 const &ppXYZ) const;
   dtReal u_percent(dtReal const &uu) const;
   dtReal u_lPercent(dtReal const &lP) const;
   dtReal percent_u(dtReal const &uu) const;

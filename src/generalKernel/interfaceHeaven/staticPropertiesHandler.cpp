@@ -36,15 +36,8 @@ staticPropertiesHandler::staticPropertiesHandler()
   dt__forceInfo(
     staticPropertiesHandler(), << "Create staticPropertiesHandler ..."
   );
-  setOption("reparamOnFace_precision", "1.e-2");
-  setOption("reparamInVolume_precision", "1.e-2");
-  setOption("reparam_internalRestarts", "10");
-  setOption("reparam_restarts", "5");
-  setOption("reparam_restartIncreasePrecision", "1.e+1");
-  setOption("reparam_internalRestartDecreasePrecision", "0.1");
   setOption("invY_precision", "1.e-2");
   setOption("xyz_resolution", "1.e-4");
-  setOption("XYZ_resolution", "1.e-3");
   setOption("uvw_resolution", "1.e-2");
   setOption("point_render_diameter", "1.");
   setOption("vector_render_size", "1.");

@@ -83,7 +83,11 @@ public:
   static std::string initLog(std::string const &logFileName);
   static void closeLog(void);
   static std::string Backtrace(void);
-
+  static bool isError(void);
+  static bool isWarning(void);
+  static bool isInfo(void);
+  static bool isDebug(void);
+  static bool isDDebug(void);
   template <class T>
   static inline std::string
   vecToString(std::vector<T> const &vec, dtInt const groupIn = 0)

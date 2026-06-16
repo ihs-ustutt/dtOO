@@ -578,7 +578,7 @@ bool dtGmshFace::isEqual(::GFace const *const gf0, ::GFace const *const gf1)
       );
       bool differentPoint =
         dist >
-        staticPropertiesHandler::getInstance()->getOptionFloat("XYZ_resolution"
+        staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"
         );
       dt__debug(
         isEqual(),

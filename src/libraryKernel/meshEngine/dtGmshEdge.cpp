@@ -238,7 +238,7 @@ bool dtGmshEdge::isEqual(::GEdge const *const ge0, ::GEdge const *const ge1)
       );
       bool differentPoint =
         dist >
-        staticPropertiesHandler::getInstance()->getOptionFloat("XYZ_resolution"
+        staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"
         );
       dt__debug(
         isEqual(),

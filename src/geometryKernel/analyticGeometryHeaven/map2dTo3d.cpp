@@ -247,8 +247,43 @@ dtPoint2 map2dTo3d::reparamOnFace(dtPoint3 const &ppXYZ) const
     1000
   );
   md.perform();
-  dt__throwIf(!md.converged(), reparamOnFace());
-  return uv_percent(dtPoint2(md.result()[0], md.result()[1]));
+  dtPoint2 const ppUV = uv_percent(dtPoint2(md.result()[0], md.result()[1]));
+
+  if (!md.converged())
+  {
+    dtPoint3 ppXYZReparam = getPoint(ppUV);
+    dtReal dist = dtLinearAlgebra::distance(ppXYZ, ppXYZReparam);
+
+    if (logMe::isDebug())
+    {
+      std::string const fname(this->getLabel() + "_reparam");
+
+      // write gmsh geo file
+      std::fstream of;
+      of.open(fname + ".geo", std::ios::out | std::ios::trunc);
+      of << logMe::dtFormat("Point(1001) = { %16.8e, %16.8e, %16.8e };\n") %
+              ppXYZ.x() % ppXYZ.y() % ppXYZ.z();
+      of << logMe::dtFormat("Point(1002) = { %16.8e, %16.8e, %16.8e };\n") %
+              ppXYZReparam.x() % ppXYZReparam.y() % ppXYZReparam.z();
+      of << logMe::dtFormat("Line(1000) = { 1001, 1002 };\n");
+      of.close();
+    }
+    dt__throw(
+      reparamOnFace(),
+      << logMe::dtFormat("ppXYZ = %5.2e %5.2e %5.2e\n"
+                         "ppXYZReparam = %5.2e %5.2e %5.2e\n"
+                         "dist = %5.2e\n"
+                         "xyz_resolution = %5.2e\n"
+                         "virtualClassName() = %s") %
+             ppXYZ.x() % ppXYZ.y() % ppXYZ.z() % ppXYZReparam.x() %
+             ppXYZReparam.y() % ppXYZReparam.z() % dist %
+             staticPropertiesHandler::getInstance()->getOptionFloat(
+               "xyz_resolution"
+             ) %
+             this->virtualClassName()
+    );
+  }
+  return ppUV;
 }
 
 dtPoint2 map2dTo3d::approxOnFace(dtPoint3 const &ppXYZ) const

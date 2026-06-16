@@ -20,9 +20,11 @@ License
 #include "dtOCCSurfaceBase.h"
 #include <interfaceHeaven/calculationTypeHandling.h>
 #include <logMe/dtMacros.h>
+#include <logMe/logContainer.h>
 #include <logMe/logMe.h>
 
 #include <Extrema_ExtPS.hxx>
+#include <GeomAPI_ProjectPointOnSurf.hxx>
 #include <GeomAdaptor_Surface.hxx>
 #include <GeomLProp_SLProps.hxx>
 #include <Geom_Surface.hxx>
@@ -34,6 +36,11 @@ License
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
 #include <interfaceHeaven/staticPropertiesHandler.h>
+
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <STEPControl_Writer.hxx>
+#include <StepData_StepModel.hxx>
+#include <TopoDS_Face.hxx>
 
 namespace dtOO {
 dtOCCSurface::dtOCCSurface() : dtSurface() {}
@@ -242,15 +249,41 @@ dtPoint2 dtOCCSurface::reparam(dtPoint3 const point) const
     static_cast<Standard_Real>(point.y()),
     static_cast<Standard_Real>(point.z())
   );
-  Standard_Real Utol =
-    static_cast<Standard_Real>(staticPropertiesHandler::getInstance()
-                                 ->getOptionFloat("reparamOnFace_precision"));
-  Standard_Real Vtol =
-    static_cast<Standard_Real>(staticPropertiesHandler::getInstance()
-                                 ->getOptionFloat("reparamOnFace_precision"));
+  Standard_Real Tol = 1.e-02 * dtSurface::XYZTolerance();
 
-  Standard_Real U;
-  Standard_Real V;
+  //
+  // Reparam by Projection
+  //
+  Handle(Geom_Surface) surf = _surface->getOCC();
+  GeomAPI_ProjectPointOnSurf proj;
+  dt__tryOcc(proj.Init(pp, surf, Tol);, << "Projection init fails.");
+
+  logContainer<dtOCCSurface> logC(logDEBUG, "reparam()");
+
+  logC() << logMe::dtFormat("Points by Projection:\n");
+  dt__forFromToIndex(1, proj.NbPoints() + 1, i)
+  {
+    logC() << logMe::dtFormat("  %5d : dist = %5.2e\n") % i % proj.Distance(i);
+
+    if (dtSurface::inXYZTolerance(
+          dtPoint3(proj.Point(i).X(), proj.Point(i).Y(), proj.Point(i).Z()),
+          point
+        ))
+    {
+      Standard_Real U;
+      Standard_Real V;
+      proj.Parameters(i, U, V);
+      logC() << logMe::dtFormat("In Tolerance: U = %5.2e V = %5.2e") % U % V;
+      return dtPoint2(
+        floatHandling::boundToRange(U, minU(), maxU()),
+        floatHandling::boundToRange(V, minV(), maxV())
+      );
+    }
+  }
+
+  //
+  // Reparam by Extrema
+  //
   Standard_Real U1;
   Standard_Real V1;
   Standard_Real U2;
@@ -260,7 +293,7 @@ dtPoint2 dtOCCSurface::reparam(dtPoint3 const point) const
   GeomAdaptor_Surface gas;
   Extrema_ExtPS ext;
   dt__tryOcc(gas.Load(_surface->getOCC());
-             ext.Initialize(gas, U1, U2, V1, V2, Utol, Vtol);
+             ext.Initialize(gas, U1, U2, V1, V2, Tol, Tol);
              ext.SetFlag(Extrema_ExtFlag::Extrema_ExtFlag_MIN);
              ext.SetAlgo(Extrema_ExtAlgo::Extrema_ExtAlgo_Grad);
              ext.Perform(pp);
@@ -278,22 +311,27 @@ dtPoint2 dtOCCSurface::reparam(dtPoint3 const point) const
     ext.NbExt() == 0, return dtSurface::reparam(point), reparam()
   );
 
-  Extrema_POnSurf epp;
-  dt__forFromToIndex(0, ext.NbExt(), i)
+  logC() << logMe::dtFormat("Points by Extrema:\n") << std::endl;
+  dt__forFromToIndex(1, ext.NbExt() + 1, i)
   {
-    epp = ext.Point(i + 1);
-    epp.Parameter(U, V);
+    Extrema_POnSurf epp = ext.Point(i);
+    logC() << logMe::dtFormat("  %5d : dist = %5.2e\n") % i %
+                sqrt(ext.SquareDistance(i));
     if (dtSurface::inXYZTolerance(
           dtPoint3(epp.Value().X(), epp.Value().Y(), epp.Value().Z()), point
         ))
     {
+      Standard_Real U;
+      Standard_Real V;
+      epp.Parameter(U, V);
+      logC() << logMe::dtFormat("In Tolerance: U = %5.2e V = %5.2e") % U % V;
       return dtPoint2(
         floatHandling::boundToRange(U, minU(), maxU()),
         floatHandling::boundToRange(V, minV(), maxV())
       );
     }
   }
-  dt__warning(reparam(), << "No point found that is in tolerance.");
+  logC() << logMe::dtFormat("No Point found!");
   return dtSurface::reparam(point);
 }
 
@@ -319,5 +357,19 @@ dtOCCSurfaceBase const &dtOCCSurface::OCCRef(void) const
 }
 
 dtOCCSurfaceBase &dtOCCSurface::OCCRef(void) { return *(_surface.get()); }
+
+void dtOCCSurface::toSTEP(std::string const &fname) const
+{
+  STEPControl_Writer writer;
+  Handle(StepData_StepModel) model = writer.Model();
+
+  writer.Transfer(
+    BRepBuilderAPI_MakeFace(this->OCCRef().getOCC(), Precision::Confusion())
+      .Shape(),
+    static_cast<STEPControl_StepModelType>(0)
+  );
+  writer.Write(fname.c_str());
+}
+
 dt__C_addCloneForpVH(dtOCCSurface);
 } // namespace dtOO

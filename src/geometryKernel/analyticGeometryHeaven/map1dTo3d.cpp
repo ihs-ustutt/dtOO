@@ -28,6 +28,9 @@ License
 #include "aGBuilder/dtPoint3_map1dTo3dPoint.h"
 #include "scaOneDInMap1dTo3d.h"
 #include <analyticFunctionHeaven/scaLinearOneD.h>
+#include <attributionHeaven/pointGeometryDist.h>
+#include <boost/assign/list_of.hpp>
+#include <gslMinFloatAttr.h>
 
 namespace dtOO {
 dtReal map1dTo3d::_deltaPer =
@@ -138,6 +141,27 @@ vectorHandling<renderInterface *> map1dTo3d::getRender(void) const
   ));
 
   return rV;
+}
+
+dtReal map1dTo3d::reparamOnEdge(dtPoint3 const &ppXYZ) const
+{
+  gslMinFloatAttr md(
+    dt__pH(pointGeometryDist)(new pointGeometryDist(ppXYZ, this)),
+    0.50,
+    0.001,
+    staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
+    1000
+  );
+  md.perform();
+  dt__throwIf(!md.converged(), reparamOnEdge());
+  return u_percent(md.result()[0]);
+}
+
+dtReal map1dTo3d::reparamPercentOnEdge(dtPoint3 const &ppXYZ) const
+{
+  dtReal uu = reparamOnEdge(ppXYZ);
+
+  return percent_u(uu);
 }
 
 bool map1dTo3d::isClosedU(void) const { return isClosed(0); }

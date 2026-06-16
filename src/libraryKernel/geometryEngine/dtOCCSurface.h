@@ -55,6 +55,10 @@ public:
   virtual std::string dumpToString(void) const;
   dtOCCSurfaceBase const &OCCRef(void) const;
   dtOCCSurfaceBase &OCCRef(void);
+  //
+  //
+  //
+  void toSTEP(std::string const &fname) const;
 
 private:
   ptrHandling<dtOCCSurfaceBase> _surface;

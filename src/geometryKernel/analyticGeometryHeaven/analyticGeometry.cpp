@@ -360,6 +360,12 @@ dtPoint3 analyticGeometry::getPoint(std::vector<dtReal> const &uvw) const
   return getPoint(&(uvw[0]));
 }
 
+dtReal analyticGeometry::XYZTolerance(void)
+{
+  return staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"
+  );
+}
+
 bool analyticGeometry::inXYZTolerance(
   dtPoint3 const &p0,
   dtPoint3 const &p1,
@@ -368,9 +374,7 @@ bool analyticGeometry::inXYZTolerance(
   dtReal inc
 )
 {
-  dtReal xyzResolution =
-    inc *
-    staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution");
+  dtReal xyzResolution = inc * analyticGeometry::XYZTolerance();
 
   dtVector3 distV = p0 - p1;
   *dist = dtLinearAlgebra::length(distV);
@@ -399,9 +403,7 @@ bool analyticGeometry::inXYZTolerance(dtPoint3 const &p0, dtPoint3 const &p1)
 
 bool analyticGeometry::inXYZTolerance(dtReal const dist, dtReal inc)
 {
-  dtReal xyzResolution =
-    inc *
-    staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution");
+  dtReal xyzResolution = inc * analyticGeometry::XYZTolerance();
 
   if (dist > xyzResolution)
     return false;

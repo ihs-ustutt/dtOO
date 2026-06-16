@@ -19,14 +19,13 @@ License
 #include <logMe/dtMacros.h>
 
 #include "dtCurve.h"
-#include "dtCurve2d.h"
+#include "dtLinearAlgebra.h"
+#include "geoBuilder/uv_geomSurfaceClosestPoint.h"
 #include <interfaceHeaven/calculationTypeHandling.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <logMe/logMe.h>
 #include <vector>
-
-#include "geoBuilder/uv_geomSurfaceClosestPoint.h"
 
 namespace dtOO {
 dtSurface::dtSurface() {}
@@ -37,7 +36,23 @@ dtInt dtSurface::continuity(void) const { return -1; }
 
 dtPoint2 dtSurface::reparam(dtPoint3 const ppXYZ) const
 {
-  return uv_geomSurfaceClosestPoint(this, ppXYZ).result();
+  logContainer<dtSurface> logC(logDEBUG, "reparam()");
+
+  dtPoint2 ppUV = uv_geomSurfaceClosestPoint(this, ppXYZ).result();
+
+  dtReal const dist = dtLinearAlgebra::distance(this->point(ppUV), ppXYZ);
+  logC() << logMe::dtFormat("U = %5.2e, V = %5.2e / dist = %5.2e\n") %
+              ppUV.x() % ppUV.y() % dist;
+  if (dtSurface::inXYZTolerance(dist))
+  {
+    logC() << logMe::dtFormat("In Tolerance: U = %5.2e V = %5.2e") % ppUV.x() %
+                ppUV.y();
+  }
+  else
+  {
+    logC() << "\nNo point found, return closest point.";
+  }
+  return ppUV;
 }
 
 dtReal dtSurface::minU(void) const { return minPara(0); }
@@ -219,13 +234,26 @@ dtPoint2 dtSurface::reparamPercent(dtPoint3 const point) const
   return dtPoint2(uPercent_u(ppUV.x()), vPercent_v(ppUV.y()));
 }
 
+dtReal dtSurface::XYZTolerance(void)
+{
+  return staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"
+  );
+}
+
 bool dtSurface::inXYZTolerance(dtPoint3 const &p0, dtPoint3 const &p1)
 {
   dtReal xyzResolution =
     staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution");
 
-  dtVector3 dist = p0 - p1;
-  if (sqrt(dist.squared_length()) > xyzResolution)
+  return inXYZTolerance(dtLinearAlgebra::distance(p0, p1));
+}
+
+bool dtSurface::inXYZTolerance(dtReal const &dist)
+{
+  dtReal xyzResolution =
+    staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution");
+
+  if (dist > xyzResolution)
     return false;
 
   return true;
