@@ -190,14 +190,14 @@ class Config():
                     round((np.pi/180.) * 32., 4),
                     round((np.pi/180.) * 10., 4)
                 ],
-            ## bladeAngle0
+            ##bladeAngle0
             #"alpha_2" : [
             #        round((np.pi/180.) * 46., 4),
             #        round((np.pi/180.) * 32., 4),
             #        round((np.pi/180.) * 33., 4),
             #        round((np.pi/180.) * 11., 4)
             #    ],
-            ##bladeAngle1
+            #bladeAngle1
             #"alpha_2" : [
             #        round((np.pi/180.) * 44., 4),
             #        round((np.pi/180.) * 30., 4),
@@ -294,44 +294,44 @@ def run(*args, **kwargs):
     configMeas, configMeridional, configGuideVane, configRunner, configLayer = config.getConfig()
     varList = config.getVarList()
     
-    # individual which will be recreated
-    target_individual = 0
-    
-    stateLbl = "variation_ru10"
-    evalFolder = "ofCase_eval"
-    
-    # open csv which saves the varied parameters
-    with open("./"+evalFolder+"/"+stateLbl+".csv", "r", newline="") as f:
-        reader = list(csv.reader(f))
-        row = reader[target_individual+1]
+    ## individual which will be recreated
+    #target_individual = 0
+    #
+    #stateLbl = "variation_ru10"
+    #evalFolder = "ofCase_eval"
+    #
+    ## open csv which saves the varied parameters
+    #with open("./"+evalFolder+"/"+stateLbl+".csv", "r", newline="") as f:
+    #    reader = list(csv.reader(f))
+    #    row = reader[target_individual+1]
 
 
-    # skip first column (individual index) and the last (case created)
-    values = row[1:-1]
-    
-    # updating the configs so they contain the parmeters form the specified individual
-    for i, param in enumerate(varList):
-        value = values[i]
-        
-        if param[0] in configMeas:
-            # detect list
-            if value.startswith("["):
-                configMeas[param[0]] = ast.literal_eval(value)
-            else:
-                configMeas[param[0]] = float(value)
+    ## skip first column (individual index) and the last (case created)
+    #values = row[1:-1]
+    #
+    ## updating the configs so they contain the parmeters form the specified individual
+    #for i, param in enumerate(varList):
+    #    value = values[i]
+    #    
+    #    if param[0] in configMeas:
+    #        # detect list
+    #        if value.startswith("["):
+    #            configMeas[param[0]] = ast.literal_eval(value)
+    #        else:
+    #            configMeas[param[0]] = float(value)
  
-        elif param[0] in configRunner:
-            # detect list
-            if value.startswith("["):
-                configRunner[param[0]] = ast.literal_eval(value)
-            else:
-                configRunner[param[0]] = float(value)
-    print("configMeas:")
-    for p in configMeas:
-        print(p," : ",configMeas[p])
-    print("configRunner")
-    for p in configRunner:
-        print(p," : ",configRunner[p])
+    #    elif param[0] in configRunner:
+    #        # detect list
+    #        if value.startswith("["):
+    #            configRunner[param[0]] = ast.literal_eval(value)
+    #        else:
+    #            configRunner[param[0]] = float(value)
+    #print("configMeas:")
+    #for p in configMeas:
+    #    print(p," : ",configMeas[p])
+    #print("configRunner")
+    #for p in configRunner:
+    #    print(p," : ",configRunner[p])
     
     # generate hub and shroud curves
     machine = ConfigOptimization(configMeas)
@@ -843,13 +843,13 @@ if __name__ == "__main__":
     config = Config()
     varList = config.getVarList()
     
-    stateLbl = "variation_ru10"
+    stateLbl = "bladeAngle05_new"
      
     # number of iterations
-    nIt = 21
+    nIt = 1
 
     # activates optimization
-    optiOn = True 
+    optiOn = False 
     
     # writer for the csv file
     evalFolder = "ofCase_eval"

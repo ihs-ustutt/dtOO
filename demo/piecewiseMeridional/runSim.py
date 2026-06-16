@@ -22,11 +22,11 @@ print(str(n_cores))
 print(case_name)
 
 _case = './'+case_name+'/'
-#_case = './of_bladeAngle05_tolP001/'
+#_case = './of_bladeAngle05_0/'
 _safe_case = re.sub(r'[\\/:\*\?"<>|]', '_', _case)
 
 fc = foamlib.FoamCase( _case )
-if False:
+if True:
   fc.decompose_par_dict['method'] = 'metis'
   fc.decompose_par_dict['numberOfSubdomains'] = int(n_cores)
    
@@ -45,30 +45,30 @@ if False:
       }
   fc.fv_solution["relaxationFactors"] = {
         "p": 0.2,
-        "U": 0.6,
+        "U": 0.4,
         "k": 0.6,
         "epsilon": 0.6,
         "omega": 0.6
       }
   fc.fv_solution["SIMPLE"] = {
-        "nNonOrthogonalCorrectors": 2
+        "nNonOrthogonalCorrectors": 20
       }
  
   fc.control_dict['DebugSwitches'] = {
           'mixingInterfacePolyPatch': 2
         }
   fc.control_dict['writeInterval'] = 100
-  fc.control_dict['endTime'] = 500
+  fc.control_dict['endTime'] = 1000
   fc.run()
   
-  fc.control_dict['endTime'] = 2000
-  fc.control_dict['writeInterval'] = 10
+  fc.control_dict['endTime'] = 2500
+  fc.control_dict['writeInterval'] = 100
   #fc.control_dict['purgeWrite'] = 10
   fc.turbulence_properties["RAS"]["turbulence"] = True
   
   fc.run()
   
-fc.run(["reconstructPar", '-time', '500,2000'])
+fc.run(["reconstructPar", '-time', '1000,2500'])
 
 _omega = np.abs(
   foamlib.FoamFile(fc.path/'constant/MRFProperties')['MRF_ru_mesh']['omega']
@@ -85,7 +85,7 @@ for var in ["U", "U:Transformed", "p",]:
     fc.run(["patchToCsv", var, patch])
 
 #_time = fc[-1].name
-_time = "2000"
+_time = "2500"
 
 #patchToCsv U ru_mesh_outlet
 UTrans_gv_in = dtAverageValueField(dtCylField(_case+"gv_mesh_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)

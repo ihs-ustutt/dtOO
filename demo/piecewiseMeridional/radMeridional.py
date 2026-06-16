@@ -1147,7 +1147,7 @@ class radMeridional:
 
         This method creates a bladed channel and applies mesh settings to it.
         The channel consists of six-sided mesh blocks that surround the blade geometry
-        and a grid channel formed by a multiply bounded volume that connects to the mesh
+        and a grid channel formed by a multiple bounded volume that connects to the mesh
         blocks.
 
         Multiple `dtOO` objects are created in this method. These objects are labeled and
@@ -1760,7 +1760,7 @@ class radMeridional:
         # specified by meshBlock_thickness.
         #
         #meshBlock_thickness = 0.035
-        meshBlock_thickness = 0.020 
+        meshBlock_thickness = 0.025 
         fRef = dtOO.vec3dMuParserTwoD(
           "1.0*"+str(meshBlock_thickness)+", xx, yy", "xx", "yy"
         )
