@@ -709,8 +709,8 @@ Axial Runner ``tistos``
 
 .. _radial_turbine_demo:
 
-Radial Turbine
-==============
+Radial Turbine ``radMeridional``
+================================
 
 With this class the geometries and mesh topologies of different parametrized flow 
 machines can be created.
@@ -722,7 +722,7 @@ The class contains the following creation methods:
 
 The creation methods are responsible for generating the different geometries and
 topologies.
-The inputs of these methods are handed to them form outside of the class through
+The inputs of these methods are handed to them from outside of the class through
 configuration dictionaries.
 They call multiple subclasses from the :ref:`dtOOPythonApp <dtOOPythonApp>` 
 package, which perform the specific tasks required for geometry generation.
@@ -761,7 +761,7 @@ The final meshing is performed outside of the class by returning the necessary
 bounded volumes.
 
 Bladed channels (i.e., runner and guide vane channels) can be created using
-the `createBlade` method. The defined blades are generated inside the regular
+the ``createBlade`` method. The defined blades are generated inside the regular
 channels that are passed to the method from the ``radMeridionalContour`` object 
 with the method ``getRegChannel``.
 The resulting geometry and mesh represent a periodic segment of the blade channel.
@@ -777,7 +777,7 @@ The following subclasses are used:
     - :ref:`multipleBoundedVolume_gridChannel <multipleBoundedVolume_gridChannel>`
     - :ref:`map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks <map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks>`
 
-The `createLayerRegion` method takes the bounding curves of the layered region from the 
+The ``createLayerRegion`` method takes the bounding curves of the layered region from the 
 ``radMeridionaContour`` object with the method ``getLayerRegionCurves`` and
 creates a segment of a flow channel. This flow channel consists of transfinite
 layer regions on the hub and shroud faces and an unstructured region in between.
@@ -787,9 +787,10 @@ The following subclasses are used:
     - :ref:`map3dTo3dGmsh_gridFromLayers <map3dTo3dGmsh_gridFromLayers>`
 
 The created geometries, functions and others are stored in ``dtBundle`` containers.
-The main container can be returned from the main class with the method `getContainer()`.
-The bounded volumes and case data can be returned with `getbVAnddC()`.
+The main container object can be returned from the main class with the method ``getContainer()``.
+The bounded volumes and case data, which are needed for building meshes from the topologies
+and `openFOAM`-cases can be returned from this object.
 
-.. automodule:: dtOO.demo.piecewiseMeridional.radMeridional
+.. automodule:: dtOO.demo.radMeridional.radMeridional
 	:members:
         :member-order: bysource

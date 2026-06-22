@@ -258,7 +258,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     through ``rotVector_``.
 
     The bounding surfaces on the hub and shroud are created as multiple
-    bounded surfaces. The required bounding curves (:numref:`bounds`, pink)
+    bounded surfaces. The required bounding curves (:numref:`bounds`, magenta)
     are generated from the edges of the other bounding faces of the grid channel.
     The multiple bounded surfaces need bounding faces on the hub and shroud of 
     the channel geometry ``channel_`` in which the bounding curves are located.
@@ -285,7 +285,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
 
        Bounding faces of the grid channel with periodic faces (yellow / green),
        inlet and outlet (red), coupling faces (cyan) and bounding curves of
-       the hub boundary (pink). The blade (grey) is shown for
+       the hub boundary (magenta). The blade (grey) is shown for
        reference.
     
     The following face labels are used for the bounding faces:

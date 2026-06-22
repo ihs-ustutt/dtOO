@@ -361,7 +361,6 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
                     (``uu == 0`` or ``uu == 1``), the direction of the curve is reversed.
                     This results in the hub and shroud curve directions specified in 
                     :numref:`boundCurveTable`.
-
                     The curves are reparameterized in xyz-coordinates and pushed into ``aG_`` with 
                     the following naming convention:
 
@@ -373,7 +372,6 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
 
                 The bounding curve on the interface is created from the points in 
                 ``interfPoints`` on the hub and shroud walls.
-
                 To enable the extension of the interface meanplane surface across 0% of the channel 
                 u-coordinate, a check is implemented that detects jumps in the u-coordinates 
                 ``u1`` and ``u2`` of ``interfPoints[0]`` and ``interfPoints[1]``.

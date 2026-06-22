@@ -179,9 +179,9 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
     'multipleBoundedVolume'
     
     This class is used to create the geometry of a flow channel consisting of five- or six-
-    sided layer volumes on the hub and shroud walls, as well as a multiple-bounded volume
+    sided layer volumes on the hub and shroud walls, as well as a multiple bounded volume
     that expands inside the flow domain and connects to the layers.
-    In this documentation, the region formed by the multiple-bounded volume is referred to 
+    In this documentation, the region formed by the multiple bounded volume is referred to 
     as the *unstructured region*.
 
     The main method of this class is the constructor, from which the remaining methods are
@@ -189,8 +189,8 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
     ``rotVector_`` and ``origin_``.
 
     The method :meth:`calculateNormalAxis` is used to calculate the normal axis 
-    ``normalAxis_`` on the flow domain cross-section from the hub and shroud 
-    curves. Furthermore, the method returns the cross-section bounding box 
+    ``normalAxis_`` on the flow domain cross section from the hub and shroud 
+    curves. Furthermore, the method returns the cross section bounding box 
     ``speBb_`` and its center point ``speCenter_``.
 
     The bounding curves of the layers are created using the method
@@ -211,9 +211,9 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
 
     The lists ``hubUnstructBounds_`` and ``shroudUnstructBounds_`` contain the layer
     boundary curves that extend into the flow domain and form the interfaces between the
-    unstructured multiple-bounded volume and the layers.
+    unstructured multiple bounded volume and the layers.
 
-    The inlet and outlet curves of the flow domain cross-section are shared between the
+    The inlet and outlet curves of the flow domain cross section are shared between the
     hub and shroud layer regions and the unstructured region. By splitting these curves,
     the inlet boundary of the unstructured region is assigned to the variable
     ``interfaceUnstructBound_`` and the outlet boundary to ``outletUnstructBound_``.
@@ -249,7 +249,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
       layer is located on a radius of zero
 
     The unstructured region is created in the method
-    :meth:`getUnstructuredRegion`. This method returns the multiple-bounded volume of the
+    :meth:`getUnstructuredRegion`. This method returns the multiple bounded volume of the
     unstructured region together with a list containing its boundary surfaces.
 
     The :meth:`build` method is used to visualize the created geometries in `ParaView`.
@@ -301,9 +301,9 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
         The boundary curves of the channel are passed to the constructor through the lists
         ``speHub``, ``speShroud``, and ``inOutCurves``. These lists contain the curves of
         the hub and shroud walls, as well as the inlet and outlet curves of the flow
-        channel cross-section.
+        channel cross section.
 
-        The following figure shows the cross-section and the corresponding curves.
+        The following figure shows the cross section and the corresponding curves.
 
         .. _speCurves0:
         .. figure:: meridionalFigs/speCurves.png
@@ -314,7 +314,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
            together with the inlet (red) and outlet (orange) curves of the draft tube
            cone.
 
-        The rotation vector and the origin point are stored in the variables
+        The rotation vector and the origin are stored in the variables
         ``rotVector_`` and ``origin_``.
 
         The hub and shroud curves are passed to the method
@@ -360,11 +360,11 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
         shroud curves are defined by the list ``layer_supports``.
 
         The lists ``hubLayerCurves_`` and ``shroudLayerCurves_`` have the structure
-        ``List[List[analyticGeometry]]``. In this structure, each first-level list
+        ``List[List[analyticGeometry]]``. In this structure, each first level list
         contains the four boundary curves of one layer face stored in the corresponding
-        second-level list.
+        second level list.
 
-        The arrangement of the boundary curves in the second-level list is as follows:
+        The arrangement of the boundary curves in the second level list is as follows:
 
         #. ``hubLayerCurves_[i][0]``: Wall curve of the *i*-th special hub curve.
         #. ``hubLayerCurves_[i][1]``: Downstream curve extending from the wall into
@@ -384,14 +384,14 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
         The following figure shows the boundary curves of the layers in black
         and the layer faces in blue.
         As an example of the numbering convention of the boundary curves, the indices of
-        the second-level list in ``hubLayerCurves_[0]`` are shown.
+        the second level list in ``hubLayerCurves_[0]`` are shown.
 
         .. _layer2d_numbering:
         .. figure:: meridionalFigs/layers2d_numbering.png
            :width: 40%
            :align: center
 
-           Two-dimensional layer faces (blue) in the draft tube cone.
+           Two dimensional layer faces (blue) in the draft tube cone.
 
         The lists containing Boolean values, ``hubRadZero_`` and ``shroudRadZero_``,
         contain a value of ``True`` for layers located on a radius of zero. These
@@ -402,7 +402,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
 
         The curves in ``hubUnstructBounds_`` and ``shroudUnstructBounds_`` are copies
         of the third boundary curves of the layer faces. These curves are used to
-        construct the multiple-bounded volume of the unstructured region.
+        construct the multiple bounded volume of the unstructured region.
 
         The inlet of the flow domain created in this class corresponds to the curve in
         ``inOutCurves[0]``. A section of this curve is used as the inlet boundary of
@@ -429,7 +429,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
 
         The faces of the hub and shroud layers are created by iterating over the lists
         ``hubLayerCurves_`` and ``shroudLayerCurves_``. During each iteration, the
-        second-level boundary curves are inserted into a vector handler object named
+        second level boundary curves are inserted into a vector handler object named
         ``layer_vhc``.
 
         The layer faces are then generated using the `dtOO` class
@@ -784,7 +784,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
 
             ::
 
-                i == 0``
+                i == 0
 
             The fourth boundary curve of the first layer face is formed by the
             inlet curve stored in ``boundsGlob[0]``. This boundary curve is
@@ -865,7 +865,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
                 The normal directions of the curves
                 (:math:`\mathbf{n_0}` and :math:`\mathbf{n_1}`) at the shared point
                 are calculated as the cross products of the normal axis of the
-                channel cross-section ``normalAxis_``
+                channel cross section ``normalAxis_``
                 (:math:`\mathbf{n_{global}}`) and the tangential directions of the
                 curves at the shared point
                 (:math:`\mathbf{t_0}` and :math:`\mathbf{t_1}`).
@@ -1347,7 +1347,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
             to this container.
 
             By iterating over ``supports``, the support points :math:`P_s` are
-            generated. Each entry in ``supports`` contains a floating-point value
+            generated. Each entry in ``supports`` contains a floating point value
             defining a relative parameter position along the wall curve.
 
             For each support value, a base point :math:`P_0` is calculated on the
@@ -1771,9 +1771,9 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
             - Creates the boundary surfaces of the unstructured region that
               connect to the layer volumes.
             - Creates the periodic boundary surfaces of the unstructured region
-              as multiple-bounded surfaces.
-            - Creates the unstructured region as a multiple-bounded volume.
-            - Returns the multiple-bounded volume together with its boundary
+              as multiple bounded surfaces.
+            - Creates the unstructured region as a multiple bounded volume.
+            - Returns the multiple bounded volume together with its boundary
               surfaces.
 
         Parameters
@@ -1788,17 +1788,17 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
 
         boundSurf : vectorHandlingAnalyticGeometry
             Vector handler containing the boundary surfaces of the
-            multiple-bounded volume.
+            multiple bounded volume.
 
 
         The unstructured region is created as an object of the `dtOO` class
-        ``multipleBoundedVolume``. The multiple-bounded volume is defined by
+        ``multipleBoundedVolume``. The multiple bounded volume is defined by
         its boundary surfaces.
         
         **Create Boundary Surfaces through the Rotation of Curves**
 
             The inlet and outlet surfaces, together with the surfaces connecting
-            the multiple-bounded volume to the layer volumes, are created from the
+            the multiple bounded volume to the layer volumes, are created from the
             curves stored in the vector handler ``unstructVH_``.
 
             The surfaces are generated using the `dtOO` class
@@ -1825,7 +1825,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
             the rotated surfaces are degenerated. Degenerated surfaces occur when
             the corresponding curve lies on a radius of zero.
 
-            Only non-degenerated surfaces are appended to the
+            Only non degenerated surfaces are appended to the
             ``vectorHandlingAnalyticGeometry`` object ``boundSurf``.
 
             The following figure shows the boundary surfaces created from the
@@ -1836,20 +1836,20 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
                :width: 50%
                :align: center
 
-               Boundary surfaces of the multiple-bounded volume with inlet (red),
+               Boundary surfaces of the multiple bounded volume with inlet (red),
                outlet (orange), and layer connection surfaces (blue). The periodic
-               multiple-bounded surfaces are not shown.
+               multiple bounded surfaces are not shown.
         
         **Create Periodic Faces as Multiple Boundes Surfaces**
 
             The periodic surfaces of the unstructured region slice are created as
-            multiple-bounded surfaces. These surfaces are generated using the
+            multiple bounded surfaces. These surfaces are generated using the
             `dtOO` class ``multipleBoundedSurface``, which takes a set of boundary
             curves together with a surrounding bounding box as input.
 
             The bounding box is created from the minimum and maximum vertices
             stored in ``speBb_``. Based on these vertices, a bounding box
-            ``m2d`` is generated for the first multiple-bounded surface, extending
+            ``m2d`` is generated for the first multiple bounded surface, extending
             0.1 units beyond ``speBb_`` in all directions.
 
             The first periodic surface ``mbs1`` is created from ``m2d`` and the
@@ -1872,7 +1872,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
             rotational transformation, the rotated boundary curves are generated and
             stored in ``unstructVH_rot``.
 
-            The second multiple-bounded surface is created analogously to the
+            The second multiple bounded surface is created analogously to the
             first one using ``m2d_rot`` and ``unstructVH_rot``. This surface is
             assigned the label ``periodicUnstruct_1`` and appended to
             ``boundSurf``.
@@ -1886,7 +1886,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
         
         **Returns**
 
-            The method returns both the multiple-bounded volume and the vector
+            The method returns both the multiple bounded volume and the vector
             handler ``boundSurf`` containing all generated boundary surfaces.
         """
 

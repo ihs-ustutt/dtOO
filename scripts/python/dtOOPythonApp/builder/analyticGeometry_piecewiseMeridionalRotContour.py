@@ -333,6 +333,9 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
             consistent with the downstream direction of the flow machine. Furthermore, the ordering
             of the curves in the lists must also follow the downstream direction of the machine.
 
+            Here downstream direction refers to the flow direction of a machine in turbine mode.
+            The counter direction is referred to as the upstream direction. 
+
             The following figure shows the hub and shroud curves:
 
             .. _hsCurves0:
@@ -435,7 +438,6 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
             regular channels are created between adjacent interfaces in flow direction.
 
             The regular channel surfaces are created by iterating over the number of interfaces.
-
             For each regular channel, the hub and shroud curves belonging to that channel are determined
             using the method :meth:`findChannelCurves`. This method is called once for the hub curves
             and once for the shroud curves. The inputs are the instantiated curve lists ``hubCurves_``
@@ -1061,7 +1063,7 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
         
         This method:
 
-            - Takes the ``cti`` (curve-to-interface) lists created in :meth:`createSplits`
+            - Takes the ``cti`` (`curve-to-interface`) lists created in :meth:`createSplits`
             - Propagates interface IDs to upstream curve segments
             - Returns the propagated lists
 
@@ -1304,7 +1306,7 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
            :width: 110%
            :align: center
 
-           Activity diagram of the ``createSplits`` method.
+           Activity diagram of the :meth:`createSplits` method.
 
         At the start of the method, empty lists are created for the split curves
         ``outCurves`` and the curve-to-interface list ``curve_to_interface``.
@@ -1525,10 +1527,8 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
         None
 
 
-        This method allows the instantiated geometries to be plotted in `ParaView`, by
-        adding them to the analytic geometry container.
-        If the code is run in paraview, the geometries can be found with the 
-        `FindAndShow` method.
+        This method appends the geometries to the ``dtBundle`` objects for 
+        debugging.
         """
         logging.info("Building %s ..." % (self.label_))
 

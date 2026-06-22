@@ -32,10 +32,6 @@ Python dtOOPythonApp classes
 
 The documentation of the dtOOPythonApp package.
 
-.. 
-	Radial Turbine Classes
-	----------------------
-
 The following classes are used in the demonstration case 
 of the :ref:`radial turbine <radial_turbine_demo>`.
 

@@ -248,7 +248,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
         :numref:`gridLayersMeshFaces` shows the face ``outlet_unstruct`` in orange and
         ``interface_unstruct`` in red. The faces labeled with ``para`` are equal to
-        the wall-parallel faces of the layer volumes (purple). The periodic faces of
+        the wall parallel faces of the layer volumes (purple). The periodic faces of
         the unstructured region are not shown.
 
         .. _gridLayersMeshFaces:
@@ -278,7 +278,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
                 i_hs in range(len(layerList_))
 
-            The first-level loop iterates over the hub and shroud data in
+            The first level loop iterates over the hub and shroud data in
             ``layerList_``. According to the iterator ``i_hs``, the ``label``
             variable is set to the strings ``hub`` or ``shroud``.
             
@@ -288,7 +288,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
                     i_l in range(len(layerList[i_hs][0]))
 
-                The second-level loop iterates over the hub or shroud layers in
+                The second level loop iterates over the hub or shroud layers in
                 ``layerList_[i_hs]``. The iterator is ``i_l``.
 
                 With the method :meth:`detectFirstAndSecond`, the faces of each layer are
@@ -364,7 +364,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
            :align: center
 
            Edges in the flow domain on which mesh settings are applied.
-           ``channelToParallelLines`` (green), ``swLines`` (pink), and
+           ``channelToParallelLines`` (green), ``swLines`` (magenta), and
            ``circLines`` (blue). On grey edges no mesh settings are applied.
         
         **Apply Gradings on the Walls**
@@ -383,7 +383,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
             unstructured volume is estimated.
 
         To set the number of elements on the edges in the streamwise
-        (:numref:`layersMeshSetting` (pink)) and circumferential directions
+        (:numref:`layersMeshSetting` (magenta)) and circumferential directions
         (:numref:`layersMeshSetting` (blue)), an iteration over the layer list is
         performed. The following figure illustrates the processes in an activity
         diagram.
@@ -410,7 +410,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                 i_hs in range(len(layerList_))
 
             Similarly to the loop in :numref:`gridLayers_activity0`, a nested loop
-            over the two levels of ``layerList_`` is performed. The first-level loop
+            over the two levels of ``layerList_`` is performed. The first level loop
             iterates over the hub and shroud layers. The string value of ``label`` is
             set accordingly.
 
@@ -418,7 +418,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
                 ``i_l in range(len(layerList_[i_hs][0]))``
 
-                The second-level loop iterates over the specific layers in the hub or
+                The second level loop iterates over the specific layers in the hub or
                 shroud set.
                 
                 **Edges in Streamwise Direction**
@@ -430,7 +430,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
                     With this length, the number of elements ``nE`` is calculated by
                     dividing the length through the element size ``elementSizeSW_``. By
-                    rounding ``nE`` to the next-highest integer value, it is ensured that
+                    rounding ``nE`` to the next highest integer value, it is ensured that
                     ``elementSizeSW_`` is the maximal element size on the wall face in
                     the streamwise direction.
 
@@ -441,7 +441,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
 
                     ``layerList_[i_hs][1][i_l] == False``
 
-                    The streamwise edges (:numref:`layersMeshSetting` (pink))
+                    The streamwise edges (:numref:`layersMeshSetting` (magenta))
                     extending between the ``ortho`` faces of the layer are returned
                     by the method ``getDtGmshEdgeTagListByFromToPhysical`` of the
                     Gmsh model.
@@ -456,7 +456,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                     ``periodic0`` and ``periodic1`` faces. The common edges of these
                     faces are stored in the list ``swLines``.
 
-                    The meshing of the four-sided faces ``ortho``, ``periodic0``,
+                    The meshing of the four sided faces ``ortho``, ``periodic0``,
                     and ``periodic1`` of the layer is set to transfinite with a
                     recombine.
                 
@@ -477,15 +477,15 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
                     for the downstream circumferential edge.
             
             
-            **Apply Mesh Settings on Edies in Circumferential Direction**
+            **Apply Mesh Settings on Edges in Circumferential Direction**
 
-                After the second-level loop for a layer region has concluded, the number of
+                After the second level loop for a layer region has concluded, the number of
                 elements according to the maximal edge length is set on the circumferential
                 edges.
 
                 The number of elements ``nE`` is calculated with the maximal edge length
                 ``lChannel_circ[i_hs]`` and the element size ``elementSizeCirc_``. By
-                rounding the value of ``nE`` to the next-higher integer, it is ensured that
+                rounding the value of ``nE`` to the next higher integer, it is ensured that
                 the specified element size represents a maximum size along the
                 circumferential direction of the layer wall.
 
@@ -1112,7 +1112,7 @@ class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
         This method:
 
             - Iterates over the edges on both faces.
-            - Ginds faces with the same tag.
+            - Finds faces with the same tag.
             - Returns them in a list.
 
         Parameters

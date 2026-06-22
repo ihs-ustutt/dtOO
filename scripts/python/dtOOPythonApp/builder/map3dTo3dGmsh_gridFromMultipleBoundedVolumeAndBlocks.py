@@ -156,7 +156,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
        :align: center
 
        Topology faces and their labels used in this class. Interfaces (red),
-       periodic mean-plane faces (yellow/green), coupling faces (cyan), and
+       periodic meanplane faces (yellow/green), coupling faces (cyan), and
        blade surfaces (gray) are highlighted.
 
     By iterating over ``blocks_``, the corresponding surfaces are added to
@@ -189,13 +189,13 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
     identifier ``"quad"``. Periodicity on these faces is defined using the
     observer ``bVOSetRotationalPeriodicity``.
 
-    The boolean value ``meshTEBlocks_`` controls whether trailing-edge mesh
-    blocks are created. If trailing-edge mesh blocks are required, this
+    The boolean value ``meshTEBlocks_`` controls whether trailing edge mesh
+    blocks are created. If trailing edge mesh blocks are required, this
     parameter must be set to ``True``.
 
     Each face identifier is assigned an integer suffix for unique
     identification. The following faces are added to the topology when
-    trailing-edge mesh blocks are enabled:
+    trailing edge mesh blocks are enabled:
 
         - ``"hub_0"`` ... ``"hub_"+str(N)``
 
@@ -247,14 +247,14 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
        Edges of the bladed channel to which mesh settings are applied:
        ``hubToShroudLines`` (orange), ``bladeHubLines`` and
        ``bladeShroudLines`` (blue), ``bladeToBlockLines`` (green), and the
-       trailing-edge mesh block edges contained in ``tEMeshList`` (pink).
+       trailing edge mesh block edges contained in ``tEMeshList`` (pink).
        No explicit mesh settings are applied to the gray edges.
 
     Gradings are applied to refine the mesh near the hub, shroud, and blade
     walls. The method :meth:`addGrading` is used to create the grading
     functions. The methods :meth:`gradingsTypeTransfinite` and
     :meth:`gradingsGradingFunctions` are then used to apply these gradings to
-    the mesh-setting observer ``bVOMeshRule``.
+    the mesh setting observer ``bVOMeshRule``.
 
     The following table summarizes the edge groups and their corresponding
     mesh parameters and settings:
@@ -314,7 +314,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
     edges, the ``"tangentialBlade_*"`` grading is adjusted at both the start
     and end vertices.
 
-    Trailing-edge mesh blocks are generated only if ``meshTEBlocks_`` is set
+    Trailing edge mesh blocks are generated only if ``meshTEBlocks_`` is set
     to ``True``. The corresponding edges are collected in the list
     ``tEMeshList``. No grading functions are applied to these edges.
 
@@ -537,10 +537,10 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
 
             The block volumes are ordered so that their sequence in ``blocks_``
             follows the u-direction of the blade surface ``blade_``.
-            If trailing-edge mesh blocks exist, they correspond to the first and
+            If trailing edge mesh blocks exist, they correspond to the first and
             last entries of ``blocks_``.
 
-            If trailing-edge mesh blocks are enabled
+            If trailing edge mesh blocks are enabled
             (``meshTEBlocks_ == True``), the blade faces of the first and last mesh
             blocks are not added to ``aG``. Only block faces that are part of the
             mean plane are added to ``aG`` (``i <= nMeanplaneBlocks_``),
@@ -553,9 +553,9 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             The observer ``bVONameRegions`` is added to establish the naming
             convention of the regions.
         
-        **Organize Edges of the Trailing-Edge Mesh Blocks**
+        **Organize Edges of the Trailing Edge Mesh Blocks**
 
-            The edges of the trailing-edge mesh blocks (shown in pink in
+            The edges of the trailing edge mesh blocks (shown in pink in
             :numref:`channelMeshing0`) are extracted by first obtaining the blade
             and block faces of ``blocks_[0]`` and ``blocks_[-1]`` using
             :meth:`detectFirstAndSecond`. Their hub and shroud edges are then
@@ -573,7 +573,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
                     ]
                 ]
 
-            The top-level list entries have the following meaning:
+            The top level list entries have the following meaning:
 
                 - ``tEMeshList[0]`` : Edges extending directly from the blade
 
@@ -581,7 +581,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
 
                 - ``tEMeshList[2]`` : Edges extending from the outer wall of the last mesh block
 
-            The lower-level entries of ``tEMeshList`` are defined as follows:
+            The lower level entries of ``tEMeshList`` are defined as follows:
 
                 - ``tEMeshList[i][0]`` : Tuple containing lists of edge identifiers
 
@@ -599,8 +599,8 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             The periodic faces (shown in yellow and green in :numref:`meshFaces`)
             are organized in the list ``periodics``. The list is constructed such
             that each entry ``periodics[i]`` is a ``Tuple`` containing a pair of
-            periodic faces. The suction-side boundary is stored in
-            ``periodics[i][0]`` and the corresponding pressure-side boundary in
+            periodic faces. The suction side boundary is stored in
+            ``periodics[i][0]`` and the corresponding pressure side boundary in
             ``periodics[i][1]``.
 
             The faces that are meshed unstructured, and
@@ -630,7 +630,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             :numref:`channelMeshing0`) are identified by extracting and organizing
             lists of edge identifiers returned by the ``dtGmshModel``.
 
-            The following edge-identifier lists are used to define the mesh
+            The following edge identifier lists are used to define the mesh
             settings:
 
                 - ``hubToShroudLines``
@@ -650,10 +650,10 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             input.
 
             The grading associated with ``hubToShroudLines`` is assigned the label
-            ``"hubToShroud"`` and uses the first-element size
+            ``"hubToShroud"`` and uses the first element size
             ``firstElementSizeHubToShroud_``. The grading associated with
             ``bladeToBlockLines`` is assigned the label ``"normalBlade"`` and uses
-            the first-element size ``firstElementSizeNormalBlade_``.
+            the first element size ``firstElementSizeNormalBlade_``.
 
             The number of elements and the grading functions are then applied to the
             edges according to the specifications listed in :numref:`edgeMeshTab`.
@@ -662,7 +662,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             ``bladeHubLines`` are applied by iterating over the corresponding edge
             lists.
         
-            Mesh settings for the trailing-edge mesh-block edges are applied only if
+            Mesh settings for the trailing edge mesh block edges are applied only if
             ``meshTEBlocks_ == True``.
         
         **Mesh Settings along the Blade**
@@ -677,7 +677,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             reparameterized onto the blade surface ``blade_``, yielding the surface
             parameter coordinates ``p0_uv`` and ``p1_uv``.
 
-            Depending on the iteration the element-size functions 
+            Depending on the iteration the element size functions 
             ``bladeHubElementSize_`` or ``bladeShroudElementSize_`` are then 
             evaluated at the corresponding parameter coordinates to obtain the 
             local element sizes ``ms_0`` and ``ms_1`` in the appropriate parameter 
@@ -695,7 +695,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
                     min(nE_0, nE_1) + elementScale * abs(nE_1 - nE_0)
                 )
 
-            The floating-point value ``elementScale`` corresponds to either
+            The floating point value ``elementScale`` corresponds to either
             ``bladeShroudElementScale_`` or ``bladeHubElementScale_``, depending on
             the current iteration.
 
@@ -705,7 +705,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
  
         **Set Mesh Rules**
 
-            The boundary-layer directions of the unstructured faces stored in
+            The boundary layer directions of the unstructured faces stored in
             ``unstrFacesAndh2sLines`` are determined using
             :meth:`detectBoundaryLayerDir`, which returns the list
             ``boundaryLayerDir``.
@@ -735,8 +735,8 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             ``"*suction_*"``, and ``"*coupling_*"``. These faces are added to the
             ``"_slidableFaceLabel"`` entry.
 
-            The number of boundary-layer elements is specified by
-            ``nBoundaryLayers_``, while the boundary-layer orientation is defined by
+            The number of boundary layer elements is specified by
+            ``nBoundaryLayers_``, while the boundary layer orientation is defined by
             ``boundaryLayerDir``.
 
 
@@ -750,7 +750,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             ``periodics`` and creating a ``bVOSetRotationalPeriodicity`` observer
             for each pair of periodic faces.
         
-            The faces are renamed to match the boundary-condition naming convention
+            The faces are renamed to match the boundary condition naming convention
             used in an OpenFOAM case through the observer
             ``bVOFaceToPatchRule``. The corresponding renaming rules are summarized
             in :numref:`faceToPatchTable`.
@@ -1575,14 +1575,14 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         theModel: dtGmshModel, 
         boundaryLayerDirCheck: List[ List[ Union[ map2dTo3d, List[int] ] ] ]
     ) -> int:
-        """Determine the boundary-layer direction of a face from two edges.
+        """Determine the boundary layer direction of a face from two edges.
 
         This method:
 
             - Iterates over the faces and edges in the input list.
             - Checks whether the u- or v-parameters of the start and end points
               of the edges on a face are equal within a specified tolerance.
-            - Determines and returns the corresponding boundary-layer direction.
+            - Determines and returns the corresponding boundary layer direction.
 
         Parameters
         ----------
@@ -1601,10 +1601,10 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         Returns
         -------
         int
-            Integer encoding the boundary-layer direction.
+            Integer encoding the boundary layer direction.
 
 
-        The boundary-layer direction is determined by iterating over
+        The boundary layer direction is determined by iterating over
         ``faceLines in boundaryLayerDirCheck`` in an outer loop and over the
         edges ``line in faceLines[1]`` in the inner loop.
 
@@ -1618,16 +1618,16 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         ``boundaryLayerDirT`` is incremented. The resulting value is appended to
         the list ``boundaryLayerDir``.
 
-        At the end of each outer-loop iteration, duplicate entries in
+        At the end of each outer loop iteration, duplicate entries in
         ``boundaryLayerDir`` are removed using 
         ``boundaryLayerDir = list(dict.fromkeys(boundaryLayerDir))``.
 
-        Within this workflow, all boundary-layer directions must be oriented
+        Within this workflow, all boundary layer directions must be oriented
         consistently. The condition ``len(boundaryLayerDir) != 1`` is therefore
         used to verify that all detected directions are identical. If this
         condition is not satisfied, an exception is raised.
 
-        Finally, the boundary-layer direction is encoded as an integer return
+        Finally, the boundary layer direction is encoded as an integer return
         value. If ``boundaryLayerDir[0]`` equals ``1``, the method returns
         ``0``. If ``boundaryLayerDir[0]`` equals ``2``, the method returns
         ``1``. Any other value results in an exception.

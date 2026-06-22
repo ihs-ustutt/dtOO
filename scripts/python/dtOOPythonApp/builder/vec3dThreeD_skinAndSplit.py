@@ -144,11 +144,11 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
 
     The mesh block volumes are created by skinning the resulting surfaces.
 
-    Two trailing-edge mesh blocks can additionally be created with a thickness
+    Two trailing edge mesh blocks can additionally be created with a thickness
     specified by ``teMeshBlockThickness_``. If this value is set to ``None``,
-    no trailing-edge mesh blocks are generated.
+    no trailing edge mesh blocks are generated.
 
-    Otherwise, the trailing-edge mesh blocks are created by computing a
+    Otherwise, the trailing edge mesh blocks are created by computing a
     tangential offset of the edges of the first and last mesh blocks surrounding
     the blade. The offset edges are computed using the method
     :meth:`teOffsetCurves_vec3dSurfaceTwoD`. This method returns the base curve
@@ -157,13 +157,13 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
 
     By skinning the base and offset curves, faces extending from the first and
     last trailing edge mesh blocks are generated. A second skinning operation 
-    is then used to create the trailing-edge mesh block volumes. To maintain 
-    consistent parameter orientations between the trailing-edge mesh blocks and 
+    is then used to create the trailing edge mesh block volumes. To maintain 
+    consistent parameter orientations between the trailing edge mesh blocks and 
     the other mesh blocks, the skinning operation is performed in
     :meth:`createBlockFaces`.
 
     Meanplane curves are generated if the Boolean parameter
-    ``meanplaneFromBlocks`` is set to ``True``. Similar to the trailing-edge
+    ``meanplaneFromBlocks`` is set to ``True``. Similar to the trailing edge
     mesh block edges, the meanplane curves are computed as tangential offsets of
     the blade mesh blocks using :meth:`teOffsetCurves_vec3dSurfaceTwoD`.
 
@@ -181,7 +181,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
     The string value stored in ``label_`` is used to label the generated
     analytic functions.
 
-    The analytic function objects of the blade mesh blocks, trailing-edge mesh
+    The analytic function objects of the blade mesh blocks, trailing edge mesh
     blocks, and meanplane curves are added to the container object of the main
     class using :meth:`appendAnalyticFunction`.
     """
@@ -264,7 +264,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
               positions.
             - Creates mesh block volumes by skinning the corresponding surfaces.
             - Generates meanplane curves at the inlet and outlet.
-            - Creates trailing-edge mesh blocks.
+            - Creates trailing edge mesh blocks.
 
         Parameters
         ----------
@@ -283,7 +283,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
         are generated:
 
             - Mesh block volumes around the blade.
-            - Edge curves for the trailing-edge mesh blocks.
+            - Edge curves for the trailing edge mesh blocks.
             - Meanplane curves extending towards the inlet and outlet.
 
         All geometries are constructed as analytic functions. The loop iteration is
@@ -352,7 +352,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
             
             **Creation of Offset Curves**
 
-                The generation of the trailing-edge mesh block curves, as well as the
+                The generation of the trailing edge mesh block curves, as well as the
                 creation of the meanplane curves, is performed using the method
                 :meth:`teOffsetCurves_vec3dSurfaceTwoD`.
 
@@ -460,10 +460,10 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
                     The curves for the meanplane extending towards the outlet are created on
                     the first blade mesh block, for which ``cc == 0`` applies.
 
-                    The creation procedure differs depending on whether trailing-edge mesh
+                    The creation procedure differs depending on whether trailing edge mesh
                     blocks are generated.
 
-                    If no trailing-edge mesh blocks are created
+                    If no trailing edge mesh blocks are created
                     (``thickness_ == None``), the curves are generated from the curve at
                     0 percent of the u-direction of ``blockSurf``. The offset length is
                     specified by ``meanplaneExtOut_``, corresponding to
@@ -472,14 +472,14 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
                     The generated curve objects are assigned to the variables
                     ``mPBlockCurve`` and ``mPBlockOffset``.
 
-                    If trailing-edge mesh blocks are generated, the offset length of the
+                    If trailing edge mesh blocks are generated, the offset length of the
                     meanplane curve created from the first blade mesh block is 
                     ``meanplaneExtOut_ + thickness_``
 
                     In this case, the base curve returned by
                     :meth:`teOffsetCurves_vec3dSurfaceTwoD` is not used directly as the
                     meanplane curve. Instead, the base curve is reconstructed from the
-                    offset points of the first trailing-edge mesh block,
+                    offset points of the first trailing edge mesh block,
                     ``blockOffset0``. The resulting curve overwrites ``mPBlockCurve``.
 
                     In both cases, the curve ``mPBlockOffsetCurve`` is generated from the
@@ -508,13 +508,13 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
         
         **Trailing Edge Mesh Blocks**
 
-            The trailing-edge volumes are generated from the trailing-edge curves.
+            The trailing edge volumes are generated from the trailing edge curves.
             The following operations are performed only if ``thickness_ != None`` 
             applies.
             
             **Offset Curves at Trailing Edge**
 
-                From the ``vectorDtPoint3`` objects of the two trailing-edge mesh blocks
+                From the ``vectorDtPoint3`` objects of the two trailing edge mesh blocks
                 on the blade side, ``bladeOffset0`` and ``bladeOffset1``, the mean
                 points ``meanPoints`` are computed. Using these points, a mean offset
                 curve ``meanBladeOffsetCurve`` is generated, which defines the offset
@@ -525,7 +525,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
             
             **Trailing Edge Mesh Block Surfaces**
 
-                The trailing-edge mesh block surfaces extending from the blade and from the mesh block surfaces 
+                The trailing edge mesh block surfaces extending from the blade and from the mesh block surfaces 
                 are generated using the method :meth:`createBlockFaces`. The method expects an input 
                 list with the following structure:
 
@@ -557,7 +557,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
             **Trailing Edge Mesh Block Volumes**
 
                 The returned vector handler is passed to the ``dtOO`` class
-                ``vec3dTransVolThreeD_skinBSplineSurfaces`` to create the trailing-edge
+                ``vec3dTransVolThreeD_skinBSplineSurfaces`` to create the trailing edge
                 mesh block volumes ``theRef``.
 
                 The volume skinning direction is defined as follows:
@@ -571,23 +571,23 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
                    :width: 80%
                    :align: center
 
-                   Skinning of the first trailing-edge mesh block. Surface skinning is
+                   Skinning of the first trailing edge mesh block. Surface skinning is
                    shown on the left, and volume skinning on the right. The arrows
                    indicate the skinning directions.
 
                 By arranging the order of the curves in the input list passed to
-                :meth:`createBlockFaces`, the parameter directions of the trailing-edge
+                :meth:`createBlockFaces`, the parameter directions of the trailing edge
                 mesh block volumes remain consistent with those of the blade mesh
                 blocks.
 
                 The generated volumes are appended to the analytic function container
                 using the same naming convention as the blade mesh blocks.
 
-                The first trailing-edge mesh block is labeled with the index zero:
+                The first trailing edge mesh block is labeled with the index zero:
 
                     ``label_ + "_0"``
 
-                The last trailing-edge mesh block receives the label:
+                The last trailing edge mesh block receives the label:
 
                     ``label_ + "_" + str(len(splits_) + 1)``
 
@@ -598,7 +598,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
                    :width: 50%
                    :align: center
 
-                   Blade surface (grey) with blade mesh blocks and trailing-edge mesh
+                   Blade surface (grey) with blade mesh blocks and trailing edge mesh
                    blocks.
 
         """
@@ -678,7 +678,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
                 #
                 # first mesh block
                 if cc == 0:
-                    logging.info("Extracting trailing-edge and block curves from mesh block %d" % (cc+1))
+                    logging.info("Extracting trailing edge and block curves from mesh block %d" % (cc+1))
                     #
                     # needed curves:
                     # curve on blade and block,
@@ -697,7 +697,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
                     
                 # last mesh block
                 if cc == (len(self.splits_)-1):
-                    logging.info("Extracting trailing-edge and block curves from mesh block %d" % (cc+1))
+                    logging.info("Extracting trailing edge and block curves from mesh block %d" % (cc+1))
                     bladeCurve1, bladeOffset1, = self.teOffsetCurves_vec3dSurfaceTwoD(
                             bladeSurf, 1, self.thickness_, 0
                         )  
