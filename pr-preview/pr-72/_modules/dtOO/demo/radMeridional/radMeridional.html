@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dtOO.demo.piecewiseMeridional.radMeridional &mdash; dtOO  documentation</title>
+  <title>dtOO.demo.radMeridional.radMeridional &mdash; dtOO  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
 
@@ -64,7 +64,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">dtOO.demo.piecewiseMeridional.radMeridional</li>
+      <li class="breadcrumb-item active">dtOO.demo.radMeridional.radMeridional</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -73,7 +73,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for dtOO.demo.piecewiseMeridional.radMeridional</h1><div class="highlight"><pre>
+  <h1>Source code for dtOO.demo.radMeridional.radMeridional</h1><div class="highlight"><pre>
 <span></span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
@@ -98,7 +98,7 @@
 
 
 <div class="viewcode-block" id="radMeridional">
-<a class="viewcode-back" href="../../../../demonstration.html#dtOO.demo.piecewiseMeridional.radMeridional.radMeridional">[docs]</a>
+<a class="viewcode-back" href="../../../../demonstration.html#dtOO.demo.radMeridional.radMeridional.radMeridional">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">radMeridional</span><span class="p">:</span>
 <span class="w">    </span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create geometries and meshes of a radial flow machine.</span>
@@ -126,7 +126,6 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; import dtOOPythonSWIG as dtOO</span>
 
 <span class="sd">    This example creates geometries and mesh topologies of a parameterized radial machine.</span>
 <span class="sd">    The machine consists of the following geometries:</span>
@@ -146,14 +145,13 @@
 <span class="sd">       runner (top left), and draft tube cone (bottom).</span>
 
 <span class="sd">    The meridional contour of the machine is defined with the method :meth:`createMeridional`</span>
-<span class="sd">    through hub and shroud curves.</span>
+<span class="sd">    through hub and shroud curves. The guide vane and runner channels are created from regular </span>
+<span class="sd">    channels with the method :meth:`createBlade`. The draft tube cone is created as a layered </span>
+<span class="sd">    region from its bounding curves with the method :meth:`createLayerRegion`.</span>
+<span class="sd">    </span>
+<span class="sd">    Import the `dtOOPythonSWIG`-package.</span>
 
-<span class="sd">    The guide vane and runner channels are created from regular channels with </span>
-<span class="sd">    the method :meth:`createBlade`.</span>
-
-<span class="sd">    The draft tube cone is created from the special curves with the method</span>
-<span class="sd">    :meth:`createLayerRegion`.</span>
-
+<span class="sd">    &gt;&gt;&gt; import dtOOPythonSWIG as dtOO</span>
 
 <span class="sd">    Meridional Contour</span>
 <span class="sd">    ------------------</span>
@@ -163,11 +161,16 @@
 
 <span class="sd">    The hub and shroud curves are defined in separate lists named ``hubCurves`` and</span>
 <span class="sd">    ``shroudCurves``. The curves have to be created so that their direction is the same as</span>
-<span class="sd">    the downstream direction of the flow machine. Furthermore, the sequence of the curves</span>
-<span class="sd">    in the lists must also correspond to the downstream direction of the machine.</span>
+<span class="sd">    the flow direction of the machine in turbine mode. The sequence of the curves</span>
+<span class="sd">    in the lists must also correspond to this direction.</span>
+<span class="sd"> </span>
+<span class="sd">    In the following documentation the flow direction of the machine in turbine mode is </span>
+<span class="sd">    referred to as the streamwise or downstream direction. The opposing direction is referred</span>
+<span class="sd">    to as the upstream direction.</span>
 
-<span class="sd">    The following figure shows the hub and shroud curves with their respective numbers</span>
-<span class="sd">    in the ``hubCurves`` and ``shroudCurves`` lists.</span>
+<span class="sd">    The following figure shows the hub and shroud curves with their corresponding numbers</span>
+<span class="sd">    in the ``hubCurves`` and ``shroudCurves`` lists. The blue arrow represents the downstream</span>
+<span class="sd">    direction.</span>
 
 <span class="sd">    .. _hsCurves1:</span>
 <span class="sd">    .. figure:: meridionalFigs/hsCurve_noInterface.png</span>
@@ -179,22 +182,35 @@
 <span class="sd">       ``hubCurves`` and ``shroudCurves`` lists.</span>
 
 <span class="sd">    In this example, the first two of the hub and the shroud curves form the </span>
-<span class="sd">    regular channels. </span>
+<span class="sd">    regular channels. These are channel volumes which have six faces, each of them bound </span>
+<span class="sd">    by 4 curves. The bladed channel are defined inide of them.</span>
 <span class="sd">    The first curves build the regular channel for the guide vane, and the second </span>
 <span class="sd">    curves build the regular channel for the runner. </span>
-<span class="sd">    Because the runner channel of a radial turbine is highly curved, a parameterization </span>
-<span class="sd">    of those curves is introduced, which enables the generation of different channel </span>
-<span class="sd">    geometries.</span>
+<span class="sd">    Because the runner channel of a radial turbine is highly curved, one possible </span>
+<span class="sd">    parameterization of those curves is provided, which enables a simple generation of </span>
+<span class="sd">    different channel geometries. The parametrization is shown in figure :numref:`meas`.</span>
 
-<span class="sd">    The parameterization is shown in the following figure.</span>
+<span class="sd">    The contour of the runner&#39;s meridional channel has a flow deflection from the radial inlet </span>
+<span class="sd">    to the axial outlet. In order to achieve this, the meridional </span>
+<span class="sd">    hub and shroud curves of the runner channel are defined from four control points. </span>
 
+<span class="sd">    The first and fourth control points form the start and the end points of the curves.</span>
+<span class="sd">    Their positions are parameterized through the diameters :math:`d_{inlet}`, </span>
+<span class="sd">    :math:`d_{out,hub}` and :math:`d_{out,shroud}` and the heights :math:`h_{inlet}`,</span>
+<span class="sd">    :math:`h_{hub}` and :math:`h_{shroud}`. </span>
+<span class="sd">    Through the second and third control points, the contour of the channel is set. </span>
+<span class="sd">    Their positions are defined through offsets from the first and fourth control points</span>
+<span class="sd">    with the lengths :math:`l_{hub,0}`, :math:`l_{hub,1}`, :math:`l_{shroud,0}`,</span>
+<span class="sd">    and :math:`l_{shroud,1}`. </span>
+<span class="sd">    With the angle :math:`\gamma_{hub1}`, the outlet angle of the hub curve can be set. </span>
+<span class="sd">    </span>
 <span class="sd">    .. _meas:</span>
 <span class="sd">    .. figure:: meridionalFigs/meas.png</span>
 <span class="sd">       :width: 100%</span>
 <span class="sd">       :align: center</span>
 
-<span class="sd">       Measurements of the first two defined hub and shroud curves, </span>
-<span class="sd">       which build the guide vane and runner channels.</span>
+<span class="sd">       Sketch of the first two defined hub and shroud curves, </span>
+<span class="sd">       which build the guide vane and runner channels. Degrees of freedom are included and labeled.</span>
 
 <span class="sd">    :numref:`map-fig-var` gives the mapping between math symbols in :numref:`meas`</span>
 <span class="sd">    and the naming of the variables in this example.</span>
@@ -233,21 +249,6 @@
 <span class="sd">    &gt;&gt;&gt; h_inlet = 0.36</span>
 <span class="sd">    &gt;&gt;&gt; h_hub = 0.68</span>
 <span class="sd">    &gt;&gt;&gt; h_shroud = 0.38</span>
-
-<span class="sd">    The contour of the runner&#39;s meridional channel has a flow deflection from the radial inlet </span>
-<span class="sd">    to the axial outlet. In order to achieve this, the meridional </span>
-<span class="sd">    hub and shroud curves of the runner channel are defined from four control points. </span>
-
-<span class="sd">    The first and fourth control points form the start and the end points of the curves.</span>
-<span class="sd">    Their positions are parameterized through the diameters :math:`d_{inlet}`, </span>
-<span class="sd">    :math:`d_{out,hub}` and :math:`d_{out,shroud}` and the heights :math:`h_{inlet}`,</span>
-<span class="sd">    :math:`h_{hub}` and :math:`h_{shroud}`. </span>
-
-<span class="sd">    Through the second and third control points, the contour of the channel is set. </span>
-<span class="sd">    Their positions are defined through offsets from the first and fourth control points</span>
-<span class="sd">    with the lengths :math:`l_{hub,0}`, :math:`l_{hub,1}`, :math:`l_{shroud,0}`,</span>
-<span class="sd">    and :math:`l_{shroud,1}`. </span>
-<span class="sd">    With the angle :math:`\gamma_{hub1}`, the outlet angle of the hub curve can be set. </span>
 
 <span class="sd">    In the following lines, the displacements for the third control point of the hub curve </span>
 <span class="sd">    are calculated:</span>
@@ -347,11 +348,10 @@
 <span class="sd"> </span>
 <span class="sd">    &gt;&gt;&gt; generate = radMeridional()</span>
 <span class="sd">    </span>
-<span class="sd">    The inputs of this method are the lists with the hub and shroud curves</span>
+<span class="sd">    The inputs of the method :meth:`createMeridional` are the lists with the hub and shroud curves</span>
 <span class="sd">    (``hubCurves`` and ``shroudCurves``)</span>
 <span class="sd">    and a configuration dictionary, which specifies the positions and </span>
-<span class="sd">    curvatures of the interface curves.</span>
-<span class="sd">  </span>
+<span class="sd">    curvatures of the interface curves. </span>
 <span class="sd">    Define the configuration dictionary for the meridional contour.</span>
 
 <span class="sd">    &gt;&gt;&gt; configMeridional = {</span>
@@ -376,7 +376,7 @@
 <span class="sd">    The bladed channel geometries are created as a number of mesh blocks</span>
 <span class="sd">    surrounding the blade geometry and a grid channel, which connects to</span>
 <span class="sd">    the mesh blocks.</span>
-<span class="sd">    The mesh blocks are meshed transfinite, while the grid channel is </span>
+<span class="sd">    The mesh blocks are meshed structured, while the grid channel is </span>
 <span class="sd">    meshed unstructured.</span>
 
 <span class="sd">    The bladed channel is created with the method :meth:`createBlade`. </span>
@@ -385,7 +385,7 @@
 
 <span class="sd">    The key ``regChannel`` in the dictionary specifies in which regular channel </span>
 <span class="sd">    the blade is created. The number of blades can be set with ``nBlades``. </span>
-<span class="sd">    Based on the number of blades, a periodic segment with one blade is built.</span>
+<span class="sd">    Based on the number of blades, the corresponding periodic segment with one blade is built.</span>
 <span class="sd">     </span>
 <span class="sd">    The blade geometry is defined with the parameters ``spanwiseCuts_mp``, </span>
 <span class="sd">    ``alpha_1``, ``alpha_2``, ``ratioX``, ``deltaY``, ``offX`` and ``offY``,</span>
@@ -397,10 +397,11 @@
 <span class="sd">    The guide vane blade is defined with the following configuration dictionary.</span>
 <span class="sd">    Here, the lists of blade parameters contain only one value; this results in </span>
 <span class="sd">    a constant cross section of the blade along its spanwise direction.</span>
-<span class="sd">    The parameter ``adjustRadius`` is set to ``False``.</span>
-
-<span class="sd">    The input ``orientation`` is used to set the orientation of the blade in </span>
-<span class="sd">    the regular channel.</span>
+<span class="sd">    The conformal mapping&#39;s parameter ``adjustRadius`` is set to ``False``.</span>
+<span class="sd">    The input ``orientation`` can be ``1`` or ``-1`` is used to set the </span>
+<span class="sd">    orientation of the blade in the regular channel. If the blade extends in the </span>
+<span class="sd">    positive u-direction of the regular channel, it is set to ``1``. If the blade</span>
+<span class="sd">    extends in the negative u-direction this value has to be set to ``-1``.</span>
 
 <span class="sd">    &gt;&gt;&gt; configGuideVane = {</span>
 <span class="sd">    ...     &quot;label&quot; : &quot;gv&quot;,</span>
@@ -440,16 +441,16 @@
 
 <span class="sd">       Mesh of the guide vane segment.</span>
 
-<span class="sd">    The runner geometry is created with the method `createBlade`.</span>
+<span class="sd">    The runner geometry is created with the method :meth:`createBlade`.</span>
 <span class="sd">    The runner has 15 blades and is mapped onto the second regular channel.</span>
-<span class="sd">    Here, the lists of blade parameters contain multiple values.  </span>
+<span class="sd">    Here, each blade parameter contains multiple values and, therefore, </span>
+<span class="sd">    the blade varies in the spanwise direction. </span>
 <span class="sd">    The parameter ``adjustRadius`` is set to ``True``.</span>
 <span class="sd">    </span>
 <span class="sd">    &gt;&gt;&gt; configRunner = {</span>
 <span class="sd">    ...     &quot;label&quot; : &quot;ru&quot;,</span>
 <span class="sd">    ...     &quot;regChannel&quot; : 1,</span>
 <span class="sd">    ...     &quot;nBlades&quot; : 15,</span>
-<span class="sd">    ...     </span>
 <span class="sd">    ...     &quot;spanwiseCuts_mp&quot; : [0.00, 0.33,  0.66, 1.00,],</span>
 <span class="sd">    ...     &quot;alpha_1&quot; : [</span>
 <span class="sd">    ...              round((np.pi/180.) * 90., 4),</span>
@@ -484,7 +485,6 @@
 <span class="sd">    ...              0.085,</span>
 <span class="sd">    ...              0.035</span>
 <span class="sd">    ...          ],</span>
-<span class="sd">    ... </span>
 <span class="sd">    ...     &quot;spanwiseCuts_td&quot; : [0.00, 1.00,],</span>
 <span class="sd">    ...     &quot;t_le&quot; : [0.020,0.018],</span>
 <span class="sd">    ...     &quot;u_le&quot; : [0.00],</span>
@@ -492,7 +492,6 @@
 <span class="sd">    ...     &quot;u_mid&quot; : [0.50],</span>
 <span class="sd">    ...     &quot;t_te&quot; : [0.02],</span>
 <span class="sd">    ...     &quot;u_te&quot; : [0.80],</span>
-<span class="sd">    ... </span>
 <span class="sd">    ...     &quot;adjustRadius&quot; : True,</span>
 <span class="sd">    ...     &quot;orientation&quot; : 1,</span>
 <span class="sd">    ... }</span>
@@ -515,7 +514,7 @@
 <span class="sd">    ---------------</span>
 
 <span class="sd">    The mesh of the draft tube cone is created as a combination of an </span>
-<span class="sd">    unstructured region and transfinite regions on the hub and shroud </span>
+<span class="sd">    unstructured region and structured regions on the hub and shroud </span>
 <span class="sd">    walls.</span>
 <span class="sd">    The method :meth:`createLayerRegion` is used for the generation and meshing </span>
 <span class="sd">    of the geometry. Geometry settings for the layer region are passed to </span>
@@ -546,21 +545,19 @@
 <span class="sd">    Mesh Generation</span>
 <span class="sd">    ---------------</span>
 
-<span class="sd">    The object ``container`` and the vector-handling objects for bounded </span>
-<span class="sd">    volumes ``bV`` and and cases ``dC`` can be returned with the getter methods </span>
-<span class="sd">    :meth:`getContainer` and :meth:`getbVAnddC`.</span>
-<span class="sd">    These can be used to create the mesh files in `GMSH` or `openFOAM` cases.</span>
-
-<span class="sd">    Return ``container``, ``bV`` and ``dC`` from the ``generate`` object:</span>
+<span class="sd">    The object ``container`` can be returned with the getter method </span>
+<span class="sd">    :meth:`getContainer`.</span>
 
 <span class="sd">    &gt;&gt;&gt; container = generate.getContainer()</span>
-<span class="sd">    &gt;&gt;&gt; bV, dC = generate.getbVAnddC()</span>
 
-<span class="sd">    With the following commands, the meshes of the geometries can be created:</span>
+<span class="sd">    Mesh files and `openFOAM`-cases can be created from the vector-handler objects </span>
+<span class="sd">    ``bV`` and ``dC`` in the ``container`` object. They are returned with the commands</span>
+<span class="sd">    ``container.cptr_bV()`` and ``container.cptr_dC()``. The meshes of the different </span>
+<span class="sd">    topologies can be created in `GMSH` with the following commands:</span>
 
-<span class="sd">    &gt;&gt;&gt; #bV[&quot;gv_mesh&quot;].makeGrid()</span>
-<span class="sd">    &gt;&gt;&gt; #bV[&quot;ru_mesh&quot;].makeGrid()</span>
-<span class="sd">    &gt;&gt;&gt; #bV[&quot;meshLayers&quot;].makeGrid()</span>
+<span class="sd">        - bV[&quot;gv_mesh&quot;].makeGrid()</span>
+<span class="sd">        - bV[&quot;ru_mesh&quot;].makeGrid()</span>
+<span class="sd">        - bV[&quot;meshLayers&quot;].makeGrid()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 	
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -639,7 +636,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">cptr_dP</span><span class="p">()</span>
 
 <div class="viewcode-block" id="radMeridional.createMeridional">
-<a class="viewcode-back" href="../../../../demonstration.html#dtOO.demo.piecewiseMeridional.radMeridional.radMeridional.createMeridional">[docs]</a>
+<a class="viewcode-back" href="../../../../demonstration.html#dtOO.demo.radMeridional.radMeridional.radMeridional.createMeridional">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">createMeridional</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configM</span><span class="p">,</span> <span class="n">hubCurves</span><span class="p">,</span> <span class="n">shroudCurves</span><span class="p">):</span> 
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the regular channels and special hub and shroud curves.</span>
 
@@ -711,7 +708,8 @@
 
 <span class="sd">           Hub and shroud curves of the meridional channel.</span>
 <span class="sd">           Numbering corresponds to the indices in the</span>
-<span class="sd">           ``hubCurves`` and ``shroudCurves`` lists.</span>
+<span class="sd">           ``hubCurves`` and ``shroudCurves`` lists. The downstream direction is shown </span>
+<span class="sd">           by the blue arrow.</span>
 
 <span class="sd">        In this method, the builder class `analyticGeometry_piecewiseRadMeridional` </span>
 <span class="sd">        is called. The object ``radMeridionalContour`` of this class is created to </span>
@@ -740,7 +738,7 @@
 <span class="sd">           :align: center</span>
 
 <span class="sd">           Creation of the interface curves (red) between the hub and shroud curves </span>
-<span class="sd">           (black), with the linear mean-plane curve `MP,lin` (green).</span>
+<span class="sd">           (black), with the linear meanplane curve `MP,lin` (green).</span>
 
 <span class="sd">        :numref:`map-fig-var_interface` gives the mapping between the mathematical symbols in</span>
 <span class="sd">        :numref:`interfaceCalc` and the naming of the list keys in this example.</span>
@@ -766,11 +764,11 @@
 <span class="sd">            ``interface_shroud[i]``: End point of the i-th interface curve on the shroud.</span>
 
 <span class="sd">        The lower-level lists specify the hub and shroud curves and the percentages of </span>
-<span class="sd">        those curves at which the start and end points of the interfaces are located:</span>
+<span class="sd">        those curves&#39; parametric spans at which the start and end points of the interfaces are located:</span>
 
 <span class="sd">            ``interface_hub[i][0]``: Index of the hub curve on which the start point is located.</span>
 
-<span class="sd">            ``interface_hub[i][1]``: Percentage along the hub curve where the start point is located.</span>
+<span class="sd">            ``interface_hub[i][1]``: Percentage of the hub curve&#39;s parametric span where the start point is located.</span>
 
 <span class="sd">        The interface curves are calculated by first creating a straight line `MP,lin` </span>
 <span class="sd">        between the interface start and end points. Using the list ``interface_curvature``, </span>
@@ -791,7 +789,7 @@
 
 <span class="sd">            ``interface_curvature[i][1]``: Control point base position as a percentage along `MP,lin`.</span>
 
-<span class="sd">            ``interface_curvature[i][2]``: Direction of the control point offset.</span>
+<span class="sd">            ``interface_curvature[i][2]``: Switch for the direction of the control point offset.</span>
 
 <span class="sd">        When the start or end point of an interface lies on the span of a hub or shroud </span>
 <span class="sd">        curve, that curve is split into two curves at this point. The resulting two </span>
@@ -799,21 +797,22 @@
 
 <span class="sd">        With the interfaces, the meridional contour is partitioned into regular channels</span>
 <span class="sd">        for the blade geometries and hub and shroud curves for the draft tube cone, which</span>
-<span class="sd">        is bild as a layered region.</span>
+<span class="sd">        is build as a layered region.</span>
 
 <span class="sd">        The following figure shows the interfaces and the resulting regular channels,</span>
-<span class="sd">        as well as the special curves that are not part of the regular channels.</span>
+<span class="sd">        as well as the special curves that are not part of the regular channels. These </span>
+<span class="sd">        curves form the boundary curves of the layered region.</span>
 
 <span class="sd">        .. _interfaces:</span>
 <span class="sd">        .. figure:: meridionalFigs/interfaces.png</span>
 <span class="sd">           :width: 50%</span>
 <span class="sd">           :align: center</span>
 
-<span class="sd">           Hub and shroud curves (black), interface curves (red),</span>
-<span class="sd">           and inlet and outlet curves (orange). The layer region curves</span>
+<span class="sd">           The hub and shroud curves are shown in black, the interface curves in red,</span>
+<span class="sd">           and inlet and outlet curves in orange. The layer region curves</span>
 <span class="sd">           are downstream of the last interface curve.</span>
-<span class="sd">           The two-dimensional faces of the first regular channel (yellow)</span>
-<span class="sd">           and the second regular channel (green).</span>
+<span class="sd">           The two-dimensional faces of the first and second regular </span>
+<span class="sd">           channel are colored in yellow and green, respectively.</span>
 
 <span class="sd">        The first regular channel is created from the inlet curve and the first interface</span>
 <span class="sd">        curve, as well as the hub and shroud curves extending between them.</span>
@@ -843,12 +842,12 @@
           <span class="n">interface_hub</span> <span class="o">=</span> <span class="n">configM</span><span class="p">[</span><span class="s2">&quot;interface_hub&quot;</span><span class="p">],</span>
           <span class="n">interface_shroud</span> <span class="o">=</span> <span class="n">configM</span><span class="p">[</span><span class="s2">&quot;interface_shroud&quot;</span><span class="p">],</span>
           <span class="n">interface_curvature</span> <span class="o">=</span> <span class="n">configM</span><span class="p">[</span><span class="s2">&quot;interface_curvature&quot;</span><span class="p">],</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">enableDebug</span><span class="p">()</span><span class="c1">#.buildExtract( self.container )</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">enableDebug</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radMeridionalContour</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span></div>
 
     
 <div class="viewcode-block" id="radMeridional.createLayerRegion">
-<a class="viewcode-back" href="../../../../demonstration.html#dtOO.demo.piecewiseMeridional.radMeridional.radMeridional.createLayerRegion">[docs]</a>
+<a class="viewcode-back" href="../../../../demonstration.html#dtOO.demo.radMeridional.radMeridional.radMeridional.createLayerRegion">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">createLayerRegion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configL</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a layered flow channel geometry.</span>
 
@@ -885,8 +884,8 @@
 <span class="sd">        The mesh of the draft tube cone consists of six- or five-sided layer</span>
 <span class="sd">        regions on the hub and shroud walls, as well as a multiple bounded volume</span>
 <span class="sd">        inside the flow domain.</span>
-<span class="sd">        The layered regions are meshed transfinite, while the multiple bounded volume</span>
-<span class="sd">        is meshed using an unstructured mesh.</span>
+<span class="sd">        The meshes in the layered regions are structured, while the multiple bounded volume</span>
+<span class="sd">        is meshed using an unstructured algorithm.</span>
 <span class="sd">        </span>
 <span class="sd">        The following figure shows the activity diagram of the class.</span>
 
@@ -1015,13 +1014,13 @@
 <span class="sd">               :align: center</span>
 
 <span class="sd">               Bounding faces of the multiple bounded volume with inlet (red), outlet (orange),</span>
-<span class="sd">               and layer faces (blue). Periodic faces not shown.</span>
+<span class="sd">               and layer faces (blue). Periodic faces are not shown.</span>
 
 <span class="sd">        **Create the Mesh Topology**</span>
 <span class="sd">        </span>
 <span class="sd">            The mesh settings for the regions are applied using the class</span>
 <span class="sd">            `map3dTo3dGmsh_gridFromLayers`. The layer list ``layers``, the multiple bounded </span>
-<span class="sd">            volume ``mv`` and its bounding surafces ``bs`` are handed to the class.</span>
+<span class="sd">            volume ``mv`` and its bounding surfaces ``bs`` are handed to the class.</span>
 <span class="sd">            </span>
 <span class="sd">            The edges on which mesh settings are applied are shown in :numref:`layerMs`.</span>
 <span class="sd">            </span>
@@ -1044,12 +1043,12 @@
 <span class="sd">            Similarly, the maximum element size on the edges extending along the walls</span>
 <span class="sd">            and the edges parallel to them (pink) is set using ``elementSize_sw``.</span>
 
-<span class="sd">            The mesh of the unstructured region can be controlled using the parameters</span>
+<span class="sd">            The mesh of the unstructured region can be controlled using `GMSH`&#39;s parameters</span>
 <span class="sd">            ``charLengthMin`` and ``charLengthMax``, which define the minimum and maximum</span>
 <span class="sd">            element sizes.</span>
 
 <span class="sd">            The subclass pushes the created mesh topology into the ``bV`` container with</span>
-<span class="sd">            the specified label ``label`` .</span>
+<span class="sd">            the specified label ``label``.</span>
 
 <span class="sd">            A mesh resulting from this topology is shown in :numref:`layerMesh0`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1138,14 +1137,14 @@
 
 
 <div class="viewcode-block" id="radMeridional.createBlade">
-<a class="viewcode-back" href="../../../../demonstration.html#dtOO.demo.piecewiseMeridional.radMeridional.radMeridional.createBlade">[docs]</a>
+<a class="viewcode-back" href="../../../../demonstration.html#dtOO.demo.radMeridional.radMeridional.radMeridional.createBlade">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">createBlade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configB</span><span class="p">):</span>
 <span class="w">        </span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create geometry of a bladed channel and its mesh topology.</span>
 
 <span class="sd">        This method:</span>
 
-<span class="sd">        - Creates the blade in the parameter space by combining the mean plane with the thickness distribution.</span>
+<span class="sd">        - Creates the blade in the parameter space by combining the blade meanplane with the thickness distribution.</span>
 <span class="sd">        - Creates six-sided mesh blocks surrounding the blade.</span>
 <span class="sd">        - Creates six-sided mesh blocks at the blade’s trailing edge.</span>
 <span class="sd">        - Creates FE-Meanplanes extending from the mesh blocks toward the</span>
@@ -1268,12 +1267,12 @@
 
 <span class="sd">                &quot;xyz_&quot; + label + &quot;_channel&quot;</span>
 
-<span class="sd">        **Create Blade Mean Plane**</span>
+<span class="sd">        **Create Blade&#39;s Mean Plane**</span>
 
-<span class="sd">            The mean-plane surface is created using the parameters</span>
+<span class="sd">            The meanplane surface is created using the parameters</span>
 <span class="sd">            ``spanwiseCuts_mp``, ``alpha_1``, ``alpha_2``, ``ratioX``, ``deltaY``,</span>
 <span class="sd">            ``offX``, and ``offY``. The class</span>
-<span class="sd">            `analyticSurface_threePointMeanplaneFromRatio` creates the mean plane in</span>
+<span class="sd">            `analyticSurface_threePointMeanplaneFromRatio` creates the meanplane in</span>
 <span class="sd">            the uv-parameter space. The blade surface is labeled with the following</span>
 <span class="sd">            string:</span>
 
@@ -1281,7 +1280,7 @@
 
 <span class="sd">                label + &quot;_meanplane&quot;</span>
 
-<span class="sd">        **Create Blade Thickness Distribution**</span>
+<span class="sd">        **Create Blade&#39;s Thickness Distribution**</span>
 
 <span class="sd">            The thickness distribution is defined using the parameters</span>
 <span class="sd">            ``spanwiseCuts_td``, ``t_le``, ``u_le``, ``t_mid``, ``u_mid``, ``t_te``,</span>
@@ -1289,7 +1288,7 @@
 <span class="sd">            `vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution` defines the</span>
 <span class="sd">            thickness distribution.</span>
 
-<span class="sd">            The thickness-distribution function in uv-parameter space is labeled as</span>
+<span class="sd">            The thickness distribution function in uv-parameter space is labeled as</span>
 <span class="sd">            follows:</span>
 
 <span class="sd">            ::</span>
@@ -1299,11 +1298,11 @@
 <span class="sd">            The parameterization of the blade geometry is described in more detail in</span>
 <span class="sd">            `[Fraas_2025] &lt;https://doi.org/10.3390/ijtpp10040038&gt;`_.</span>
 
-<span class="sd">        The parameters of the mean plane and the thickness distribution are stored in</span>
+<span class="sd">        The parameters of the meanplane and the thickness distribution are stored in</span>
 <span class="sd">        lists. The list entries define the blade parameters along the blade span, from</span>
 <span class="sd">        hub to shroud.</span>
 
-<span class="sd">        The mean plane and thickness distribution are created using</span>
+<span class="sd">        The meanplane and thickness distribution are created using</span>
 <span class="sd">        `scaOneD_scaCurve2dOneDPointConstruct` objects, which define a functional</span>
 <span class="sd">        relationship between the parameters and the spanwise direction.</span>
 <span class="sd">        The constructor of a `scaOneD_scaCurve2dOneDPointConstruct` object requires a</span>
@@ -1317,7 +1316,7 @@
 
 <span class="sd">        **Create Blade Surface**</span>
 
-<span class="sd">            The blade is constructed by combining the mean-plane contour and the</span>
+<span class="sd">            The blade is constructed by combining the meanplane contour and the</span>
 <span class="sd">            thickness distribution using the `dtOO` class `discreteAddNormal`.</span>
 <span class="sd">            The resulting blade is represented as a surface in uv-parameter space.</span>
 <span class="sd">            The blade surface is labeled as follows:</span>
@@ -1334,20 +1333,20 @@
 <span class="sd">            ``&quot;uVw_phirMs&quot;``.</span>
 
 <span class="sd">            The configuration parameter ``adjustRadius`` is applied at this stage.</span>
-<span class="sd">            The Boolean value associated with this parameter controls whether radial</span>
-<span class="sd">            shifts during the mapping of the blade into the radial channel are enabled</span>
-<span class="sd">            or disabled.</span>
+<span class="sd">            The Boolean value associated with this parameter controls wheter the mapping</span>
+<span class="sd">            of the blade geometry is scaled to the radius of the regular channel. If this</span>
+<span class="sd">            value is ``False`` the scaling is disabled.</span>
 
 <span class="sd">        **Create Mesh Block Surface**</span>
 
-<span class="sd">            The mesh blocks are created by generating a mesh-block surface that</span>
+<span class="sd">            The mesh blocks are created by generating a mesh block surface that</span>
 <span class="sd">            surrounds the blade at a normal distance of ``meshBlock_thickness`` from</span>
 <span class="sd">            the blade surface.</span>
 
-<span class="sd">            This is done in a manner similar to the combination of the mean plane and</span>
+<span class="sd">            This is done in a manner similar to the combination of the meanplane and</span>
 <span class="sd">            thickness distribution, using the `dtOO` class `discreteAddNormal`.</span>
 
-<span class="sd">            The mesh-block surface is assigned the following label:</span>
+<span class="sd">            The mesh block surface is assigned the following label:</span>
 
 <span class="sd">            ::</span>
 
@@ -1357,13 +1356,13 @@
 
 <span class="sd">            The class `vec3dThreeD_skinAndSplit` is used for multiple operations:</span>
 
-<span class="sd">                - Creation of mesh-block volumes surrounding the blade.</span>
-<span class="sd">                - Creation of trailing-edge mesh blocks.</span>
+<span class="sd">                - Creation of mesh block volumes surrounding the blade.</span>
+<span class="sd">                - Creation of trailing edge mesh blocks.</span>
 <span class="sd">                - Creation of FE-meanplane curves.</span>
 
 <span class="sd">            **Create Mesh Block Volumes**</span>
 
-<span class="sd">                The mesh-block volumes are created by splitting the blade and mesh-block</span>
+<span class="sd">                The mesh block volumes are created by splitting the blade and mesh block</span>
 <span class="sd">                surfaces along the direction specified by ``splitDim`` and skinning the</span>
 <span class="sd">                resulting faces together.</span>
 
@@ -1380,7 +1379,7 @@
 <span class="sd">                direction can be changed from the u-direction by modifying the input</span>
 <span class="sd">                variable ``splitDim``.</span>
 
-<span class="sd">                The following figure shows a blade surrounded by mesh-block volumes.</span>
+<span class="sd">                The following figure shows a blade surrounded by mesh block volumes.</span>
 
 <span class="sd">                .. _meshBlock:</span>
 <span class="sd">                .. figure:: bladeFigs/guideVane_meshBlocks.png</span>
@@ -1392,21 +1391,21 @@
 <span class="sd">                In addition to the mesh blocks created around the blade surface, two</span>
 <span class="sd">                mesh blocks are created downstream of the blade trailing edge.</span>
 
-<span class="sd">                The trailing-edge mesh blocks are generated by creating curves that are</span>
+<span class="sd">                The trailing edge mesh blocks are generated by creating curves that are</span>
 <span class="sd">                tangentially offset from the blade surface and from the edges of the</span>
 <span class="sd">                mesh blocks. These curves are skinned with their corresponding source</span>
 <span class="sd">                curves to create surfaces. The resulting surfaces are then skinned</span>
-<span class="sd">                together to create the trailing-edge mesh-block volumes.</span>
+<span class="sd">                together to create the trailing edge mesh block volumes.</span>
 
-<span class="sd">                The thickness of the trailing-edge mesh blocks is specified by the</span>
+<span class="sd">                The thickness of the trailing edge mesh blocks is specified by the</span>
 <span class="sd">                input variable ``tEMeshBlockThickness``.</span>
 
-<span class="sd">                The trailing-edge mesh blocks are labeled ``meshBlock``. The block</span>
-<span class="sd">                connected to the first trailing-edge mesh block receives the suffix</span>
+<span class="sd">                The trailing edge mesh blocks are labeled ``label + &quot;meshBlock&quot;``. The block</span>
+<span class="sd">                connected to the first trailing edge mesh block receives the suffix</span>
 <span class="sd">                ``_0``, while the block connected to the last mesh block receives the</span>
 <span class="sd">                suffix ``_n+1``.</span>
 
-<span class="sd">                The following figure shows the trailing-edge mesh blocks connected to</span>
+<span class="sd">                The following figure shows the trailing edge mesh blocks connected to</span>
 <span class="sd">                the surrounding mesh blocks.</span>
 
 <span class="sd">                .. _TEmeshBlock:</span>
@@ -1414,20 +1413,20 @@
 <span class="sd">                   :width: 50%</span>
 <span class="sd">                   :align: center</span>
 
-<span class="sd">                   Blade surface (grey) with trailing-edge mesh blocks.</span>
+<span class="sd">                   Blade surface (grey) with trailing edge mesh blocks.</span>
 
 <span class="sd">            **Create FE-Meanplane Curves**</span>
 
 <span class="sd">                Two offset meanplane curves are created in this subclass. One curve is</span>
 <span class="sd">                offset in the tangential direction of the surrounding surface of the</span>
-<span class="sd">                first trailing-edge mesh block toward the outlet. The other curve is</span>
+<span class="sd">                first trailing edge mesh block towards the outlet. The other curve is</span>
 <span class="sd">                offset from the mesh block specified by the input variable</span>
 <span class="sd">                ``nMeanplaneBlocks`` in the w-direction toward the inlet of the regular</span>
 <span class="sd">                channel.</span>
 
 <span class="sd">                The offset distances can be specified using ``meanplaneExtOut`` for the</span>
 <span class="sd">                extension toward the outlet and ``meanplaneExtIn`` for the extension</span>
-<span class="sd">                toward the inlet.</span>
+<span class="sd">                towards the inlet.</span>
 
 <span class="sd">                The offset meanplane curves and their corresponding base curves on the</span>
 <span class="sd">                mesh blocks are labeled using the following strings:</span>
@@ -1489,7 +1488,7 @@
 
 <span class="sd">            All geometries generated up to this point are defined in uvw-parameter</span>
 <span class="sd">            space. By performing a conformal mapping within the regular channel,</span>
-<span class="sd">            these geometries are reparameterized into xyz-coordinate space.</span>
+<span class="sd">            these geometries are transformed into xyz-coordinate space.</span>
 
 <span class="sd">            The mapping is performed using the prepared mapping object labeled</span>
 <span class="sd">            ``&quot;uVw_phirMs&quot;``.</span>
@@ -1508,7 +1507,6 @@
 
 <span class="sd">            The class takes the list of meanplane curves ``meshBlockCurves`` and</span>
 <span class="sd">            the regular channel as inputs.</span>
-
 <span class="sd">            The surfaces are labeled as follows. The strings ``&lt;in/out&gt;`` have the</span>
 <span class="sd">            same meaning as described previously.</span>
 
@@ -1528,20 +1526,18 @@
 
 <span class="sd">        **Organize Mesh Block Volumes**</span>
 
-<span class="sd">            The mesh-block volumes are organized in the list ``blocks`` in ascending</span>
+<span class="sd">            The mesh block volumes are organized in the list ``blocks`` in ascending</span>
 <span class="sd">            order according to their labels.</span>
 
-<span class="sd">        **Create Lists of Boundary Faces (``couplingFaces`` and ``meanplaneFaces``)**</span>
+<span class="sd">        **Create Lists of Boundary Faces**</span>
 
 <span class="sd">            The FE-meanplane surfaces and the surrounding surfaces of the mesh blocks</span>
 <span class="sd">            are sorted into the lists ``couplingFaces`` and ``meanplaneFaces``.</span>
-
-<span class="sd">            The surfaces in ``couplingFaces`` are the mesh-block faces that connect</span>
+<span class="sd">            The surfaces in ``couplingFaces`` are the mesh block faces that connect</span>
 <span class="sd">            the mesh blocks to the grid channel.</span>
-
 <span class="sd">            The surfaces in ``meanplaneFaces`` form the periodic boundary surfaces of</span>
-<span class="sd">            the complete bladed-channel mesh. These include the FE-meanplane surfaces</span>
-<span class="sd">            and selected mesh-block surfaces.</span>
+<span class="sd">            the complete bladed channel mesh. These include the FE-meanplane surfaces</span>
+<span class="sd">            and selected mesh block surfaces.</span>
 
 <span class="sd">            The sorting is performed by iterating over the list ``blocks`` and</span>
 <span class="sd">            evaluating the integer value ``nMeanplaneFromBlocks``, which specifies the</span>
@@ -1557,17 +1553,17 @@
 <span class="sd">               :align: center</span>
 
 <span class="sd">               Faces contained in the lists ``meanplaneFaces`` and ``couplingFaces``,</span>
-<span class="sd">               including FE-meanplane surfaces (yellow), mesh-block meanplane surfaces</span>
+<span class="sd">               including FE-meanplane surfaces (yellow), mesh block meanplane surfaces</span>
 <span class="sd">               (green), and coupling faces (cyan). The blade (grey) is shown for</span>
 <span class="sd">               reference.</span>
 
 <span class="sd">        **Create Grid Channel**</span>
 
 <span class="sd">            Using the lists ``meanplaneFaces`` and ``couplingFaces``, the grid channel</span>
-<span class="sd">            is created as a multiple-bounded volume by the class</span>
+<span class="sd">            is created as a multiple bounded volume by the class</span>
 <span class="sd">            `multipleBoundedVolume_gridChannel`.</span>
 
-<span class="sd">            The class returns the multiple-bounded volume of the grid channel together</span>
+<span class="sd">            The class returns the multiple bounded volume of the grid channel together</span>
 <span class="sd">            with a list containing its bounding surfaces.</span>
 
 <span class="sd">            The bounding surfaces are created by rotating the meanplane surfaces by the</span>
@@ -1596,21 +1592,19 @@
 <span class="sd">            the rotated surfaces contained in ``meanplaneFaces`` (yellow and green).</span>
 
 <span class="sd">            The inlet and outlet surfaces (red) are created by rotating the edges of</span>
-<span class="sd">            the meanplane surfaces that connect to the inlet and outlet of the regular</span>
+<span class="sd">            the FE-meanplane surfaces that connect to the inlet and outlet of the regular</span>
 <span class="sd">            channel.</span>
-
-<span class="sd">            The hub and shroud surfaces of the grid channel are multiple-bounded</span>
+<span class="sd">            The hub and shroud surfaces of the grid channel are multiple bounded</span>
 <span class="sd">            surfaces defined by the edges of the boundary surfaces connected to them.</span>
-
 <span class="sd">            The rotation angle of the surfaces is determined by the number of blades</span>
 <span class="sd">            ``nBlades`` specified in the configuration dictionary.</span>
 
-<span class="sd">            The multiple-bounded volume ``gc`` and the list of bounding surfaces</span>
+<span class="sd">            The multiple bounded volume ``gc`` and the list of bounding surfaces</span>
 <span class="sd">            ``gcFaces`` of the grid channel can be returned using the</span>
 <span class="sd">            ``getGridChannel()`` method of the class</span>
 <span class="sd">            `multipleBoundedVolume_gridChannel`.</span>
 
-<span class="sd">            The multiple-bounded-volume object is labeled as follows:</span>
+<span class="sd">            The multiple bounded volume object is labeled as follows:</span>
 
 <span class="sd">            ::</span>
 
@@ -1618,13 +1612,13 @@
 
 <span class="sd">        **Create the Mesh Topology**</span>
 
-<span class="sd">            The mesh topology consists of the grid-channel volume and the mesh blocks</span>
+<span class="sd">            The mesh topology consists of the grid channel volume and the mesh blocks</span>
 <span class="sd">            stored in the list ``blocks``.</span>
 
-<span class="sd">            These objects are passed to the method</span>
+<span class="sd">            These objects are passed to the subclass</span>
 <span class="sd">            `map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks`, together with the</span>
-<span class="sd">            list of grid-channel bounding surfaces ``gcFaces`` and the blade surface in</span>
-<span class="sd">            Cartesian space.</span>
+<span class="sd">            list of grid channel bounding surfaces ``gcFaces`` and the blade surface in</span>
+<span class="sd">            cartesian space.</span>
 
 <span class="sd">            The following figure shows the surfaces and volumes of the mesh topology.</span>
 <span class="sd">            The hub and shroud surfaces are not shown.</span>
@@ -1637,12 +1631,12 @@
 <span class="sd">               Bladed channel with blade (grey), inlet and outlet surfaces (red),</span>
 <span class="sd">               periodic surfaces (yellow and green), and coupling faces (cyan).</span>
 
-<span class="sd">            The grid-channel volume is meshed using an unstructured mesh with</span>
-<span class="sd">            transfinite layers on the hub and shroud surfaces. The number of layers can</span>
+<span class="sd">            The grid channel volume is meshed using an unstructured mesh with</span>
+<span class="sd">            structured layers on the hub and shroud surfaces. The number of layers can</span>
 <span class="sd">            be specified using ``nBoundaryLayers``.</span>
 
 <span class="sd">            The element size in the unstructured regions can be controlled using</span>
-<span class="sd">            ``charLengthMax`` and ``charLengthMin``.</span>
+<span class="sd">            `GMSH`&#39;s parameters ``charLengthMax`` and ``charLengthMin``.</span>
 
 <span class="sd">            The edges on which mesh settings are applied are shown in</span>
 <span class="sd">            :numref:`channelMeshing`.</span>
@@ -1654,30 +1648,25 @@
 
 <span class="sd">               Edges of the bladed channel where mesh settings are applied:</span>
 <span class="sd">               hub-to-shroud edges (orange), blade edges (blue),</span>
-<span class="sd">               blade-to-block edges (green), and trailing-edge lines (pink).</span>
+<span class="sd">               blade-to-block edges (green), and trailing edge lines (magenta).</span>
 
 <span class="sd">            The number of elements in the spanwise direction</span>
 <span class="sd">            (``nElementsSpanwise``) is applied to the edges extending from the hub to</span>
 <span class="sd">            the shroud (orange).</span>
-
 <span class="sd">            These edges are meshed using a grading with an element size of</span>
 <span class="sd">            ``firstElementSizeHubToShroud`` at the hub and shroud surfaces.</span>
 
 <span class="sd">            The mesh blocks surrounding the blade are meshed using transfinite</span>
 <span class="sd">            interpolation.</span>
-
-<span class="sd">            The edges extending from the blade surface to the mesh-block surfaces</span>
+<span class="sd">            The edges extending from the blade surface to the meshblock surfaces</span>
 <span class="sd">            (green) are meshed with the number of elements specified by</span>
 <span class="sd">            ``nElementsNormal`` and a grading with an element size of</span>
 <span class="sd">            ``firstElementSizeNormalBlade`` at the blade surface.</span>
-
 <span class="sd">            The mesh size along the blade edge (blue) is controlled by</span>
 <span class="sd">            ``bladeHubElementSize``.</span>
-
 <span class="sd">            This input is an object of class</span>
-<span class="sd">            `scaOneD_scaCurve2dOneDPointConstruct` and defines the mesh-size</span>
+<span class="sd">            `scaOneD_scaCurve2dOneDPointConstruct` and defines the mesh size</span>
 <span class="sd">            distribution along the blade surface.</span>
-
 <span class="sd">            The scale factor can be adjusted using ``bladeHubElementScale``.</span>
 
 <span class="sd">            The mesh topology is stored in the container ``bV`` with the following</span>
@@ -2166,7 +2155,7 @@
     <span class="c1">#  with spanwise cut percentage and blade input parameters</span>
     <span class="c1">#</span>
 <div class="viewcode-block" id="radMeridional.fillInputList">
-<a class="viewcode-back" href="../../../../demonstration.html#dtOO.demo.piecewiseMeridional.radMeridional.radMeridional.fillInputList">[docs]</a>
+<a class="viewcode-back" href="../../../../demonstration.html#dtOO.demo.radMeridional.radMeridional.radMeridional.fillInputList">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fillInputList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inList</span><span class="p">):</span> 
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create inputs for scaOneD_scaCurve2dOneDPointConstruct class.</span>
 
@@ -2240,11 +2229,11 @@
 
     
 <div class="viewcode-block" id="radMeridional.getContainer">
-<a class="viewcode-back" href="../../../../demonstration.html#dtOO.demo.piecewiseMeridional.radMeridional.radMeridional.getContainer">[docs]</a>
+<a class="viewcode-back" href="../../../../demonstration.html#dtOO.demo.radMeridional.radMeridional.radMeridional.getContainer">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">getContainer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the container object.</span>
 <span class="sd">        </span>
-<span class="sd">        Is used to create openFOAM cases.</span>
+<span class="sd">        Is used to return the container objects.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2256,27 +2245,6 @@
 <span class="sd">          Initialization of the dtBundle.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span></div>
-
-
-<div class="viewcode-block" id="radMeridional.getbVAnddC">
-<a class="viewcode-back" href="../../../../demonstration.html#dtOO.demo.piecewiseMeridional.radMeridional.radMeridional.getbVAnddC">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">getbVAnddC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the bV and dC object.</span>
-<span class="sd">        </span>
-<span class="sd">        Are used to create the meshes and openFoam cases.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        None</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        bV: lvH_boundedVolume</span>
-<span class="sd">          Labeled vector handling of bounded volumes.</span>
-<span class="sd">        dC: lvh_dtCase</span>
-<span class="sd">          Labeled vector handling of cases.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bV</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dC</span></div>
 </div>
 
 

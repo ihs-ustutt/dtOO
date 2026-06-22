@@ -413,6 +413,9 @@
 <span class="sd">            consistent with the downstream direction of the flow machine. Furthermore, the ordering</span>
 <span class="sd">            of the curves in the lists must also follow the downstream direction of the machine.</span>
 
+<span class="sd">            Here downstream direction refers to the flow direction of a machine in turbine mode.</span>
+<span class="sd">            The counter direction is referred to as the upstream direction. </span>
+
 <span class="sd">            The following figure shows the hub and shroud curves:</span>
 
 <span class="sd">            .. _hsCurves0:</span>
@@ -515,7 +518,6 @@
 <span class="sd">            regular channels are created between adjacent interfaces in flow direction.</span>
 
 <span class="sd">            The regular channel surfaces are created by iterating over the number of interfaces.</span>
-
 <span class="sd">            For each regular channel, the hub and shroud curves belonging to that channel are determined</span>
 <span class="sd">            using the method :meth:`findChannelCurves`. This method is called once for the hub curves</span>
 <span class="sd">            and once for the shroud curves. The inputs are the instantiated curve lists ``hubCurves_``</span>
@@ -1150,7 +1152,7 @@
 <span class="sd">        </span>
 <span class="sd">        This method:</span>
 
-<span class="sd">            - Takes the ``cti`` (curve-to-interface) lists created in :meth:`createSplits`</span>
+<span class="sd">            - Takes the ``cti`` (`curve-to-interface`) lists created in :meth:`createSplits`</span>
 <span class="sd">            - Propagates interface IDs to upstream curve segments</span>
 <span class="sd">            - Returns the propagated lists</span>
 
@@ -1399,7 +1401,7 @@
 <span class="sd">           :width: 110%</span>
 <span class="sd">           :align: center</span>
 
-<span class="sd">           Activity diagram of the ``createSplits`` method.</span>
+<span class="sd">           Activity diagram of the :meth:`createSplits` method.</span>
 
 <span class="sd">        At the start of the method, empty lists are created for the split curves</span>
 <span class="sd">        ``outCurves`` and the curve-to-interface list ``curve_to_interface``.</span>
@@ -1626,10 +1628,8 @@
 <span class="sd">        None</span>
 
 
-<span class="sd">        This method allows the instantiated geometries to be plotted in `ParaView`, by</span>
-<span class="sd">        adding them to the analytic geometry container.</span>
-<span class="sd">        If the code is run in paraview, the geometries can be found with the </span>
-<span class="sd">        `FindAndShow` method.</span>
+<span class="sd">        This method appends the geometries to the ``dtBundle`` objects for </span>
+<span class="sd">        debugging.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Building </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">))</span>
 

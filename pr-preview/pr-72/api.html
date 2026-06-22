@@ -1414,6 +1414,8 @@ channel segments and special hub and shroud curves.</p>
 cross-section of the channel. The curves must be created such that their direction is
 consistent with the downstream direction of the flow machine. Furthermore, the ordering
 of the curves in the lists must also follow the downstream direction of the machine.</p>
+<p>Here downstream direction refers to the flow direction of a machine in turbine mode.
+The counter direction is referred to as the upstream direction.</p>
 <p>The following figure shows the hub and shroud curves:</p>
 <figure class="align-center" id="id1">
 <span id="hscurves0"></span><a class="reference internal image-reference" href="_images/hsCurve_noInterface.png"><img alt="_images/hsCurve_noInterface.png" src="_images/hsCurve_noInterface.png" style="width: 50%;" />
@@ -1508,8 +1510,8 @@ end points of the last hub and shroud curves.</p>
 <div><p>The number of regular channels corresponds to the number of defined interfaces. The first
 regular channel is created between the inlet curve and the first interface. Subsequent
 regular channels are created between adjacent interfaces in flow direction.</p>
-<p>The regular channel surfaces are created by iterating over the number of interfaces.</p>
-<p>For each regular channel, the hub and shroud curves belonging to that channel are determined
+<p>The regular channel surfaces are created by iterating over the number of interfaces.
+For each regular channel, the hub and shroud curves belonging to that channel are determined
 using the method <a class="reference internal" href="#dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.findChannelCurves" title="dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.findChannelCurves"><code class="xref py py-meth docutils literal notranslate"><span class="pre">findChannelCurves()</span></code></a>. This method is called once for the hub curves
 and once for the shroud curves. The inputs are the instantiated curve lists <code class="docutils literal notranslate"><span class="pre">hubCurves_</span></code>
 or <code class="docutils literal notranslate"><span class="pre">shroudCurves_</span></code>, the <code class="docutils literal notranslate"><span class="pre">cti</span></code> lists <code class="docutils literal notranslate"><span class="pre">hub_cti</span></code> or <code class="docutils literal notranslate"><span class="pre">shroud_cti</span></code>, and the ID of the
@@ -1805,7 +1807,7 @@ flag, are appended to the intersection list.</p>
 <p>This method:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Takes the <code class="docutils literal notranslate"><span class="pre">cti</span></code> (curve-to-interface) lists created in <a class="reference internal" href="#dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.createSplits" title="dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.createSplits"><code class="xref py py-meth docutils literal notranslate"><span class="pre">createSplits()</span></code></a></p></li>
+<li><p>Takes the <code class="docutils literal notranslate"><span class="pre">cti</span></code> (<cite>curve-to-interface</cite>) lists created in <a class="reference internal" href="#dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.createSplits" title="dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.createSplits"><code class="xref py py-meth docutils literal notranslate"><span class="pre">createSplits()</span></code></a></p></li>
 <li><p>Propagates interface IDs to upstream curve segments</p></li>
 <li><p>Returns the propagated lists</p></li>
 </ul>
@@ -1969,7 +1971,7 @@ defines the corresponding interface ID.</p>
 <span id="createsplits"></span><a class="reference internal image-reference" href="_images/createSplits.png"><img alt="_images/createSplits.png" src="_images/createSplits.png" style="width: 110%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 43 </span><span class="caption-text">Activity diagram of the <code class="docutils literal notranslate"><span class="pre">createSplits</span></code> method.</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 43 </span><span class="caption-text">Activity diagram of the <a class="reference internal" href="#dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.createSplits" title="dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.createSplits"><code class="xref py py-meth docutils literal notranslate"><span class="pre">createSplits()</span></code></a> method.</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>At the start of the method, empty lists are created for the split curves
@@ -2056,10 +2058,8 @@ and <code class="docutils literal notranslate"><span class="pre">None</span></co
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
-<p>This method allows the instantiated geometries to be plotted in <cite>ParaView</cite>, by
-adding them to the analytic geometry container.
-If the code is run in paraview, the geometries can be found with the
-<cite>FindAndShow</cite> method.</p>
+<p>This method appends the geometries to the <code class="docutils literal notranslate"><span class="pre">dtBundle</span></code> objects for
+debugging.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2313,10 +2313,10 @@ normalized minimum and maximum parameter values specified by
 values in <code class="docutils literal notranslate"><span class="pre">splits_</span></code> are converted into the corresponding surface parameter
 values.</p>
 <p>The mesh block volumes are created by skinning the resulting surfaces.</p>
-<p>Two trailing-edge mesh blocks can additionally be created with a thickness
+<p>Two trailing edge mesh blocks can additionally be created with a thickness
 specified by <code class="docutils literal notranslate"><span class="pre">teMeshBlockThickness_</span></code>. If this value is set to <code class="docutils literal notranslate"><span class="pre">None</span></code>,
-no trailing-edge mesh blocks are generated.</p>
-<p>Otherwise, the trailing-edge mesh blocks are created by computing a
+no trailing edge mesh blocks are generated.</p>
+<p>Otherwise, the trailing edge mesh blocks are created by computing a
 tangential offset of the edges of the first and last mesh blocks surrounding
 the blade. The offset edges are computed using the method
 <a class="reference internal" href="#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.teOffsetCurves_vec3dSurfaceTwoD" title="dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.teOffsetCurves_vec3dSurfaceTwoD"><code class="xref py py-meth docutils literal notranslate"><span class="pre">teOffsetCurves_vec3dSurfaceTwoD()</span></code></a>. This method returns the base curve
@@ -2324,12 +2324,12 @@ and a list of points, derived from the base curve, from which the offset curve
 can be constructed.</p>
 <p>By skinning the base and offset curves, faces extending from the first and
 last trailing edge mesh blocks are generated. A second skinning operation
-is then used to create the trailing-edge mesh block volumes. To maintain
-consistent parameter orientations between the trailing-edge mesh blocks and
+is then used to create the trailing edge mesh block volumes. To maintain
+consistent parameter orientations between the trailing edge mesh blocks and
 the other mesh blocks, the skinning operation is performed in
 <a class="reference internal" href="#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.createBlockFaces" title="dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.createBlockFaces"><code class="xref py py-meth docutils literal notranslate"><span class="pre">createBlockFaces()</span></code></a>.</p>
 <p>Meanplane curves are generated if the Boolean parameter
-<code class="docutils literal notranslate"><span class="pre">meanplaneFromBlocks</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>. Similar to the trailing-edge
+<code class="docutils literal notranslate"><span class="pre">meanplaneFromBlocks</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>. Similar to the trailing edge
 mesh block edges, the meanplane curves are computed as tangential offsets of
 the blade mesh blocks using <a class="reference internal" href="#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.teOffsetCurves_vec3dSurfaceTwoD" title="dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.teOffsetCurves_vec3dSurfaceTwoD"><code class="xref py py-meth docutils literal notranslate"><span class="pre">teOffsetCurves_vec3dSurfaceTwoD()</span></code></a>.</p>
 <p>The first meanplane curve is offset from the first blade mesh block towards
@@ -2342,7 +2342,7 @@ meanplane curve is generated, starting at zero.</p>
 specified by <code class="docutils literal notranslate"><span class="pre">meanplaneExtOut_</span></code> and <code class="docutils literal notranslate"><span class="pre">meanplaneExtIn_</span></code>.</p>
 <p>The string value stored in <code class="docutils literal notranslate"><span class="pre">label_</span></code> is used to label the generated
 analytic functions.</p>
-<p>The analytic function objects of the blade mesh blocks, trailing-edge mesh
+<p>The analytic function objects of the blade mesh blocks, trailing edge mesh
 blocks, and meanplane curves are added to the container object of the main
 class using <code class="xref py py-meth docutils literal notranslate"><span class="pre">appendAnalyticFunction()</span></code>.</p>
 <dl class="py method">
@@ -2356,7 +2356,7 @@ class using <code class="xref py py-meth docutils literal notranslate"><span cla
 positions.</p></li>
 <li><p>Creates mesh block volumes by skinning the corresponding surfaces.</p></li>
 <li><p>Generates meanplane curves at the inlet and outlet.</p></li>
-<li><p>Creates trailing-edge mesh blocks.</p></li>
+<li><p>Creates trailing edge mesh blocks.</p></li>
 </ul>
 </div></blockquote>
 <dl class="field-list simple">
@@ -2375,7 +2375,7 @@ are generated:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Mesh block volumes around the blade.</p></li>
-<li><p>Edge curves for the trailing-edge mesh blocks.</p></li>
+<li><p>Edge curves for the trailing edge mesh blocks.</p></li>
 <li><p>Meanplane curves extending towards the inlet and outlet.</p></li>
 </ul>
 </div></blockquote>
@@ -2437,7 +2437,7 @@ convention:</p>
 </div></blockquote>
 <p><strong>Creation of Offset Curves</strong></p>
 <blockquote>
-<div><p>The generation of the trailing-edge mesh block curves, as well as the
+<div><p>The generation of the trailing edge mesh block curves, as well as the
 creation of the meanplane curves, is performed using the method
 <a class="reference internal" href="#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.teOffsetCurves_vec3dSurfaceTwoD" title="dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.teOffsetCurves_vec3dSurfaceTwoD"><code class="xref py py-meth docutils literal notranslate"><span class="pre">teOffsetCurves_vec3dSurfaceTwoD()</span></code></a>.</p>
 <p>The method takes a mesh block surface as input. The first input argument
@@ -2534,22 +2534,22 @@ the value of <code class="docutils literal notranslate"><span class="pre">cc</sp
 <blockquote>
 <div><p>The curves for the meanplane extending towards the outlet are created on
 the first blade mesh block, for which <code class="docutils literal notranslate"><span class="pre">cc</span> <span class="pre">==</span> <span class="pre">0</span></code> applies.</p>
-<p>The creation procedure differs depending on whether trailing-edge mesh
+<p>The creation procedure differs depending on whether trailing edge mesh
 blocks are generated.</p>
-<p>If no trailing-edge mesh blocks are created
+<p>If no trailing edge mesh blocks are created
 (<code class="docutils literal notranslate"><span class="pre">thickness_</span> <span class="pre">==</span> <span class="pre">None</span></code>), the curves are generated from the curve at
 0 percent of the u-direction of <code class="docutils literal notranslate"><span class="pre">blockSurf</span></code>. The offset length is
 specified by <code class="docutils literal notranslate"><span class="pre">meanplaneExtOut_</span></code>, corresponding to
 <span class="math notranslate nohighlight">\(E_{MP,out}\)</span> in <a class="reference internal" href="#meanplanecurves"><span class="std std-numref">Fig. 48</span></a>.</p>
 <p>The generated curve objects are assigned to the variables
 <code class="docutils literal notranslate"><span class="pre">mPBlockCurve</span></code> and <code class="docutils literal notranslate"><span class="pre">mPBlockOffset</span></code>.</p>
-<p>If trailing-edge mesh blocks are generated, the offset length of the
+<p>If trailing edge mesh blocks are generated, the offset length of the
 meanplane curve created from the first blade mesh block is
 <code class="docutils literal notranslate"><span class="pre">meanplaneExtOut_</span> <span class="pre">+</span> <span class="pre">thickness_</span></code></p>
 <p>In this case, the base curve returned by
 <a class="reference internal" href="#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.teOffsetCurves_vec3dSurfaceTwoD" title="dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.teOffsetCurves_vec3dSurfaceTwoD"><code class="xref py py-meth docutils literal notranslate"><span class="pre">teOffsetCurves_vec3dSurfaceTwoD()</span></code></a> is not used directly as the
 meanplane curve. Instead, the base curve is reconstructed from the
-offset points of the first trailing-edge mesh block,
+offset points of the first trailing edge mesh block,
 <code class="docutils literal notranslate"><span class="pre">blockOffset0</span></code>. The resulting curve overwrites <code class="docutils literal notranslate"><span class="pre">mPBlockCurve</span></code>.</p>
 <p>In both cases, the curve <code class="docutils literal notranslate"><span class="pre">mPBlockOffsetCurve</span></code> is generated from the
 <code class="docutils literal notranslate"><span class="pre">vectorDtPoint3</span></code> object <code class="docutils literal notranslate"><span class="pre">mPBlockOffset</span></code>.</p>
@@ -2579,12 +2579,12 @@ convention used for the curves in the implementation.</span><a class="headerlink
 </div></blockquote>
 <p><strong>Trailing Edge Mesh Blocks</strong></p>
 <blockquote>
-<div><p>The trailing-edge volumes are generated from the trailing-edge curves.
+<div><p>The trailing edge volumes are generated from the trailing edge curves.
 The following operations are performed only if <code class="docutils literal notranslate"><span class="pre">thickness_</span> <span class="pre">!=</span> <span class="pre">None</span></code>
 applies.</p>
 <p><strong>Offset Curves at Trailing Edge</strong></p>
 <blockquote>
-<div><p>From the <code class="docutils literal notranslate"><span class="pre">vectorDtPoint3</span></code> objects of the two trailing-edge mesh blocks
+<div><p>From the <code class="docutils literal notranslate"><span class="pre">vectorDtPoint3</span></code> objects of the two trailing edge mesh blocks
 on the blade side, <code class="docutils literal notranslate"><span class="pre">bladeOffset0</span></code> and <code class="docutils literal notranslate"><span class="pre">bladeOffset1</span></code>, the mean
 points <code class="docutils literal notranslate"><span class="pre">meanPoints</span></code> are computed. Using these points, a mean offset
 curve <code class="docutils literal notranslate"><span class="pre">meanBladeOffsetCurve</span></code> is generated, which defines the offset
@@ -2594,7 +2594,7 @@ the curves <code class="docutils literal notranslate"><span class="pre">blockOff
 </div></blockquote>
 <p><strong>Trailing Edge Mesh Block Surfaces</strong></p>
 <blockquote>
-<div><p>The trailing-edge mesh block surfaces extending from the blade and from the mesh block surfaces
+<div><p>The trailing edge mesh block surfaces extending from the blade and from the mesh block surfaces
 are generated using the method <a class="reference internal" href="#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.createBlockFaces" title="dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.createBlockFaces"><code class="xref py py-meth docutils literal notranslate"><span class="pre">createBlockFaces()</span></code></a>. The method expects an input
 list with the following structure:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blockEdges</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">[</span>
@@ -2625,7 +2625,7 @@ surfaces are kept consistent with the blade and mesh block surfaces.</p>
 <p><strong>Trailing Edge Mesh Block Volumes</strong></p>
 <blockquote>
 <div><p>The returned vector handler is passed to the <code class="docutils literal notranslate"><span class="pre">dtOO</span></code> class
-<code class="docutils literal notranslate"><span class="pre">vec3dTransVolThreeD_skinBSplineSurfaces</span></code> to create the trailing-edge
+<code class="docutils literal notranslate"><span class="pre">vec3dTransVolThreeD_skinBSplineSurfaces</span></code> to create the trailing edge
 mesh block volumes <code class="docutils literal notranslate"><span class="pre">theRef</span></code>.</p>
 <p>The volume skinning direction is defined as follows:</p>
 <blockquote>
@@ -2638,22 +2638,22 @@ mesh block volumes <code class="docutils literal notranslate"><span class="pre">
 <span id="meshblockskinning"></span><a class="reference internal image-reference" href="_images/tEMesBlock_skinning.png"><img alt="_images/tEMesBlock_skinning.png" src="_images/tEMesBlock_skinning.png" style="width: 80%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 50 </span><span class="caption-text">Skinning of the first trailing-edge mesh block. Surface skinning is
+<p><span class="caption-number">Fig. 50 </span><span class="caption-text">Skinning of the first trailing edge mesh block. Surface skinning is
 shown on the left, and volume skinning on the right. The arrows
 indicate the skinning directions.</span><a class="headerlink" href="#id14" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>By arranging the order of the curves in the input list passed to
-<a class="reference internal" href="#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.createBlockFaces" title="dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.createBlockFaces"><code class="xref py py-meth docutils literal notranslate"><span class="pre">createBlockFaces()</span></code></a>, the parameter directions of the trailing-edge
+<a class="reference internal" href="#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.createBlockFaces" title="dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.createBlockFaces"><code class="xref py py-meth docutils literal notranslate"><span class="pre">createBlockFaces()</span></code></a>, the parameter directions of the trailing edge
 mesh block volumes remain consistent with those of the blade mesh
 blocks.</p>
 <p>The generated volumes are appended to the analytic function container
 using the same naming convention as the blade mesh blocks.</p>
-<p>The first trailing-edge mesh block is labeled with the index zero:</p>
+<p>The first trailing edge mesh block is labeled with the index zero:</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">label_</span> <span class="pre">+</span> <span class="pre">&quot;_0&quot;</span></code></p>
 </div></blockquote>
-<p>The last trailing-edge mesh block receives the label:</p>
+<p>The last trailing edge mesh block receives the label:</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">label_</span> <span class="pre">+</span> <span class="pre">&quot;_&quot;</span> <span class="pre">+</span> <span class="pre">str(len(splits_)</span> <span class="pre">+</span> <span class="pre">1)</span></code></p>
 </div></blockquote>
@@ -2662,7 +2662,7 @@ using the same naming convention as the blade mesh blocks.</p>
 <span id="temeshblockmeth"></span><a class="reference internal image-reference" href="_images/guideVane_TEmeshBlocks.png"><img alt="_images/guideVane_TEmeshBlocks.png" src="_images/guideVane_TEmeshBlocks.png" style="width: 50%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 51 </span><span class="caption-text">Blade surface (grey) with blade mesh blocks and trailing-edge mesh
+<p><span class="caption-number">Fig. 51 </span><span class="caption-text">Blade surface (grey) with blade mesh blocks and trailing edge mesh
 blocks.</span><a class="headerlink" href="#id15" title="Link to this image"></a></p>
 </figcaption>
 </figure>
@@ -3162,8 +3162,8 @@ this container are as follows:</p>
 Depending on whether the current iteration creates the hub or the shroud curve
 (<code class="docutils literal notranslate"><span class="pre">uu</span> <span class="pre">==</span> <span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">uu</span> <span class="pre">==</span> <span class="pre">1</span></code>), the direction of the curve is reversed.
 This results in the hub and shroud curve directions specified in
-<a class="reference internal" href="#boundcurvetable"><span class="std std-numref">Table 5</span></a>.</p>
-<p>The curves are reparameterized in xyz-coordinates and pushed into <code class="docutils literal notranslate"><span class="pre">aG_</span></code> with
+<a class="reference internal" href="#boundcurvetable"><span class="std std-numref">Table 5</span></a>.
+The curves are reparameterized in xyz-coordinates and pushed into <code class="docutils literal notranslate"><span class="pre">aG_</span></code> with
 the following naming convention:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;hsCurve_&quot;</span><span class="o">+</span><span class="s2">&quot;u&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">uu</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
@@ -3173,8 +3173,8 @@ the following naming convention:</p>
 <p><strong>Check if the Interface Curve Extends over u = 100% of the Channel</strong></p>
 <blockquote>
 <div><p>The bounding curve on the interface is created from the points in
-<code class="docutils literal notranslate"><span class="pre">interfPoints</span></code> on the hub and shroud walls.</p>
-<p>To enable the extension of the interface meanplane surface across 0% of the channel
+<code class="docutils literal notranslate"><span class="pre">interfPoints</span></code> on the hub and shroud walls.
+To enable the extension of the interface meanplane surface across 0% of the channel
 u-coordinate, a check is implemented that detects jumps in the u-coordinates
 <code class="docutils literal notranslate"><span class="pre">u1</span></code> and <code class="docutils literal notranslate"><span class="pre">u2</span></code> of <code class="docutils literal notranslate"><span class="pre">interfPoints[0]</span></code> and <code class="docutils literal notranslate"><span class="pre">interfPoints[1]</span></code>.</p>
 <p>If the normalized u-parameter range of these two points in the channel is
@@ -3525,7 +3525,7 @@ list <code class="docutils literal notranslate"><span class="pre">meanplanes_[0]
 <code class="docutils literal notranslate"><span class="pre">nBlades_</span></code> in the full 360° channel. The rotation vector is provided
 through <code class="docutils literal notranslate"><span class="pre">rotVector_</span></code>.</p>
 <p>The bounding surfaces on the hub and shroud are created as multiple
-bounded surfaces. The required bounding curves (<a class="reference internal" href="#bounds"><span class="std std-numref">Fig. 58</span></a>, pink)
+bounded surfaces. The required bounding curves (<a class="reference internal" href="#bounds"><span class="std std-numref">Fig. 58</span></a>, magenta)
 are generated from the edges of the other bounding faces of the grid channel.
 The multiple bounded surfaces need bounding faces on the hub and shroud of
 the channel geometry <code class="docutils literal notranslate"><span class="pre">channel_</span></code> in which the bounding curves are located.</p>
@@ -3549,7 +3549,7 @@ the hub boundary face, are shown in the following figure.</p>
 <figcaption>
 <p><span class="caption-number">Fig. 58 </span><span class="caption-text">Bounding faces of the grid channel with periodic faces (yellow / green),
 inlet and outlet (red), coupling faces (cyan) and bounding curves of
-the hub boundary (pink). The blade (grey) is shown for
+the hub boundary (magenta). The blade (grey) is shown for
 reference.</span><a class="headerlink" href="#id23" title="Link to this image"></a></p>
 </figcaption>
 </figure>
@@ -4021,7 +4021,7 @@ hub and shroud surfaces are not shown.</p>
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 60 </span><span class="caption-text">Topology faces and their labels used in this class. Interfaces (red),
-periodic mean-plane faces (yellow/green), coupling faces (cyan), and
+periodic meanplane faces (yellow/green), coupling faces (cyan), and
 blade surfaces (gray) are highlighted.</span><a class="headerlink" href="#id25" title="Link to this image"></a></p>
 </figcaption>
 </figure>
@@ -4049,12 +4049,12 @@ are labeled with the identifier <code class="docutils literal notranslate"><span
 <code class="docutils literal notranslate"><span class="pre">&quot;block&quot;</span></code> faces are meshed as transfinite surfaces and are assigned the
 identifier <code class="docutils literal notranslate"><span class="pre">&quot;quad&quot;</span></code>. Periodicity on these faces is defined using the
 observer <code class="docutils literal notranslate"><span class="pre">bVOSetRotationalPeriodicity</span></code>.</p>
-<p>The boolean value <code class="docutils literal notranslate"><span class="pre">meshTEBlocks_</span></code> controls whether trailing-edge mesh
-blocks are created. If trailing-edge mesh blocks are required, this
+<p>The boolean value <code class="docutils literal notranslate"><span class="pre">meshTEBlocks_</span></code> controls whether trailing edge mesh
+blocks are created. If trailing edge mesh blocks are required, this
 parameter must be set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 <p>Each face identifier is assigned an integer suffix for unique
 identification. The following faces are added to the topology when
-trailing-edge mesh blocks are enabled:</p>
+trailing edge mesh blocks are enabled:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;hub_0&quot;</span></code> … <code class="docutils literal notranslate"><span class="pre">&quot;hub_&quot;+str(N)</span></code></p></li>
@@ -4094,7 +4094,7 @@ are applied. Each group is highlighted using a uniform color.</p>
 <p><span class="caption-number">Fig. 61 </span><span class="caption-text">Edges of the bladed channel to which mesh settings are applied:
 <code class="docutils literal notranslate"><span class="pre">hubToShroudLines</span></code> (orange), <code class="docutils literal notranslate"><span class="pre">bladeHubLines</span></code> and
 <code class="docutils literal notranslate"><span class="pre">bladeShroudLines</span></code> (blue), <code class="docutils literal notranslate"><span class="pre">bladeToBlockLines</span></code> (green), and the
-trailing-edge mesh block edges contained in <code class="docutils literal notranslate"><span class="pre">tEMeshList</span></code> (pink).
+trailing edge mesh block edges contained in <code class="docutils literal notranslate"><span class="pre">tEMeshList</span></code> (pink).
 No explicit mesh settings are applied to the gray edges.</span><a class="headerlink" href="#id26" title="Link to this image"></a></p>
 </figcaption>
 </figure>
@@ -4102,7 +4102,7 @@ No explicit mesh settings are applied to the gray edges.</span><a class="headerl
 walls. The method <a class="reference internal" href="#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.addGrading" title="dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.addGrading"><code class="xref py py-meth docutils literal notranslate"><span class="pre">addGrading()</span></code></a> is used to create the grading
 functions. The methods <a class="reference internal" href="#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.gradingsTypeTransfinite" title="dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.gradingsTypeTransfinite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">gradingsTypeTransfinite()</span></code></a> and
 <a class="reference internal" href="#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.gradingsGradingFunctions" title="dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.gradingsGradingFunctions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">gradingsGradingFunctions()</span></code></a> are then used to apply these gradings to
-the mesh-setting observer <code class="docutils literal notranslate"><span class="pre">bVOMeshRule</span></code>.</p>
+the mesh setting observer <code class="docutils literal notranslate"><span class="pre">bVOMeshRule</span></code>.</p>
 <p>The following table summarizes the edge groups and their corresponding
 mesh parameters and settings:</p>
 <span id="edgemeshtab"></span><table class="docutils align-center" id="id27">
@@ -4159,7 +4159,7 @@ the number of elements assigned to the edge.</p>
 <p>To ensure a smooth transition in element sizes between consecutive
 edges, the <code class="docutils literal notranslate"><span class="pre">&quot;tangentialBlade_*&quot;</span></code> grading is adjusted at both the start
 and end vertices.</p>
-<p>Trailing-edge mesh blocks are generated only if <code class="docutils literal notranslate"><span class="pre">meshTEBlocks_</span></code> is set
+<p>Trailing edge mesh blocks are generated only if <code class="docutils literal notranslate"><span class="pre">meshTEBlocks_</span></code> is set
 to <code class="docutils literal notranslate"><span class="pre">True</span></code>. The corresponding edges are collected in the list
 <code class="docutils literal notranslate"><span class="pre">tEMeshList</span></code>. No grading functions are applied to these edges.</p>
 <p>The observer <code class="docutils literal notranslate"><span class="pre">bVOFaceToPatchRule</span></code> is used to rename the following
@@ -4257,9 +4257,9 @@ The faces on the blade wall are labeled <code class="docutils literal notranslat
 surrounding surfaces are labeled <code class="docutils literal notranslate"><span class="pre">&quot;block_&quot;</span> <span class="pre">+</span> <span class="pre">str(i)</span></code>.</p>
 <p>The block volumes are ordered so that their sequence in <code class="docutils literal notranslate"><span class="pre">blocks_</span></code>
 follows the u-direction of the blade surface <code class="docutils literal notranslate"><span class="pre">blade_</span></code>.
-If trailing-edge mesh blocks exist, they correspond to the first and
+If trailing edge mesh blocks exist, they correspond to the first and
 last entries of <code class="docutils literal notranslate"><span class="pre">blocks_</span></code>.</p>
-<p>If trailing-edge mesh blocks are enabled
+<p>If trailing edge mesh blocks are enabled
 (<code class="docutils literal notranslate"><span class="pre">meshTEBlocks_</span> <span class="pre">==</span> <span class="pre">True</span></code>), the blade faces of the first and last mesh
 blocks are not added to <code class="docutils literal notranslate"><span class="pre">aG</span></code>. Only block faces that are part of the
 mean plane are added to <code class="docutils literal notranslate"><span class="pre">aG</span></code> (<code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">&lt;=</span> <span class="pre">nMeanplaneBlocks_</span></code>),
@@ -4270,9 +4270,9 @@ recombination.</p>
 <p>The observer <code class="docutils literal notranslate"><span class="pre">bVONameRegions</span></code> is added to establish the naming
 convention of the regions.</p>
 </div></blockquote>
-<p><strong>Organize Edges of the Trailing-Edge Mesh Blocks</strong></p>
+<p><strong>Organize Edges of the Trailing Edge Mesh Blocks</strong></p>
 <blockquote>
-<div><p>The edges of the trailing-edge mesh blocks (shown in pink in
+<div><p>The edges of the trailing edge mesh blocks (shown in pink in
 <a class="reference internal" href="#channelmeshing0"><span class="std std-numref">Fig. 61</span></a>) are extracted by first obtaining the blade
 and block faces of <code class="docutils literal notranslate"><span class="pre">blocks_[0]</span></code> and <code class="docutils literal notranslate"><span class="pre">blocks_[-1]</span></code> using
 <a class="reference internal" href="#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.detectFirstAndSecond" title="dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.detectFirstAndSecond"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detectFirstAndSecond()</span></code></a>. Their hub and shroud edges are then
@@ -4287,7 +4287,7 @@ following structure:</p>
 <span class="p">]</span>
 </pre></div>
 </div>
-<p>The top-level list entries have the following meaning:</p>
+<p>The top level list entries have the following meaning:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">tEMeshList[0]</span></code> : Edges extending directly from the blade</p></li>
@@ -4295,7 +4295,7 @@ following structure:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">tEMeshList[2]</span></code> : Edges extending from the outer wall of the last mesh block</p></li>
 </ul>
 </div></blockquote>
-<p>The lower-level entries of <code class="docutils literal notranslate"><span class="pre">tEMeshList</span></code> are defined as follows:</p>
+<p>The lower level entries of <code class="docutils literal notranslate"><span class="pre">tEMeshList</span></code> are defined as follows:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">tEMeshList[i][0]</span></code> : Tuple containing lists of edge identifiers</p></li>
@@ -4312,8 +4312,8 @@ faces stored in <code class="docutils literal notranslate"><span class="pre">aG<
 <p>The periodic faces (shown in yellow and green in <a class="reference internal" href="#meshfaces"><span class="std std-numref">Fig. 60</span></a>)
 are organized in the list <code class="docutils literal notranslate"><span class="pre">periodics</span></code>. The list is constructed such
 that each entry <code class="docutils literal notranslate"><span class="pre">periodics[i]</span></code> is a <code class="docutils literal notranslate"><span class="pre">Tuple</span></code> containing a pair of
-periodic faces. The suction-side boundary is stored in
-<code class="docutils literal notranslate"><span class="pre">periodics[i][0]</span></code> and the corresponding pressure-side boundary in
+periodic faces. The suction side boundary is stored in
+<code class="docutils literal notranslate"><span class="pre">periodics[i][0]</span></code> and the corresponding pressure side boundary in
 <code class="docutils literal notranslate"><span class="pre">periodics[i][1]</span></code>.</p>
 <p>The faces that are meshed unstructured, and
 their hub-to-shroud edges, are stored in the list
@@ -4338,7 +4338,7 @@ from hub to shroud, <code class="docutils literal notranslate"><span class="pre"
 <div><p>The edges to which mesh settings are applied (see
 <a class="reference internal" href="#channelmeshing0"><span class="std std-numref">Fig. 61</span></a>) are identified by extracting and organizing
 lists of edge identifiers returned by the <code class="docutils literal notranslate"><span class="pre">dtGmshModel</span></code>.</p>
-<p>The following edge-identifier lists are used to define the mesh
+<p>The following edge identifier lists are used to define the mesh
 settings:</p>
 <blockquote>
 <div><ul class="simple">
@@ -4355,16 +4355,16 @@ the method <a class="reference internal" href="#dtOOPythonApp.builder.map3dTo3dG
 label, the model, and the size of the first element in the grading as
 input.</p>
 <p>The grading associated with <code class="docutils literal notranslate"><span class="pre">hubToShroudLines</span></code> is assigned the label
-<code class="docutils literal notranslate"><span class="pre">&quot;hubToShroud&quot;</span></code> and uses the first-element size
+<code class="docutils literal notranslate"><span class="pre">&quot;hubToShroud&quot;</span></code> and uses the first element size
 <code class="docutils literal notranslate"><span class="pre">firstElementSizeHubToShroud_</span></code>. The grading associated with
 <code class="docutils literal notranslate"><span class="pre">bladeToBlockLines</span></code> is assigned the label <code class="docutils literal notranslate"><span class="pre">&quot;normalBlade&quot;</span></code> and uses
-the first-element size <code class="docutils literal notranslate"><span class="pre">firstElementSizeNormalBlade_</span></code>.</p>
+the first element size <code class="docutils literal notranslate"><span class="pre">firstElementSizeNormalBlade_</span></code>.</p>
 <p>The number of elements and the grading functions are then applied to the
 edges according to the specifications listed in <a class="reference internal" href="#edgemeshtab"><span class="std std-numref">Table 6</span></a>.</p>
 <p>The mesh settings for the blade edges <code class="docutils literal notranslate"><span class="pre">bladeShroudLines</span></code> and
 <code class="docutils literal notranslate"><span class="pre">bladeHubLines</span></code> are applied by iterating over the corresponding edge
 lists.</p>
-<p>Mesh settings for the trailing-edge mesh-block edges are applied only if
+<p>Mesh settings for the trailing edge mesh block edges are applied only if
 <code class="docutils literal notranslate"><span class="pre">meshTEBlocks_</span> <span class="pre">==</span> <span class="pre">True</span></code>.</p>
 </div></blockquote>
 <p><strong>Mesh Settings along the Blade</strong></p>
@@ -4377,7 +4377,7 @@ lists.</p>
 vertices <code class="docutils literal notranslate"><span class="pre">v0</span></code> and <code class="docutils literal notranslate"><span class="pre">v1</span></code> are identified. These points are
 reparameterized onto the blade surface <code class="docutils literal notranslate"><span class="pre">blade_</span></code>, yielding the surface
 parameter coordinates <code class="docutils literal notranslate"><span class="pre">p0_uv</span></code> and <code class="docutils literal notranslate"><span class="pre">p1_uv</span></code>.</p>
-<p>Depending on the iteration the element-size functions
+<p>Depending on the iteration the element size functions
 <code class="docutils literal notranslate"><span class="pre">bladeHubElementSize_</span></code> or <code class="docutils literal notranslate"><span class="pre">bladeShroudElementSize_</span></code> are then
 evaluated at the corresponding parameter coordinates to obtain the
 local element sizes <code class="docutils literal notranslate"><span class="pre">ms_0</span></code> and <code class="docutils literal notranslate"><span class="pre">ms_1</span></code> in the appropriate parameter
@@ -4391,7 +4391,7 @@ to the next integer.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>The floating-point value <code class="docutils literal notranslate"><span class="pre">elementScale</span></code> corresponds to either
+<p>The floating point value <code class="docutils literal notranslate"><span class="pre">elementScale</span></code> corresponds to either
 <code class="docutils literal notranslate"><span class="pre">bladeShroudElementScale_</span></code> or <code class="docutils literal notranslate"><span class="pre">bladeHubElementScale_</span></code>, depending on
 the current iteration.</p>
 <p>For each edge, a grading function with the label
@@ -4400,7 +4400,7 @@ the grading are set to <code class="docutils literal notranslate"><span class="p
 </div></blockquote>
 <p><strong>Set Mesh Rules</strong></p>
 <blockquote>
-<div><p>The boundary-layer directions of the unstructured faces stored in
+<div><p>The boundary layer directions of the unstructured faces stored in
 <code class="docutils literal notranslate"><span class="pre">unstrFacesAndh2sLines</span></code> are determined using
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">detectBoundaryLayerDir()</span></code>, which returns the list
 <code class="docutils literal notranslate"><span class="pre">boundaryLayerDir</span></code>.</p>
@@ -4424,8 +4424,8 @@ entry.</p>
 <code class="docutils literal notranslate"><span class="pre">&quot;*inlet*&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;*outlet*&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;*pressure_*&quot;</span></code>,
 <code class="docutils literal notranslate"><span class="pre">&quot;*suction_*&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;*coupling_*&quot;</span></code>. These faces are added to the
 <code class="docutils literal notranslate"><span class="pre">&quot;_slidableFaceLabel&quot;</span></code> entry.</p>
-<p>The number of boundary-layer elements is specified by
-<code class="docutils literal notranslate"><span class="pre">nBoundaryLayers_</span></code>, while the boundary-layer orientation is defined by
+<p>The number of boundary layer elements is specified by
+<code class="docutils literal notranslate"><span class="pre">nBoundaryLayers_</span></code>, while the boundary layer orientation is defined by
 <code class="docutils literal notranslate"><span class="pre">boundaryLayerDir</span></code>.</p>
 </div></blockquote>
 <p><strong>Define Observers</strong></p>
@@ -4436,7 +4436,7 @@ entry.</p>
 The periodic boundary conditions are established by iterating over
 <code class="docutils literal notranslate"><span class="pre">periodics</span></code> and creating a <code class="docutils literal notranslate"><span class="pre">bVOSetRotationalPeriodicity</span></code> observer
 for each pair of periodic faces.</p>
-<p>The faces are renamed to match the boundary-condition naming convention
+<p>The faces are renamed to match the boundary condition naming convention
 used in an OpenFOAM case through the observer
 <code class="docutils literal notranslate"><span class="pre">bVOFaceToPatchRule</span></code>. The corresponding renaming rules are summarized
 in <a class="reference internal" href="#facetopatchtable"><span class="std std-numref">Table 7</span></a>.</p>
@@ -4516,14 +4516,14 @@ calling class using the method <code class="docutils literal notranslate"><span 
 <dl class="py method">
 <dt class="sig sig-object py" id="dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.boundaryEdgeDirection">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">boundaryEdgeDirection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theModel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dtOOPythonSWIG.dtGmshModel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundaryLayerDirCheck</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dtOOPythonSWIG.map2dTo3d</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/dtOOPythonApp/builder/map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.html#map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.boundaryEdgeDirection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.boundaryEdgeDirection" title="Link to this definition"></a></dt>
-<dd><p>Determine the boundary-layer direction of a face from two edges.</p>
+<dd><p>Determine the boundary layer direction of a face from two edges.</p>
 <p>This method:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Iterates over the faces and edges in the input list.</p></li>
 <li><p>Checks whether the u- or v-parameters of the start and end points
 of the edges on a face are equal within a specified tolerance.</p></li>
-<li><p>Determines and returns the corresponding boundary-layer direction.</p></li>
+<li><p>Determines and returns the corresponding boundary layer direction.</p></li>
 </ul>
 </div></blockquote>
 <dl class="field-list simple">
@@ -4543,13 +4543,13 @@ of the edges on a face are equal within a specified tolerance.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Integer encoding the boundary-layer direction.</p>
+<dd class="field-even"><p>Integer encoding the boundary layer direction.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
-<p>The boundary-layer direction is determined by iterating over
+<p>The boundary layer direction is determined by iterating over
 <code class="docutils literal notranslate"><span class="pre">faceLines</span> <span class="pre">in</span> <span class="pre">boundaryLayerDirCheck</span></code> in an outer loop and over the
 edges <code class="docutils literal notranslate"><span class="pre">line</span> <span class="pre">in</span> <span class="pre">faceLines[1]</span></code> in the inner loop.</p>
 <p>During each iteration of the inner loop, the start and end points
@@ -4560,14 +4560,14 @@ difference between the u- or v-parameters lies within the tolerance
 specified by <code class="docutils literal notranslate"><span class="pre">tol</span></code>. Depending on the result, the value of
 <code class="docutils literal notranslate"><span class="pre">boundaryLayerDirT</span></code> is incremented. The resulting value is appended to
 the list <code class="docutils literal notranslate"><span class="pre">boundaryLayerDir</span></code>.</p>
-<p>At the end of each outer-loop iteration, duplicate entries in
+<p>At the end of each outer loop iteration, duplicate entries in
 <code class="docutils literal notranslate"><span class="pre">boundaryLayerDir</span></code> are removed using
 <code class="docutils literal notranslate"><span class="pre">boundaryLayerDir</span> <span class="pre">=</span> <span class="pre">list(dict.fromkeys(boundaryLayerDir))</span></code>.</p>
-<p>Within this workflow, all boundary-layer directions must be oriented
+<p>Within this workflow, all boundary layer directions must be oriented
 consistently. The condition <code class="docutils literal notranslate"><span class="pre">len(boundaryLayerDir)</span> <span class="pre">!=</span> <span class="pre">1</span></code> is therefore
 used to verify that all detected directions are identical. If this
 condition is not satisfied, an exception is raised.</p>
-<p>Finally, the boundary-layer direction is encoded as an integer return
+<p>Finally, the boundary layer direction is encoded as an integer return
 value. If <code class="docutils literal notranslate"><span class="pre">boundaryLayerDir[0]</span></code> equals <code class="docutils literal notranslate"><span class="pre">1</span></code>, the method returns
 <code class="docutils literal notranslate"><span class="pre">0</span></code>. If <code class="docutils literal notranslate"><span class="pre">boundaryLayerDir[0]</span></code> equals <code class="docutils literal notranslate"><span class="pre">2</span></code>, the method returns
 <code class="docutils literal notranslate"><span class="pre">1</span></code>. Any other value results in an exception.</p>
@@ -5043,16 +5043,16 @@ and a multiple bounded volume inside the flow domain.</p>
 </pre></div>
 </div>
 <p>This class is used to create the geometry of a flow channel consisting of five- or six-
-sided layer volumes on the hub and shroud walls, as well as a multiple-bounded volume
+sided layer volumes on the hub and shroud walls, as well as a multiple bounded volume
 that expands inside the flow domain and connects to the layers.
-In this documentation, the region formed by the multiple-bounded volume is referred to
+In this documentation, the region formed by the multiple bounded volume is referred to
 as the <em>unstructured region</em>.</p>
 <p>The main method of this class is the constructor, from which the remaining methods are
 called. The rotational vector and the point of origin are initialized as
 <code class="docutils literal notranslate"><span class="pre">rotVector_</span></code> and <code class="docutils literal notranslate"><span class="pre">origin_</span></code>.</p>
 <p>The method <a class="reference internal" href="#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.calculateNormalAxis" title="dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.calculateNormalAxis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculateNormalAxis()</span></code></a> is used to calculate the normal axis
-<code class="docutils literal notranslate"><span class="pre">normalAxis_</span></code> on the flow domain cross-section from the hub and shroud
-curves. Furthermore, the method returns the cross-section bounding box
+<code class="docutils literal notranslate"><span class="pre">normalAxis_</span></code> on the flow domain cross section from the hub and shroud
+curves. Furthermore, the method returns the cross section bounding box
 <code class="docutils literal notranslate"><span class="pre">speBb_</span></code> and its center point <code class="docutils literal notranslate"><span class="pre">speCenter_</span></code>.</p>
 <p>The bounding curves of the layers are created using the method
 <a class="reference internal" href="#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.createLayerBounds" title="dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.createLayerBounds"><code class="xref py py-meth docutils literal notranslate"><span class="pre">createLayerBounds()</span></code></a>. This method is called twice to create the bounds of the hub
@@ -5069,8 +5069,8 @@ which layers are located on a radius of zero. The method <a class="reference int
 perform this check.</p>
 <p>The lists <code class="docutils literal notranslate"><span class="pre">hubUnstructBounds_</span></code> and <code class="docutils literal notranslate"><span class="pre">shroudUnstructBounds_</span></code> contain the layer
 boundary curves that extend into the flow domain and form the interfaces between the
-unstructured multiple-bounded volume and the layers.</p>
-<p>The inlet and outlet curves of the flow domain cross-section are shared between the
+unstructured multiple bounded volume and the layers.</p>
+<p>The inlet and outlet curves of the flow domain cross section are shared between the
 hub and shroud layer regions and the unstructured region. By splitting these curves,
 the inlet boundary of the unstructured region is assigned to the variable
 <code class="docutils literal notranslate"><span class="pre">interfaceUnstructBound_</span></code> and the outlet boundary to <code class="docutils literal notranslate"><span class="pre">outletUnstructBound_</span></code>.</p>
@@ -5101,7 +5101,7 @@ following structure:</p>
 layer is located on a radius of zero</p></li>
 </ul>
 <p>The unstructured region is created in the method
-<a class="reference internal" href="#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.getUnstructuredRegion" title="dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.getUnstructuredRegion"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getUnstructuredRegion()</span></code></a>. This method returns the multiple-bounded volume of the
+<a class="reference internal" href="#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.getUnstructuredRegion" title="dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.getUnstructuredRegion"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getUnstructuredRegion()</span></code></a>. This method returns the multiple bounded volume of the
 unstructured region together with a list containing its boundary surfaces.</p>
 <p>The <a class="reference internal" href="#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.build" title="dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a> method is used to visualize the created geometries in <cite>ParaView</cite>.</p>
 <dl class="py method">
@@ -5136,8 +5136,8 @@ unstructured region together with a list containing its boundary surfaces.</p>
 <p>The boundary curves of the channel are passed to the constructor through the lists
 <code class="docutils literal notranslate"><span class="pre">speHub</span></code>, <code class="docutils literal notranslate"><span class="pre">speShroud</span></code>, and <code class="docutils literal notranslate"><span class="pre">inOutCurves</span></code>. These lists contain the curves of
 the hub and shroud walls, as well as the inlet and outlet curves of the flow
-channel cross-section.</p>
-<p>The following figure shows the cross-section and the corresponding curves.</p>
+channel cross section.</p>
+<p>The following figure shows the cross section and the corresponding curves.</p>
 <figure class="align-center" id="id30">
 <span id="specurves0"></span><a class="reference internal image-reference" href="_images/speCurves.png"><img alt="_images/speCurves.png" src="_images/speCurves.png" style="width: 50%;" />
 </a>
@@ -5147,7 +5147,7 @@ together with the inlet (red) and outlet (orange) curves of the draft tube
 cone.</span><a class="headerlink" href="#id30" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>The rotation vector and the origin point are stored in the variables
+<p>The rotation vector and the origin are stored in the variables
 <code class="docutils literal notranslate"><span class="pre">rotVector_</span></code> and <code class="docutils literal notranslate"><span class="pre">origin_</span></code>.</p>
 <p>The hub and shroud curves are passed to the method
 <a class="reference internal" href="#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.calculateNormalAxis" title="dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.calculateNormalAxis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculateNormalAxis()</span></code></a>. This method creates and returns the bounding box
@@ -5185,10 +5185,10 @@ points are calculated by translating points on the hub and shroud curves in the
 normal direction of the curves. The positions of these points along the hub and
 shroud curves are defined by the list <code class="docutils literal notranslate"><span class="pre">layer_supports</span></code>.</p>
 <p>The lists <code class="docutils literal notranslate"><span class="pre">hubLayerCurves_</span></code> and <code class="docutils literal notranslate"><span class="pre">shroudLayerCurves_</span></code> have the structure
-<code class="docutils literal notranslate"><span class="pre">List[List[analyticGeometry]]</span></code>. In this structure, each first-level list
+<code class="docutils literal notranslate"><span class="pre">List[List[analyticGeometry]]</span></code>. In this structure, each first level list
 contains the four boundary curves of one layer face stored in the corresponding
-second-level list.</p>
-<p>The arrangement of the boundary curves in the second-level list is as follows:</p>
+second level list.</p>
+<p>The arrangement of the boundary curves in the second level list is as follows:</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">hubLayerCurves_[i][0]</span></code>: Wall curve of the <em>i</em>-th special hub curve.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">hubLayerCurves_[i][1]</span></code>: Downstream curve extending from the wall into
@@ -5208,12 +5208,12 @@ volumes after rotation:</p>
 <p>The following figure shows the boundary curves of the layers in black
 and the layer faces in blue.
 As an example of the numbering convention of the boundary curves, the indices of
-the second-level list in <code class="docutils literal notranslate"><span class="pre">hubLayerCurves_[0]</span></code> are shown.</p>
+the second level list in <code class="docutils literal notranslate"><span class="pre">hubLayerCurves_[0]</span></code> are shown.</p>
 <figure class="align-center" id="id31">
 <span id="layer2d-numbering"></span><a class="reference internal image-reference" href="_images/layers2d_numbering.png"><img alt="_images/layers2d_numbering.png" src="_images/layers2d_numbering.png" style="width: 40%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 64 </span><span class="caption-text">Two-dimensional layer faces (blue) in the draft tube cone.</span><a class="headerlink" href="#id31" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 64 </span><span class="caption-text">Two dimensional layer faces (blue) in the draft tube cone.</span><a class="headerlink" href="#id31" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The lists containing Boolean values, <code class="docutils literal notranslate"><span class="pre">hubRadZero_</span></code> and <code class="docutils literal notranslate"><span class="pre">shroudRadZero_</span></code>,
@@ -5224,7 +5224,7 @@ on the radius of zero. In the figures above, this applies to the curve in
 <code class="docutils literal notranslate"><span class="pre">speHub[1]</span></code>.</p>
 <p>The curves in <code class="docutils literal notranslate"><span class="pre">hubUnstructBounds_</span></code> and <code class="docutils literal notranslate"><span class="pre">shroudUnstructBounds_</span></code> are copies
 of the third boundary curves of the layer faces. These curves are used to
-construct the multiple-bounded volume of the unstructured region.</p>
+construct the multiple bounded volume of the unstructured region.</p>
 <p>The inlet of the flow domain created in this class corresponds to the curve in
 <code class="docutils literal notranslate"><span class="pre">inOutCurves[0]</span></code>. A section of this curve is used as the inlet boundary of
 the unstructured region.</p>
@@ -5246,7 +5246,7 @@ while <code class="docutils literal notranslate"><span class="pre">interfaceUnst
 <code class="docutils literal notranslate"><span class="pre">outletUnstructBound_</span></code> is appended.</p>
 <p>The faces of the hub and shroud layers are created by iterating over the lists
 <code class="docutils literal notranslate"><span class="pre">hubLayerCurves_</span></code> and <code class="docutils literal notranslate"><span class="pre">shroudLayerCurves_</span></code>. During each iteration, the
-second-level boundary curves are inserted into a vector handler object named
+second level boundary curves are inserted into a vector handler object named
 <code class="docutils literal notranslate"><span class="pre">layer_vhc</span></code>.</p>
 <p>The layer faces are then generated using the <cite>dtOO</cite> class
 <code class="docutils literal notranslate"><span class="pre">bSplineSurface_bSplineCurveFillConstructOCC</span></code> with <code class="docutils literal notranslate"><span class="pre">layer_vhc</span></code> as input.
@@ -5446,7 +5446,7 @@ blocks correspond to the creation of the third boundary curves.</span><a class="
 <ol class="arabic">
 <li><p><strong>The first layer face along the wall</strong></p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>i == 0``
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span>
 </pre></div>
 </div>
 <p>The fourth boundary curve of the first layer face is formed by the
@@ -5517,7 +5517,7 @@ curves <code class="docutils literal notranslate"><span class="pre">speCurve[i-1
 <p>The normal directions of the curves
 (<span class="math notranslate nohighlight">\(\mathbf{n_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{n_1}\)</span>) at the shared point
 are calculated as the cross products of the normal axis of the
-channel cross-section <code class="docutils literal notranslate"><span class="pre">normalAxis_</span></code>
+channel cross section <code class="docutils literal notranslate"><span class="pre">normalAxis_</span></code>
 (<span class="math notranslate nohighlight">\(\mathbf{n_{global}}\)</span>) and the tangential directions of the
 curves at the shared point
 (<span class="math notranslate nohighlight">\(\mathbf{t_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{t_1}\)</span>).</p>
@@ -5693,7 +5693,7 @@ direction from the wall curve is determined through the variable
 The end point of the fourth layer boundary curve <code class="docutils literal notranslate"><span class="pre">bound0</span></code> is appended
 to this container.</p>
 <p>By iterating over <code class="docutils literal notranslate"><span class="pre">supports</span></code>, the support points <span class="math notranslate nohighlight">\(P_s\)</span> are
-generated. Each entry in <code class="docutils literal notranslate"><span class="pre">supports</span></code> contains a floating-point value
+generated. Each entry in <code class="docutils literal notranslate"><span class="pre">supports</span></code> contains a floating point value
 defining a relative parameter position along the wall curve.</p>
 <p>For each support value, a base point <span class="math notranslate nohighlight">\(P_0\)</span> is calculated on the
 wall curve.</p>
@@ -5873,9 +5873,9 @@ bounding surfaces.</p>
 <li><p>Creates the boundary surfaces of the unstructured region that
 connect to the layer volumes.</p></li>
 <li><p>Creates the periodic boundary surfaces of the unstructured region
-as multiple-bounded surfaces.</p></li>
-<li><p>Creates the unstructured region as a multiple-bounded volume.</p></li>
-<li><p>Returns the multiple-bounded volume together with its boundary
+as multiple bounded surfaces.</p></li>
+<li><p>Creates the unstructured region as a multiple bounded volume.</p></li>
+<li><p>Returns the multiple bounded volume together with its boundary
 surfaces.</p></li>
 </ul>
 </div></blockquote>
@@ -5887,18 +5887,18 @@ surfaces.</p></li>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>multBoundedVol</strong> (<em>multipleBoundedVolume</em>) – Unstructured region located between the hub and shroud layers.</p></li>
 <li><p><strong>boundSurf</strong> (<em>vectorHandlingAnalyticGeometry</em>) – Vector handler containing the boundary surfaces of the
-multiple-bounded volume.</p></li>
+multiple bounded volume.</p></li>
 </ul>
 </p>
 </dd>
 </dl>
 <p>The unstructured region is created as an object of the <cite>dtOO</cite> class
-<code class="docutils literal notranslate"><span class="pre">multipleBoundedVolume</span></code>. The multiple-bounded volume is defined by
+<code class="docutils literal notranslate"><span class="pre">multipleBoundedVolume</span></code>. The multiple bounded volume is defined by
 its boundary surfaces.</p>
 <p><strong>Create Boundary Surfaces through the Rotation of Curves</strong></p>
 <blockquote>
 <div><p>The inlet and outlet surfaces, together with the surfaces connecting
-the multiple-bounded volume to the layer volumes, are created from the
+the multiple bounded volume to the layer volumes, are created from the
 curves stored in the vector handler <code class="docutils literal notranslate"><span class="pre">unstructVH_</span></code>.</p>
 <p>The surfaces are generated using the <cite>dtOO</cite> class
 <code class="docutils literal notranslate"><span class="pre">rectangularTrimmedSurface_curveRotateConstructOCC</span></code>. This class
@@ -5918,7 +5918,7 @@ vector handler.</p>
 <code class="docutils literal notranslate"><span class="pre">analyticSurface</span></code>, a check is performed to determine whether any of
 the rotated surfaces are degenerated. Degenerated surfaces occur when
 the corresponding curve lies on a radius of zero.</p>
-<p>Only non-degenerated surfaces are appended to the
+<p>Only non degenerated surfaces are appended to the
 <code class="docutils literal notranslate"><span class="pre">vectorHandlingAnalyticGeometry</span></code> object <code class="docutils literal notranslate"><span class="pre">boundSurf</span></code>.</p>
 <p>The following figure shows the boundary surfaces created from the
 curves stored in <code class="docutils literal notranslate"><span class="pre">unstructVH_</span></code>.</p>
@@ -5926,21 +5926,21 @@ curves stored in <code class="docutils literal notranslate"><span class="pre">un
 <span id="mbvbounds0"></span><a class="reference internal image-reference" href="_images/boundingSurfs.png"><img alt="_images/boundingSurfs.png" src="_images/boundingSurfs.png" style="width: 50%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 75 </span><span class="caption-text">Boundary surfaces of the multiple-bounded volume with inlet (red),
+<p><span class="caption-number">Fig. 75 </span><span class="caption-text">Boundary surfaces of the multiple bounded volume with inlet (red),
 outlet (orange), and layer connection surfaces (blue). The periodic
-multiple-bounded surfaces are not shown.</span><a class="headerlink" href="#id42" title="Link to this image"></a></p>
+multiple bounded surfaces are not shown.</span><a class="headerlink" href="#id42" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </div></blockquote>
 <p><strong>Create Periodic Faces as Multiple Boundes Surfaces</strong></p>
 <blockquote>
 <div><p>The periodic surfaces of the unstructured region slice are created as
-multiple-bounded surfaces. These surfaces are generated using the
+multiple bounded surfaces. These surfaces are generated using the
 <cite>dtOO</cite> class <code class="docutils literal notranslate"><span class="pre">multipleBoundedSurface</span></code>, which takes a set of boundary
 curves together with a surrounding bounding box as input.</p>
 <p>The bounding box is created from the minimum and maximum vertices
 stored in <code class="docutils literal notranslate"><span class="pre">speBb_</span></code>. Based on these vertices, a bounding box
-<code class="docutils literal notranslate"><span class="pre">m2d</span></code> is generated for the first multiple-bounded surface, extending
+<code class="docutils literal notranslate"><span class="pre">m2d</span></code> is generated for the first multiple bounded surface, extending
 0.1 units beyond <code class="docutils literal notranslate"><span class="pre">speBb_</span></code> in all directions.</p>
 <p>The first periodic surface <code class="docutils literal notranslate"><span class="pre">mbs1</span></code> is created from <code class="docutils literal notranslate"><span class="pre">m2d</span></code> and the
 boundary curves stored in <code class="docutils literal notranslate"><span class="pre">unstructVH_</span></code> using the class
@@ -5957,7 +5957,7 @@ to <code class="docutils literal notranslate"><span class="pre">rotVector_</span
 is created. By iterating over <code class="docutils literal notranslate"><span class="pre">unstructVH_</span></code> and applying the same
 rotational transformation, the rotated boundary curves are generated and
 stored in <code class="docutils literal notranslate"><span class="pre">unstructVH_rot</span></code>.</p>
-<p>The second multiple-bounded surface is created analogously to the
+<p>The second multiple bounded surface is created analogously to the
 first one using <code class="docutils literal notranslate"><span class="pre">m2d_rot</span></code> and <code class="docutils literal notranslate"><span class="pre">unstructVH_rot</span></code>. This surface is
 assigned the label <code class="docutils literal notranslate"><span class="pre">periodicUnstruct_1</span></code> and appended to
 <code class="docutils literal notranslate"><span class="pre">boundSurf</span></code>.</p>
@@ -5971,7 +5971,7 @@ is provided as the collection of boundary surfaces.</p>
 </div></blockquote>
 <p><strong>Returns</strong></p>
 <blockquote>
-<div><p>The method returns both the multiple-bounded volume and the vector
+<div><p>The method returns both the multiple bounded volume and the vector
 handler <code class="docutils literal notranslate"><span class="pre">boundSurf</span></code> containing all generated boundary surfaces.</p>
 </div></blockquote>
 </dd></dl>
@@ -6185,7 +6185,7 @@ labeled in the getter method <code class="docutils literal notranslate"><span cl
 into <code class="docutils literal notranslate"><span class="pre">aG</span></code> by iterating over the list.</p>
 <p><a class="reference internal" href="#gridlayersmeshfaces"><span class="std std-numref">Fig. 76</span></a> shows the face <code class="docutils literal notranslate"><span class="pre">outlet_unstruct</span></code> in orange and
 <code class="docutils literal notranslate"><span class="pre">interface_unstruct</span></code> in red. The faces labeled with <code class="docutils literal notranslate"><span class="pre">para</span></code> are equal to
-the wall-parallel faces of the layer volumes (purple). The periodic faces of
+the wall parallel faces of the layer volumes (purple). The periodic faces of
 the unstructured region are not shown.</p>
 <figure class="align-center" id="id43">
 <span id="gridlayersmeshfaces"></span><a class="reference internal image-reference" href="_images/layersMeshFaces.png"><img alt="_images/layersMeshFaces.png" src="_images/layersMeshFaces.png" style="width: 50%;" />
@@ -6211,7 +6211,7 @@ The activities inside the loop are illustrated in the following figure.</p>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i_hs</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">layerList_</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>The first-level loop iterates over the hub and shroud data in
+<p>The first level loop iterates over the hub and shroud data in
 <code class="docutils literal notranslate"><span class="pre">layerList_</span></code>. According to the iterator <code class="docutils literal notranslate"><span class="pre">i_hs</span></code>, the <code class="docutils literal notranslate"><span class="pre">label</span></code>
 variable is set to the strings <code class="docutils literal notranslate"><span class="pre">hub</span></code> or <code class="docutils literal notranslate"><span class="pre">shroud</span></code>.</p>
 <p><strong>Loop over Layers</strong></p>
@@ -6219,7 +6219,7 @@ variable is set to the strings <code class="docutils literal notranslate"><span 
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i_l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">layerList</span><span class="p">[</span><span class="n">i_hs</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 </pre></div>
 </div>
-<p>The second-level loop iterates over the hub or shroud layers in
+<p>The second level loop iterates over the hub or shroud layers in
 <code class="docutils literal notranslate"><span class="pre">layerList_[i_hs]</span></code>. The iterator is <code class="docutils literal notranslate"><span class="pre">i_l</span></code>.</p>
 <p>With the method <a class="reference internal" href="#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers.map3dTo3dGmsh_gridFromLayers.detectFirstAndSecond" title="dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers.map3dTo3dGmsh_gridFromLayers.detectFirstAndSecond"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detectFirstAndSecond()</span></code></a>, the faces of each layer are
 identified. The method takes the layer volume as a <code class="docutils literal notranslate"><span class="pre">map3dTo3d</span></code> object
@@ -6296,7 +6296,7 @@ following figure shows the edges on which mesh settings are applied.</p>
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 78 </span><span class="caption-text">Edges in the flow domain on which mesh settings are applied.
-<code class="docutils literal notranslate"><span class="pre">channelToParallelLines</span></code> (green), <code class="docutils literal notranslate"><span class="pre">swLines</span></code> (pink), and
+<code class="docutils literal notranslate"><span class="pre">channelToParallelLines</span></code> (green), <code class="docutils literal notranslate"><span class="pre">swLines</span></code> (magenta), and
 <code class="docutils literal notranslate"><span class="pre">circLines</span></code> (blue). On grey edges no mesh settings are applied.</span><a class="headerlink" href="#id45" title="Link to this image"></a></p>
 </figcaption>
 </figure>
@@ -6315,7 +6315,7 @@ length is calculated. By dividing this value by <code class="docutils literal no
 unstructured volume is estimated.</p>
 </div></blockquote>
 <p>To set the number of elements on the edges in the streamwise
-(<a class="reference internal" href="#layersmeshsetting"><span class="std std-numref">Fig. 78</span></a> (pink)) and circumferential directions
+(<a class="reference internal" href="#layersmeshsetting"><span class="std std-numref">Fig. 78</span></a> (magenta)) and circumferential directions
 (<a class="reference internal" href="#layersmeshsetting"><span class="std std-numref">Fig. 78</span></a> (blue)), an iteration over the layer list is
 performed. The following figure illustrates the processes in an activity
 diagram.</p>
@@ -6340,13 +6340,13 @@ edges on the hub and shroud walls.</p>
 </pre></div>
 </div>
 <p>Similarly to the loop in <a class="reference internal" href="#gridlayers-activity0"><span class="std std-numref">Fig. 77</span></a>, a nested loop
-over the two levels of <code class="docutils literal notranslate"><span class="pre">layerList_</span></code> is performed. The first-level loop
+over the two levels of <code class="docutils literal notranslate"><span class="pre">layerList_</span></code> is performed. The first level loop
 iterates over the hub and shroud layers. The string value of <code class="docutils literal notranslate"><span class="pre">label</span></code> is
 set accordingly.</p>
 <p><strong>Loop over Layers</strong></p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">i_l</span> <span class="pre">in</span> <span class="pre">range(len(layerList_[i_hs][0]))</span></code></p>
-<p>The second-level loop iterates over the specific layers in the hub or
+<p>The second level loop iterates over the specific layers in the hub or
 shroud set.</p>
 <p><strong>Edges in Streamwise Direction</strong></p>
 <blockquote>
@@ -6356,7 +6356,7 @@ common edge between the <code class="docutils literal notranslate"><span class="
 the method <a class="reference internal" href="#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers.map3dTo3dGmsh_gridFromLayers.getCommonEdgesByPhysicalFaces" title="dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers.map3dTo3dGmsh_gridFromLayers.getCommonEdgesByPhysicalFaces"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getCommonEdgesByPhysicalFaces()</span></code></a>.</p>
 <p>With this length, the number of elements <code class="docutils literal notranslate"><span class="pre">nE</span></code> is calculated by
 dividing the length through the element size <code class="docutils literal notranslate"><span class="pre">elementSizeSW_</span></code>. By
-rounding <code class="docutils literal notranslate"><span class="pre">nE</span></code> to the next-highest integer value, it is ensured that
+rounding <code class="docutils literal notranslate"><span class="pre">nE</span></code> to the next highest integer value, it is ensured that
 <code class="docutils literal notranslate"><span class="pre">elementSizeSW_</span></code> is the maximal element size on the wall face in
 the streamwise direction.</p>
 <p>The handling of six- and five-sided layers differs here. This is
@@ -6365,7 +6365,7 @@ checked with the value in <code class="docutils literal notranslate"><span class
 <p><strong>Layer is six sided</strong></p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">layerList_[i_hs][1][i_l]</span> <span class="pre">==</span> <span class="pre">False</span></code></p>
-<p>The streamwise edges (<a class="reference internal" href="#layersmeshsetting"><span class="std std-numref">Fig. 78</span></a> (pink))
+<p>The streamwise edges (<a class="reference internal" href="#layersmeshsetting"><span class="std std-numref">Fig. 78</span></a> (magenta))
 extending between the <code class="docutils literal notranslate"><span class="pre">ortho</span></code> faces of the layer are returned
 by the method <code class="docutils literal notranslate"><span class="pre">getDtGmshEdgeTagListByFromToPhysical</span></code> of the
 Gmsh model.</p>
@@ -6378,7 +6378,7 @@ Gmsh model.</p>
 <code class="docutils literal notranslate"><span class="pre">channel</span></code> or the <code class="docutils literal notranslate"><span class="pre">parallel</span></code> faces are compared with the
 <code class="docutils literal notranslate"><span class="pre">periodic0</span></code> and <code class="docutils literal notranslate"><span class="pre">periodic1</span></code> faces. The common edges of these
 faces are stored in the list <code class="docutils literal notranslate"><span class="pre">swLines</span></code>.</p>
-<p>The meshing of the four-sided faces <code class="docutils literal notranslate"><span class="pre">ortho</span></code>, <code class="docutils literal notranslate"><span class="pre">periodic0</span></code>,
+<p>The meshing of the four sided faces <code class="docutils literal notranslate"><span class="pre">ortho</span></code>, <code class="docutils literal notranslate"><span class="pre">periodic0</span></code>,
 and <code class="docutils literal notranslate"><span class="pre">periodic1</span></code> of the layer is set to transfinite with a
 recombine.</p>
 </div></blockquote>
@@ -6398,14 +6398,14 @@ a radius of zero, the length <code class="docutils literal notranslate"><span cl
 for the downstream circumferential edge.</p>
 </div></blockquote>
 </div></blockquote>
-<p><strong>Apply Mesh Settings on Edies in Circumferential Direction</strong></p>
+<p><strong>Apply Mesh Settings on Edges in Circumferential Direction</strong></p>
 <blockquote>
-<div><p>After the second-level loop for a layer region has concluded, the number of
+<div><p>After the second level loop for a layer region has concluded, the number of
 elements according to the maximal edge length is set on the circumferential
 edges.</p>
 <p>The number of elements <code class="docutils literal notranslate"><span class="pre">nE</span></code> is calculated with the maximal edge length
 <code class="docutils literal notranslate"><span class="pre">lChannel_circ[i_hs]</span></code> and the element size <code class="docutils literal notranslate"><span class="pre">elementSizeCirc_</span></code>. By
-rounding the value of <code class="docutils literal notranslate"><span class="pre">nE</span></code> to the next-higher integer, it is ensured that
+rounding the value of <code class="docutils literal notranslate"><span class="pre">nE</span></code> to the next higher integer, it is ensured that
 the specified element size represents a maximum size along the
 circumferential direction of the layer wall.</p>
 <p>The circumferential edges <code class="docutils literal notranslate"><span class="pre">circLines</span></code>
@@ -6509,7 +6509,7 @@ regions is added as an outlet face.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Iterates over the edges on both faces.</p></li>
-<li><p>Ginds faces with the same tag.</p></li>
+<li><p>Finds faces with the same tag.</p></li>
 <li><p>Returns them in a list.</p></li>
 </ul>
 </div></blockquote>

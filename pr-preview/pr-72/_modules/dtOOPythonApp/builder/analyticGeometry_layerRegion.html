@@ -257,9 +257,9 @@
 <span class="sd">    &#39;multipleBoundedVolume&#39;</span>
 <span class="sd">    </span>
 <span class="sd">    This class is used to create the geometry of a flow channel consisting of five- or six-</span>
-<span class="sd">    sided layer volumes on the hub and shroud walls, as well as a multiple-bounded volume</span>
+<span class="sd">    sided layer volumes on the hub and shroud walls, as well as a multiple bounded volume</span>
 <span class="sd">    that expands inside the flow domain and connects to the layers.</span>
-<span class="sd">    In this documentation, the region formed by the multiple-bounded volume is referred to </span>
+<span class="sd">    In this documentation, the region formed by the multiple bounded volume is referred to </span>
 <span class="sd">    as the *unstructured region*.</span>
 
 <span class="sd">    The main method of this class is the constructor, from which the remaining methods are</span>
@@ -267,8 +267,8 @@
 <span class="sd">    ``rotVector_`` and ``origin_``.</span>
 
 <span class="sd">    The method :meth:`calculateNormalAxis` is used to calculate the normal axis </span>
-<span class="sd">    ``normalAxis_`` on the flow domain cross-section from the hub and shroud </span>
-<span class="sd">    curves. Furthermore, the method returns the cross-section bounding box </span>
+<span class="sd">    ``normalAxis_`` on the flow domain cross section from the hub and shroud </span>
+<span class="sd">    curves. Furthermore, the method returns the cross section bounding box </span>
 <span class="sd">    ``speBb_`` and its center point ``speCenter_``.</span>
 
 <span class="sd">    The bounding curves of the layers are created using the method</span>
@@ -289,9 +289,9 @@
 
 <span class="sd">    The lists ``hubUnstructBounds_`` and ``shroudUnstructBounds_`` contain the layer</span>
 <span class="sd">    boundary curves that extend into the flow domain and form the interfaces between the</span>
-<span class="sd">    unstructured multiple-bounded volume and the layers.</span>
+<span class="sd">    unstructured multiple bounded volume and the layers.</span>
 
-<span class="sd">    The inlet and outlet curves of the flow domain cross-section are shared between the</span>
+<span class="sd">    The inlet and outlet curves of the flow domain cross section are shared between the</span>
 <span class="sd">    hub and shroud layer regions and the unstructured region. By splitting these curves,</span>
 <span class="sd">    the inlet boundary of the unstructured region is assigned to the variable</span>
 <span class="sd">    ``interfaceUnstructBound_`` and the outlet boundary to ``outletUnstructBound_``.</span>
@@ -327,7 +327,7 @@
 <span class="sd">      layer is located on a radius of zero</span>
 
 <span class="sd">    The unstructured region is created in the method</span>
-<span class="sd">    :meth:`getUnstructuredRegion`. This method returns the multiple-bounded volume of the</span>
+<span class="sd">    :meth:`getUnstructuredRegion`. This method returns the multiple bounded volume of the</span>
 <span class="sd">    unstructured region together with a list containing its boundary surfaces.</span>
 
 <span class="sd">    The :meth:`build` method is used to visualize the created geometries in `ParaView`.</span>
@@ -381,9 +381,9 @@
 <span class="sd">        The boundary curves of the channel are passed to the constructor through the lists</span>
 <span class="sd">        ``speHub``, ``speShroud``, and ``inOutCurves``. These lists contain the curves of</span>
 <span class="sd">        the hub and shroud walls, as well as the inlet and outlet curves of the flow</span>
-<span class="sd">        channel cross-section.</span>
+<span class="sd">        channel cross section.</span>
 
-<span class="sd">        The following figure shows the cross-section and the corresponding curves.</span>
+<span class="sd">        The following figure shows the cross section and the corresponding curves.</span>
 
 <span class="sd">        .. _speCurves0:</span>
 <span class="sd">        .. figure:: meridionalFigs/speCurves.png</span>
@@ -394,7 +394,7 @@
 <span class="sd">           together with the inlet (red) and outlet (orange) curves of the draft tube</span>
 <span class="sd">           cone.</span>
 
-<span class="sd">        The rotation vector and the origin point are stored in the variables</span>
+<span class="sd">        The rotation vector and the origin are stored in the variables</span>
 <span class="sd">        ``rotVector_`` and ``origin_``.</span>
 
 <span class="sd">        The hub and shroud curves are passed to the method</span>
@@ -440,11 +440,11 @@
 <span class="sd">        shroud curves are defined by the list ``layer_supports``.</span>
 
 <span class="sd">        The lists ``hubLayerCurves_`` and ``shroudLayerCurves_`` have the structure</span>
-<span class="sd">        ``List[List[analyticGeometry]]``. In this structure, each first-level list</span>
+<span class="sd">        ``List[List[analyticGeometry]]``. In this structure, each first level list</span>
 <span class="sd">        contains the four boundary curves of one layer face stored in the corresponding</span>
-<span class="sd">        second-level list.</span>
+<span class="sd">        second level list.</span>
 
-<span class="sd">        The arrangement of the boundary curves in the second-level list is as follows:</span>
+<span class="sd">        The arrangement of the boundary curves in the second level list is as follows:</span>
 
 <span class="sd">        #. ``hubLayerCurves_[i][0]``: Wall curve of the *i*-th special hub curve.</span>
 <span class="sd">        #. ``hubLayerCurves_[i][1]``: Downstream curve extending from the wall into</span>
@@ -464,14 +464,14 @@
 <span class="sd">        The following figure shows the boundary curves of the layers in black</span>
 <span class="sd">        and the layer faces in blue.</span>
 <span class="sd">        As an example of the numbering convention of the boundary curves, the indices of</span>
-<span class="sd">        the second-level list in ``hubLayerCurves_[0]`` are shown.</span>
+<span class="sd">        the second level list in ``hubLayerCurves_[0]`` are shown.</span>
 
 <span class="sd">        .. _layer2d_numbering:</span>
 <span class="sd">        .. figure:: meridionalFigs/layers2d_numbering.png</span>
 <span class="sd">           :width: 40%</span>
 <span class="sd">           :align: center</span>
 
-<span class="sd">           Two-dimensional layer faces (blue) in the draft tube cone.</span>
+<span class="sd">           Two dimensional layer faces (blue) in the draft tube cone.</span>
 
 <span class="sd">        The lists containing Boolean values, ``hubRadZero_`` and ``shroudRadZero_``,</span>
 <span class="sd">        contain a value of ``True`` for layers located on a radius of zero. These</span>
@@ -482,7 +482,7 @@
 
 <span class="sd">        The curves in ``hubUnstructBounds_`` and ``shroudUnstructBounds_`` are copies</span>
 <span class="sd">        of the third boundary curves of the layer faces. These curves are used to</span>
-<span class="sd">        construct the multiple-bounded volume of the unstructured region.</span>
+<span class="sd">        construct the multiple bounded volume of the unstructured region.</span>
 
 <span class="sd">        The inlet of the flow domain created in this class corresponds to the curve in</span>
 <span class="sd">        ``inOutCurves[0]``. A section of this curve is used as the inlet boundary of</span>
@@ -509,7 +509,7 @@
 
 <span class="sd">        The faces of the hub and shroud layers are created by iterating over the lists</span>
 <span class="sd">        ``hubLayerCurves_`` and ``shroudLayerCurves_``. During each iteration, the</span>
-<span class="sd">        second-level boundary curves are inserted into a vector handler object named</span>
+<span class="sd">        second level boundary curves are inserted into a vector handler object named</span>
 <span class="sd">        ``layer_vhc``.</span>
 
 <span class="sd">        The layer faces are then generated using the `dtOO` class</span>
@@ -867,7 +867,7 @@
 
 <span class="sd">            ::</span>
 
-<span class="sd">                i == 0``</span>
+<span class="sd">                i == 0</span>
 
 <span class="sd">            The fourth boundary curve of the first layer face is formed by the</span>
 <span class="sd">            inlet curve stored in ``boundsGlob[0]``. This boundary curve is</span>
@@ -948,7 +948,7 @@
 <span class="sd">                The normal directions of the curves</span>
 <span class="sd">                (:math:`\mathbf{n_0}` and :math:`\mathbf{n_1}`) at the shared point</span>
 <span class="sd">                are calculated as the cross products of the normal axis of the</span>
-<span class="sd">                channel cross-section ``normalAxis_``</span>
+<span class="sd">                channel cross section ``normalAxis_``</span>
 <span class="sd">                (:math:`\mathbf{n_{global}}`) and the tangential directions of the</span>
 <span class="sd">                curves at the shared point</span>
 <span class="sd">                (:math:`\mathbf{t_0}` and :math:`\mathbf{t_1}`).</span>
@@ -1433,7 +1433,7 @@
 <span class="sd">            to this container.</span>
 
 <span class="sd">            By iterating over ``supports``, the support points :math:`P_s` are</span>
-<span class="sd">            generated. Each entry in ``supports`` contains a floating-point value</span>
+<span class="sd">            generated. Each entry in ``supports`` contains a floating point value</span>
 <span class="sd">            defining a relative parameter position along the wall curve.</span>
 
 <span class="sd">            For each support value, a base point :math:`P_0` is calculated on the</span>
@@ -1872,9 +1872,9 @@
 <span class="sd">            - Creates the boundary surfaces of the unstructured region that</span>
 <span class="sd">              connect to the layer volumes.</span>
 <span class="sd">            - Creates the periodic boundary surfaces of the unstructured region</span>
-<span class="sd">              as multiple-bounded surfaces.</span>
-<span class="sd">            - Creates the unstructured region as a multiple-bounded volume.</span>
-<span class="sd">            - Returns the multiple-bounded volume together with its boundary</span>
+<span class="sd">              as multiple bounded surfaces.</span>
+<span class="sd">            - Creates the unstructured region as a multiple bounded volume.</span>
+<span class="sd">            - Returns the multiple bounded volume together with its boundary</span>
 <span class="sd">              surfaces.</span>
 
 <span class="sd">        Parameters</span>
@@ -1889,17 +1889,17 @@
 
 <span class="sd">        boundSurf : vectorHandlingAnalyticGeometry</span>
 <span class="sd">            Vector handler containing the boundary surfaces of the</span>
-<span class="sd">            multiple-bounded volume.</span>
+<span class="sd">            multiple bounded volume.</span>
 
 
 <span class="sd">        The unstructured region is created as an object of the `dtOO` class</span>
-<span class="sd">        ``multipleBoundedVolume``. The multiple-bounded volume is defined by</span>
+<span class="sd">        ``multipleBoundedVolume``. The multiple bounded volume is defined by</span>
 <span class="sd">        its boundary surfaces.</span>
 <span class="sd">        </span>
 <span class="sd">        **Create Boundary Surfaces through the Rotation of Curves**</span>
 
 <span class="sd">            The inlet and outlet surfaces, together with the surfaces connecting</span>
-<span class="sd">            the multiple-bounded volume to the layer volumes, are created from the</span>
+<span class="sd">            the multiple bounded volume to the layer volumes, are created from the</span>
 <span class="sd">            curves stored in the vector handler ``unstructVH_``.</span>
 
 <span class="sd">            The surfaces are generated using the `dtOO` class</span>
@@ -1926,7 +1926,7 @@
 <span class="sd">            the rotated surfaces are degenerated. Degenerated surfaces occur when</span>
 <span class="sd">            the corresponding curve lies on a radius of zero.</span>
 
-<span class="sd">            Only non-degenerated surfaces are appended to the</span>
+<span class="sd">            Only non degenerated surfaces are appended to the</span>
 <span class="sd">            ``vectorHandlingAnalyticGeometry`` object ``boundSurf``.</span>
 
 <span class="sd">            The following figure shows the boundary surfaces created from the</span>
@@ -1937,20 +1937,20 @@
 <span class="sd">               :width: 50%</span>
 <span class="sd">               :align: center</span>
 
-<span class="sd">               Boundary surfaces of the multiple-bounded volume with inlet (red),</span>
+<span class="sd">               Boundary surfaces of the multiple bounded volume with inlet (red),</span>
 <span class="sd">               outlet (orange), and layer connection surfaces (blue). The periodic</span>
-<span class="sd">               multiple-bounded surfaces are not shown.</span>
+<span class="sd">               multiple bounded surfaces are not shown.</span>
 <span class="sd">        </span>
 <span class="sd">        **Create Periodic Faces as Multiple Boundes Surfaces**</span>
 
 <span class="sd">            The periodic surfaces of the unstructured region slice are created as</span>
-<span class="sd">            multiple-bounded surfaces. These surfaces are generated using the</span>
+<span class="sd">            multiple bounded surfaces. These surfaces are generated using the</span>
 <span class="sd">            `dtOO` class ``multipleBoundedSurface``, which takes a set of boundary</span>
 <span class="sd">            curves together with a surrounding bounding box as input.</span>
 
 <span class="sd">            The bounding box is created from the minimum and maximum vertices</span>
 <span class="sd">            stored in ``speBb_``. Based on these vertices, a bounding box</span>
-<span class="sd">            ``m2d`` is generated for the first multiple-bounded surface, extending</span>
+<span class="sd">            ``m2d`` is generated for the first multiple bounded surface, extending</span>
 <span class="sd">            0.1 units beyond ``speBb_`` in all directions.</span>
 
 <span class="sd">            The first periodic surface ``mbs1`` is created from ``m2d`` and the</span>
@@ -1973,7 +1973,7 @@
 <span class="sd">            rotational transformation, the rotated boundary curves are generated and</span>
 <span class="sd">            stored in ``unstructVH_rot``.</span>
 
-<span class="sd">            The second multiple-bounded surface is created analogously to the</span>
+<span class="sd">            The second multiple bounded surface is created analogously to the</span>
 <span class="sd">            first one using ``m2d_rot`` and ``unstructVH_rot``. This surface is</span>
 <span class="sd">            assigned the label ``periodicUnstruct_1`` and appended to</span>
 <span class="sd">            ``boundSurf``.</span>
@@ -1987,7 +1987,7 @@
 <span class="sd">        </span>
 <span class="sd">        **Returns**</span>
 
-<span class="sd">            The method returns both the multiple-bounded volume and the vector</span>
+<span class="sd">            The method returns both the multiple bounded volume and the vector</span>
 <span class="sd">            handler ``boundSurf`` containing all generated boundary surfaces.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 

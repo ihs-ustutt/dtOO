@@ -328,7 +328,7 @@
 
 <span class="sd">        :numref:`gridLayersMeshFaces` shows the face ``outlet_unstruct`` in orange and</span>
 <span class="sd">        ``interface_unstruct`` in red. The faces labeled with ``para`` are equal to</span>
-<span class="sd">        the wall-parallel faces of the layer volumes (purple). The periodic faces of</span>
+<span class="sd">        the wall parallel faces of the layer volumes (purple). The periodic faces of</span>
 <span class="sd">        the unstructured region are not shown.</span>
 
 <span class="sd">        .. _gridLayersMeshFaces:</span>
@@ -358,7 +358,7 @@
 
 <span class="sd">                i_hs in range(len(layerList_))</span>
 
-<span class="sd">            The first-level loop iterates over the hub and shroud data in</span>
+<span class="sd">            The first level loop iterates over the hub and shroud data in</span>
 <span class="sd">            ``layerList_``. According to the iterator ``i_hs``, the ``label``</span>
 <span class="sd">            variable is set to the strings ``hub`` or ``shroud``.</span>
 <span class="sd">            </span>
@@ -368,7 +368,7 @@
 
 <span class="sd">                    i_l in range(len(layerList[i_hs][0]))</span>
 
-<span class="sd">                The second-level loop iterates over the hub or shroud layers in</span>
+<span class="sd">                The second level loop iterates over the hub or shroud layers in</span>
 <span class="sd">                ``layerList_[i_hs]``. The iterator is ``i_l``.</span>
 
 <span class="sd">                With the method :meth:`detectFirstAndSecond`, the faces of each layer are</span>
@@ -444,7 +444,7 @@
 <span class="sd">           :align: center</span>
 
 <span class="sd">           Edges in the flow domain on which mesh settings are applied.</span>
-<span class="sd">           ``channelToParallelLines`` (green), ``swLines`` (pink), and</span>
+<span class="sd">           ``channelToParallelLines`` (green), ``swLines`` (magenta), and</span>
 <span class="sd">           ``circLines`` (blue). On grey edges no mesh settings are applied.</span>
 <span class="sd">        </span>
 <span class="sd">        **Apply Gradings on the Walls**</span>
@@ -463,7 +463,7 @@
 <span class="sd">            unstructured volume is estimated.</span>
 
 <span class="sd">        To set the number of elements on the edges in the streamwise</span>
-<span class="sd">        (:numref:`layersMeshSetting` (pink)) and circumferential directions</span>
+<span class="sd">        (:numref:`layersMeshSetting` (magenta)) and circumferential directions</span>
 <span class="sd">        (:numref:`layersMeshSetting` (blue)), an iteration over the layer list is</span>
 <span class="sd">        performed. The following figure illustrates the processes in an activity</span>
 <span class="sd">        diagram.</span>
@@ -490,7 +490,7 @@
 <span class="sd">                i_hs in range(len(layerList_))</span>
 
 <span class="sd">            Similarly to the loop in :numref:`gridLayers_activity0`, a nested loop</span>
-<span class="sd">            over the two levels of ``layerList_`` is performed. The first-level loop</span>
+<span class="sd">            over the two levels of ``layerList_`` is performed. The first level loop</span>
 <span class="sd">            iterates over the hub and shroud layers. The string value of ``label`` is</span>
 <span class="sd">            set accordingly.</span>
 
@@ -498,7 +498,7 @@
 
 <span class="sd">                ``i_l in range(len(layerList_[i_hs][0]))``</span>
 
-<span class="sd">                The second-level loop iterates over the specific layers in the hub or</span>
+<span class="sd">                The second level loop iterates over the specific layers in the hub or</span>
 <span class="sd">                shroud set.</span>
 <span class="sd">                </span>
 <span class="sd">                **Edges in Streamwise Direction**</span>
@@ -510,7 +510,7 @@
 
 <span class="sd">                    With this length, the number of elements ``nE`` is calculated by</span>
 <span class="sd">                    dividing the length through the element size ``elementSizeSW_``. By</span>
-<span class="sd">                    rounding ``nE`` to the next-highest integer value, it is ensured that</span>
+<span class="sd">                    rounding ``nE`` to the next highest integer value, it is ensured that</span>
 <span class="sd">                    ``elementSizeSW_`` is the maximal element size on the wall face in</span>
 <span class="sd">                    the streamwise direction.</span>
 
@@ -521,7 +521,7 @@
 
 <span class="sd">                    ``layerList_[i_hs][1][i_l] == False``</span>
 
-<span class="sd">                    The streamwise edges (:numref:`layersMeshSetting` (pink))</span>
+<span class="sd">                    The streamwise edges (:numref:`layersMeshSetting` (magenta))</span>
 <span class="sd">                    extending between the ``ortho`` faces of the layer are returned</span>
 <span class="sd">                    by the method ``getDtGmshEdgeTagListByFromToPhysical`` of the</span>
 <span class="sd">                    Gmsh model.</span>
@@ -536,7 +536,7 @@
 <span class="sd">                    ``periodic0`` and ``periodic1`` faces. The common edges of these</span>
 <span class="sd">                    faces are stored in the list ``swLines``.</span>
 
-<span class="sd">                    The meshing of the four-sided faces ``ortho``, ``periodic0``,</span>
+<span class="sd">                    The meshing of the four sided faces ``ortho``, ``periodic0``,</span>
 <span class="sd">                    and ``periodic1`` of the layer is set to transfinite with a</span>
 <span class="sd">                    recombine.</span>
 <span class="sd">                </span>
@@ -557,15 +557,15 @@
 <span class="sd">                    for the downstream circumferential edge.</span>
 <span class="sd">            </span>
 <span class="sd">            </span>
-<span class="sd">            **Apply Mesh Settings on Edies in Circumferential Direction**</span>
+<span class="sd">            **Apply Mesh Settings on Edges in Circumferential Direction**</span>
 
-<span class="sd">                After the second-level loop for a layer region has concluded, the number of</span>
+<span class="sd">                After the second level loop for a layer region has concluded, the number of</span>
 <span class="sd">                elements according to the maximal edge length is set on the circumferential</span>
 <span class="sd">                edges.</span>
 
 <span class="sd">                The number of elements ``nE`` is calculated with the maximal edge length</span>
 <span class="sd">                ``lChannel_circ[i_hs]`` and the element size ``elementSizeCirc_``. By</span>
-<span class="sd">                rounding the value of ``nE`` to the next-higher integer, it is ensured that</span>
+<span class="sd">                rounding the value of ``nE`` to the next higher integer, it is ensured that</span>
 <span class="sd">                the specified element size represents a maximum size along the</span>
 <span class="sd">                circumferential direction of the layer wall.</span>
 
@@ -1198,7 +1198,7 @@
 <span class="sd">        This method:</span>
 
 <span class="sd">            - Iterates over the edges on both faces.</span>
-<span class="sd">            - Ginds faces with the same tag.</span>
+<span class="sd">            - Finds faces with the same tag.</span>
 <span class="sd">            - Returns them in a list.</span>
 
 <span class="sd">        Parameters</span>

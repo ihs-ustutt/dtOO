@@ -234,7 +234,7 @@
 <span class="sd">       :align: center</span>
 
 <span class="sd">       Topology faces and their labels used in this class. Interfaces (red),</span>
-<span class="sd">       periodic mean-plane faces (yellow/green), coupling faces (cyan), and</span>
+<span class="sd">       periodic meanplane faces (yellow/green), coupling faces (cyan), and</span>
 <span class="sd">       blade surfaces (gray) are highlighted.</span>
 
 <span class="sd">    By iterating over ``blocks_``, the corresponding surfaces are added to</span>
@@ -267,13 +267,13 @@
 <span class="sd">    identifier ``&quot;quad&quot;``. Periodicity on these faces is defined using the</span>
 <span class="sd">    observer ``bVOSetRotationalPeriodicity``.</span>
 
-<span class="sd">    The boolean value ``meshTEBlocks_`` controls whether trailing-edge mesh</span>
-<span class="sd">    blocks are created. If trailing-edge mesh blocks are required, this</span>
+<span class="sd">    The boolean value ``meshTEBlocks_`` controls whether trailing edge mesh</span>
+<span class="sd">    blocks are created. If trailing edge mesh blocks are required, this</span>
 <span class="sd">    parameter must be set to ``True``.</span>
 
 <span class="sd">    Each face identifier is assigned an integer suffix for unique</span>
 <span class="sd">    identification. The following faces are added to the topology when</span>
-<span class="sd">    trailing-edge mesh blocks are enabled:</span>
+<span class="sd">    trailing edge mesh blocks are enabled:</span>
 
 <span class="sd">        - ``&quot;hub_0&quot;`` ... ``&quot;hub_&quot;+str(N)``</span>
 
@@ -325,14 +325,14 @@
 <span class="sd">       Edges of the bladed channel to which mesh settings are applied:</span>
 <span class="sd">       ``hubToShroudLines`` (orange), ``bladeHubLines`` and</span>
 <span class="sd">       ``bladeShroudLines`` (blue), ``bladeToBlockLines`` (green), and the</span>
-<span class="sd">       trailing-edge mesh block edges contained in ``tEMeshList`` (pink).</span>
+<span class="sd">       trailing edge mesh block edges contained in ``tEMeshList`` (pink).</span>
 <span class="sd">       No explicit mesh settings are applied to the gray edges.</span>
 
 <span class="sd">    Gradings are applied to refine the mesh near the hub, shroud, and blade</span>
 <span class="sd">    walls. The method :meth:`addGrading` is used to create the grading</span>
 <span class="sd">    functions. The methods :meth:`gradingsTypeTransfinite` and</span>
 <span class="sd">    :meth:`gradingsGradingFunctions` are then used to apply these gradings to</span>
-<span class="sd">    the mesh-setting observer ``bVOMeshRule``.</span>
+<span class="sd">    the mesh setting observer ``bVOMeshRule``.</span>
 
 <span class="sd">    The following table summarizes the edge groups and their corresponding</span>
 <span class="sd">    mesh parameters and settings:</span>
@@ -392,7 +392,7 @@
 <span class="sd">    edges, the ``&quot;tangentialBlade_*&quot;`` grading is adjusted at both the start</span>
 <span class="sd">    and end vertices.</span>
 
-<span class="sd">    Trailing-edge mesh blocks are generated only if ``meshTEBlocks_`` is set</span>
+<span class="sd">    Trailing edge mesh blocks are generated only if ``meshTEBlocks_`` is set</span>
 <span class="sd">    to ``True``. The corresponding edges are collected in the list</span>
 <span class="sd">    ``tEMeshList``. No grading functions are applied to these edges.</span>
 
@@ -617,10 +617,10 @@
 
 <span class="sd">            The block volumes are ordered so that their sequence in ``blocks_``</span>
 <span class="sd">            follows the u-direction of the blade surface ``blade_``.</span>
-<span class="sd">            If trailing-edge mesh blocks exist, they correspond to the first and</span>
+<span class="sd">            If trailing edge mesh blocks exist, they correspond to the first and</span>
 <span class="sd">            last entries of ``blocks_``.</span>
 
-<span class="sd">            If trailing-edge mesh blocks are enabled</span>
+<span class="sd">            If trailing edge mesh blocks are enabled</span>
 <span class="sd">            (``meshTEBlocks_ == True``), the blade faces of the first and last mesh</span>
 <span class="sd">            blocks are not added to ``aG``. Only block faces that are part of the</span>
 <span class="sd">            mean plane are added to ``aG`` (``i &lt;= nMeanplaneBlocks_``),</span>
@@ -633,9 +633,9 @@
 <span class="sd">            The observer ``bVONameRegions`` is added to establish the naming</span>
 <span class="sd">            convention of the regions.</span>
 <span class="sd">        </span>
-<span class="sd">        **Organize Edges of the Trailing-Edge Mesh Blocks**</span>
+<span class="sd">        **Organize Edges of the Trailing Edge Mesh Blocks**</span>
 
-<span class="sd">            The edges of the trailing-edge mesh blocks (shown in pink in</span>
+<span class="sd">            The edges of the trailing edge mesh blocks (shown in pink in</span>
 <span class="sd">            :numref:`channelMeshing0`) are extracted by first obtaining the blade</span>
 <span class="sd">            and block faces of ``blocks_[0]`` and ``blocks_[-1]`` using</span>
 <span class="sd">            :meth:`detectFirstAndSecond`. Their hub and shroud edges are then</span>
@@ -653,7 +653,7 @@
 <span class="sd">                    ]</span>
 <span class="sd">                ]</span>
 
-<span class="sd">            The top-level list entries have the following meaning:</span>
+<span class="sd">            The top level list entries have the following meaning:</span>
 
 <span class="sd">                - ``tEMeshList[0]`` : Edges extending directly from the blade</span>
 
@@ -661,7 +661,7 @@
 
 <span class="sd">                - ``tEMeshList[2]`` : Edges extending from the outer wall of the last mesh block</span>
 
-<span class="sd">            The lower-level entries of ``tEMeshList`` are defined as follows:</span>
+<span class="sd">            The lower level entries of ``tEMeshList`` are defined as follows:</span>
 
 <span class="sd">                - ``tEMeshList[i][0]`` : Tuple containing lists of edge identifiers</span>
 
@@ -679,8 +679,8 @@
 <span class="sd">            The periodic faces (shown in yellow and green in :numref:`meshFaces`)</span>
 <span class="sd">            are organized in the list ``periodics``. The list is constructed such</span>
 <span class="sd">            that each entry ``periodics[i]`` is a ``Tuple`` containing a pair of</span>
-<span class="sd">            periodic faces. The suction-side boundary is stored in</span>
-<span class="sd">            ``periodics[i][0]`` and the corresponding pressure-side boundary in</span>
+<span class="sd">            periodic faces. The suction side boundary is stored in</span>
+<span class="sd">            ``periodics[i][0]`` and the corresponding pressure side boundary in</span>
 <span class="sd">            ``periodics[i][1]``.</span>
 
 <span class="sd">            The faces that are meshed unstructured, and</span>
@@ -710,7 +710,7 @@
 <span class="sd">            :numref:`channelMeshing0`) are identified by extracting and organizing</span>
 <span class="sd">            lists of edge identifiers returned by the ``dtGmshModel``.</span>
 
-<span class="sd">            The following edge-identifier lists are used to define the mesh</span>
+<span class="sd">            The following edge identifier lists are used to define the mesh</span>
 <span class="sd">            settings:</span>
 
 <span class="sd">                - ``hubToShroudLines``</span>
@@ -730,10 +730,10 @@
 <span class="sd">            input.</span>
 
 <span class="sd">            The grading associated with ``hubToShroudLines`` is assigned the label</span>
-<span class="sd">            ``&quot;hubToShroud&quot;`` and uses the first-element size</span>
+<span class="sd">            ``&quot;hubToShroud&quot;`` and uses the first element size</span>
 <span class="sd">            ``firstElementSizeHubToShroud_``. The grading associated with</span>
 <span class="sd">            ``bladeToBlockLines`` is assigned the label ``&quot;normalBlade&quot;`` and uses</span>
-<span class="sd">            the first-element size ``firstElementSizeNormalBlade_``.</span>
+<span class="sd">            the first element size ``firstElementSizeNormalBlade_``.</span>
 
 <span class="sd">            The number of elements and the grading functions are then applied to the</span>
 <span class="sd">            edges according to the specifications listed in :numref:`edgeMeshTab`.</span>
@@ -742,7 +742,7 @@
 <span class="sd">            ``bladeHubLines`` are applied by iterating over the corresponding edge</span>
 <span class="sd">            lists.</span>
 <span class="sd">        </span>
-<span class="sd">            Mesh settings for the trailing-edge mesh-block edges are applied only if</span>
+<span class="sd">            Mesh settings for the trailing edge mesh block edges are applied only if</span>
 <span class="sd">            ``meshTEBlocks_ == True``.</span>
 <span class="sd">        </span>
 <span class="sd">        **Mesh Settings along the Blade**</span>
@@ -757,7 +757,7 @@
 <span class="sd">            reparameterized onto the blade surface ``blade_``, yielding the surface</span>
 <span class="sd">            parameter coordinates ``p0_uv`` and ``p1_uv``.</span>
 
-<span class="sd">            Depending on the iteration the element-size functions </span>
+<span class="sd">            Depending on the iteration the element size functions </span>
 <span class="sd">            ``bladeHubElementSize_`` or ``bladeShroudElementSize_`` are then </span>
 <span class="sd">            evaluated at the corresponding parameter coordinates to obtain the </span>
 <span class="sd">            local element sizes ``ms_0`` and ``ms_1`` in the appropriate parameter </span>
@@ -775,7 +775,7 @@
 <span class="sd">                    min(nE_0, nE_1) + elementScale * abs(nE_1 - nE_0)</span>
 <span class="sd">                )</span>
 
-<span class="sd">            The floating-point value ``elementScale`` corresponds to either</span>
+<span class="sd">            The floating point value ``elementScale`` corresponds to either</span>
 <span class="sd">            ``bladeShroudElementScale_`` or ``bladeHubElementScale_``, depending on</span>
 <span class="sd">            the current iteration.</span>
 
@@ -785,7 +785,7 @@
 <span class="sd"> </span>
 <span class="sd">        **Set Mesh Rules**</span>
 
-<span class="sd">            The boundary-layer directions of the unstructured faces stored in</span>
+<span class="sd">            The boundary layer directions of the unstructured faces stored in</span>
 <span class="sd">            ``unstrFacesAndh2sLines`` are determined using</span>
 <span class="sd">            :meth:`detectBoundaryLayerDir`, which returns the list</span>
 <span class="sd">            ``boundaryLayerDir``.</span>
@@ -815,8 +815,8 @@
 <span class="sd">            ``&quot;*suction_*&quot;``, and ``&quot;*coupling_*&quot;``. These faces are added to the</span>
 <span class="sd">            ``&quot;_slidableFaceLabel&quot;`` entry.</span>
 
-<span class="sd">            The number of boundary-layer elements is specified by</span>
-<span class="sd">            ``nBoundaryLayers_``, while the boundary-layer orientation is defined by</span>
+<span class="sd">            The number of boundary layer elements is specified by</span>
+<span class="sd">            ``nBoundaryLayers_``, while the boundary layer orientation is defined by</span>
 <span class="sd">            ``boundaryLayerDir``.</span>
 
 
@@ -830,7 +830,7 @@
 <span class="sd">            ``periodics`` and creating a ``bVOSetRotationalPeriodicity`` observer</span>
 <span class="sd">            for each pair of periodic faces.</span>
 <span class="sd">        </span>
-<span class="sd">            The faces are renamed to match the boundary-condition naming convention</span>
+<span class="sd">            The faces are renamed to match the boundary condition naming convention</span>
 <span class="sd">            used in an OpenFOAM case through the observer</span>
 <span class="sd">            ``bVOFaceToPatchRule``. The corresponding renaming rules are summarized</span>
 <span class="sd">            in :numref:`faceToPatchTable`.</span>
@@ -1664,14 +1664,14 @@
         <span class="n">theModel</span><span class="p">:</span> <span class="n">dtGmshModel</span><span class="p">,</span> 
         <span class="n">boundaryLayerDirCheck</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">List</span><span class="p">[</span> <span class="n">Union</span><span class="p">[</span> <span class="n">map2dTo3d</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine the boundary-layer direction of a face from two edges.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine the boundary layer direction of a face from two edges.</span>
 
 <span class="sd">        This method:</span>
 
 <span class="sd">            - Iterates over the faces and edges in the input list.</span>
 <span class="sd">            - Checks whether the u- or v-parameters of the start and end points</span>
 <span class="sd">              of the edges on a face are equal within a specified tolerance.</span>
-<span class="sd">            - Determines and returns the corresponding boundary-layer direction.</span>
+<span class="sd">            - Determines and returns the corresponding boundary layer direction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1690,10 +1690,10 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
-<span class="sd">            Integer encoding the boundary-layer direction.</span>
+<span class="sd">            Integer encoding the boundary layer direction.</span>
 
 
-<span class="sd">        The boundary-layer direction is determined by iterating over</span>
+<span class="sd">        The boundary layer direction is determined by iterating over</span>
 <span class="sd">        ``faceLines in boundaryLayerDirCheck`` in an outer loop and over the</span>
 <span class="sd">        edges ``line in faceLines[1]`` in the inner loop.</span>
 
@@ -1707,16 +1707,16 @@
 <span class="sd">        ``boundaryLayerDirT`` is incremented. The resulting value is appended to</span>
 <span class="sd">        the list ``boundaryLayerDir``.</span>
 
-<span class="sd">        At the end of each outer-loop iteration, duplicate entries in</span>
+<span class="sd">        At the end of each outer loop iteration, duplicate entries in</span>
 <span class="sd">        ``boundaryLayerDir`` are removed using </span>
 <span class="sd">        ``boundaryLayerDir = list(dict.fromkeys(boundaryLayerDir))``.</span>
 
-<span class="sd">        Within this workflow, all boundary-layer directions must be oriented</span>
+<span class="sd">        Within this workflow, all boundary layer directions must be oriented</span>
 <span class="sd">        consistently. The condition ``len(boundaryLayerDir) != 1`` is therefore</span>
 <span class="sd">        used to verify that all detected directions are identical. If this</span>
 <span class="sd">        condition is not satisfied, an exception is raised.</span>
 
-<span class="sd">        Finally, the boundary-layer direction is encoded as an integer return</span>
+<span class="sd">        Finally, the boundary layer direction is encoded as an integer return</span>
 <span class="sd">        value. If ``boundaryLayerDir[0]`` equals ``1``, the method returns</span>
 <span class="sd">        ``0``. If ``boundaryLayerDir[0]`` equals ``2``, the method returns</span>
 <span class="sd">        ``1``. Any other value results in an exception.</span>
