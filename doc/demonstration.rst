@@ -706,3 +706,90 @@ Axial Runner ``tistos``
 
 .. automodule:: dtOO.demo.tistos.build
     :members:
+
+.. _radial_turbine_demo:
+
+Radial Turbine ``radMeridional``
+================================
+
+With this class the geometries and mesh topologies of different parametrized flow 
+machines can be created.
+The class contains the following creation methods:
+
+    1. `createMeridional()`
+    2. `createBlade()`
+    3. `createLayerRegion()`
+
+The creation methods are responsible for generating the different geometries and
+topologies.
+The inputs of these methods are handed to them from outside of the class through
+configuration dictionaries.
+They call multiple subclasses from the :ref:`dtOOPythonApp <dtOOPythonApp>` 
+package, which perform the specific tasks required for geometry generation.
+The python files of the subclasses are located in the following directory:
+
+    `./dtOO/scripts/python/dtOOPythonApp/builder`
+
+The following diagram illustrates the main methods and their relationships in the class.
+
+.. _classOverview:
+.. figure:: bladeFigs/radMeridional_class.png
+   :width: 100%
+   :align: center
+
+   Creation methods of the `radMeridional` class and their relationships.
+   Solid lines represent a sequence of activities, dashed lines represent 
+   the flow of data. Boxes with rounded edges represent data types.
+
+The meridional contour of the whole machine is defined by hub and shroud curves.
+The `createMeridional` method separates these, through defined interfaces,
+into regular channels and the curves which are used in the layered region.
+The following subclass is used:
+    
+    - :ref:`analyticGeometry_piecewiseMeridionalRotContour <analyticGeometry_piecewiseMeridionalRotContour>`
+
+The object ``radMeridionalContour`` of the subclass 
+`analyticGeometry_piecewiseMeridionalRotContour` is created, from which the 
+regular channels and the curves of the layered region can be returned with the methods 
+``getRegChannel`` and ``getLayerRegionCurves``.
+
+Based on the created meridional contour, bladed channels and a layered
+region can be built using the two other create methods.
+Within these methods, the geometries are created and mesh settings are applied.
+The final meshing is performed outside of the class by returning the necessary
+bounded volumes.
+
+Bladed channels (i.e., runner and guide vane channels) can be created using
+the ``createBlade`` method. The defined blades are generated inside the regular
+channels that are passed to the method from the ``radMeridionalContour`` object 
+with the method ``getRegChannel``.
+The resulting geometry and mesh represent a periodic segment of the blade channel.
+The blade is surrounded by transfinite and structured mesh blocks, while the rest
+of the channel is meshed unstructured.     
+The following subclasses are used:
+
+    - `analyticSurface_threePointMeanplaneFromRatio`
+    - `scaOneD_scaCurve2dOneDPointConstruct`
+    - `vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution`
+    - :ref:`vec3dThreeD_skinAndSplit <vec3dThreeD_skinAndSplit>`
+    - :ref:`analyticSurface_inOutFeMeanplane <analyticSurface_inOutFeMeanplane>`
+    - :ref:`multipleBoundedVolume_gridChannel <multipleBoundedVolume_gridChannel>`
+    - :ref:`map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks <map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks>`
+
+The ``createLayerRegion`` method takes the bounding curves of the layered region from the 
+``radMeridionaContour`` object with the method ``getLayerRegionCurves`` and
+creates a segment of a flow channel. This flow channel consists of transfinite
+layer regions on the hub and shroud faces and an unstructured region in between.
+The following subclasses are used:
+
+    - :ref:`analyticGeometry_layerRegion <analyticGeometry_layerRegion>`
+    - :ref:`map3dTo3dGmsh_gridFromLayers <map3dTo3dGmsh_gridFromLayers>`
+
+The created geometries, functions and others are stored in ``dtBundle`` containers.
+The main container object can be returned from the main class with the method ``getContainer()``.
+The bounded volumes and case data, which are needed for building meshes from the topologies
+and `openFOAM`-cases can be returned from this object.
+
+.. automodule:: dtOO.demo.radMeridional.radMeridional
+	:members:
+        :member-order: bysource

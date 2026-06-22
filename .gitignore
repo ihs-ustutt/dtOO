@@ -20,3 +20,10 @@ ThirdParty/
 .ycm_extra_conf.py
 compile_commands.json
 *.swp
+
+*.vtk
+*.msh
+*.json
+*.log
+*.out
+

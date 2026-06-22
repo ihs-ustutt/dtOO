@@ -241,7 +241,8 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     channelInletOutletDir: int = 2,
     channelSuctionPressureDir: int = 1,
     charLengthMin: float = 0.05,
-    charLengthMax: float = 0.10
+    charLengthMax: float = 0.10,
+    meshTEBlocks: bool = False
   ) -> None:
     """Constructor.
   
@@ -287,6 +288,8 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
       Sets gmsh attribute `Mesh.CharacteristicLengthMin`.
     charLengthMax: float
       Sets gmsh attribute `Mesh.CharacteristicLengthMax`.
+    meshTEblocks: Bool
+      generates Mesh on the Treailing Edge blocks if True.
 
     Returns
     -------
@@ -318,6 +321,8 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     self.channelHubShroudDir_ = channelHubShroudDir
     self.channelInletOutletDir_ = channelInletOutletDir
     self.channelSuctionPressureDir_ = channelSuctionPressureDir
+    
+    self.meshTEBlocks_ = meshTEBlocks
 
     self.hub_, self.shroud_ = self.detectFirstAndSecond( 
       self.channel_, self.channelHubShroudDir_ 
@@ -392,7 +397,6 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     m3dGmsh.jInit(
       self.map3dTo3dGmshJson_, None, None, None, None, None
     )
-
     #
     # add hub, shroud, channel and coupling faces
     #
@@ -425,6 +429,18 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
       m3dGmsh.getModel().getDtGmshRegionByTag( rid ).meshWNElements(1,1,1)
       m3dGmsh.getModel().getDtGmshRegionByTag( rid ).meshRecombineRecursive()
    
+    #
+    # find mean plane of the block face at the trailing edge
+    # add the edges at hub and shroud
+    # 
+    if self.meshTEBlocks_ == True:
+        tEBlade, tEBlock0 = self.detectFirstAndSecond(
+          self.blocks_[0], 3
+        )
+        tEHub, tEShroud = self.extractEdgesInFirstAndSecond(
+          m3dGmsh.getModel(), [tEBlade], self.hub_, self.shroud_
+        )
+
     #
     # name regions
     #
@@ -537,6 +553,14 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
       set(bladeToHubLines)-set(-np.array(bladeLines))-set(bladeLines)
     bladeToShroudLines = \
       set(bladeToShroudLines)-set(-np.array(bladeLines))-set(bladeLines)
+   
+    # trailing edge hub and shroud edges have to be removed here if
+    #  trailing edge mesh blocks exist
+    if self.meshTEBlocks_ == True:
+        bladeToHubLines = \
+          set(bladeToHubLines)-set(-np.array(tEHub))-set(tEHub)
+        bladeToShroudLines = \
+          set(bladeToShroudLines)-set(-np.array(tEShroud))-set(tEShroud)
 
     #
     # add debug faces and lines
@@ -695,6 +719,45 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
         theEdge = m3dGmsh.getModel().getDtGmshEdgeByTag( line )
         theEdge.setNElements( self.nElementsNormal_ )
         theEdge.setGrading( 1.0, gradings["normalBlade"][0] )
+
+    # makes mesh settings for Trailing edge mesh blocks 
+    if self.meshTEBlocks_ == True:
+        
+        # meshing trailing edge lines directly at trailing edge
+        for edgeTag in tEHub + tEShroud:
+
+            edge = m3dGmsh.getModel().getDtGmshEdgeByTag(edgeTag)
+            edge.setNElements( self.nElementsNormal_ )
+            edge.setGrading( -1.0, gradings["normalBlade"][0] )      # <- this needs to be reversed
+
+
+        # meshing the coupling faces at trailing edge
+        couplings = m3dGmsh.getModel().getDtGmshFaceListByPhysical("coupling_*")
+        # thouse coupling faces are located at the trailing edge blocks
+        tEFaces = [
+                [couplings[0], 1.0],
+                [couplings[1], -1.0],   # <- this needs to be reversed
+                [couplings[-2], 1.0],
+                [couplings[-1], 1.0]
+                ]
+        
+        # setting mesh parameters at hub and shroud
+        for hs in ["*hub*", "*shroud*"]:
+            # iterating over coupling faces
+            for i in range(len(tEFaces)): 
+                
+                # finding the edges which coupling the face has in common
+                #  with the hub and shroud faces
+                edges_1 = tEFaces[i][0].dtEdges()
+                edges_2 = m3dGmsh.getModel().getDtGmshFaceByPhysical(hs).dtEdges()
+                for e1 in edges_1:
+                  for e2 in edges_2:
+                    if np.abs(e1.tag()) == np.abs(e2.tag()):
+                      
+                      e1.setNElements( self.nElementsNormal_ )
+                      e1.setGrading( tEFaces[i][1], gradings["normalBlade"][0] )
+                      
+        
 
     ob = bVOReadMSH()
     ob.thisown = False

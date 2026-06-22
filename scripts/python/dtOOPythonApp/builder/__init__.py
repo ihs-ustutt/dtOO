@@ -35,6 +35,9 @@ from .ofOpenFOAMCase_setupWrapper import (
 from .ofOpenFOAMCase_turboMachine import (
   ofOpenFOAMCase_turboMachine
 )
+from .multipleBoundedVolume_gridChannel import (
+  multipleBoundedVolume_gridChannel
+)
 from .rotatingMap2dTo3d_gridChannel import (
   rotatingMap2dTo3d_gridChannel
 )
@@ -50,12 +53,28 @@ from .vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution import (
 from .vec3dThreeD_skinAndSplit import (
   vec3dThreeD_skinAndSplit
 )
+from .analyticSurface_inOutFeMeanplane import (
+  analyticSurface_inOutFeMeanplane
+)
 from .vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane import (
   vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane
 )
 from .map3dTo3dGmsh_gridFromChannel import (
   map3dTo3dGmsh_gridFromChannel
 )
+from .map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks import (
+  map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks
+)
 from .rotatingMap2dTo3d_splitFitted import (
   rotatingMap2dTo3d_splitFitted
+)
+from .analyticGeometry_piecewiseMeridionalRotContour import (
+  analyticGeometry_piecewiseMeridionalRotContour
+)
+from .analyticGeometry_layerRegion import (
+  analyticGeometry_layerRegion
+)
+from .map3dTo3dGmsh_gridFromLayers import map3dTo3dGmsh_gridFromLayers
+from . combineGmsh_fullRotate import (
+  combineGmsh_fullRotate
 )
