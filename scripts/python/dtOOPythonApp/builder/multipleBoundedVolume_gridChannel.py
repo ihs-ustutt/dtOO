@@ -4,9 +4,7 @@ from dtOOPythonSWIG import (
     analyticGeometry,
     analyticSurface,
     rectangularTrimmedSurface_curveRotateConstructOCC,
-    bSplineSurface_bSplineSurfaceSplitConstructOCC,
     dtPoint3,
-    vectorDtPoint3,
     analyticCurve,
     map2dTo3d,
     map3dTo3d,
@@ -18,7 +16,6 @@ from dtOOPythonSWIG import (
     multipleBoundedVolume,
     multipleBoundedSurface,
     partRotatingMap2dTo3d,
-    bSplineCurve_pointConstructOCC
     #bSplineCurve_curveConnectConstructOCC,
 )
 

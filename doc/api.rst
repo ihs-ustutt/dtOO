@@ -42,7 +42,6 @@ of the :ref:`radial turbine <radial_turbine_demo>`.
   :special-members: __init__
   :member-order: bysource
 
-
 .. _vec3dThreeD_skinAndSplit:
 
 .. automodule:: dtOOPythonApp.builder.vec3dThreeD_skinAndSplit
@@ -79,4 +78,3 @@ of the :ref:`radial turbine <radial_turbine_demo>`.
 .. automodule:: dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers
   :members:
   :member-order: bysource
-

@@ -29,15 +29,11 @@ from dtOOPythonSWIG import (
     dtPoint3,
     dtVector3,
     vectorDtPoint3,
-    rotatingMap2dTo3d,
     partRotatingMap2dTo3d,
     trimmedCurve_uBounds,
     geomCurve_curveReverseConstructOCC,
     multipleBoundedVolume,
     infinityMap3dTo3d,
-    curveCurveDist,
-    gslMinFloatAttr,
-    vectorReal,
     vectorHandlingConstDtCurve,
     vectorHandlingAnalyticGeometry,
     rectangularTrimmedSurface_curveRotateConstructOCC,
@@ -46,8 +42,7 @@ from dtOOPythonSWIG import (
     bSplineCurve_curveConnectConstructOCC
 )
 
-from typing import List, Union, Tuple
-from collections import defaultdict
+from typing import List, Tuple
 import logging
 import numpy
 

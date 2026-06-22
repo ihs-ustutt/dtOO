@@ -45,7 +45,6 @@ from dtOOPythonSWIG import bVOSetPrescribedElementSize
 from dtOOPythonSWIG import bVOSetRotationalPeriodicity
 from dtOOPythonSWIG import xYz_rPhiZ
 from dtOOPythonSWIG import baseContainer
-from dtOOPythonSWIG import reverse
 from dtOOPythonSWIG import multipleBoundedSurface 
 from dtOOPythonSWIG import bVODumpModel
 

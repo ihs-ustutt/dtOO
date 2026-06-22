@@ -45,7 +45,6 @@ from dtOOPythonSWIG import bVOSetPrescribedElementSize
 from dtOOPythonSWIG import bVOSetRotationalPeriodicity
 from dtOOPythonSWIG import xYz_rPhiZ
 from dtOOPythonSWIG import baseContainer
-from dtOOPythonSWIG import reverse
 
 import numpy as np
 from typing import List, Tuple, Union, Dict
@@ -334,7 +333,7 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     self.suction_, self.pressure_ = self.detectFirstAndSecond( 
       self.channel_, self.channelSuctionPressureDir_ 
     )
-    
+
     #
     # label faces
     #
@@ -414,13 +413,13 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     hubEdges, shroudEdges = self.extractEdgesInFirstAndSecond(
       m3dGmsh.getModel(), self.couplingFaces_, self.hub_, self.shroud_
     )
-    
+
     #
     # add hub and shroud edges as internal line loop to hub and shroud
     #
     m3dGmsh.getModel().getDtGmshFaceByTag( hubId ).addEdgeLoop( hubEdges )
     m3dGmsh.getModel().getDtGmshFaceByTag( shroudId ).addEdgeLoop( shroudEdges )
-    
+
     #
     # add mesh blocks
     #
@@ -429,7 +428,7 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
       m3dGmsh.getModel().getDtGmshRegionByTag( rid ).meshTransfiniteRecursive()
       m3dGmsh.getModel().getDtGmshRegionByTag( rid ).meshWNElements(1,1,1)
       m3dGmsh.getModel().getDtGmshRegionByTag( rid ).meshRecombineRecursive()
-    
+   
     #
     # find mean plane of the block face at the trailing edge
     # add the edges at hub and shroud
@@ -462,7 +461,7 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     aG.push_back( self.blade_ )
     for couplingFace in self.couplingFaces_:
       aG.push_back( couplingFace )
- 
+
     #
     # name faces
     #
@@ -487,6 +486,7 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
       None, None, None, aG, None, m3dGmsh 
     )
     ob.preUpdate()
+
     #
     # extract edges for specification of number of elements and gradings
     #
@@ -550,7 +550,7 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
         set(suctionLines)&set(-np.array(hubToShroudLines))
       )
     bladeToHubLines = \
-      set(bladeToHubLines)-set(-np.array(bladeLines))-set(bladeLines) 
+      set(bladeToHubLines)-set(-np.array(bladeLines))-set(bladeLines)
     bladeToShroudLines = \
       set(bladeToShroudLines)-set(-np.array(bladeLines))-set(bladeLines)
    
@@ -713,7 +713,7 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
           theEdge.setGrading( 1.0, gradings["tangentialBlade_"+str(line)][0] )
         else:
           theEdge.meshTransfiniteWNElements( 1, 1.0, 5 )
-    
+   
     for lines in [ bladeToHubLines, bladeToShroudLines, ]:
       for line in lines:
         theEdge = m3dGmsh.getModel().getDtGmshEdgeByTag( line )

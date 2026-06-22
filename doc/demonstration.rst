@@ -741,7 +741,6 @@ The following diagram illustrates the main methods and their relationships in th
    Solid lines represent a sequence of activities, dashed lines represent 
    the flow of data. Boxes with rounded edges represent data types.
 
-
 The meridional contour of the whole machine is defined by hub and shroud curves.
 The `createMeridional` method separates these, through defined interfaces,
 into regular channels and the curves which are used in the layered region.

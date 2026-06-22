@@ -20,8 +20,6 @@ from dtOOPythonApp.tools.dtBundleTools import dtBundleBuilder
 from dtOOPythonSWIG import (
   boundedVolume,
   combineGmsh,
-  #map2dTo3d,
-  #partRotatingMap2dTo3d,
   dtVector3,
   dtPoint3,
   jsonPrimitive,

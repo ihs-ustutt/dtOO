@@ -18,27 +18,20 @@
 from dtOOPythonApp.tools.dtBundleTools import dtBundleBuilder
 
 from dtOOPythonSWIG import bSplineCurve_pointConstructOCC
-from dtOOPythonSWIG import bSplineSurface_bSplineCurveFillConstructOCC 
 from dtOOPythonSWIG import bSplineSurface_exchangeSurfaceConstructOCC 
 from dtOOPythonSWIG import vectorDtPoint3 
 from dtOOPythonSWIG import dtPoint3 
-from dtOOPythonSWIG import dtVector3 
 from dtOOPythonSWIG import vec3dCurveOneD 
-
 from dtOOPythonSWIG import analyticCurve
 from dtOOPythonSWIG import analyticFunction
 from dtOOPythonSWIG import analyticSurface
 from dtOOPythonSWIG import dtLinearAlgebra
-from dtOOPythonSWIG import translatingMap2dTo3d 
-from dtOOPythonSWIG import geomSurface_surfaceTranslateConstructOCC 
 from dtOOPythonSWIG import vectorHandlingConstAnalyticFunction
 from dtOOPythonSWIG import vec3dTransVolThreeD_skinBSplineSurfaces
 from dtOOPythonSWIG import vec3dSurfaceTwoD
-from dtOOPythonSWIG import vec3dTransVolThreeD
 from dtOOPythonSWIG import bSplineSurface_bSplineSurfaceSplitConstructOCC
 from dtOOPythonSWIG import bSplineSurface_skinConstructOCC
 from dtOOPythonSWIG import dtOCCBSplineCurve
-from dtOOPythonSWIG import dtOCCBSplineSurface 
 
 from typing import List, Optional
 import logging

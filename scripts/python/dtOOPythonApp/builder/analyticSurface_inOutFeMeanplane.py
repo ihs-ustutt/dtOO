@@ -1,42 +1,19 @@
 from dtOOPythonApp.tools.dtBundleTools import dtBundleBuilder
 
 from dtOOPythonSWIG import (
-  map2dTo3d,
   map3dTo3d,
-  scaOneD,
   map1dTo3d,
   dtPoint3 ,
-  dtPoint2,
-  dtVector3,
   bSplineCurve_pointConstructOCC,
-  bSplineSurface_skinConstructOCC,
-  bSplineSurface_exchangeSurfaceConstructOCC,
-  bSplineSurface_bSplineCurveFillConstructOCC,
   vectorDtPoint3,
-  vectorHandlingConstDtCurve,
   labeledVectorHandlingAnalyticGeometry,
-  vec3dSurfaceTwoD,
   vec3dCurveOneD,
-  vec3dMuParserOneD,
-  vec3dTwoDInMap3dTo3d,
   vec3dOneDInMap3dTo3d,
-  dtLinearAlgebra,
   analyticGeometry,
-  analyticSurface,
-  analyticCurve,
-  vec3dTwoD,
   vec3dOneD,
-  vec3dThreeDInMap3dTo3d,
-  dtOCCBSplineSurface,
-  dtSurface,
-  analyticCurve,
   trans4SidedFace
 )
-from dtOOPythonApp.builder import scaOneD_scaCurve2dOneDPointConstruct
-from typing import List
 import logging
-
-import numpy as np
 
 class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
     """Create the meanplane faces connecting to the interfaces of the regular channel.

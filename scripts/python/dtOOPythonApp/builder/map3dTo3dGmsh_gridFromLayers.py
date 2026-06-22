@@ -1,8 +1,6 @@
 from dtOOPythonApp.tools.dtBundleTools import dtBundleBuilder
 
 from dtOOPythonSWIG import jsonPrimitive
-from dtOOPythonSWIG import staticPropertiesHandler
-from dtOOPythonSWIG import lVHOstateHandler
 from dtOOPythonSWIG import bVOMeshRule
 from dtOOPythonSWIG import analyticGeometry
 from dtOOPythonSWIG import map2dTo3d
@@ -21,11 +19,10 @@ from dtOOPythonSWIG import scaTanhGradingOneDCompound
 from dtOOPythonSWIG import bVOSetPrescribedElementSize
 from dtOOPythonSWIG import bVOSetPrescribedMeshSizeAtPoints
 from dtOOPythonSWIG import bVOOrientCellVolumes
-from dtOOPythonSWIG import multipleBoundedSurface
 
 import logging
 import numpy
-from typing import List, Tuple, Union, Dict
+from typing import List, Tuple
 
 class map3dTo3dGmsh_gridFromLayers (dtBundleBuilder):
     """Create mesh topology as map3dTo3dGmsh.

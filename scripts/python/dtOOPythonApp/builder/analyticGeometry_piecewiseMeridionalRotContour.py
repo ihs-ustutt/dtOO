@@ -20,37 +20,26 @@ from dtOOPythonApp.tools.dtBundleTools import dtBundleBuilder
 from dtOOPythonSWIG import (
     dtLinearAlgebra,
     analyticGeometry,
-    jsonPrimitive,
-    rotate,
     analyticCurve,
     bSplineCurve_pointConstructOCC,
     analyticSurface,
-    dtPoint2,
     dtPoint3,
     dtVector3,
     vectorDtPoint3,
     rotatingMap2dTo3d,
     partRotatingMap2dTo3d,
     trimmedCurve_uBounds,
-    geomCurve_curveReverseConstructOCC,
-    multipleBoundedVolume,
-    infinityMap3dTo3d,
     curveCurveDist,
     gslMinFloatAttr,
     vectorReal,
     vectorHandlingConstDtCurve,
-    vectorHandlingAnalyticGeometry,
-    rectangularTrimmedSurface_curveRotateConstructOCC,
-    multipleBoundedSurface,
     bSplineSurface_bSplineCurveFillConstructOCC,
     bSplineCurve_curveConnectConstructOCC
 )
 
-from typing import List, Union, Tuple
+from typing import List, Tuple
 from collections import defaultdict
 import logging
-import numpy
-
 
 class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
     """Create regular channels and special hub and shroud curves.
