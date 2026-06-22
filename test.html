@@ -105,7 +105,7 @@ sided face with quadrangles.</p>
 <span id="intertransmesh"></span><a class="reference internal image-reference" href="_images/interTransMesh.png"><img alt="_images/interTransMesh.png" src="_images/interTransMesh.png" width="600" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Sketch of geometry and mesh including control points (magenta colored),
+<p><span class="caption-number">Fig. 36 </span><span class="caption-text">Sketch of geometry and mesh including control points (magenta colored),
 B-Splines (black thick solid), intersection point (magenta colored), and
 mesh face’s boundaries (yellow colored); transfinite mesh shown on the
 right hand side</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
@@ -205,8 +205,8 @@ be accessed via the <code class="docutils literal notranslate"><span class="pre"
 <p>Create the B-Spline surface; the builder
 <code class="docutils literal notranslate"><span class="pre">bSplineSurface_bSplineCurveFillConstructOCC</span></code> takes four curves as input
 and constructs a B-Spline surface; the boundary curves are constructed as
-straight line (L3 and L2 in <a class="reference internal" href="#intertransmesh"><span class="std std-numref">Fig. 9</span></a>) or  trimmed curve
-(pieces of C0 and C1 in <a class="reference internal" href="#intertransmesh"><span class="std std-numref">Fig. 9</span></a>):</p>
+straight line (L3 and L2 in <a class="reference internal" href="#intertransmesh"><span class="std std-numref">Fig. 36</span></a>) or  trimmed curve
+(pieces of C0 and C1 in <a class="reference internal" href="#intertransmesh"><span class="std std-numref">Fig. 36</span></a>):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">S0</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineSurface_bSplineCurveFillConstructOCC</span><span class="p">(</span>
 <span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">C0</span><span class="o">.</span><span class="n">pointPercent</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
@@ -533,7 +533,7 @@ Generate a  mesh of the geometry with a grading on a single edge.</p>
 <span id="gradingcuboid"></span><a class="reference internal image-reference" href="_images/gradingCuboid.png"><img alt="_images/gradingCuboid.png" src="_images/gradingCuboid.png" width="600" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 10 </span><span class="caption-text">The final mesh generated in this test; visible are the surfaces “top”
+<p><span class="caption-number">Fig. 37 </span><span class="caption-text">The final mesh generated in this test; visible are the surfaces “top”
 (orange), “skin_1” (yellow) and “skin_5” (green); graded edge is located
 between the green and yellow surface; “base” surface is the opposite surface
 of “top”</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
