@@ -210,7 +210,10 @@ class ConfigHubZero():
     def getCurves(self):
         return self.hubCurves, self.shroudCurves
 
-def createOFCase(container, bV, dC, stateLbl, indiv):
+def createOFCase(container, stateLbl, indiv):
+
+    bV = container.cptr_bV()
+    dC = container.cptr_dC()
 
     dtOO.lVHOstateHandler().makeState(stateLbl+"_"+str(indiv))
 
@@ -390,7 +393,8 @@ def run(*args, **kwargs):
     
     rr = dtOOInParaVIEW( cc )
     
-    bV, dC = generate.getbVAnddC()
+    bV = container.cptr_bV()
+    
     #bV["meshLayers"].makeGrid()
     #bV["gv_mesh"].makeGrid()
     #bV["ru_mesh"].makeGrid()
@@ -398,7 +402,7 @@ def run(*args, **kwargs):
     #stateLbl = "test"
     #indiv = "0" 
                   
-    #createOFCase(cc, bV, dC, stateLbl, indiv)
+    #createOFCase(cc, stateLbl, indiv)
 
     return cc, rr
 
@@ -415,12 +419,11 @@ if __name__ == "__main__":
     generate.createLayerRegion(configL)
     
     container = generate.getContainer()
-    bV, dC = generate.getbVAnddC()
      
     #bV["meshLayers"].makeGrid()
     stateLbl = "hubZero"
     indiv = "0"
 
-    createOFCase(container, bV, dC, stateLbl, indiv)
+    createOFCase(container, stateLbl, indiv)
 
     # ------------------- EOF ------------------- #

@@ -15,18 +15,18 @@ import numpy as np
 import re
 import sys
 
-n_cores = sys.argv[1]
-case_name = sys.argv[2]
-
-print(str(n_cores))
-print(case_name)
-
-_case = './'+case_name+'/'
-#_case = './of_bladeAngle05_0/'
+#n_cores = sys.argv[1]
+#case_name = sys.argv[2]
+#
+#print(str(n_cores))
+#print(case_name)
+#
+#_case = './'+case_name+'/'
+_case = './of_MP_bladeAngle05_new_0/'
 _safe_case = re.sub(r'[\\/:\*\?"<>|]', '_', _case)
 
 fc = foamlib.FoamCase( _case )
-if True:
+if False:
   fc.decompose_par_dict['method'] = 'metis'
   fc.decompose_par_dict['numberOfSubdomains'] = int(n_cores)
    
@@ -110,7 +110,7 @@ ax.plot(UTrans_gv_out.CoordThree()[:,2], UTrans_gv_out.ValueAvAThree()[:,1], 'r-
 # Labels and title
 ax.set_xlabel('z position')
 ax.set_ylabel('Velocity Transformed')
-ax.set_title("Runner (RU) Inlet and Guide Vane (GV) Outlet")
+ax.set_title("Guide Vane (GV) Outlet to Runner (RU) Inlet")
 
 # Legend
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
@@ -127,7 +127,7 @@ ax.plot(UTrans_ml_in.CoordOne()[:,0], UTrans_ml_in.ValueAvAOne()[:,1], 'r-', lab
 # Labels and title
 ax.set_xlabel('x position')
 ax.set_ylabel('Velocity Transformed')
-ax.set_title("Runner (RU) Outlet and Mesh Layer (ML) Inlet")
+ax.set_title("Runner (RU) Outlet to Mesh Layer (ML) Inlet")
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 ax.grid(True)
 
@@ -140,7 +140,7 @@ ax.plot(UTrans_dt_in.CoordOne()[:,0], UTrans_dt_in.ValueAvAOne()[:,1], 'r-', lab
 # Labels and title
 ax.set_xlabel('x position')
 ax.set_ylabel('Velocity Transformed')
-ax.set_title("Mesh Layer (ML) Outlet and Draft Tube (DT) Inlet")
+ax.set_title("Mesh Layer (ML) Outlet to Draft Tube (DT) Inlet")
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 ax.grid(True)
 

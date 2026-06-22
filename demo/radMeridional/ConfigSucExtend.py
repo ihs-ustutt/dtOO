@@ -4,10 +4,10 @@ import importlib
 import radMeridional
 import dtOOPythonSWIG as dtOO
 
-class ConfigDraft():
+class ConfigSucExtend():
 
     def __init__(self):
-
+        
         d_inlet = 2.58
         l_inExt = 0.27
         d_outHub = 0.4
@@ -26,7 +26,7 @@ class ConfigDraft():
         h_inlet = 0.36
         h_hub = 0.68
         h_shroud = 0.38
-
+        
         dx_hub0, dz_hub0 = self.deltas_LengthAndAngle(angle_hub0, l_hub0)
         dx_hub1, dz_hub1 = self.deltas_LengthAndAngle(angle_hub1, l_hub1)
         dx_shroud0, dz_shroud0 = self.deltas_LengthAndAngle(angle_shroud0, l_shroud0)
@@ -71,12 +71,28 @@ class ConfigDraft():
               dtOO.bSplineCurve_pointConstructOCC(
                 dtOO.vectorDtPoint3()
                   << dtOO.dtPoint3(+0.28, +0.00, -1.84)
-                  << dtOO.dtPoint3(+0.28, +0.00, -2.55),
+                  << dtOO.dtPoint3(+0.28, +0.00, -2.67),
+                1
+              ).result()
+            ),
+            dtOO.analyticCurve(
+              dtOO.bSplineCurve_pointConstructOCC(
+                dtOO.vectorDtPoint3()
+                  << dtOO.dtPoint3(+0.28, +0.00, -2.67)
+                  << dtOO.dtPoint3(+0.00, +0.00, -2.67),
+                1
+              ).result()
+            ),
+            dtOO.analyticCurve(
+              dtOO.bSplineCurve_pointConstructOCC(
+                dtOO.vectorDtPoint3()
+                  << dtOO.dtPoint3(+0.00, +0.00, -2.67)
+                  << dtOO.dtPoint3(+0.00, +0.00, -3.17),
                 1
               ).result()
             )
-          ]
-
+        ]
+ 
         self.shroudCurves = [
             dtOO.analyticCurve(
               dtOO.bSplineCurve_pointConstructOCC(
@@ -108,13 +124,12 @@ class ConfigDraft():
               dtOO.bSplineCurve_pointConstructOCC(
                 dtOO.vectorDtPoint3()
                   << dtOO.dtPoint3(+d_outShroud/2, +0.00, -0.54)
-                  << dtOO.dtPoint3(+1.15, +0.00, -2.55),
+                  << dtOO.dtPoint3(+1.15, +0.00, -3.17),
                 1
               ).result()
             )
           ]
 
-    
         self.configMeridional = {
             "label" : "radMeridionalContour",
             
@@ -204,6 +219,7 @@ class ConfigDraft():
             "layer_thickness" : 0.2,
             "layer_supports" : [0.5],
         }
+ 
 
     def deltas_LengthAndAngle(self, angle, length):
 
@@ -218,7 +234,10 @@ class ConfigDraft():
     def getCurves(self):
         return self.hubCurves, self.shroudCurves
 
-def createOFCase(container, bV, dC, stateLbl, indiv):
+def createOFCase(container, stateLbl, indiv):
+    
+    bV = container.cptr_bV()
+    dC = container.cptr_dC()
 
     dtOO.lVHOstateHandler().makeState(stateLbl+"_"+str(indiv))
 
@@ -383,7 +402,7 @@ def createOFCase(container, bV, dC, stateLbl, indiv):
 def run(*args, **kwargs):
     from dtOOPythonApp.vis import dtOOInParaVIEW
 
-    machine = ConfigDraft()
+    machine = ConfigSucExtend()
     configM, configGV, configRu, configL = machine.getConfig()
     hubCurves, shroudCurves = machine.getCurves()
 
@@ -398,17 +417,16 @@ def run(*args, **kwargs):
     
     rr = dtOOInParaVIEW( cc )
     
-    #bV, dC = generate.getbVAnddC()
     #        
     #stateLbl = "test"
     #indiv = "0" 
     #              
-    #createOFCase(cc, bV, dC, stateLbl, indiv)
+    #createOFCase(cc, stateLbl, indiv)
 
     return cc, rr
 
 if __name__ == "__main__":
-    machine = ConfigDraft()
+    machine = ConfigSucExtend()
     configM, configGV, configRu, configL = machine.getConfig()
     hubCurves, shroudCurves = machine.getCurves()
     
@@ -420,12 +438,12 @@ if __name__ == "__main__":
     generate.createLayerRegion(configL)
     
     container = generate.getContainer()
-    bV, dC = generate.getbVAnddC()
      
-    stateLbl = "draft"
+    stateLbl = "sucExtend"
     indiv = "0"
 
-    createOFCase(container, bV, dC, stateLbl, indiv)
+    createOFCase(container, stateLbl, indiv)
 
     # ------------------- EOF ------------------- #
+
 

@@ -354,20 +354,21 @@ def run(*args, **kwargs):
     ## create layered region
     #generate.createLayerRegion(configLayer)
     
-    #container = generate.getContainer()
-    #bV, dC = generate.getbVAnddC()
-    #
-    ## create the open foam case
-    #createOFCase(container, bV, dC, stateLbl, individual, configMeas["h_inlet"], configMeas["h_shroud"])
-    
-    # return bV and dC in order to generate the mesh files
-    #bV["gv_mesh"].makeGrid()
-    #bV["ru_mesh"].makeGrid()
-    #bV["meshLayers"].makeGrid()
     
     # paraview plotting
     cc = generate.getContainer()
     rr = dtOOInParaVIEW( cc )
+    
+    ## create the open foam case
+    #createOFCase(cc, stateLbl, individual, configMeas["h_inlet"], configMeas["h_shroud"])
+    
+    # return bV in order to generate the mesh files
+    #bV = cc.cptr_bV()
+
+    #bV["gv_mesh"].makeGrid()
+    #bV["ru_mesh"].makeGrid()
+    #bV["meshLayers"].makeGrid()
+    
     return cc, rr
 
 def round_sig(x, sig=4):
@@ -417,8 +418,11 @@ def appendRow(row, varList, config):
     
     return row
 
-def createOFCase(container, bV, dC, stateLbl, indiv, h_inlet, h_shroud):
+def createOFCase(container, stateLbl, indiv, h_inlet, h_shroud):
     
+    bV = container.cptr_bV()
+    dC = container.cptr_dC()
+
     dtOO.lVHOstateHandler().makeState(stateLbl+"_"+str(indiv))
     
     #
@@ -903,9 +907,8 @@ if __name__ == "__main__":
                 generate.createLayerRegion(configLayer)
 
                 container = generate.getContainer()
-                bV, dC = generate.getbVAnddC()
 
-                createOFCase(container, bV, dC, stateLbl, individual, configMeas["h_inlet"], configMeas["h_shroud"])
+                createOFCase(container, stateLbl, individual, configMeas["h_inlet"], configMeas["h_shroud"])
 
                 print("Sucess")
                 row.append("success")

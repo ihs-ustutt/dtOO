@@ -407,8 +407,11 @@ def appendRow(row, varList, config):
     
     return row
 
-def createOFCase(container, bV, dC, stateLbl, indiv, h_inlet, h_shroud):
+def createOFCase(container, stateLbl, indiv, h_inlet, h_shroud):
     
+    bV = container.cptr_bV()
+    dC = container.cptr_dC()
+
     dtOO.lVHOstateHandler().makeState(stateLbl+"_"+str(indiv))
     
     #
@@ -692,9 +695,8 @@ if __name__ == "__main__":
                 generate.createLayerRegion(configLayer)
 
                 container = generate.getContainer()
-                bV, dC = generate.getbVAnddC()
-
-                createOFCase(container, bV, dC, stateLbl, individual, configMeas["h_inlet"], configMeas["h_shroud"])
+                
+                createOFCase(container, stateLbl, individual, configMeas["h_inlet"], configMeas["h_shroud"])
 
                 print("Sucess")
                 row.append("success")
