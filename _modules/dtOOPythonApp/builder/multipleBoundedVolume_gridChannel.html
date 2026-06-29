@@ -183,26 +183,26 @@
 
 <span class="sd">    &gt;&gt;&gt; c_mp0 = dtOO.bSplineCurve_pointConstructOCC(</span>
 <span class="sd">    ...     dtOO.vectorDtPoint3()</span>
-<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.50, +0.00, 0.00)</span>
-<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.50, +0.00, 0.50),</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.50, +0.00, 0.50)</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.50, +0.00, 0.00),</span>
 <span class="sd">    ...     1</span>
 <span class="sd">    ... ).result()</span>
 <span class="sd">    &gt;&gt;&gt; c_mp1 = dtOO.bSplineCurve_pointConstructOCC(</span>
 <span class="sd">    ...     dtOO.vectorDtPoint3()</span>
-<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.60, +0.10, 0.00)</span>
-<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.55, +0.10, 0.50),</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.55, +0.10, 0.50)</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.60, +0.10, 0.00),</span>
 <span class="sd">    ...     1</span>
 <span class="sd">    ... ).result()</span>
 <span class="sd">    &gt;&gt;&gt; c_mp2 = dtOO.bSplineCurve_pointConstructOCC(</span>
 <span class="sd">    ...     dtOO.vectorDtPoint3()</span>
-<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.95, +0.10, 0.00)</span>
-<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.90, +0.10, 0.50),</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.90, +0.10, 0.50)</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.95, +0.10, 0.00),</span>
 <span class="sd">    ...     1</span>
 <span class="sd">    ... ).result()</span>
 <span class="sd">    &gt;&gt;&gt; c_mp3 = dtOO.bSplineCurve_pointConstructOCC(</span>
 <span class="sd">    ...     dtOO.vectorDtPoint3()</span>
-<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+1.00, +0.00, 0.00)</span>
-<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+1.00, +0.00, 0.50),</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+1.00, +0.00, 0.50)</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+1.00, +0.00, 0.00),</span>
 <span class="sd">    ...     1</span>
 <span class="sd">    ... ).result()</span>
 <span class="sd">    </span>
@@ -210,8 +210,8 @@
 
 <span class="sd">    &gt;&gt;&gt; c_coup = dtOO.bSplineCurve_pointConstructOCC(</span>
 <span class="sd">    ...     dtOO.vectorDtPoint3()</span>
-<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.85, +0.25, 0.00)</span>
-<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.85, +0.15, 0.50),</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.85, +0.15, 0.50)</span>
+<span class="sd">    ...       &lt;&lt; dtOO.dtPoint3(+0.85, +0.25, 0.00),</span>
 <span class="sd">    ...     1</span>
 <span class="sd">    ... ).result()</span>
 
@@ -220,7 +220,7 @@
 <span class="sd">    &gt;&gt;&gt; mp0 = dtOO.analyticSurface(</span>
 <span class="sd">    ...         dtOO.bSplineSurface_exchangeSurfaceConstructOCC(</span>
 <span class="sd">    ...             dtOO.bSplineSurface_skinConstructOCC(</span>
-<span class="sd">    ...                 c_mp0, c_mp1</span>
+<span class="sd">    ...                 c_mp1, c_mp0</span>
 <span class="sd">    ...             ).result()</span>
 <span class="sd">    ...         ).result()</span>
 <span class="sd">    ...     )</span>
@@ -242,18 +242,14 @@
 <span class="sd">    Create coupling faces from meanplane curves and coupling curve </span>
 
 <span class="sd">    &gt;&gt;&gt; coup0 = dtOO.analyticSurface(</span>
-<span class="sd">    ...             dtOO.bSplineSurface_exchangeSurfaceConstructOCC(</span>
-<span class="sd">    ...                 dtOO.bSplineSurface_skinConstructOCC(</span>
+<span class="sd">    ...             dtOO.bSplineSurface_skinConstructOCC(</span>
 <span class="sd">    ...                     c_mp2, c_coup</span>
 <span class="sd">    ...                 ).result()</span>
-<span class="sd">    ...             ).result()</span>
 <span class="sd">    ...         )</span>
 <span class="sd">    &gt;&gt;&gt; coup1 = dtOO.analyticSurface(</span>
-<span class="sd">    ...         dtOO.bSplineSurface_exchangeSurfaceConstructOCC(</span>
 <span class="sd">    ...             dtOO.bSplineSurface_skinConstructOCC(</span>
 <span class="sd">    ...                 c_coup, c_mp1</span>
 <span class="sd">    ...             ).result()</span>
-<span class="sd">    ...         ).result()</span>
 <span class="sd">    ...     )</span>
 
 <span class="sd">    Make a list containing the meanplane and coupling faces</span>

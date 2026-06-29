@@ -1270,8 +1270,6 @@ Each entry represents:</p>
 <span class="gp">... </span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;channel&quot;</span><span class="p">,</span>
 <span class="gp">... </span> <span class="n">hubCurves</span> <span class="o">=</span> <span class="n">hubCurves</span><span class="p">,</span>
 <span class="gp">... </span> <span class="n">shroudCurves</span> <span class="o">=</span> <span class="n">shroudCurves</span><span class="p">,</span>
-<span class="gp">... </span> <span class="n">layer_thickness</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-<span class="gp">... </span> <span class="n">layer_supports</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.33</span><span class="p">,</span> <span class="mf">0.66</span><span class="p">],</span>
 <span class="gp">... </span> <span class="n">interface_hub</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]],</span>
 <span class="gp">... </span> <span class="n">interface_shroud</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]],</span>
 <span class="gp">... </span> <span class="n">interface_curvature</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
@@ -3380,26 +3378,26 @@ to the inlet and outlet each</p>
 <p>Define meanplane curves</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c_mp0</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">dtOO</span><span class="o">.</span><span class="n">vectorDtPoint3</span><span class="p">()</span>
-<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.50</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">)</span>
-<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.50</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">),</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.50</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.50</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="mi">1</span>
 <span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c_mp1</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">dtOO</span><span class="o">.</span><span class="n">vectorDtPoint3</span><span class="p">()</span>
-<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.60</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">)</span>
-<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.55</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">),</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.55</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.60</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="mi">1</span>
 <span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c_mp2</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">dtOO</span><span class="o">.</span><span class="n">vectorDtPoint3</span><span class="p">()</span>
-<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.95</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">)</span>
-<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.90</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">),</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.90</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.95</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="mi">1</span>
 <span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c_mp3</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">dtOO</span><span class="o">.</span><span class="n">vectorDtPoint3</span><span class="p">()</span>
-<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">1.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">)</span>
-<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">1.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">),</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">1.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">1.00</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="mi">1</span>
 <span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 </pre></div>
@@ -3407,8 +3405,8 @@ to the inlet and outlet each</p>
 <p>Define coupling curve</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c_coup</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">dtOO</span><span class="o">.</span><span class="n">vectorDtPoint3</span><span class="p">()</span>
-<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.85</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">)</span>
-<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.85</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">),</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.85</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="o">&lt;&lt;</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">+</span><span class="mf">0.85</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="mi">1</span>
 <span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 </pre></div>
@@ -3417,7 +3415,7 @@ to the inlet and outlet each</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mp0</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticSurface</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineSurface_exchangeSurfaceConstructOCC</span><span class="p">(</span>
 <span class="gp">... </span>            <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineSurface_skinConstructOCC</span><span class="p">(</span>
-<span class="gp">... </span>                <span class="n">c_mp0</span><span class="p">,</span> <span class="n">c_mp1</span>
+<span class="gp">... </span>                <span class="n">c_mp1</span><span class="p">,</span> <span class="n">c_mp0</span>
 <span class="gp">... </span>            <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 <span class="gp">... </span>        <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="p">)</span>
@@ -3439,18 +3437,14 @@ to the inlet and outlet each</p>
 </div>
 <p>Create coupling faces from meanplane curves and coupling curve</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">coup0</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticSurface</span><span class="p">(</span>
-<span class="gp">... </span>            <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineSurface_exchangeSurfaceConstructOCC</span><span class="p">(</span>
-<span class="gp">... </span>                <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineSurface_skinConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineSurface_skinConstructOCC</span><span class="p">(</span>
 <span class="gp">... </span>                    <span class="n">c_mp2</span><span class="p">,</span> <span class="n">c_coup</span>
 <span class="gp">... </span>                <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
-<span class="gp">... </span>            <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 <span class="gp">... </span>        <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">coup1</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticSurface</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineSurface_exchangeSurfaceConstructOCC</span><span class="p">(</span>
 <span class="gp">... </span>            <span class="n">dtOO</span><span class="o">.</span><span class="n">bSplineSurface_skinConstructOCC</span><span class="p">(</span>
 <span class="gp">... </span>                <span class="n">c_coup</span><span class="p">,</span> <span class="n">c_mp1</span>
 <span class="gp">... </span>            <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
-<span class="gp">... </span>        <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="p">)</span>
 </pre></div>
 </div>
