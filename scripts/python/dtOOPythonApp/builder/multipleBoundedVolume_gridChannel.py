@@ -105,26 +105,26 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
 
     >>> c_mp0 = dtOO.bSplineCurve_pointConstructOCC(
     ...     dtOO.vectorDtPoint3()
-    ...       << dtOO.dtPoint3(+0.50, +0.00, 0.00)
-    ...       << dtOO.dtPoint3(+0.50, +0.00, 0.50),
+    ...       << dtOO.dtPoint3(+0.50, +0.00, 0.50)
+    ...       << dtOO.dtPoint3(+0.50, +0.00, 0.00),
     ...     1
     ... ).result()
     >>> c_mp1 = dtOO.bSplineCurve_pointConstructOCC(
     ...     dtOO.vectorDtPoint3()
-    ...       << dtOO.dtPoint3(+0.60, +0.10, 0.00)
-    ...       << dtOO.dtPoint3(+0.55, +0.10, 0.50),
+    ...       << dtOO.dtPoint3(+0.55, +0.10, 0.50)
+    ...       << dtOO.dtPoint3(+0.60, +0.10, 0.00),
     ...     1
     ... ).result()
     >>> c_mp2 = dtOO.bSplineCurve_pointConstructOCC(
     ...     dtOO.vectorDtPoint3()
-    ...       << dtOO.dtPoint3(+0.95, +0.10, 0.00)
-    ...       << dtOO.dtPoint3(+0.90, +0.10, 0.50),
+    ...       << dtOO.dtPoint3(+0.90, +0.10, 0.50)
+    ...       << dtOO.dtPoint3(+0.95, +0.10, 0.00),
     ...     1
     ... ).result()
     >>> c_mp3 = dtOO.bSplineCurve_pointConstructOCC(
     ...     dtOO.vectorDtPoint3()
-    ...       << dtOO.dtPoint3(+1.00, +0.00, 0.00)
-    ...       << dtOO.dtPoint3(+1.00, +0.00, 0.50),
+    ...       << dtOO.dtPoint3(+1.00, +0.00, 0.50)
+    ...       << dtOO.dtPoint3(+1.00, +0.00, 0.00),
     ...     1
     ... ).result()
     
@@ -132,8 +132,8 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
 
     >>> c_coup = dtOO.bSplineCurve_pointConstructOCC(
     ...     dtOO.vectorDtPoint3()
-    ...       << dtOO.dtPoint3(+0.85, +0.25, 0.00)
-    ...       << dtOO.dtPoint3(+0.85, +0.15, 0.50),
+    ...       << dtOO.dtPoint3(+0.85, +0.15, 0.50)
+    ...       << dtOO.dtPoint3(+0.85, +0.25, 0.00),
     ...     1
     ... ).result()
 
@@ -142,7 +142,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     >>> mp0 = dtOO.analyticSurface(
     ...         dtOO.bSplineSurface_exchangeSurfaceConstructOCC(
     ...             dtOO.bSplineSurface_skinConstructOCC(
-    ...                 c_mp0, c_mp1
+    ...                 c_mp1, c_mp0
     ...             ).result()
     ...         ).result()
     ...     )
@@ -164,18 +164,14 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
     Create coupling faces from meanplane curves and coupling curve 
 
     >>> coup0 = dtOO.analyticSurface(
-    ...             dtOO.bSplineSurface_exchangeSurfaceConstructOCC(
-    ...                 dtOO.bSplineSurface_skinConstructOCC(
+    ...             dtOO.bSplineSurface_skinConstructOCC(
     ...                     c_mp2, c_coup
     ...                 ).result()
-    ...             ).result()
     ...         )
     >>> coup1 = dtOO.analyticSurface(
-    ...         dtOO.bSplineSurface_exchangeSurfaceConstructOCC(
     ...             dtOO.bSplineSurface_skinConstructOCC(
     ...                 c_coup, c_mp1
     ...             ).result()
-    ...         ).result()
     ...     )
 
     Make a list containing the meanplane and coupling faces

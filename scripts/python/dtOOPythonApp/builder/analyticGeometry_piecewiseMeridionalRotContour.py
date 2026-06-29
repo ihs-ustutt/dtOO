@@ -160,8 +160,6 @@ class analyticGeometry_piecewiseMeridionalRotContour(dtBundleBuilder):
     ...  label = "channel",
     ...  hubCurves = hubCurves, 
     ...  shroudCurves = shroudCurves,
-    ...  layer_thickness = 0.2,
-    ...  layer_supports = [0.33, 0.66],
     ...  interface_hub = [[0, 0.7]],
     ...  interface_shroud = [[0, 0.3]],
     ...  interface_curvature = [[0.5, 0.2, -1]],
