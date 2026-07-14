@@ -20,7 +20,7 @@ License
 
 #include <dtOOTypeDef.h>
 
-#include <OpenVolumeMesh/Core/OpenVolumeMeshProperty.hh>
+#include <OpenVolumeMesh/Core/PropertyPtr.hh>
 #include <OpenVolumeMesh/Mesh/PolyhedralMesh.hh>
 
 namespace dtOO {
