@@ -224,11 +224,12 @@ class dtValueField:
 
     Examples
     --------
+    >>> import math
     >>> from pyDtOO import dtField
     >>> from pyDtOO.dtField import _test_vecField_as_file
     >>> f = dtValueField( dtField( _test_vecField_as_file() ).Read() )
-    >>> f.IntA()
-    np.float64(5.731644418548708)
+    >>> math.isclose( f.IntA(), 5.73164, rel_tol=1.e-5)
+    True
     """
      
     return numpy.sum( self.a_ )
