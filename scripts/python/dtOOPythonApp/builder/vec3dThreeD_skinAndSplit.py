@@ -609,7 +609,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
           self.appendAnalyticFunction( theRef )
         else:
           #
-          # spluits are defined
+          # splits are defined
           #
           cc = 0
 
@@ -657,11 +657,16 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
             # skin the split surfaces to create the mesh block volume
             #
             theRef = vec3dTransVolThreeD_skinBSplineSurfaces( vh_aF ).result()
-            theRef.setLabel( self.label_+"_"+str(cc + 1) )
+            # trailing edge active
+            if self.thickness_ != None:
+                theRef.setLabel( self.label_+"_"+str(cc + 1) )
+            # trailing edge not active
+            else:
+                theRef.setLabel( self.label_+"_"+str(cc) )
             self.appendAnalyticFunction( theRef )
             
             #
-            # generate of trailing edge mesh block
+            # generate trailing edge mesh block
             # only done, if thickness_ is defined
             #
             if self.thickness_ != None:
