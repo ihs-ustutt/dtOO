@@ -192,16 +192,39 @@ set_property(TEST write-runData PROPERTY LABELS base-test)
 #
 # pyDtOO-doctest
 #
+# dtClusteredSingletonState
 add_test(
-  NAME pyDtOO-doctest
+  NAME dtClusteredSingletonState-doctest
   COMMAND 
     "${Python3_EXECUTABLE}" 
     "-m" "doctest" 
     "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtClusteredSingletonState.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/pyDtOO-doctest
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
-set_tests_properties(pyDtOO-doctest PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST pyDtOO-doctest PROPERTY LABELS base-test)
+set_tests_properties(dtClusteredSingletonState-doctest PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+set_property(TEST dtClusteredSingletonState-doctest PROPERTY LABELS base-test)
+# dtValueField
+add_test(
+  NAME dtValueField-doctest
+  COMMAND 
+    "${Python3_EXECUTABLE}" 
+    "-m" "doctest" 
+    "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtValueField.py"
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+set_tests_properties(dtValueField-doctest PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+set_property(TEST dtValueField-doctest PROPERTY LABELS base-test)
+# dtField
+add_test(
+  NAME dtField-doctest
+  COMMAND 
+    "${Python3_EXECUTABLE}" 
+    "-m" "doctest" 
+    "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtField.py"
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+set_tests_properties(dtField-doctest PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+set_property(TEST dtField-doctest PROPERTY LABELS base-test)
 
 #
 # interTransMesh
