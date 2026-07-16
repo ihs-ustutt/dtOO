@@ -72,8 +72,8 @@ low to have a fast code example.
 >>> result = differential_evolution(
 ...   optimizeHydFoil, 
 ...   bounds, 
-...   popsize=3, 
-...   maxiter=2,
+...   popsize=1, 
+...   maxiter=0,
 ...   polish=False
 ... ) # doctest: +ELLIPSIS
 (of_A1_1) Running simpleFoam...

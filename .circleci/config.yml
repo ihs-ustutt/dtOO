@@ -125,7 +125,8 @@ workflows:
                 "meshCuboid",
                 "multipleBounded",
                 "labeledVectorHandlingSWIG",
-                "trans4SidedFace"
+                "trans4SidedFace",
+                hydFoilOpt
               ]
               oss: [
                 'ubuntu',
