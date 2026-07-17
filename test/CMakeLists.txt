@@ -16,353 +16,127 @@
 #------------------------------------------------------------------------------
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 
-function(DTOO_ADDTESTWLABEL TNAME)
-  file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/${TNAME}/*.xz")
-  foreach(xzFilePath ${sources_list})
-    get_filename_component(xzFile "${xzFilePath}" NAME)
-    string(REGEX MATCH "gcc-[^ $!~]+" gccVer ${xzFile})
-    message("**> Add test ${TNAME}-cmp-${xzFile} / gccVer=${gccVer}")
+# Test with build.py script
+function(DTOO_ADD_BUILD_TEST TNAME)
     add_test(
-      NAME ${TNAME}-cmp-${xzFile} 
-      COMMAND sh "cmp.sh" "${xzFile}" 
-      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${TNAME}
+        NAME ${TNAME}
+        COMMAND ${Python3_EXECUTABLE} "build.py"
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${TNAME}
     )
-    set_tests_properties(${TNAME}-cmp-${xzFile} PROPERTIES DEPENDS "${TNAME}")
-    set_property(TEST ${TNAME}-cmp-${xzFile}  PROPERTY LABELS ${gccVer})
-  endforeach()
+    set_tests_properties(${TNAME} PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+    set_property(TEST ${TNAME} PROPERTY LABELS base-test)
 endfunction()
 
-set( 
-  TESTENVLIST
-  PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools:${CMAKE_INSTALL_PREFIX}/scripts/python:$ENV{PYTHONPATH}
-  LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}
-  OSLO_LOCK_PATH=./oslo-lock
+# Test with doctest
+function(DTOO_ADD_DOCTEST TESTNAME SCRIPT)
+    add_test(
+        NAME ${TESTNAME}
+        COMMAND ${Python3_EXECUTABLE} -m doctest ${SCRIPT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+    set_tests_properties(${TESTNAME} PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+    set_property(TEST ${TESTNAME} PROPERTY LABELS base-test)
+endfunction()
+
+# Add additional mesh check to test
+function(DTOO_ADDTESTWLABEL TNAME)
+    file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/${TNAME}/*.xz")
+    foreach(xzFilePath ${sources_list})
+        get_filename_component(xzFile "${xzFilePath}" NAME)
+        string(REGEX MATCH "gcc-[^ $!~]+" gccVer ${xzFile})
+        message("**> Add test ${TNAME}-cmp-${xzFile} / gccVer=${gccVer}")
+        add_test(
+            NAME ${TNAME}-cmp-${xzFile}
+            COMMAND sh "cmp.sh" "${xzFile}"
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${TNAME}
+        )
+        set_tests_properties(${TNAME}-cmp-${xzFile} PROPERTIES DEPENDS "${TNAME}")
+        set_property(TEST ${TNAME}-cmp-${xzFile} PROPERTY LABELS ${gccVer})
+    endforeach()
+endfunction()
+
+# copy all subdirs in ROOT
+function(dtoo_copy_all_subdirs ROOT)
+    file(GLOB _entries LIST_DIRECTORIES true "${ROOT}/*")
+    foreach(_path ${_entries})
+        if(IS_DIRECTORY ${_path})
+            get_filename_component(_name "${_path}" NAME)
+            message("**> Add target cp-${_name}-test from ${ROOT}")
+            add_custom_target(cp-${_name}-test ALL
+                COMMAND ${CMAKE_COMMAND} -E copy_directory
+                        "${ROOT}/${_name}"
+                        "${CMAKE_CURRENT_BINARY_DIR}/${_name}"
+            )
+        endif()
+    endforeach()
+endfunction()
+
+# copy one subdir DIR from BASE
+function(dtoo_copy_one_dir BASE DIR)
+    set(_src "${BASE}/${DIR}")
+    if(IS_DIRECTORY "${_src}")
+      message("**> Add target cp-${DIR}-test from ${BASE}")
+        add_custom_target(cp-${DIR}-test ALL
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+                    "${_src}"
+                    "${CMAKE_CURRENT_BINARY_DIR}/${DIR}"
+        )
+    endif()
+endfunction()
+
+# common test environment
+set(TESTENVLIST
+    PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools:${CMAKE_INSTALL_PREFIX}/scripts/python:$ENV{PYTHONPATH}
+    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}
+    OSLO_LOCK_PATH=./oslo-lock
 )
 
-#
-# baseSWIG
-#
-add_test(
-  NAME baseSWIG 
-  COMMAND ${Python3_EXECUTABLE} "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/baseSWIG
-)
-set_tests_properties(baseSWIG PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST baseSWIG  PROPERTY LABELS base-test)
-
-#
-# naca
-#
-add_test(
-  NAME naca 
-  COMMAND ${Python3_EXECUTABLE} "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/naca
-)
-set_tests_properties(naca PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST naca  PROPERTY LABELS base-test)
+# Tests with build.py script
+DTOO_ADD_BUILD_TEST(baseSWIG)
+DTOO_ADD_BUILD_TEST(naca)
 DTOO_ADDTESTWLABEL("naca")
-
-#
-# transformerSWIG
-#
-add_test(
-  NAME transformerSWIG 
-  COMMAND ${Python3_EXECUTABLE} "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/transformerSWIG
-)
-set_tests_properties(transformerSWIG PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST transformerSWIG  PROPERTY LABELS base-test)
-
-#
-# analyticGeometrySWIG
-#
-add_test(
-  NAME analyticGeometrySWIG 
-  COMMAND ${Python3_EXECUTABLE} "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/analyticGeometrySWIG
-)
-set_tests_properties(
-  analyticGeometrySWIG PROPERTIES ENVIRONMENT "${TESTENVLIST}"
-)
-set_property(TEST analyticGeometrySWIG  PROPERTY LABELS base-test)
-
-#
-# constValueSWIG
-#
-add_test(
-  NAME constValueSWIG 
-  COMMAND ${Python3_EXECUTABLE} "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/constValueSWIG
-)
-set_tests_properties(constValueSWIG PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST constValueSWIG  PROPERTY LABELS base-test)
-
-#
-# canadaLight
-#
-add_test(
-  NAME canadaLight 
-  COMMAND ${Python3_EXECUTABLE} "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/canadaLight
-)
-set_tests_properties(canadaLight PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST canadaLight PROPERTY LABELS base-test)
-
-#
-# tistos
-#
-add_test(
-  NAME tistos 
-  COMMAND ${Python3_EXECUTABLE} "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/tistos
-)
-set_tests_properties(tistos PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST tistos PROPERTY LABELS base-test)
+DTOO_ADD_BUILD_TEST(transformerSWIG)
+DTOO_ADD_BUILD_TEST(analyticGeometrySWIG)
+DTOO_ADD_BUILD_TEST(constValueSWIG)
+DTOO_ADD_BUILD_TEST(canadaLight)
+DTOO_ADD_BUILD_TEST(tistos)
 DTOO_ADDTESTWLABEL("tistos")
-
-#
-# meshSimpleSurface
-#
-add_test(
-  NAME meshSimpleSurface
-  COMMAND ${Python3_EXECUTABLE} "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshSimpleSurface
-)
-set_tests_properties(meshSimpleSurface PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST meshSimpleSurface PROPERTY LABELS base-test)
+DTOO_ADD_BUILD_TEST(meshSimpleSurface)
 DTOO_ADDTESTWLABEL("meshSimpleSurface")
-#
-# meshPrismBlock
-#
-add_test(
-  NAME meshPrismBlock
-  COMMAND ${Python3_EXECUTABLE} "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshPrismBlock
-)
-set_tests_properties(meshPrismBlock PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST meshPrismBlock PROPERTY LABELS base-test)
+DTOO_ADD_BUILD_TEST(meshPrismBlock)
 DTOO_ADDTESTWLABEL("meshPrismBlock")
+DTOO_ADD_BUILD_TEST(dtClusteredSingletonState)
+DTOO_ADD_BUILD_TEST(partRotatingMap2dTo3d)
+DTOO_ADD_BUILD_TEST(pyDtOO-dtField)
+DTOO_ADD_BUILD_TEST(write-runData)
 
-#
-# dtClusteredSingletonState
-#
-add_test(
-  NAME dtClusteredSingletonState
-  COMMAND ${Python3_EXECUTABLE} "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dtClusteredSingletonState
+# Tests as doctest
+DTOO_ADD_DOCTEST(
+  dtClusteredSingletonState-doctest
+  "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtClusteredSingletonState.py"
 )
-set_tests_properties(dtClusteredSingletonState PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST dtClusteredSingletonState PROPERTY LABELS base-test)
-
-#
-# partRotatingMap2dTo3d
-#
-add_test(
-  NAME partRotatingMap2dTo3d
-  COMMAND ${Python3_EXECUTABLE} "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/partRotatingMap2dTo3d
+DTOO_ADD_DOCTEST(
+  dtValueField-doctest
+  "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtValueField.py"
 )
-set_tests_properties(
-  partRotatingMap2dTo3d PROPERTIES ENVIRONMENT "${TESTENVLIST}"
+DTOO_ADD_DOCTEST(
+  dtField-doctest
+  "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtField.py"
 )
-set_property(TEST partRotatingMap2dTo3d PROPERTY LABELS base-test)
-
-#
-# pyDtOO-dtField
-#
-add_test(
-  NAME pyDtOO-dtField
-  COMMAND ${Python3_EXECUTABLE} "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/pyDtOO-dtField
+DTOO_ADD_DOCTEST(
+  interTransMesh
+  "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtClusteredSingletonState.py"
 )
-set_tests_properties(pyDtOO-dtField PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST pyDtOO-dtField PROPERTY LABELS base-test)
-
-#
-# write-runData
-#
-add_test(
-  NAME write-runData
-  COMMAND ${Python3_EXECUTABLE} "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/write-runData
-)
-set_tests_properties(write-runData PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST write-runData PROPERTY LABELS base-test)
-
-#
-# pyDtOO-doctest
-#
-# dtClusteredSingletonState
-add_test(
-  NAME dtClusteredSingletonState-doctest
-  COMMAND 
-    "${Python3_EXECUTABLE}" 
-    "-m" "doctest" 
-    "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtClusteredSingletonState.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-)
-set_tests_properties(dtClusteredSingletonState-doctest PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST dtClusteredSingletonState-doctest PROPERTY LABELS base-test)
-# dtValueField
-add_test(
-  NAME dtValueField-doctest
-  COMMAND 
-    "${Python3_EXECUTABLE}" 
-    "-m" "doctest" 
-    "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtValueField.py"
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-)
-set_tests_properties(dtValueField-doctest PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST dtValueField-doctest PROPERTY LABELS base-test)
-# dtField
-add_test(
-  NAME dtField-doctest
-  COMMAND 
-    "${Python3_EXECUTABLE}" 
-    "-m" "doctest" 
-    "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtField.py"
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-)
-set_tests_properties(dtField-doctest PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST dtField-doctest PROPERTY LABELS base-test)
-
-#
-# interTransMesh
-#
-add_test(
-  NAME interTransMesh
-  COMMAND 
-    "${Python3_EXECUTABLE}" 
-    "-m" "doctest" 
-    "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtClusteredSingletonState.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/interTransMesh
-)
-set_tests_properties(interTransMesh PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST interTransMesh PROPERTY LABELS base-test)
-
-#
-# floatAtt
-#
-add_test(
-  NAME floatAtt
-  COMMAND 
-    "${Python3_EXECUTABLE}" 
-    "-m" "doctest" 
-    "floatAtt.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/floatAtt
-)
-set_tests_properties(floatAtt PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST floatAtt PROPERTY LABELS base-test)
-
-#
-# simpleAxialRunner
-#
-add_test(
-  NAME simpleAxialRunner
-  COMMAND
-    "${Python3_EXECUTABLE}" 
-    "-m" "doctest" 
-    "simpleAxialRunner.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/simpleAxialRunner
-)
-set_tests_properties(simpleAxialRunner PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST simpleAxialRunner PROPERTY LABELS base-test)
-
-#
-# meshCuboid
-#
-add_test(
-  NAME meshCuboid 
-  COMMAND 
-    "${Python3_EXECUTABLE}" 
-    "-m" "doctest" 
-    "meshCuboid.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshCuboid
-)
-set_tests_properties(meshCuboid PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST meshCuboid PROPERTY LABELS base-test)
+DTOO_ADD_DOCTEST(floatAtt "floatAtt.py")
+DTOO_ADD_DOCTEST(simpleAxialRunner "simpleAxialRunner.py")
+DTOO_ADD_DOCTEST(meshCuboid "meshCuboid.py")
 DTOO_ADDTESTWLABEL("meshCuboid")
-
-#
-# multipleBounded
-#
-add_test(
-  NAME multipleBounded 
-  COMMAND 
-    "${Python3_EXECUTABLE}" 
-    "-m" "doctest" 
-    "multipleBounded.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/multipleBounded
-)
-set_tests_properties(multipleBounded PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST multipleBounded PROPERTY LABELS base-test)
+DTOO_ADD_DOCTEST(multipleBounded "multipleBounded.py")
 DTOO_ADDTESTWLABEL("multipleBounded")
+DTOO_ADD_DOCTEST(labeledVectorHandlingSWIG "labeledVectorHandlingSWIG.py")
+DTOO_ADD_DOCTEST(trans4SidedFace "trans4SidedFace.py")
+DTOO_ADD_DOCTEST(hydFoilOpt "build.py")
 
-#
-# labeledVectorHandlingSWIG
-#
-add_test(
-  NAME labeledVectorHandlingSWIG
-  COMMAND 
-    "${Python3_EXECUTABLE}" 
-    "-m" "doctest" 
-    "labeledVectorHandlingSWIG.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/labeledVectorHandlingSWIG
-)
-set_tests_properties(labeledVectorHandlingSWIG PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST labeledVectorHandlingSWIG PROPERTY LABELS base-test)
-
-#
-# trans4SidedFace
-#
-add_test(
-  NAME trans4SidedFace
-  COMMAND 
-    "${Python3_EXECUTABLE}" 
-    "-m" "doctest" 
-    "trans4SidedFace.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/trans4SidedFace
-)
-set_tests_properties(trans4SidedFace PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST trans4SidedFace PROPERTY LABELS base-test)
-
-#
-# hydFoilOpt
-#
-add_test(
-  NAME hydFoilOpt 
-  COMMAND 
-    "${Python3_EXECUTABLE}" 
-    "-m" "doctest" 
-    "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/hydFoilOpt
-)
-set_tests_properties(hydFoilOpt PROPERTIES ENVIRONMENT "${TESTENVLIST}")
-set_property(TEST hydFoilOpt PROPERTY LABELS base-test)
-
-file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
-foreach(dirPath ${sources_list})
-    IF(IS_DIRECTORY ${dirPath})
-      get_filename_component(dir "${dirPath}" NAME)
-      message("**> Add target cp-${dir}-test")
-      add_custom_target(
-        cp-${dir}-test ALL
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-          ${CMAKE_SOURCE_DIR}/test/${dir}
-          ${CMAKE_CURRENT_BINARY_DIR}/${dir}
-      )
-    ENDIF()
-endforeach()
-
-foreach(dir "hydFoilOpt")
-    IF(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/demo/${dir})
-      #get_filename_component(dir "${dirPath}" NAME)
-      message("**> Add target cp-${dir}-test")
-      add_custom_target(
-        cp-${dir}-test ALL
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-          ${CMAKE_SOURCE_DIR}/demo/${dir}
-          ${CMAKE_CURRENT_BINARY_DIR}/${dir}
-      )
-    ENDIF()
-endforeach()
+# Copy directories
+dtoo_copy_all_subdirs("${CMAKE_SOURCE_DIR}/test")
+dtoo_copy_one_dir("${CMAKE_SOURCE_DIR}/demo" "hydFoilOpt")
