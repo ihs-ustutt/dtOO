@@ -326,6 +326,20 @@ add_test(
 set_tests_properties(trans4SidedFace PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST trans4SidedFace PROPERTY LABELS base-test)
 
+#
+# hydFoilOpt
+#
+add_test(
+  NAME hydFoilOpt 
+  COMMAND 
+    "${Python3_EXECUTABLE}" 
+    "-m" "doctest" 
+    "build.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/hydFoilOpt
+)
+set_tests_properties(hydFoilOpt PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+set_property(TEST hydFoilOpt PROPERTY LABELS base-test)
+
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
     IF(IS_DIRECTORY ${dirPath})
@@ -335,6 +349,19 @@ foreach(dirPath ${sources_list})
         cp-${dir}-test ALL
         COMMAND ${CMAKE_COMMAND} -E copy_directory
           ${CMAKE_SOURCE_DIR}/test/${dir}
+          ${CMAKE_CURRENT_BINARY_DIR}/${dir}
+      )
+    ENDIF()
+endforeach()
+
+foreach(dir "hydFoilOpt")
+    IF(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/demo/${dir})
+      #get_filename_component(dir "${dirPath}" NAME)
+      message("**> Add target cp-${dir}-test")
+      add_custom_target(
+        cp-${dir}-test ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+          ${CMAKE_SOURCE_DIR}/demo/${dir}
           ${CMAKE_CURRENT_BINARY_DIR}/${dir}
       )
     ENDIF()
