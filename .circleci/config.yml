@@ -126,7 +126,7 @@ workflows:
                 "multipleBounded",
                 "labeledVectorHandlingSWIG",
                 "trans4SidedFace",
-                hydFoilOpt
+                "hydFoilOpt"
               ]
               oss: [
                 'ubuntu',
