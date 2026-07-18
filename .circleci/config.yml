@@ -14,7 +14,11 @@ jobs:
       - run:
           name: Build and Push Docker image
           command: |
-            DOCKER_USERNAME=atismer
+            _prFromFork=""
+            if [ -z "$DOCKER_USERNAME" ]; then
+              _prFromFork="1"
+              DOCKER_USERNAME=atismer
+            fi
             GIT_REV=`git rev-parse HEAD`
             GIT_DESC=`git describe --tags`
             GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
@@ -54,7 +58,11 @@ jobs:
                 -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:latest \
                 -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_DESC} \
                 -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${DOCKER_TAG} .
-              if [[ "$CIRCLE_PR_REPONAME" == "$CIRCLE_PROJECT_USERNAME" ]]; then
+              echo "PR_NO=${PR_NO}"
+              echo "_prFromFork=${_prFromFork}"
+              echo "CIRCLE_PR_REPONAME=${CIRCLE_PR_REPONAME}"
+              echo "CIRCLE_PROJECT_USERNAME=${CIRCLE_PROJECT_USERNAME}"
+              if [ -z "$_prFromFork" ]; then
                 echo "$DOCKER_PASSWORD" \
                   | docker login -u "$DOCKER_USERNAME" --password-stdin
                 docker push \
