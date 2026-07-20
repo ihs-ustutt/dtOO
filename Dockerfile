@@ -5,6 +5,8 @@ FROM alpine/git AS repo
 WORKDIR /
 RUN git clone https://github.com/ihs-ustutt/dtOO.git
 WORKDIR /dtOO
+ARG PR_NO=
+RUN if [ ! -z "$PR_NO" ]; then git fetch origin pull/${PR_NO}/head:pr${PR_NO} ; fi
 ARG GIT_REV=main
 RUN git checkout ${GIT_REV}
 RUN git submodule init

@@ -72,10 +72,20 @@ low to have a fast code example.
 >>> result = differential_evolution(
 ...   optimizeHydFoil, 
 ...   bounds, 
-...   popsize=3, 
-...   maxiter=2,
+...   popsize=1, 
+...   maxiter=0,
 ...   polish=False
-... )
+... ) # doctest: +ELLIPSIS
+(of_A1_1) Running simpleFoam...
+(of_A1_1) Running simpleFoam...
+(of_A1_2) Running simpleFoam...
+(of_A1_2) Running simpleFoam...
+(of_A1_3) Running simpleFoam...
+(of_A1_3) Running simpleFoam...
+(of_A1_4) Running simpleFoam...
+(of_A1_4) Running simpleFoam...
+(of_A1_5) Running simpleFoam...
+(of_A1_5) Running simpleFoam...
 
 Output the final result of the optimization.
 
@@ -1241,8 +1251,8 @@ class hydFoil:
     # Integrate pressure and velocity over inlet and outlet; calculate the
     # sum of those energies to get the difference in head
     #
-    e_i = (p_i.IntValueQ() / g + U_i.IntMagSquareQ() / 2.0 / g)
-    e_o = (p_o.IntValueQ() / g + U_o.IntMagSquareQ() / 2.0 / g)
+    e_i = (p_i.IntValueQ() / g + U_i.IntMagSquareQ() / 2.0 / g).item()
+    e_o = (p_o.IntValueQ() / g + U_o.IntMagSquareQ() / 2.0 / g).item()
     Q_i = np.abs(U_i.IntQ())
     dHMean = (e_i + e_o) / Q_i
    

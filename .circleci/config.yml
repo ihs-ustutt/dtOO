@@ -10,10 +10,16 @@ jobs:
         type: string
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: Build and Push Docker image
           command: |
+            _prFromFork=""
+            if [ -z "$DOCKER_USERNAME" ]; then
+              _prFromFork="1"
+              DOCKER_USERNAME=atismer
+            fi
             GIT_REV=`git rev-parse HEAD`
             GIT_DESC=`git describe --tags`
             GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
@@ -42,21 +48,30 @@ jobs:
             fi
             echo "GIT_CIRCLECI_OPTS=${GIT_CIRCLECI_OPTS}"
             echo "_useSha=${_useSha}"
-            echo "$DOCKER_PASSWORD" \
-              | docker login -u "$DOCKER_USERNAME" --password-stdin
             if [ -z "$_useSha" ]; then
               docker build \
                 --build-arg "TAG=${GIT_THIRDPARTY_SHA}" \
                 --build-arg "GIT_REV=${GIT_REV}" \
                 --build-arg "CONTAINER=atismer/dtoo-base-<< parameters.oss >>" \
+                --build-arg "PR_NO=${CIRCLE_PR_NUMBER}" \
                 --progress=plain \
                 -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
                 -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:latest \
                 -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_DESC} \
                 -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${DOCKER_TAG} .
-              docker push \
-                --all-tags \
-                ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>
+              echo "PR_NO=${PR_NO}"
+              echo "_prFromFork=${_prFromFork}"
+              echo "CIRCLE_PR_REPONAME=${CIRCLE_PR_REPONAME}"
+              echo "CIRCLE_PROJECT_USERNAME=${CIRCLE_PROJECT_USERNAME}"
+              if [ -z "$_prFromFork" ]; then
+                echo "$DOCKER_PASSWORD" \
+                  | docker login -u "$DOCKER_USERNAME" --password-stdin
+                docker push \
+                  --all-tags \
+                  ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>
+              else
+                echo "Fork‑PR – Skipt Docker-Push"
+              fi
             else
               docker buildx imagetools \
                 create ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${_useSha} \
@@ -64,11 +79,18 @@ jobs:
                 --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:latest \
                 --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_DESC} \
                 --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${DOCKER_TAG}
-            fi 
+            fi
+            docker save ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
+              -o dtoo-<< parameters.oss >>.tar
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dtoo-*.tar
+
   test:
     docker:
       - image: "cimg/base:current"
-    resource_class: medium
+    resource_class: large
     parameters:
       tregs:
         type: string
@@ -76,10 +98,18 @@ jobs:
         type: string
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - attach_workspace:
+          at: .
+      - run:
+          name: Load saved Docker image
+          command: |
+            docker load -i dtoo-<< parameters.oss >>.tar
       - run:
           name: Test Docker Image
           command: |
+            DOCKER_USERNAME=atismer
             GIT_REV=`git rev-parse HEAD`
             docker run \
               -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
@@ -112,7 +142,9 @@ workflows:
                 "partRotatingMap2dTo3d",
                 "pyDtOO-dtField",
                 "write-runData",
-                "pyDtOO-doctest",
+                "dtClusteredSingletonState-doctest",
+                "dtField-doctest",
+                "dtValueField-doctest",
                 "interTransMesh",
                 "floatAtt",
                 "naca",
@@ -123,7 +155,8 @@ workflows:
                 "meshCuboid",
                 "multipleBounded",
                 "labeledVectorHandlingSWIG",
-                "trans4SidedFace"
+                "trans4SidedFace",
+                "hydFoilOpt"
               ]
               oss: [
                 'ubuntu',
