@@ -10,7 +10,8 @@ jobs:
         type: string
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: Build and Push Docker image
           command: |
@@ -69,8 +70,8 @@ jobs:
                   --all-tags \
                   ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>
               else
-               echo "Fork‑PR – Skipt Docker-Push"
-              fi                
+                echo "Fork‑PR – Skipt Docker-Push"
+              fi
             else
               docker buildx imagetools \
                 create ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${_useSha} \
@@ -78,11 +79,18 @@ jobs:
                 --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:latest \
                 --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_DESC} \
                 --tag ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${DOCKER_TAG}
-            fi 
+            fi
+            docker save ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
+              -o dtoo-<< parameters.oss >>.tar
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dtoo-*.tar
+
   test:
     docker:
       - image: "cimg/base:current"
-    resource_class: medium
+    resource_class: large
     parameters:
       tregs:
         type: string
@@ -90,7 +98,14 @@ jobs:
         type: string
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - attach_workspace:
+          at: .
+      - run:
+          name: Load saved Docker image
+          command: |
+            docker load -i dtoo-<< parameters.oss >>.tar
       - run:
           name: Test Docker Image
           command: |
