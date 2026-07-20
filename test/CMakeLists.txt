@@ -28,11 +28,11 @@ function(DTOO_ADD_BUILD_TEST TNAME)
 endfunction()
 
 # Test with doctest
-function(DTOO_ADD_DOCTEST TESTNAME SCRIPT)
+function(DTOO_ADD_DOCTEST TESTNAME SCRIPT WDIRPOSTFIX)
     add_test(
         NAME ${TESTNAME}
-        COMMAND ${Python3_EXECUTABLE} -m doctest ${SCRIPT}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${Python3_EXECUTABLE} -m doctest ${SCRIPT} -v
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}${WDIRPOSTFIX}
     )
     set_tests_properties(${TESTNAME} PROPERTIES ENVIRONMENT "${TESTENVLIST}")
     set_property(TEST ${TESTNAME} PROPERTY LABELS base-test)
@@ -112,30 +112,38 @@ DTOO_ADD_BUILD_TEST(write-runData)
 
 # Tests as doctest
 DTOO_ADD_DOCTEST(
-  dtClusteredSingletonState-doctest
+  dtClusteredSingletonState-dt
   "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtClusteredSingletonState.py"
+  ""
 )
 DTOO_ADD_DOCTEST(
-  dtValueField-doctest
+  dtValueField
   "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtValueField.py"
+  ""
 )
 DTOO_ADD_DOCTEST(
-  dtField-doctest
+  dtField
   "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtField.py"
+  ""
 )
 DTOO_ADD_DOCTEST(
   interTransMesh
   "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtClusteredSingletonState.py"
+  ""
 )
-DTOO_ADD_DOCTEST(floatAtt "floatAtt.py")
-DTOO_ADD_DOCTEST(simpleAxialRunner "simpleAxialRunner.py")
-DTOO_ADD_DOCTEST(meshCuboid "meshCuboid.py")
+DTOO_ADD_DOCTEST(floatAtt "floatAtt.py" "/floatAtt")
+DTOO_ADD_DOCTEST(simpleAxialRunner "simpleAxialRunner.py" "/simpleAxialRunner")
+DTOO_ADD_DOCTEST(meshCuboid "meshCuboid.py" "/meshCuboid")
 DTOO_ADDTESTWLABEL("meshCuboid")
-DTOO_ADD_DOCTEST(multipleBounded "multipleBounded.py")
+DTOO_ADD_DOCTEST(multipleBounded "multipleBounded.py" "/multipleBounded")
 DTOO_ADDTESTWLABEL("multipleBounded")
-DTOO_ADD_DOCTEST(labeledVectorHandlingSWIG "labeledVectorHandlingSWIG.py")
-DTOO_ADD_DOCTEST(trans4SidedFace "trans4SidedFace.py")
-DTOO_ADD_DOCTEST(hydFoilOpt "build.py")
+DTOO_ADD_DOCTEST(
+  labeledVectorHandlingSWIG 
+  "labeledVectorHandlingSWIG.py" 
+  "/labeledVectorHandlingSWIG"
+)
+DTOO_ADD_DOCTEST(trans4SidedFace "trans4SidedFace.py" "/trans4SidedFace")
+DTOO_ADD_DOCTEST(hydFoilOpt "build.py" "/hydFoilOpt")
 
 # Copy directories
 dtoo_copy_all_subdirs("${CMAKE_SOURCE_DIR}/test")
