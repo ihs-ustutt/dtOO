@@ -59,7 +59,8 @@ class vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution(
   distribution the splines are then connected afterwards. Within each 
   spanwise cut an equivalent spline is created and forms a B-Spline surface
   with order = [orderMinS_, orderMaxS_]. The surface can be iterated with
-  the parameter numIter_.
+  the parameter numIter_. The u-direction of the surface is set with the 
+  flag d.
      
   Attributes
   ---------
@@ -87,6 +88,8 @@ class vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution(
     Maximum order of resulting surface.
   numIter_: int, default = 0
     Number of iterations when creating the surface.
+  d_: int, default = 1
+    Flag for the u-direction of the resulting curve. 
 
   Examples
   --------
@@ -183,7 +186,8 @@ class vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution(
     orderC: int = 2,
     orderMinS: int = 2,
     orderMaxS: int = 2,
-    numIter: int = 0
+    numIter: int = 0,
+    d: int = 1, 
   ) -> None:
     """Constructor.
 
@@ -213,6 +217,8 @@ class vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution(
       Maximum order of resulting surface.
     numIter_: int, default = 0
       Number of iterations when creating the surface.
+    d_: int, default = 1
+      Flag for the u-direction of the resulting curve. 
 
     Returns
     -------
@@ -235,6 +241,7 @@ class vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution(
     self.orderMinS_ = orderMinS
     self.orderMaxS_ = orderMaxS
     self.numIter_ = numIter
+    self.d_ = d
     return
   
   def build(self) -> None:
@@ -253,9 +260,9 @@ class vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution(
       cc = vectorHandlingConstDtCurve()
       pp = vectorDtPoint3()
       pp.push_back( dtPoint3( 0.0,               0.0,               sC ) )
-      pp.push_back( dtPoint3( self.tLe_(sC)[0],  self.uLe_(sC)[0],  sC ) )
-      pp.push_back( dtPoint3( self.tMid_(sC)[0], self.uMid_(sC)[0], sC ) )
-      pp.push_back( dtPoint3( self.tTe_(sC)[0],  self.uTe_(sC)[0],  sC ) )
+      pp.push_back( dtPoint3( self.d_*self.tLe_(sC)[0],  self.uLe_(sC)[0],  sC ) )
+      pp.push_back( dtPoint3( self.d_*self.tMid_(sC)[0], self.uMid_(sC)[0], sC ) )
+      pp.push_back( dtPoint3( self.d_*self.tTe_(sC)[0],  self.uTe_(sC)[0],  sC ) )
       pp.push_back( dtPoint3( 0.0,                1.0,              sC ) )
 
       cc.push_back( 
@@ -264,9 +271,9 @@ class vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution(
 
       pp = vectorDtPoint3()
       pp.push_back( dtPoint3( 0.0,               0.0,               sC ) )
-      pp.push_back( dtPoint3(-self.tLe_(sC)[0],  self.uLe_(sC)[0],  sC ) )
-      pp.push_back( dtPoint3(-self.tMid_(sC)[0], self.uMid_(sC)[0], sC ) )
-      pp.push_back( dtPoint3(-self.tTe_(sC)[0],  self.uTe_(sC)[0],  sC ) )
+      pp.push_back( dtPoint3(self.d_*-self.tLe_(sC)[0],  self.uLe_(sC)[0],  sC ) )
+      pp.push_back( dtPoint3(self.d_*-self.tMid_(sC)[0], self.uMid_(sC)[0], sC ) )
+      pp.push_back( dtPoint3(self.d_*-self.tTe_(sC)[0],  self.uTe_(sC)[0],  sC ) )
       pp.push_back( dtPoint3( 0.0,               1.0,               sC ) )
 
       cc.push_back( 
