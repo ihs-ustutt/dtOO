@@ -1813,7 +1813,7 @@ class radMeridional:
             [0.70, 0.90],
             [0.90, 1.00],
           ],
-          tEMeshBlockThickness = meshBlock_thickness,
+          #tEMeshBlockThickness = meshBlock_thickness,
           meanplaneFromBlocks = True,
           meanplaneExtOut = 0.02,
           meanplaneExtIn = 0.03,
@@ -2110,7 +2110,7 @@ class radMeridional:
             )(),
             bladeHubElementScale = 0.3,
             charLengthMax=0.015,
-            charLengthMin=0.015,
+            charLengthMin=0.001,
             meshTEBlocks = True,
         ).enableDebug().buildExtract( self.container )
         #self.container = map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(
@@ -2139,7 +2139,7 @@ class radMeridional:
         #    charLengthMin=0.1,
         #    meshTEBlocks = True,
         #).enableDebug().buildExtract( self.container )
-         
+        
     #
     # returns a list with dtPoint2 types and spline orders
     #  with spanwise cut percentage and blade input parameters

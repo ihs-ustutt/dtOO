@@ -409,8 +409,8 @@ def run(*args, **kwargs):
 
     generate.createMeridional(configM, hubCurves, shroudCurves)
     generate.createBlade(configGV)
-    #generate.createBlade(configRu)
-    #generate.createLayerRegion(configL)
+    generate.createBlade(configRu)
+    generate.createLayerRegion(configL)
 
     cc = generate.getContainer()
     
@@ -422,7 +422,7 @@ def run(*args, **kwargs):
     #rr.Show( rr.Find( "debug_mpCurveHub", True), "mpCurveHub" )
     #rr.Show( rr.Find( "debug_mpCurveShr", True), "mpCurveShr" )
     #rr.Show( rr.Find( "gv_meanplane", True), "gv_meanplane" )
-    rr.Show( rr.Find( "xyz_gv_blade", True), "xyz_gv_blade" )
+    #rr.Show( rr.Find( "xyz_gv_blade", True), "xyz_gv_blade" )
     
     #bV = cc.cptr_bV()
     
@@ -445,17 +445,17 @@ if __name__ == "__main__":
     generate = radMeridional.radMeridional()
 
     generate.createMeridional(configM, hubCurves, shroudCurves)
-    generate.createBlade(configGV)
+    #generate.createBlade(configGV)
     generate.createBlade(configRu)
-    generate.createLayerRegion(configL)
+    #generate.createLayerRegion(configL)
     
     container = generate.getContainer()
     bV = container.cptr_bV()
 
-    #bV["ru_mesh"].makeGrid()
+    bV["ru_mesh"].makeGrid()
     stateLbl = "hubZero"
     indiv = "0"
 
-    createOFCase(container, stateLbl, indiv)
+    #createOFCase(container, stateLbl, indiv)
 
     # ------------------- EOF ------------------- #

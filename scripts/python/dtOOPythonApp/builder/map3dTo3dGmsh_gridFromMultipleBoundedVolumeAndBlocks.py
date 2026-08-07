@@ -42,6 +42,7 @@ from dtOOPythonSWIG import scaTanhGradingOneDCompound
 from dtOOPythonSWIG import sca3PPointsBSplineOneD
 from dtOOPythonSWIG import sca3PPointsBSplineOneDCompound
 from dtOOPythonSWIG import bVOSetPrescribedElementSize
+from dtOOPythonSWIG import bVOSetPrescribedMeshSizeAtPoints
 from dtOOPythonSWIG import bVOSetRotationalPeriodicity
 from dtOOPythonSWIG import xYz_rPhiZ
 from dtOOPythonSWIG import baseContainer
@@ -486,11 +487,13 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
                 '"value" : "'+str(charLengthMax)+'"'
               '},'
               '{"name" : "[gmsh]Mesh.Algorithm", "value" : "1"},'
+              '{"name" : "[gmsh]Mesh.Algorithm3D", "value" : "1"},'
               '{'
                 '"name" : "[gmsh]Mesh.MeshSizeExtendFromBoundary", '
-                '"value" : "1"'
-              '},'
-              '{"name" : "[gmsh]Mesh.MeshSizeFromPoints", "value" : "1"}'
+                '"value" : "2"'
+              '}'
+              #'{"name" : "[gmsh]Mesh.MeshSizeFromPoints", "value" : "0"},'
+              #'{"name" : "[gmsh]Mesh.MeshSizeFromCurvature", "value" : "0"}'
             '],'
             '"analyticGeometry" : []'
           '}'
@@ -1268,6 +1271,17 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         bC = baseContainer()
         bC.ptrTransformerContainer().add( theT )
         
+        ## set an observer which prescribes meshsizes
+        #ob = bVOSetPrescribedMeshSizeAtPoints()
+        #ob.thisown = False
+        #ob.jInit(
+        #  jsonPrimitive()\
+        #    .appendReal("_meshSize", 0.01),
+        #  None, None, None, None, None, m3dGmsh
+        #)
+        ##ob.preUpdate()
+        #m3dGmsh.attachBVObserver(ob)
+
         # add observers for all periodic faces
         for periodic in periodics:
             ob = bVOSetRotationalPeriodicity()
