@@ -445,17 +445,17 @@ if __name__ == "__main__":
     generate = radMeridional.radMeridional()
 
     generate.createMeridional(configM, hubCurves, shroudCurves)
-    #generate.createBlade(configGV)
+    generate.createBlade(configGV)
     generate.createBlade(configRu)
-    #generate.createLayerRegion(configL)
+    generate.createLayerRegion(configL)
     
     container = generate.getContainer()
-    bV = container.cptr_bV()
+    #bV = container.cptr_bV()
 
-    bV["ru_mesh"].makeGrid()
+    #bV["ru_mesh"].makeGrid()
     stateLbl = "hubZero"
     indiv = "0"
 
-    #createOFCase(container, stateLbl, indiv)
+    createOFCase(container, stateLbl, indiv)
 
     # ------------------- EOF ------------------- #

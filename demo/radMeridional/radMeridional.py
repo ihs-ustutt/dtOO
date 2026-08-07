@@ -1813,7 +1813,7 @@ class radMeridional:
             [0.70, 0.90],
             [0.90, 1.00],
           ],
-          #tEMeshBlockThickness = meshBlock_thickness,
+          tEMeshBlockThickness = meshBlock_thickness,
           meanplaneFromBlocks = True,
           meanplaneExtOut = 0.02,
           meanplaneExtIn = 0.03,
