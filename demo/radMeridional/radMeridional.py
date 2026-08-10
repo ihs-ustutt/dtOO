@@ -1599,14 +1599,28 @@ class radMeridional:
         label = configB["label"]
         regChannel = configB["regChannel"]
         nBlades = configB["nBlades"]
-
-        spanwiseCuts_mp = configB["spanwiseCuts_mp"]
-        alpha_1 = configB["alpha_1"]
-        alpha_2 = configB["alpha_2"]
-        ratioX = configB["ratioX"]
-        deltaY = configB["deltaY"]
-        offX = configB["offX"]
-        offY = configB["offY"]
+        
+        #
+        # Two possible creation strategies based on configuration dictionary
+        # 
+        # 1. Curved meanplane and thickness mapped on regular channel
+        #       - adjustRadius exists in dictionary
+        #       - a conformal mapping between the blade geometries and the regular channel is performed
+        #         (noMap = False)
+        #
+        # 2. Straight meanplane created in radially extending regular channel
+        #       - meanplane and thichnes distribution are directly created in regular channel
+        #         (noMap = True)
+        #
+        # dAdd_dir is used to set the correct directions of the blade and the mesh block surface
+        #
+        if "adjustRadius" in configB:
+            adjustRadius = configB["adjustRadius"]
+            noMap = False
+            dAdd_dir = 1
+        else:
+            noMap = True
+            dAdd_dir = -1
 
         spanwiseCuts_td = configB["spanwiseCuts_td"]
         t_le = configB["t_le"]
@@ -1616,7 +1630,6 @@ class radMeridional:
         t_te = configB["t_te"]
         u_te = configB["u_te"]
         
-        adjustRadius = configB["adjustRadius"]
         orientation = configB["orientation"]
         
         #
@@ -1628,46 +1641,67 @@ class radMeridional:
                 regChannel, 1
             ) << "xyz_"+label+"_channel"
         )
+        
+        #
+        # Create Blade Meanplane
+        #
+        if noMap == True:
+            #
+            # Create blade meanplane directly in regular channel
+            #
+            from dtOOPythonApp.builder import vec3dSurfaceTwoD_guideVaneMeanplane
+            self.container = vec3dSurfaceTwoD_guideVaneMeanplane(
+                label + "_meanplane",
+                channel = self.aG["xyz_"+label+"_channel"],
+                offRad = configB["offRad"],
+                offAng = configB["offAng"],
+                alpha = configB["alpha"],
+                l_tot = configB["l_tot"],
+                ratioL = configB["ratioL"]
+            ).enableDebug().buildExtract( self.container )
+        else:
+            #
+            # Create the blades' meanplane in the parameter space.
+            #
+            # The method fillInputList transforms the lists form the configuration
+            # dictionary into a valid input for the class constructor
+            # scaOneD_scaCurve2dOneDPointConstruct.
+            #
+            from dtOOPythonApp.builder import (
+                analyticSurface_threePointMeanplaneFromRatio,
+                scaOneD_scaCurve2dOneDPointConstruct
+            )
+            self.container = analyticSurface_threePointMeanplaneFromRatio(
+              label + "_meanplane",
+              configB["spanwiseCuts_mp"],
+              alphaOne = scaOneD_scaCurve2dOneDPointConstruct(
+                *self.fillInputList(configB["alpha_1"])
+              )(),
+              alphaTwo = scaOneD_scaCurve2dOneDPointConstruct(
+                *self.fillInputList(configB["alpha_2"])
+              )(),
+              ratioX = scaOneD_scaCurve2dOneDPointConstruct(
+                *self.fillInputList(configB["ratioX"])
+              )(),
+              deltaY = scaOneD_scaCurve2dOneDPointConstruct(
+                *self.fillInputList(configB["deltaY"])
+              )(),
+              offX = scaOneD_scaCurve2dOneDPointConstruct(
+                *self.fillInputList(configB["offX"])
+              )(),
+              offY = scaOneD_scaCurve2dOneDPointConstruct(
+                *self.fillInputList(configB["offY"])
+              )(),
+            ).buildExtract( self.container )
+        
 
-        #
-        # Create the blades' meanplane in the parameter space.
-        #
-        # The method fillInputList transforms the lists form the configuration
-        # dictionary into a valid input for the class constructor
-        # scaOneD_scaCurve2dOneDPointConstruct.
-        #
-        from dtOOPythonApp.builder import (
-            analyticSurface_threePointMeanplaneFromRatio,
-            scaOneD_scaCurve2dOneDPointConstruct
-        )
-        self.container = analyticSurface_threePointMeanplaneFromRatio(
-          label + "_meanplane",
-          spanwiseCuts_mp,
-          alphaOne = scaOneD_scaCurve2dOneDPointConstruct(
-            *self.fillInputList(alpha_1)
-          )(),
-          alphaTwo = scaOneD_scaCurve2dOneDPointConstruct(
-            *self.fillInputList(alpha_2)
-          )(),
-          ratioX = scaOneD_scaCurve2dOneDPointConstruct(
-            *self.fillInputList(ratioX)
-          )(),
-          deltaY = scaOneD_scaCurve2dOneDPointConstruct(
-            *self.fillInputList(deltaY)
-          )(),
-          offX = scaOneD_scaCurve2dOneDPointConstruct(
-            *self.fillInputList(offX)
-          )(),
-          offY = scaOneD_scaCurve2dOneDPointConstruct(
-            *self.fillInputList(offY)
-          )(),
-        ).buildExtract( self.container )
         
         #
         # Create the blades' thickness distribution in the parameters space.
         #
         from dtOOPythonApp.builder import (
-          vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution
+          vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution,
+          scaOneD_scaCurve2dOneDPointConstruct
         )
         self.container = vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution(
           label + "_thicknessDistribution",
@@ -1689,7 +1723,8 @@ class radMeridional:
           )(),
           uTe = scaOneD_scaCurve2dOneDPointConstruct(
             *self.fillInputList(u_te)
-          )()
+          )(),
+          d = dAdd_dir
         ).buildExtract( self.container )
 
         #
@@ -1712,38 +1747,7 @@ class radMeridional:
         )
         theAF.setLabel(label + "_blade")
         self.aF.push_back( theAF.clone() )
-        
-        #
-        # Create a conformal mapping object with the regular channel
-        # and the adjustRadius setting.
-        #
-        conMap = dtOO.uVw_phirMs()
-        conMap.jInit(
-          dtOO.jsonPrimitive()\
-            .appendStr("label", "uVw_phirMs")\
-            .appendInt("_nV", 31)\
-            .appendInt("_nW", 11)\
-            .appendBool("_adjustRadius", adjustRadius)\
-            .appendAnalyticGeometry(\
-              "_rM2d", \
-              self.aG.get("xyz_" + label + "_channel")\
-            ),\
-          None, None, None, self.aG \
-        )
-        self.bC.dtTransformer().add( conMap.clone() )
          
-        ##
-        ## depiction in 3d Space of blade and meanplane
-        ##
-        #for ii in [label+"_meanplane", label+"_blade",]:         
-        #  theAG = dtOO.vec3dTwoDInMap3dTo3d(
-        #    dtOO.vec3dTwoD.MustConstDownCast(
-        #      conMap.applyAnalyticFunction(self.aF[ii].clone())
-        #    ),
-        #    dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )   
-        #  )
-        #  self.aG.push_back( theAG << "xyz_"+str(ii) )
-        
         #
         # Create a surface around the blade surface with a normal distance
         # specified by meshBlock_thickness.
@@ -1751,7 +1755,7 @@ class radMeridional:
         #meshBlock_thickness = 0.035
         meshBlock_thickness = 0.025 
         fRef = dtOO.vec3dMuParserTwoD(
-          "1.0*"+str(meshBlock_thickness)+", xx, yy", "xx", "yy"
+          str(dAdd_dir)+".0*"+str(meshBlock_thickness)+", xx, yy", "xx", "yy"
         )
         fRef.setLabel(label + "_thicknessMeshBlock")
         for i in range(2):
@@ -1850,60 +1854,133 @@ class radMeridional:
                 ).result()
             )
             self.aF.push_back(surf << label+"_fe_meanplane_"+at+str(0))
- 
+        
         #
-        # Apply the conformal mapping object the following geometries.
+        # Transform the analyticFunction objects of the 
+        # geometries in analyticGeometry objects
         #
-        #   - faces of the blade meanplane, the blade and the mesh blocks
-        #
-        for ii in [label+"_meanplane", label+"_blade", label+"_meshBlock",]:
-          theAG = dtOO.vec3dTwoDInMap3dTo3d(
-            dtOO.vec3dTwoD.MustConstDownCast(
-              conMap.applyAnalyticFunction(self.aF[ii].clone())
-            ),
-            dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
-          )
-          theAG.setLabel("xyz_"+ii)
-          self.aG.push_back( theAG.clone() )
-        #
-        #   - fe_meanplane faces extending tangentially from the mesh blocks.
-        #
-        for iNum in self.aF.getIndices(label+"_fe_meanplane_*"):
-          ii = self.aF.getLabel( iNum )
-          theAG = dtOO.vec3dTwoDInMap3dTo3d(
-            dtOO.vec3dTwoD.MustConstDownCast(
-              conMap.applyAnalyticFunction(self.aF[ii].clone())
-            ),
-            dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
-          )
-          theAG.setLabel("xyz_"+ii)
-          self.aG.push_back( theAG.clone() )
-        #
-        #   - mesh block volumes
-        #
-        for iNum in self.aF.getIndices(label+"_meshBlock_*"):
-          ii = self.aF.getLabel( iNum )
-          theAG = dtOO.vec3dThreeDInMap3dTo3d(
-            dtOO.vec3dThreeD.MustConstDownCast(
-              conMap.applyAnalyticFunction(self.aF[ii].clone())
-            ),
-            dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
-          )
-          theAG.setLabel("xyz_"+ii)
-          self.aG.push_back( theAG.clone() )
-        #
-        #   - mesh block curves which were used to create the fe_meanplane faces
-        #
-        for iNum in self.aF.getIndices(label+"_meshBlockCurve_*"):
-          ii = self.aF.getLabel( iNum )
-          theAG = dtOO.vec3dOneDInMap3dTo3d(
-            dtOO.vec3dOneD.MustConstDownCast(
-              conMap.applyAnalyticFunction(self.aF[ii].clone())
-            ),
-            dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
-          )
-          theAG.setLabel("xyz_"+ii)
-          self.aG.push_back( theAG.clone() )
+        if noMap == True:
+            #
+            # Direct transformation when the objects were already created in the regular channel
+            #
+            for ii in [label+"_meanplane", label+"_blade", label+"_meshBlock",]:
+                
+                theAG = dtOO.analyticSurface(
+                        dtOO.vec3dSurfaceTwoD.MustDownCast(
+                            self.aF[ii]
+                        ).constPtrDtSurface()
+                    ).clone()
+
+                theAG.setLabel("xyz_"+ii)
+                self.aG.push_back( theAG.clone() )
+            
+            for iNum in self.aF.getIndices(label+"_fe_meanplane_*"):
+                ii = self.aF.getLabel( iNum )
+                theAG = dtOO.analyticSurface(
+                        dtOO.vec3dSurfaceTwoD.MustDownCast(
+                            self.aF[ii]
+                        ).constPtrDtSurface()
+                    ).clone()
+
+                theAG.setLabel("xyz_"+ii)
+                self.aG.push_back( theAG.clone() )
+
+            for iNum in self.aF.getIndices(label+"_meshBlock_*"):
+                ii = self.aF.getLabel( iNum )
+                theAG = dtOO.vec3dThreeDInMap3dTo3d(
+                    dtOO.vec3dThreeD.MustDownCast(
+                        self.aF[ii]
+                    ), 
+                    dtOO.infinityMap3dTo3d()
+                )
+                theAG.setLabel("xyz_"+ii)
+                self.aG.push_back( theAG.clone() )
+                
+            for iNum in self.aF.getIndices(label+"_meshBlockCurve_*"):
+                ii = self.aF.getLabel( iNum )
+                theAG = dtOO.analyticCurve(
+                        dtOO.vec3dCurveOneD.MustDownCast(
+                            self.aF[ii]
+                        ).ptrConstDtCurve()
+                    ).clone()
+                theAG.setLabel("xyz_"+ii)
+                self.aG.push_back( theAG.clone() )
+
+        else:
+            #
+            # Transformation through conformal mapping with regular channel
+            # 
+            # Create a conformal mapping object with the regular channel
+            # and the adjustRadius setting.
+            #
+            conMap = dtOO.uVw_phirMs()
+            conMap.jInit(
+              dtOO.jsonPrimitive()\
+                .appendStr("label", "uVw_phirMs")\
+                .appendInt("_nV", 31)\
+                .appendInt("_nW", 11)\
+                .appendBool("_adjustRadius", adjustRadius)\
+                .appendAnalyticGeometry(\
+                  "_rM2d", \
+                  self.aG.get("xyz_" + label + "_channel")\
+                ),\
+              None, None, None, self.aG \
+            )
+            self.bC.dtTransformer().add( conMap.clone() )
+          
+            #
+            # Apply the conformal mapping object the following geometries.
+            #
+            #   - faces of the blade meanplane, the blade and the mesh blocks
+            #
+            for ii in [label+"_meanplane", label+"_blade", label+"_meshBlock",]:
+              theAG = dtOO.vec3dTwoDInMap3dTo3d(
+                dtOO.vec3dTwoD.MustConstDownCast(
+                  conMap.applyAnalyticFunction(self.aF[ii].clone())
+                ),
+                dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
+              )
+              theAG.setLabel("xyz_"+ii)
+              self.aG.push_back( theAG.clone() )
+            #
+            #   - fe_meanplane faces extending tangentially from the mesh blocks.
+            #
+            for iNum in self.aF.getIndices(label+"_fe_meanplane_*"):
+              ii = self.aF.getLabel( iNum )
+              theAG = dtOO.vec3dTwoDInMap3dTo3d(
+                dtOO.vec3dTwoD.MustConstDownCast(
+                  conMap.applyAnalyticFunction(self.aF[ii].clone())
+                ),
+                dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
+              )
+              theAG.setLabel("xyz_"+ii)
+              self.aG.push_back( theAG.clone() )
+            #
+            #   - mesh block volumes
+            #
+            for iNum in self.aF.getIndices(label+"_meshBlock_*"):
+              ii = self.aF.getLabel( iNum )
+              theAG = dtOO.vec3dThreeDInMap3dTo3d(
+                dtOO.vec3dThreeD.MustConstDownCast(
+                  conMap.applyAnalyticFunction(self.aF[ii].clone())
+                ),
+                dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
+              )
+              theAG.setLabel("xyz_"+ii)
+              self.aG.push_back( theAG.clone() )
+            #
+            #   - mesh block curves which were used to create the fe_meanplane faces
+            #
+            for iNum in self.aF.getIndices(label+"_meshBlockCurve_*"):
+              ii = self.aF.getLabel( iNum )
+              theAG = dtOO.vec3dOneDInMap3dTo3d(
+                dtOO.vec3dOneD.MustConstDownCast(
+                  conMap.applyAnalyticFunction(self.aF[ii].clone())
+                ),
+                dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_"+label+"_channel"] )
+              )
+              theAG.setLabel("xyz_"+ii)
+              self.aG.push_back( theAG.clone() )
         
         #
         # Collect the curves for the fe_meanplane faces.
@@ -2033,7 +2110,7 @@ class radMeridional:
             )(),
             bladeHubElementScale = 0.3,
             charLengthMax=0.015,
-            charLengthMin=0.015,
+            charLengthMin=0.001,
             meshTEBlocks = True,
         ).enableDebug().buildExtract( self.container )
         #self.container = map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(

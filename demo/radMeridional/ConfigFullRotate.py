@@ -171,7 +171,7 @@ class Config():
             "orientation" : -1,
         }
 
-        # config for gunner blade
+        # config for runner blade
         self.configRunner = {
             "label" : "ru",
             "regChannel" : 1,
@@ -847,7 +847,7 @@ if __name__ == "__main__":
     config = Config()
     varList = config.getVarList()
     
-    stateLbl = "bladeAngle05_new"
+    stateLbl = "testCase"
      
     # number of iterations
     nIt = 1

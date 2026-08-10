@@ -115,32 +115,55 @@ class ConfigHubZero():
             "interface_shroud" : [[1, 0.00],
                                   [2, 0.5],],
             "interface_curvature" : [[0.0, 0.5, 1],
-                                     [0.4, 0.5, -1],],
+                                     [0.35, 0.5, -1],],
         }
+        ## Curved Guide Vane Configuration
+        #self.configGuideVane = {
+        #    "label" : "gv",
+        #    "regChannel" : 0,
+        #    "nBlades" : 24,
+        #    
+        #    "spanwiseCuts_mp" : [0.00, 1.00,],
+        #    "alpha_1" : [round((np.pi/180.) * -55.0, 4)],
+        #    "alpha_2" : [round((np.pi/180.) * -16.0, 4)],
+        #    "ratioX" : [0.5],
+        #    "deltaY" : [0.12],
+        #    "offX" : [-0.046],
+        #    "offY" : [0.077],
+
+        #    "spanwiseCuts_td" : [0.00, 1.00,],
+        #    "t_le" : [0.01],
+        #    "u_le" : [0.00],
+        #    "t_mid" : [0.03],
+        #    "u_mid" : [0.20],
+        #    "t_te" : [0.01],
+        #    "u_te" : [0.80],
+
+        #    "adjustRadius" : False,
+        #    "orientation" : -1,
+        #}
+
+        # Straight Guide Vane Configuration
         self.configGuideVane = {
             "label" : "gv",
             "regChannel" : 0,
             "nBlades" : 24,
             
-            "spanwiseCuts_mp" : [0.00, 1.00,],
-            "alpha_1" : [round((np.pi/180.) * -55.0, 4)],
-            "alpha_2" : [round((np.pi/180.) * -16.0, 4)],
-            "ratioX" : [0.5],
-            "deltaY" : [0.12],
-            "offX" : [-0.046],
-            "offY" : [0.077],
+            "offRad" : 1.4125,
+            "offAng" : np.pi/180 * -10,
+            "alpha" : np.pi/180 * 68,
+            "l_tot" : 0.4275,
+            "ratioL" : 0.4675,
 
             "spanwiseCuts_td" : [0.00, 1.00,],
-            "t_le" : [0.01],
+            "t_le" : [0.0115],
             "u_le" : [0.00],
-            "t_mid" : [0.03],
+            "t_mid" : [0.0365],
             "u_mid" : [0.20],
-            "t_te" : [0.01],
-            "u_te" : [0.80],
+            "t_te" : [0.0195],
+            "u_te" : [0.70],
 
-            "adjustRadius" : False,
             "orientation" : -1,
-
         }
         self.configRunner = {
             "label" : "ru",
@@ -386,14 +409,22 @@ def run(*args, **kwargs):
 
     generate.createMeridional(configM, hubCurves, shroudCurves)
     generate.createBlade(configGV)
-    #generate.createBlade(configRu)
-    #generate.createLayerRegion(configL)
+    generate.createBlade(configRu)
+    generate.createLayerRegion(configL)
 
     cc = generate.getContainer()
     
     rr = dtOOInParaVIEW( cc )
     
-    bV = container.cptr_bV()
+    #rr.Show( rr.Find( "xyz_gv_channel", True), "xyz_gv_channel" )
+    #rr.Show( rr.Find( "debug_guideVaneRotAxis", True), "gv_rotAxis" )
+    ##rr.Show( rr.Find( "debug_offVec", True), "gv_offVec" )
+    #rr.Show( rr.Find( "debug_mpCurveHub", True), "mpCurveHub" )
+    #rr.Show( rr.Find( "debug_mpCurveShr", True), "mpCurveShr" )
+    #rr.Show( rr.Find( "gv_meanplane", True), "gv_meanplane" )
+    #rr.Show( rr.Find( "xyz_gv_blade", True), "xyz_gv_blade" )
+    
+    #bV = cc.cptr_bV()
     
     #bV["meshLayers"].makeGrid()
     #bV["gv_mesh"].makeGrid()
@@ -419,8 +450,9 @@ if __name__ == "__main__":
     generate.createLayerRegion(configL)
     
     container = generate.getContainer()
-     
-    #bV["meshLayers"].makeGrid()
+    #bV = container.cptr_bV()
+
+    #bV["ru_mesh"].makeGrid()
     stateLbl = "hubZero"
     indiv = "0"
 
