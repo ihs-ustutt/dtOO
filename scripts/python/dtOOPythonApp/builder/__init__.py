@@ -26,8 +26,8 @@ from .analyticSurface_threePointMeanplane import (
   analyticSurface_threePointMeanplane,
   analyticSurface_threePointMeanplaneFromRatio
 )
-from .analyticSurface_guideVaneMeanplane import (
-  analyticSurface_guideVaneMeanplane
+from .vec3dSurfaceTwoD_guideVaneMeanplane import (
+  vec3dSurfaceTwoD_guideVaneMeanplane
 )
 from .map3dTo3dGmsh_gridFromChannelAndBlocks import (
   map3dTo3dGmsh_gridFromChannelAndBlocks

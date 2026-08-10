@@ -14,7 +14,7 @@ from dtOOPythonSWIG import (
 import logging
 import numpy as np
 
-class analyticSurface_guideVaneMeanplane(dtBundleBuilder):
+class vec3dSurfaceTwoD_guideVaneMeanplane(dtBundleBuilder):
     """Create a straight meanplane surface inside a radially extending channel.
 
     This class:
@@ -87,8 +87,8 @@ class analyticSurface_guideVaneMeanplane(dtBundleBuilder):
     
     Create the guide vane meanplane.
     
-    >>> from dtOOPythonApp.builder import analyticSurface_guideVaneMeanplane 
-    >>> gvMeanplane = analyticSurface_guideVaneMeanplane(
+    >>> from dtOOPythonApp.builder import vec3dSurfaceTwoD_guideVaneMeanplane 
+    >>> gvMeanplane = vec3dSurfaceTwoD_guideVaneMeanplane(
     ...     label = "gv_meanplane",
     ...     channel = channel,
     ...     offRad = 1.425,
@@ -162,7 +162,7 @@ class analyticSurface_guideVaneMeanplane(dtBundleBuilder):
         """
 
         logging.info( "Initializing %s ..." % (label) )
-        super(analyticSurface_guideVaneMeanplane, self).__init__()
+        super(vec3dSurfaceTwoD_guideVaneMeanplane, self).__init__()
         self.label_ = label
         self.channel_ = map3dTo3d.MustDownCast(channel)
 

@@ -1649,8 +1649,8 @@ class radMeridional:
             #
             # Create blade meanplane directly in regular channel
             #
-            from dtOOPythonApp.builder import analyticSurface_guideVaneMeanplane
-            self.container = analyticSurface_guideVaneMeanplane(
+            from dtOOPythonApp.builder import vec3dSurfaceTwoD_guideVaneMeanplane
+            self.container = vec3dSurfaceTwoD_guideVaneMeanplane(
                 label + "_meanplane",
                 channel = self.aG["xyz_"+label+"_channel"],
                 offRad = configB["offRad"],
@@ -2080,7 +2080,7 @@ class radMeridional:
         self.aG.push_back(
             gc << "xyz_"+label+"_gridChannel"
         )
-        """ 
+         
         #
         # Apply the mesh settings to the grid channel.
         #
@@ -2139,7 +2139,7 @@ class radMeridional:
         #    charLengthMin=0.1,
         #    meshTEBlocks = True,
         #).enableDebug().buildExtract( self.container )
-        """
+        
     #
     # returns a list with dtPoint2 types and spline orders
     #  with spanwise cut percentage and blade input parameters
