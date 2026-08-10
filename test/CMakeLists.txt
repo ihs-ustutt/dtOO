@@ -128,7 +128,7 @@ DTOO_ADD_DOCTEST(
 )
 DTOO_ADD_DOCTEST(
   interTransMesh
-  "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtClusteredSingletonState.py"
+  "${CMAKE_SOURCE_DIR}/test/interTransMesh/interTransMesh.py"
   ""
 )
 DTOO_ADD_DOCTEST(floatAtt "floatAtt.py" "/floatAtt")
