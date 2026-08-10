@@ -11,7 +11,6 @@ from dtOOPythonSWIG import (
     bSplineSurface_skinConstructOCC,
 )
 
-from typing import List, Union
 import logging
 import numpy as np
 
@@ -40,6 +39,7 @@ class analyticSurface_guideVaneMeanplane(dtBundleBuilder):
       Length portion of the blade extending from the rotation axis to the leading edge
     l1_: float
       Length portion of the blade extending from the rotation axis to the trailing edge
+
     Returns
     -------
     None
@@ -154,6 +154,7 @@ class analyticSurface_guideVaneMeanplane(dtBundleBuilder):
           Tatal blade length
         ratioL: float, default = 0.5
           Ratio of the total blade length which will form portion from leading edge to rotational axis
+
         Returns
         -------
         None
@@ -204,28 +205,26 @@ class analyticSurface_guideVaneMeanplane(dtBundleBuilder):
         y1 = y + self.l1_*np.sin(ang1)
         
         # create the meanplane curve on the hub as a straight line
-        mpCurveHub = analyticCurve(
-              bSplineCurve_pointConstructOCC(
+        mpCurveHub = bSplineCurve_pointConstructOCC(
                 vectorDtPoint3()
                   << dtPoint3(x0,y0,z_hub)
                   << dtPoint3(x1,y1,z_hub),
                 1
               ).result()
-            )
+        
         # create the meanplane curves on the shroud as a straight line
-        mpCurveShr = analyticCurve(
-              bSplineCurve_pointConstructOCC(
+        mpCurveShr = bSplineCurve_pointConstructOCC(
                 vectorDtPoint3()
                   << dtPoint3(x0,y0,z_shr)
                   << dtPoint3(x1,y1,z_shr),
                 1
               ).result()
-            )
+    
         # skin meanplane surface from meanplane curves    
         res = vec3dSurfaceTwoD( 
             bSplineSurface_skinConstructOCC(
-                mpCurveHub.ptrConstDtCurve(), 
-                mpCurveShr.ptrConstDtCurve()
+                mpCurveHub, 
+                mpCurveShr
             ).result() 
         )
         res.setLabel( self.label_ )
@@ -263,11 +262,11 @@ class analyticSurface_guideVaneMeanplane(dtBundleBuilder):
             )
             # hub and shroud meanplane curves
             self.appendAnalyticGeometry(
-                mpCurveHub,
+                analyticCurve(mpCurveHub),
                 "debug_mpCurveHub"
             )
             self.appendAnalyticGeometry(
-                mpCurveShr,
+                analyticCurve(mpCurveShr),
                 "debug_mpCurveShr"
             )
 
