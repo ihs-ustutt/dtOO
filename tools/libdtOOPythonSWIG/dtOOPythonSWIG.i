@@ -368,6 +368,7 @@ using namespace dtOO;
 #include <attributionHeaven/pointGeometryDist.h>
 #include <attributionHeaven/geometryGeometryDist.h>
 #include <attributionHeaven/curveCurveDist.h>
+#include <minFloatAttr.h>
 #include <gslMinFloatAttr.h>
 #include <gslGradMinFloatAttr.h>
 %}
@@ -1265,6 +1266,7 @@ namespace std {
 %include attributionHeaven/pointGeometryDist.h
 %include attributionHeaven/geometryGeometryDist.h
 %include attributionHeaven/curveCurveDist.h
+%include minFloatAttr.h
 %include gslMinFloatAttr.h
 namespace dtOO {
   %extend gslMinFloatAttr {
