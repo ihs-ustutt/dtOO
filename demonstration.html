@@ -110,6 +110,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dtOO.demo.OpenCASCADE.useOCC">Binding to OpenCASCADE</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="test.html">Test</a></li>
@@ -3066,6 +3067,116 @@ so this value will be constant along the blades’ span.</p>
 </section>
 </dd></dl>
 
+</section>
+<section id="module-dtOO.demo.OpenCASCADE.useOCC">
+<span id="binding-to-opencascade"></span><h2>Binding to OpenCASCADE<a class="headerlink" href="#module-dtOO.demo.OpenCASCADE.useOCC" title="Link to this heading"></a></h2>
+<p>This example creates a curve in OpenCASCADE via
+<a class="reference external" href="https://github.com/tpaviot/pythonocc-core">pythonOCC</a>. The curve is then
+transferred to <cite>dtOO</cite>.</p>
+<p>Import <cite>dtOO</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dtOO</span>
+</pre></div>
+</div>
+<p>Import modules of <cite>pythonOCC</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">OCC.Core.TColgp</span><span class="w"> </span><span class="kn">import</span> <span class="n">TColgp_Array1OfPnt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">OCC.Core.TColStd</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="gp">... </span>  <span class="n">TColStd_Array1OfReal</span><span class="p">,</span> <span class="n">TColStd_Array1OfInteger</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">OCC.Core.gp</span><span class="w"> </span><span class="kn">import</span> <span class="n">gp_Pnt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">OCC.Core.Geom</span><span class="w"> </span><span class="kn">import</span> <span class="n">Geom_BSplineCurve</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">OCC.Core.Geom</span><span class="w"> </span><span class="kn">import</span> <span class="n">Geom_SurfaceOfRevolution</span>
+</pre></div>
+</div>
+<p>Define number of points, order of the curve, and the length of the <cite>knots</cite> and
+<cite>mults</cite> vector:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nP</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lKnotsAndMults</span> <span class="o">=</span> <span class="n">nP</span> <span class="o">-</span> <span class="p">(</span><span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create <cite>pole</cite> vector that contains the control points, the <cite>knots</cite> vector, and
+the <cite>mults</cite> vector. All vectors are objects of OpenCASCADE:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">poles</span> <span class="o">=</span> <span class="n">TColgp_Array1OfPnt</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nP</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">knots</span> <span class="o">=</span> <span class="n">TColStd_Array1OfReal</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">lKnotsAndMults</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mults</span> <span class="o">=</span> <span class="n">TColStd_Array1OfInteger</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">lKnotsAndMults</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set the control points to the vector:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">poles</span><span class="o">.</span><span class="n">SetValue</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">gp_Pnt</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">poles</span><span class="o">.</span><span class="n">SetValue</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">gp_Pnt</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">poles</span><span class="o">.</span><span class="n">SetValue</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">gp_Pnt</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Set ascending values to the <cite>knots</cite> vector:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">knots</span><span class="o">.</span><span class="n">Length</span><span class="p">()):</span>
+<span class="gp">... </span> <span class="n">knots</span><span class="o">.</span><span class="n">SetValue</span><span class="p">(</span><span class="n">ii</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">ii</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set multiplicity of the knots to the <cite>knots</cite> vector; first and last knot have
+the multiplicity <cite>order+1</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mults</span><span class="o">.</span><span class="n">Init</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mults</span><span class="o">.</span><span class="n">SetValue</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mults</span><span class="o">.</span><span class="n">SetValue</span><span class="p">(</span><span class="n">lKnotsAndMults</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create the B-Spline curve by calling an OpenCASCADE constructor via
+<cite>pythonOCC</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve_occ</span> <span class="o">=</span> <span class="n">Geom_BSplineCurve</span><span class="p">(</span><span class="n">poles</span><span class="p">,</span> <span class="n">knots</span><span class="p">,</span> <span class="n">mults</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The object <cite>curve_occ</cite> is a subclass of <cite>Geom_Curve</cite> from OpenCASCADE and
+can be used directly as the underlying object in an <cite>analyticCurve</cite>. The
+class <cite>dtOCCCurveBase</cite> wraps the binding to OpenCASCADE and stores the
+pointer of type <cite>Geom_Curve</cite>. With the builder <cite>geomCurve_baseConstructOCC</cite>
+an object of type <cite>dtCurve</cite> is created:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve_dtCurve</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">geomCurve_baseConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO</span><span class="o">.</span><span class="n">dtOCCCurveBase</span><span class="p">(</span> <span class="n">curve_occ</span> <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Finally, the <cite>dtCurve</cite> object is then used as the underlying curve of an
+<cite>analyticCurve</cite> object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve_analyticGeometry</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticCurve</span><span class="p">(</span> <span class="n">curve_dtCurve</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>This object can be used to perform operations in <cite>dtOO</cite>. E.g. the coordinates
+of a point can be extracted with</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p3</span> <span class="o">=</span> <span class="n">curve_analyticGeometry</span><span class="o">.</span><span class="n">getPointPercent</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and printed:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;</span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span> <span class="n">p3</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">p3</span><span class="o">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">p3</span><span class="o">.</span><span class="n">z</span><span class="p">())</span> <span class="p">)</span>
+<span class="go">0.000000 0.500000 0.250000</span>
+</pre></div>
+</div>
+<p>The complete procedure can also be gone in reverse order to extract the
+underlying <cite>OpenCASCADE</cite> object of an <cite>dtOO</cite> object. As an example a surface
+of revolution is constructed with the already created <cite>dtOO</cite> curve object
+<cite>curve_dtCurve,</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surface_dtSurface</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">surfaceOfRevolution_curveRotateConstructOCC</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">curve_dtCurve</span><span class="p">,</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then, the created surface is casted to the <cite>OpenCASCADE</cite> wrapper in <cite>dtOO</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surface_dtOCCSurface</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtOCCSurface</span><span class="o">.</span><span class="n">DownCast</span><span class="p">(</span> <span class="n">surface_dtSurface</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>The wrapper stores a pointer to the <cite>OpenCASCADE</cite> object of type
+<cite>Geom_Surface</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surface_occ</span> <span class="o">=</span> <span class="n">surface_dtOCCSurface</span><span class="o">.</span><span class="n">OCCRef</span><span class="p">()</span><span class="o">.</span><span class="n">getOCC</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the case at hand, the surface has the type <cite>Geom_SurfaceOfRevolution</cite>;
+therefore, the check should be true:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surface_occ</span><span class="o">.</span><span class="n">IsInstance</span><span class="p">(</span> <span class="s2">&quot;Geom_SurfaceOfRevolution&quot;</span> <span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The type can then also be casted:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surface_occSurfaceOfRevoltuion</span> <span class="o">=</span> <span class="n">Geom_SurfaceOfRevolution</span><span class="o">.</span><span class="n">DownCast</span><span class="p">(</span> <span class="n">surface_occ</span> <span class="p">)</span>
+</pre></div>
+</div>
 </section>
 </section>
 

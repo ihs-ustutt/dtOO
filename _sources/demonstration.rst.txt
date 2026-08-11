@@ -793,3 +793,9 @@ and `openFOAM`-cases can be returned from this object.
 .. automodule:: dtOO.demo.radMeridional.radMeridional
 	:members:
         :member-order: bysource
+
+Binding to OpenCASCADE
+======================
+
+.. automodule:: dtOO.demo.OpenCASCADE.useOCC  
+    :members:
