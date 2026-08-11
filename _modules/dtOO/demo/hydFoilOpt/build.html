@@ -148,10 +148,20 @@
 <span class="sd">&gt;&gt;&gt; result = differential_evolution(</span>
 <span class="sd">...   optimizeHydFoil, </span>
 <span class="sd">...   bounds, </span>
-<span class="sd">...   popsize=3, </span>
-<span class="sd">...   maxiter=2,</span>
+<span class="sd">...   popsize=1, </span>
+<span class="sd">...   maxiter=0,</span>
 <span class="sd">...   polish=False</span>
-<span class="sd">... )</span>
+<span class="sd">... ) # doctest: +ELLIPSIS</span>
+<span class="sd">(of_A1_1) Running simpleFoam...</span>
+<span class="sd">(of_A1_1) Running simpleFoam...</span>
+<span class="sd">(of_A1_2) Running simpleFoam...</span>
+<span class="sd">(of_A1_2) Running simpleFoam...</span>
+<span class="sd">(of_A1_3) Running simpleFoam...</span>
+<span class="sd">(of_A1_3) Running simpleFoam...</span>
+<span class="sd">(of_A1_4) Running simpleFoam...</span>
+<span class="sd">(of_A1_4) Running simpleFoam...</span>
+<span class="sd">(of_A1_5) Running simpleFoam...</span>
+<span class="sd">(of_A1_5) Running simpleFoam...</span>
 
 <span class="sd">Output the final result of the optimization.</span>
 
@@ -1336,8 +1346,8 @@
     <span class="c1"># Integrate pressure and velocity over inlet and outlet; calculate the</span>
     <span class="c1"># sum of those energies to get the difference in head</span>
     <span class="c1">#</span>
-    <span class="n">e_i</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_i</span><span class="o">.</span><span class="n">IntValueQ</span><span class="p">()</span> <span class="o">/</span> <span class="n">g</span> <span class="o">+</span> <span class="n">U_i</span><span class="o">.</span><span class="n">IntMagSquareQ</span><span class="p">()</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">g</span><span class="p">)</span>
-    <span class="n">e_o</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_o</span><span class="o">.</span><span class="n">IntValueQ</span><span class="p">()</span> <span class="o">/</span> <span class="n">g</span> <span class="o">+</span> <span class="n">U_o</span><span class="o">.</span><span class="n">IntMagSquareQ</span><span class="p">()</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">g</span><span class="p">)</span>
+    <span class="n">e_i</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_i</span><span class="o">.</span><span class="n">IntValueQ</span><span class="p">()</span> <span class="o">/</span> <span class="n">g</span> <span class="o">+</span> <span class="n">U_i</span><span class="o">.</span><span class="n">IntMagSquareQ</span><span class="p">()</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="n">e_o</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_o</span><span class="o">.</span><span class="n">IntValueQ</span><span class="p">()</span> <span class="o">/</span> <span class="n">g</span> <span class="o">+</span> <span class="n">U_o</span><span class="o">.</span><span class="n">IntMagSquareQ</span><span class="p">()</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
     <span class="n">Q_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">U_i</span><span class="o">.</span><span class="n">IntQ</span><span class="p">())</span>
     <span class="n">dHMean</span> <span class="o">=</span> <span class="p">(</span><span class="n">e_i</span> <span class="o">+</span> <span class="n">e_o</span><span class="p">)</span> <span class="o">/</span> <span class="n">Q_i</span>
    

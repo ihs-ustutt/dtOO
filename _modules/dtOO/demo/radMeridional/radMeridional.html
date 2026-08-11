@@ -1685,14 +1685,28 @@
         <span class="n">label</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
         <span class="n">regChannel</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;regChannel&quot;</span><span class="p">]</span>
         <span class="n">nBlades</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;nBlades&quot;</span><span class="p">]</span>
-
-        <span class="n">spanwiseCuts_mp</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;spanwiseCuts_mp&quot;</span><span class="p">]</span>
-        <span class="n">alpha_1</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;alpha_1&quot;</span><span class="p">]</span>
-        <span class="n">alpha_2</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;alpha_2&quot;</span><span class="p">]</span>
-        <span class="n">ratioX</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;ratioX&quot;</span><span class="p">]</span>
-        <span class="n">deltaY</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;deltaY&quot;</span><span class="p">]</span>
-        <span class="n">offX</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;offX&quot;</span><span class="p">]</span>
-        <span class="n">offY</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;offY&quot;</span><span class="p">]</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># Two possible creation strategies based on configuration dictionary</span>
+        <span class="c1"># </span>
+        <span class="c1"># 1. Curved meanplane and thickness mapped on regular channel</span>
+        <span class="c1">#       - adjustRadius exists in dictionary</span>
+        <span class="c1">#       - a conformal mapping between the blade geometries and the regular channel is performed</span>
+        <span class="c1">#         (noMap = False)</span>
+        <span class="c1">#</span>
+        <span class="c1"># 2. Straight meanplane created in radially extending regular channel</span>
+        <span class="c1">#       - meanplane and thichnes distribution are directly created in regular channel</span>
+        <span class="c1">#         (noMap = True)</span>
+        <span class="c1">#</span>
+        <span class="c1"># dAdd_dir is used to set the correct directions of the blade and the mesh block surface</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="s2">&quot;adjustRadius&quot;</span> <span class="ow">in</span> <span class="n">configB</span><span class="p">:</span>
+            <span class="n">adjustRadius</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;adjustRadius&quot;</span><span class="p">]</span>
+            <span class="n">noMap</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">dAdd_dir</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">noMap</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">dAdd_dir</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
         <span class="n">spanwiseCuts_td</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;spanwiseCuts_td&quot;</span><span class="p">]</span>
         <span class="n">t_le</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;t_le&quot;</span><span class="p">]</span>
@@ -1702,7 +1716,6 @@
         <span class="n">t_te</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;t_te&quot;</span><span class="p">]</span>
         <span class="n">u_te</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;u_te&quot;</span><span class="p">]</span>
         
-        <span class="n">adjustRadius</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;adjustRadius&quot;</span><span class="p">]</span>
         <span class="n">orientation</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;orientation&quot;</span><span class="p">]</span>
         
         <span class="c1">#</span>
@@ -1714,46 +1727,67 @@
                 <span class="n">regChannel</span><span class="p">,</span> <span class="mi">1</span>
             <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_channel&quot;</span>
         <span class="p">)</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># Create Blade Meanplane</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="n">noMap</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1">#</span>
+            <span class="c1"># Create blade meanplane directly in regular channel</span>
+            <span class="c1">#</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">vec3dSurfaceTwoD_guideVaneMeanplane</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">vec3dSurfaceTwoD_guideVaneMeanplane</span><span class="p">(</span>
+                <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_meanplane&quot;</span><span class="p">,</span>
+                <span class="n">channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_channel&quot;</span><span class="p">],</span>
+                <span class="n">offRad</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;offRad&quot;</span><span class="p">],</span>
+                <span class="n">offAng</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;offAng&quot;</span><span class="p">],</span>
+                <span class="n">alpha</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">],</span>
+                <span class="n">l_tot</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;l_tot&quot;</span><span class="p">],</span>
+                <span class="n">ratioL</span> <span class="o">=</span> <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;ratioL&quot;</span><span class="p">]</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">enableDebug</span><span class="p">()</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#</span>
+            <span class="c1"># Create the blades&#39; meanplane in the parameter space.</span>
+            <span class="c1">#</span>
+            <span class="c1"># The method fillInputList transforms the lists form the configuration</span>
+            <span class="c1"># dictionary into a valid input for the class constructor</span>
+            <span class="c1"># scaOneD_scaCurve2dOneDPointConstruct.</span>
+            <span class="c1">#</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+                <span class="n">analyticSurface_threePointMeanplaneFromRatio</span><span class="p">,</span>
+                <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">analyticSurface_threePointMeanplaneFromRatio</span><span class="p">(</span>
+              <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_meanplane&quot;</span><span class="p">,</span>
+              <span class="n">configB</span><span class="p">[</span><span class="s2">&quot;spanwiseCuts_mp&quot;</span><span class="p">],</span>
+              <span class="n">alphaOne</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+                <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fillInputList</span><span class="p">(</span><span class="n">configB</span><span class="p">[</span><span class="s2">&quot;alpha_1&quot;</span><span class="p">])</span>
+              <span class="p">)(),</span>
+              <span class="n">alphaTwo</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+                <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fillInputList</span><span class="p">(</span><span class="n">configB</span><span class="p">[</span><span class="s2">&quot;alpha_2&quot;</span><span class="p">])</span>
+              <span class="p">)(),</span>
+              <span class="n">ratioX</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+                <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fillInputList</span><span class="p">(</span><span class="n">configB</span><span class="p">[</span><span class="s2">&quot;ratioX&quot;</span><span class="p">])</span>
+              <span class="p">)(),</span>
+              <span class="n">deltaY</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+                <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fillInputList</span><span class="p">(</span><span class="n">configB</span><span class="p">[</span><span class="s2">&quot;deltaY&quot;</span><span class="p">])</span>
+              <span class="p">)(),</span>
+              <span class="n">offX</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+                <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fillInputList</span><span class="p">(</span><span class="n">configB</span><span class="p">[</span><span class="s2">&quot;offX&quot;</span><span class="p">])</span>
+              <span class="p">)(),</span>
+              <span class="n">offY</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
+                <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fillInputList</span><span class="p">(</span><span class="n">configB</span><span class="p">[</span><span class="s2">&quot;offY&quot;</span><span class="p">])</span>
+              <span class="p">)(),</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="p">)</span>
+        
 
-        <span class="c1">#</span>
-        <span class="c1"># Create the blades&#39; meanplane in the parameter space.</span>
-        <span class="c1">#</span>
-        <span class="c1"># The method fillInputList transforms the lists form the configuration</span>
-        <span class="c1"># dictionary into a valid input for the class constructor</span>
-        <span class="c1"># scaOneD_scaCurve2dOneDPointConstruct.</span>
-        <span class="c1">#</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-            <span class="n">analyticSurface_threePointMeanplaneFromRatio</span><span class="p">,</span>
-            <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">analyticSurface_threePointMeanplaneFromRatio</span><span class="p">(</span>
-          <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_meanplane&quot;</span><span class="p">,</span>
-          <span class="n">spanwiseCuts_mp</span><span class="p">,</span>
-          <span class="n">alphaOne</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
-            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fillInputList</span><span class="p">(</span><span class="n">alpha_1</span><span class="p">)</span>
-          <span class="p">)(),</span>
-          <span class="n">alphaTwo</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
-            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fillInputList</span><span class="p">(</span><span class="n">alpha_2</span><span class="p">)</span>
-          <span class="p">)(),</span>
-          <span class="n">ratioX</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
-            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fillInputList</span><span class="p">(</span><span class="n">ratioX</span><span class="p">)</span>
-          <span class="p">)(),</span>
-          <span class="n">deltaY</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
-            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fillInputList</span><span class="p">(</span><span class="n">deltaY</span><span class="p">)</span>
-          <span class="p">)(),</span>
-          <span class="n">offX</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
-            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fillInputList</span><span class="p">(</span><span class="n">offX</span><span class="p">)</span>
-          <span class="p">)(),</span>
-          <span class="n">offY</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
-            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fillInputList</span><span class="p">(</span><span class="n">offY</span><span class="p">)</span>
-          <span class="p">)(),</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="p">)</span>
         
         <span class="c1">#</span>
         <span class="c1"># Create the blades&#39; thickness distribution in the parameters space.</span>
         <span class="c1">#</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-          <span class="n">vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution</span>
+          <span class="n">vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution</span><span class="p">,</span>
+          <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution</span><span class="p">(</span>
           <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_thicknessDistribution&quot;</span><span class="p">,</span>
@@ -1775,7 +1809,8 @@
           <span class="p">)(),</span>
           <span class="n">uTe</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
             <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fillInputList</span><span class="p">(</span><span class="n">u_te</span><span class="p">)</span>
-          <span class="p">)()</span>
+          <span class="p">)(),</span>
+          <span class="n">d</span> <span class="o">=</span> <span class="n">dAdd_dir</span>
         <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="p">)</span>
 
         <span class="c1">#</span>
@@ -1798,38 +1833,7 @@
         <span class="p">)</span>
         <span class="n">theAF</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_blade&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAF</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
-        
-        <span class="c1">#</span>
-        <span class="c1"># Create a conformal mapping object with the regular channel</span>
-        <span class="c1"># and the adjustRadius setting.</span>
-        <span class="c1">#</span>
-        <span class="n">conMap</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">uVw_phirMs</span><span class="p">()</span>
-        <span class="n">conMap</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
-          <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">()</span>\
-            <span class="o">.</span><span class="n">appendStr</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;uVw_phirMs&quot;</span><span class="p">)</span>\
-            <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_nV&quot;</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>\
-            <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_nW&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>\
-            <span class="o">.</span><span class="n">appendBool</span><span class="p">(</span><span class="s2">&quot;_adjustRadius&quot;</span><span class="p">,</span> <span class="n">adjustRadius</span><span class="p">)</span>\
-            <span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>\
-              <span class="s2">&quot;_rM2d&quot;</span><span class="p">,</span> \
-              <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_channel&quot;</span><span class="p">)</span>\
-            <span class="p">),</span>\
-          <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span> \
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bC</span><span class="o">.</span><span class="n">dtTransformer</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">conMap</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
          
-        <span class="c1">##</span>
-        <span class="c1">## depiction in 3d Space of blade and meanplane</span>
-        <span class="c1">##</span>
-        <span class="c1">#for ii in [label+&quot;_meanplane&quot;, label+&quot;_blade&quot;,]:         </span>
-        <span class="c1">#  theAG = dtOO.vec3dTwoDInMap3dTo3d(</span>
-        <span class="c1">#    dtOO.vec3dTwoD.MustConstDownCast(</span>
-        <span class="c1">#      conMap.applyAnalyticFunction(self.aF[ii].clone())</span>
-        <span class="c1">#    ),</span>
-        <span class="c1">#    dtOO.map3dTo3d.ConstDownCast( self.aG[&quot;xyz_&quot;+label+&quot;_channel&quot;] )   </span>
-        <span class="c1">#  )</span>
-        <span class="c1">#  self.aG.push_back( theAG &lt;&lt; &quot;xyz_&quot;+str(ii) )</span>
-        
         <span class="c1">#</span>
         <span class="c1"># Create a surface around the blade surface with a normal distance</span>
         <span class="c1"># specified by meshBlock_thickness.</span>
@@ -1837,7 +1841,7 @@
         <span class="c1">#meshBlock_thickness = 0.035</span>
         <span class="n">meshBlock_thickness</span> <span class="o">=</span> <span class="mf">0.025</span> 
         <span class="n">fRef</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dMuParserTwoD</span><span class="p">(</span>
-          <span class="s2">&quot;1.0*&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">meshBlock_thickness</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;, xx, yy&quot;</span><span class="p">,</span> <span class="s2">&quot;xx&quot;</span><span class="p">,</span> <span class="s2">&quot;yy&quot;</span>
+          <span class="nb">str</span><span class="p">(</span><span class="n">dAdd_dir</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.0*&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">meshBlock_thickness</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;, xx, yy&quot;</span><span class="p">,</span> <span class="s2">&quot;xx&quot;</span><span class="p">,</span> <span class="s2">&quot;yy&quot;</span>
         <span class="p">)</span>
         <span class="n">fRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_thicknessMeshBlock&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
@@ -1936,60 +1940,133 @@
                 <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">surf</span> <span class="o">&lt;&lt;</span> <span class="n">label</span><span class="o">+</span><span class="s2">&quot;_fe_meanplane_&quot;</span><span class="o">+</span><span class="n">at</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
- 
+        
         <span class="c1">#</span>
-        <span class="c1"># Apply the conformal mapping object the following geometries.</span>
+        <span class="c1"># Transform the analyticFunction objects of the </span>
+        <span class="c1"># geometries in analyticGeometry objects</span>
         <span class="c1">#</span>
-        <span class="c1">#   - faces of the blade meanplane, the blade and the mesh blocks</span>
-        <span class="c1">#</span>
-        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="p">[</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meanplane&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">+</span><span class="s2">&quot;_blade&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meshBlock&quot;</span><span class="p">,]:</span>
-          <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoDInMap3dTo3d</span><span class="p">(</span>
-            <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
-              <span class="n">conMap</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
-            <span class="p">),</span>
-            <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_channel&quot;</span><span class="p">]</span> <span class="p">)</span>
-          <span class="p">)</span>
-          <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
-          <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
-        <span class="c1">#</span>
-        <span class="c1">#   - fe_meanplane faces extending tangentially from the mesh blocks.</span>
-        <span class="c1">#</span>
-        <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getIndices</span><span class="p">(</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_fe_meanplane_*&quot;</span><span class="p">):</span>
-          <span class="n">ii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getLabel</span><span class="p">(</span> <span class="n">iNum</span> <span class="p">)</span>
-          <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoDInMap3dTo3d</span><span class="p">(</span>
-            <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
-              <span class="n">conMap</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
-            <span class="p">),</span>
-            <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_channel&quot;</span><span class="p">]</span> <span class="p">)</span>
-          <span class="p">)</span>
-          <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
-          <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
-        <span class="c1">#</span>
-        <span class="c1">#   - mesh block volumes</span>
-        <span class="c1">#</span>
-        <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getIndices</span><span class="p">(</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meshBlock_*&quot;</span><span class="p">):</span>
-          <span class="n">ii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getLabel</span><span class="p">(</span> <span class="n">iNum</span> <span class="p">)</span>
-          <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dThreeDInMap3dTo3d</span><span class="p">(</span>
-            <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dThreeD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
-              <span class="n">conMap</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
-            <span class="p">),</span>
-            <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_channel&quot;</span><span class="p">]</span> <span class="p">)</span>
-          <span class="p">)</span>
-          <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
-          <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
-        <span class="c1">#</span>
-        <span class="c1">#   - mesh block curves which were used to create the fe_meanplane faces</span>
-        <span class="c1">#</span>
-        <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getIndices</span><span class="p">(</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meshBlockCurve_*&quot;</span><span class="p">):</span>
-          <span class="n">ii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getLabel</span><span class="p">(</span> <span class="n">iNum</span> <span class="p">)</span>
-          <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dOneDInMap3dTo3d</span><span class="p">(</span>
-            <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dOneD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
-              <span class="n">conMap</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
-            <span class="p">),</span>
-            <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_channel&quot;</span><span class="p">]</span> <span class="p">)</span>
-          <span class="p">)</span>
-          <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
-          <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">noMap</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1">#</span>
+            <span class="c1"># Direct transformation when the objects were already created in the regular channel</span>
+            <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="p">[</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meanplane&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">+</span><span class="s2">&quot;_blade&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meshBlock&quot;</span><span class="p">,]:</span>
+                
+                <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticSurface</span><span class="p">(</span>
+                        <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dSurfaceTwoD</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">constPtrDtSurface</span><span class="p">()</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+                <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+            
+            <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getIndices</span><span class="p">(</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_fe_meanplane_*&quot;</span><span class="p">):</span>
+                <span class="n">ii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getLabel</span><span class="p">(</span> <span class="n">iNum</span> <span class="p">)</span>
+                <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticSurface</span><span class="p">(</span>
+                        <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dSurfaceTwoD</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">constPtrDtSurface</span><span class="p">()</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+                <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getIndices</span><span class="p">(</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meshBlock_*&quot;</span><span class="p">):</span>
+                <span class="n">ii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getLabel</span><span class="p">(</span> <span class="n">iNum</span> <span class="p">)</span>
+                <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dThreeDInMap3dTo3d</span><span class="p">(</span>
+                    <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dThreeD</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+                    <span class="p">),</span> 
+                    <span class="n">dtOO</span><span class="o">.</span><span class="n">infinityMap3dTo3d</span><span class="p">()</span>
+                <span class="p">)</span>
+                <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+                
+            <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getIndices</span><span class="p">(</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meshBlockCurve_*&quot;</span><span class="p">):</span>
+                <span class="n">ii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getLabel</span><span class="p">(</span> <span class="n">iNum</span> <span class="p">)</span>
+                <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticCurve</span><span class="p">(</span>
+                        <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dCurveOneD</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">ptrConstDtCurve</span><span class="p">()</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+                <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#</span>
+            <span class="c1"># Transformation through conformal mapping with regular channel</span>
+            <span class="c1"># </span>
+            <span class="c1"># Create a conformal mapping object with the regular channel</span>
+            <span class="c1"># and the adjustRadius setting.</span>
+            <span class="c1">#</span>
+            <span class="n">conMap</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">uVw_phirMs</span><span class="p">()</span>
+            <span class="n">conMap</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+              <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">()</span>\
+                <span class="o">.</span><span class="n">appendStr</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;uVw_phirMs&quot;</span><span class="p">)</span>\
+                <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_nV&quot;</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>\
+                <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_nW&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>\
+                <span class="o">.</span><span class="n">appendBool</span><span class="p">(</span><span class="s2">&quot;_adjustRadius&quot;</span><span class="p">,</span> <span class="n">adjustRadius</span><span class="p">)</span>\
+                <span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>\
+                  <span class="s2">&quot;_rM2d&quot;</span><span class="p">,</span> \
+                  <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_channel&quot;</span><span class="p">)</span>\
+                <span class="p">),</span>\
+              <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span> \
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bC</span><span class="o">.</span><span class="n">dtTransformer</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">conMap</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+          
+            <span class="c1">#</span>
+            <span class="c1"># Apply the conformal mapping object the following geometries.</span>
+            <span class="c1">#</span>
+            <span class="c1">#   - faces of the blade meanplane, the blade and the mesh blocks</span>
+            <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="p">[</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meanplane&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">+</span><span class="s2">&quot;_blade&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meshBlock&quot;</span><span class="p">,]:</span>
+              <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoDInMap3dTo3d</span><span class="p">(</span>
+                <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
+                  <span class="n">conMap</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+                <span class="p">),</span>
+                <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_channel&quot;</span><span class="p">]</span> <span class="p">)</span>
+              <span class="p">)</span>
+              <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="c1">#   - fe_meanplane faces extending tangentially from the mesh blocks.</span>
+            <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getIndices</span><span class="p">(</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_fe_meanplane_*&quot;</span><span class="p">):</span>
+              <span class="n">ii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getLabel</span><span class="p">(</span> <span class="n">iNum</span> <span class="p">)</span>
+              <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoDInMap3dTo3d</span><span class="p">(</span>
+                <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
+                  <span class="n">conMap</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+                <span class="p">),</span>
+                <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_channel&quot;</span><span class="p">]</span> <span class="p">)</span>
+              <span class="p">)</span>
+              <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="c1">#   - mesh block volumes</span>
+            <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getIndices</span><span class="p">(</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meshBlock_*&quot;</span><span class="p">):</span>
+              <span class="n">ii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getLabel</span><span class="p">(</span> <span class="n">iNum</span> <span class="p">)</span>
+              <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dThreeDInMap3dTo3d</span><span class="p">(</span>
+                <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dThreeD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
+                  <span class="n">conMap</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+                <span class="p">),</span>
+                <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_channel&quot;</span><span class="p">]</span> <span class="p">)</span>
+              <span class="p">)</span>
+              <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+            <span class="c1">#</span>
+            <span class="c1">#   - mesh block curves which were used to create the fe_meanplane faces</span>
+            <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getIndices</span><span class="p">(</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meshBlockCurve_*&quot;</span><span class="p">):</span>
+              <span class="n">ii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">getLabel</span><span class="p">(</span> <span class="n">iNum</span> <span class="p">)</span>
+              <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dOneDInMap3dTo3d</span><span class="p">(</span>
+                <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dOneD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
+                  <span class="n">conMap</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+                <span class="p">),</span>
+                <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_channel&quot;</span><span class="p">]</span> <span class="p">)</span>
+              <span class="p">)</span>
+              <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
         
         <span class="c1">#</span>
         <span class="c1"># Collect the curves for the fe_meanplane faces.</span>
@@ -2119,7 +2196,7 @@
             <span class="p">)(),</span>
             <span class="n">bladeHubElementScale</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
             <span class="n">charLengthMax</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span>
-            <span class="n">charLengthMin</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span>
+            <span class="n">charLengthMin</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
             <span class="n">meshTEBlocks</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span><span class="o">.</span><span class="n">enableDebug</span><span class="p">()</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="p">)</span></div>
 
