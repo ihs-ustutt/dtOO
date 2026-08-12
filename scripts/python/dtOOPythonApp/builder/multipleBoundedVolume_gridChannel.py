@@ -345,6 +345,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         nInOutSurfSuction: int = 2,
         rotVector: dtVector3 = dtVector3(0, 0, 1),
         orientation: int = 1,
+        tERounded: bool = False,
 
       ) -> None:
         """
@@ -384,6 +385,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         self.nInOutSurf_ = nInOutSurfSuction
         self.rotVector_ = dtLinearAlgebra.normalize(rotVector)
         self.orientation_ = orientation
+        self.tE_ = tERounded 
 
     def build(self) -> None:
         """Build part.
@@ -676,7 +678,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
             self.boundSurf_.push_back(face << "coupling_"+str(i))
             
             # boundary curves for multiple bounded surfaces at hub and shroud
-            if i >= len(self.couplings_)-2:
+            if i >= len(self.couplings_)-2 and self.tE_ == False:
                 # trailing edge faces orthogonal to the flow direction (oriented differently)
                 hubCurves.push_back(face.segmentConstUPercent(0))
                 shroudCurves.push_back(face.segmentConstUPercent(1))
@@ -711,7 +713,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
                         "debug_"+self.label_+"_shroudCurve_"+str(i)
                     )
              
-        # creat grid channel as multi bounded volume
+        # create grid channel as multi bounded volume
         self.gridChannel_ = multipleBoundedVolume(infinityMap3dTo3d(), self.boundSurf_)
         
 

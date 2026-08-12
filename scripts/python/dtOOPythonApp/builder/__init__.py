@@ -56,6 +56,9 @@ from .vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution import (
 from .vec3dThreeD_skinAndSplit import (
   vec3dThreeD_skinAndSplit
 )
+from .vec3dCurveOneD_faceDirectionOffset import (
+  vec3dCurveOneD_faceDirectionOffset
+)
 from .analyticSurface_inOutFeMeanplane import (
   analyticSurface_inOutFeMeanplane
 )

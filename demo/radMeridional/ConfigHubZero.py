@@ -161,6 +161,7 @@ class ConfigHubZero():
             "t_mid" : [0.0365],
             "u_mid" : [0.20],
             "t_te" : [0.0195],
+            #"u_te" : [1.0],
             "u_te" : [0.70],
 
             "orientation" : -1,
@@ -211,7 +212,7 @@ class ConfigHubZero():
             "t_mid" : [0.04,0.03],
             "u_mid" : [0.50],
             "t_te" : [0.02],
-            "u_te" : [0.80],
+            "u_te" : [1.00],
 
             "adjustRadius" : True,
             "orientation" : 1,
@@ -408,9 +409,9 @@ def run(*args, **kwargs):
     generate = radMeridional.radMeridional()
 
     generate.createMeridional(configM, hubCurves, shroudCurves)
-    generate.createBlade(configGV)
+    #generate.createBlade(configGV)
     generate.createBlade(configRu)
-    generate.createLayerRegion(configL)
+    #generate.createLayerRegion(configL)
 
     cc = generate.getContainer()
     
@@ -447,15 +448,16 @@ if __name__ == "__main__":
     generate.createMeridional(configM, hubCurves, shroudCurves)
     generate.createBlade(configGV)
     generate.createBlade(configRu)
-    generate.createLayerRegion(configL)
+    #generate.createLayerRegion(configL)
     
     container = generate.getContainer()
-    #bV = container.cptr_bV()
+    bV = container.cptr_bV()
 
     #bV["ru_mesh"].makeGrid()
+    bV["gv_mesh"].makeGrid()
     stateLbl = "hubZero"
     indiv = "0"
 
-    createOFCase(container, stateLbl, indiv)
+    #createOFCase(container, stateLbl, indiv)
 
     # ------------------- EOF ------------------- #
