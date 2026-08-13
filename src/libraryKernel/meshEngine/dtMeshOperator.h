@@ -56,6 +56,7 @@ public:
     lvH_boundedVolume const *const bV,
     lvH_dtMeshOperator const *const mO
   );
+  virtual bool isStatusIndependent(void);
 
 protected:
   jsonPrimitive &config(void);

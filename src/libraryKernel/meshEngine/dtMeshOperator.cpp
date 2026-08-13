@@ -59,6 +59,8 @@ void dtMeshOperator::init(
   optionHandling::init(element, bC, cV, aF, aG);
 }
 
+bool dtMeshOperator::isStatusIndependent(void) { return false; }
+
 jsonPrimitive &dtMeshOperator::config(void) { return _config; }
 
 jsonPrimitive const &dtMeshOperator::config(void) const { return _config; }
