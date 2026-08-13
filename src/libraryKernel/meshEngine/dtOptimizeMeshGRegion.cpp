@@ -20,51 +20,63 @@ License
 #include "dtGmshFace.h"
 #include "dtGmshModel.h"
 #include "dtGmshRegion.h"
-#include <gmsh/MVertex.h>
-#include <gmsh/meshGRegion.h>
-#include <logMe/logMe.h>
-// #include <gmsh/Context.h>
 #include "dtMeshOperatorFactory.h"
 #include <gmsh/MPyramid.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/MTriangle.h>
+#include <gmsh/MVertex.h>
+#include <gmsh/meshGRegion.h>
+#include <gmsh/meshRelocateVertex.h>
+#include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 
 namespace dtOO {
 bool dtOptimizeMeshGRegion::_registrated = dtMeshOperatorFactory::registrate(
   dt__tmpPtr(dtOptimizeMeshGRegion, new dtOptimizeMeshGRegion())
 );
 
-dtOptimizeMeshGRegion::dtOptimizeMeshGRegion() : dtMesh3DOperator()
-{
-  _gmsh = true;
-  _netgen = true;
-}
-
-dtOptimizeMeshGRegion::dtOptimizeMeshGRegion(bool gmsh, bool netgen)
-  : dtMesh3DOperator()
-{
-  _gmsh = gmsh;
-  _netgen = netgen;
-}
+dtOptimizeMeshGRegion::dtOptimizeMeshGRegion() : dtMesh3DOperator() {}
 
 dtOptimizeMeshGRegion::~dtOptimizeMeshGRegion() {}
+
+bool dtOptimizeMeshGRegion::isStatusIndependent(void) { return true; }
 
 dtOptimizeMeshGRegion::dtOptimizeMeshGRegion(const dtOptimizeMeshGRegion &orig)
   : dtMesh3DOperator(orig)
 {
-  _gmsh = orig._gmsh;
-  _netgen = orig._netgen;
 }
 
 void dtOptimizeMeshGRegion::operator()(dtGmshRegion *dtgr)
 {
   Msg::Info("dtOptimizeMeshGRegion()() volume %d", dtgr->tag());
+  if (config().lookupDef<bool>("_relocateVertices", false))
+  {
+    Msg::Info(
+      "dtOptimizeMeshGRegion()() volume %d : RelocateVertices", dtgr->tag()
+    );
+    RelocateVertices(dtgr, config().lookup<int>("_relocateVerticesNumIter"));
+  }
 
-  if (_gmsh)
+  if (config().lookupDef<bool>("_relocateVerticesOfPyramids", false))
+  {
+    Msg::Info(
+      "dtOptimizeMeshGRegion()() volume %d : RelocateVerticesOfPyramids",
+      dtgr->tag()
+    );
+    RelocateVerticesOfPyramids(
+      dtgr, config().lookup<int>("_relocateVerticesOfPyramidsNumIter")
+    );
+  }
+  if (config().lookupDef<bool>("_gmsh", true))
+  {
+    Msg::Info(
+      "dtOptimizeMeshGRegion()() volume %d : Optimize gmsh", dtgr->tag()
+    );
     ::optimizeMeshGRegion()(dtgr);
+  }
 
-  if (_netgen)
+  if (config().lookupDef<bool>("_netgen", true))
   {
     //
     // create cloneRegion and cloneFace
