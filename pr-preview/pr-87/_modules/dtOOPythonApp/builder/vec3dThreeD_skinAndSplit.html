@@ -116,7 +116,7 @@
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">vec3dThreeD_skinAndSplit</span><span class="p">(</span><span class="n">dtBundleBuilder</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create mesh blocks and meanplane curves from blade and surrounding surface.</span>
+<span class="w">    </span><span class="sd">"""Create mesh blocks and meanplane curves from blade and surrounding surface.</span>
 
 <span class="sd">    This class:</span>
 
@@ -184,7 +184,7 @@
 
 <span class="sd">    Initialize builder:</span>
 
-<span class="sd">    &gt;&gt;&gt; builder = vec3dThreeD_skinAndSplit(&quot;unitCube&quot;, aFOne, aFTwo)</span>
+<span class="sd">    &gt;&gt;&gt; builder = vec3dThreeD_skinAndSplit("unitCube", aFOne, aFTwo)</span>
 
 <span class="sd">    Build volume:</span>
 
@@ -193,7 +193,7 @@
 <span class="sd">    Check label of first analyticFunction:</span>
 
 <span class="sd">    &gt;&gt;&gt; builder.lVH_aF().labels()[0]</span>
-<span class="sd">    &#39;unitCube&#39;</span>
+<span class="sd">    'unitCube'</span>
 <span class="sd">    </span>
 <span class="sd">    The main method of this class is :meth:`build`.</span>
 
@@ -255,7 +255,7 @@
 <span class="sd">    The analytic function objects of the blade mesh blocks, trailing edge mesh</span>
 <span class="sd">    blocks, and meanplane curves are added to the container object of the main</span>
 <span class="sd">    class using :meth:`appendAnalyticFunction`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> 
         <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
@@ -269,7 +269,7 @@
         <span class="n">meanplaneExtIn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
         <span class="n">nMeanplaneBlocks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor.</span>
+<span class="w">        </span><span class="sd">"""Constructor.</span>
 <span class="sd">      </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -298,8 +298,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 <span class="sd">      </span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">&quot;Initializing </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">"Initializing </span><span class="si">%s</span><span class="s2"> ..."</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="p">)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">vec3dThreeD_skinAndSplit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">=</span> <span class="n">label</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aFOne_</span> <span class="o">=</span> <span class="n">vec3dSurfaceTwoD</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="n">aFOne</span> <span class="p">)</span>
@@ -329,7 +329,7 @@
 <div class="viewcode-block" id="vec3dThreeD_skinAndSplit.build">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.build">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build part.</span>
+<span class="w">        </span><span class="sd">"""Build part.</span>
 <span class="sd">        </span>
 <span class="sd">        This method:</span>
 
@@ -417,7 +417,7 @@
 
 <span class="sd">                ::</span>
 
-<span class="sd">                    label_ + &quot;_&quot; + str(cc + 1)</span>
+<span class="sd">                    label_ + "_" + str(cc + 1)</span>
 
 <span class="sd">                With this convention, the first blade mesh block in the direction of</span>
 <span class="sd">                ``splitDim_`` is assigned the suffix ``_1``.</span>
@@ -511,8 +511,8 @@
 <span class="sd">                    The curves are labeled and appended to the container using the following</span>
 <span class="sd">                    naming convention:</span>
 
-<span class="sd">                        - ``mPBlockCurve``: ``label_ + &quot;Curve_in0&quot;``</span>
-<span class="sd">                        - ``mPBlockOffsetCurve``: ``label_ + &quot;Curve_in1&quot;``</span>
+<span class="sd">                        - ``mPBlockCurve``: ``label_ + "Curve_in0"``</span>
+<span class="sd">                        - ``mPBlockOffsetCurve``: ``label_ + "Curve_in1"``</span>
 
 <span class="sd">                    The following figure illustrates the creation of the meanplane curve</span>
 <span class="sd">                    geometries for the meanplanes extending towards the inlet and the</span>
@@ -561,8 +561,8 @@
 <span class="sd">                    The curves are appended to the container as ``vec3dCurveOneD`` objects</span>
 <span class="sd">                    using the following naming convention:</span>
 
-<span class="sd">                        - ``mPBlockCurve``: ``label_ + &quot;Curve_out0&quot;``</span>
-<span class="sd">                        - ``mPBlockOffsetCurve``: ``label_ + &quot;Curve_out1&quot;``</span>
+<span class="sd">                        - ``mPBlockCurve``: ``label_ + "Curve_out0"``</span>
+<span class="sd">                        - ``mPBlockOffsetCurve``: ``label_ + "Curve_out1"``</span>
 
 <span class="sd">                The meanplane curves appended to the container in the selected example</span>
 <span class="sd">                are shown in the following figure.</span>
@@ -658,11 +658,11 @@
 
 <span class="sd">                The first trailing edge mesh block is labeled with the index zero:</span>
 
-<span class="sd">                    ``label_ + &quot;_0&quot;``</span>
+<span class="sd">                    ``label_ + "_0"``</span>
 
 <span class="sd">                The last trailing edge mesh block receives the label:</span>
 
-<span class="sd">                    ``label_ + &quot;_&quot; + str(len(splits_) + 1)``</span>
+<span class="sd">                    ``label_ + "_" + str(len(splits_) + 1)``</span>
 
 <span class="sd">                The following figure shows the resulting mesh block volumes.</span>
 
@@ -674,8 +674,8 @@
 <span class="sd">                   Blade surface (grey) with blade mesh blocks and trailing edge mesh</span>
 <span class="sd">                   blocks.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">&quot;Building </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">)</span> <span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">"Building </span><span class="si">%s</span><span class="s2"> ..."</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">)</span> <span class="p">)</span>
                                         
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">splits_</span> <span class="o">==</span> <span class="p">[[]]:</span> 
           <span class="c1">#</span>
@@ -697,9 +697,9 @@
           <span class="c1"># iterate over the split positions</span>
           <span class="c1">#</span>
           <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">splits_</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;meshBlock nr : </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">cc</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"meshBlock nr : </span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="n">cc</span><span class="p">)</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> 
-              <span class="s2">&quot;Split between </span><span class="si">%f</span><span class="s2"> &lt;--&gt; </span><span class="si">%f</span><span class="s2"> in direction </span><span class="si">%d</span><span class="s2">&quot;</span> 
+              <span class="s2">"Split between </span><span class="si">%f</span><span class="s2"> &lt;--&gt; </span><span class="si">%f</span><span class="s2"> in direction </span><span class="si">%d</span><span class="s2">"</span> 
               <span class="o">%</span> 
               <span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">splitDim_</span><span class="p">)</span> 
             <span class="p">)</span>
@@ -739,10 +739,10 @@
             <span class="n">theRef</span> <span class="o">=</span> <span class="n">vec3dTransVolThreeD_skinBSplineSurfaces</span><span class="p">(</span> <span class="n">vh_aF</span> <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
             <span class="c1"># trailing edge active</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness_</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">cc</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+                <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">cc</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
             <span class="c1"># trailing edge not active</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span> <span class="p">)</span>
+                <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span> <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span> <span class="n">theRef</span> <span class="p">)</span>
             
             <span class="c1">#</span>
@@ -756,13 +756,13 @@
                 <span class="c1">#</span>
                 <span class="c1"># first mesh block</span>
                 <span class="k">if</span> <span class="n">cc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Extracting trailing edge and block curves from mesh block </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cc</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Extracting trailing edge and block curves from mesh block </span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">cc</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
                     <span class="c1">#</span>
                     <span class="c1"># needed curves:</span>
                     <span class="c1"># curve on blade and block,</span>
                     <span class="c1">#  their offsets in the tangential direction of the blade and block surfaces</span>
                     <span class="c1"># segPercent specifies the u direction where the trailing edge is located on the faces,</span>
-                    <span class="c1">#  this is different for the first and last blocks because the u direction &quot;wraps&quot;</span>
+                    <span class="c1">#  this is different for the first and last blocks because the u direction "wraps"</span>
                     <span class="c1">#  around the blade</span>
                     <span class="c1"># offset curves for block and blade are calculated in two function calls</span>
                     <span class="c1">#</span>
@@ -775,7 +775,7 @@
                     
                 <span class="c1"># last mesh block</span>
                 <span class="k">if</span> <span class="n">cc</span> <span class="o">==</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">splits_</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Extracting trailing edge and block curves from mesh block </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cc</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Extracting trailing edge and block curves from mesh block </span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">cc</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
                     <span class="n">bladeCurve1</span><span class="p">,</span> <span class="n">bladeOffset1</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">teOffsetCurves_vec3dSurfaceTwoD</span><span class="p">(</span>
                             <span class="n">bladeSurf</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness_</span><span class="p">,</span> <span class="mi">0</span>
                         <span class="p">)</span>  
@@ -804,7 +804,7 @@
                     <span class="c1">#           3 </span>
                     <span class="c1">#        )</span>
                     <span class="c1">#    )</span>
-                    <span class="c1">#plotFace.setLabel(&quot;TEST_&quot;+self.label_+&quot;_plotFace&quot;)</span>
+                    <span class="c1">#plotFace.setLabel("TEST_"+self.label_+"_plotFace")</span>
                     <span class="c1">#self.appendAnalyticFunction(plotFace)</span>
                     
                     <span class="c1"># calculate the tangentially offset curve based on the face</span>
@@ -813,8 +813,8 @@
                         <span class="p">)</span> 
                     <span class="c1"># create the curve from a vectorDtPoint3 and append AF</span>
                     <span class="n">mPBlockOffsetCurve</span> <span class="o">=</span> <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">mPBlockOffset</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="n">vec3dCurveOneD</span><span class="p">(</span> <span class="n">mPBlockOffsetCurve</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">+</span> <span class="s2">&quot;Curve_in1&quot;</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="n">vec3dCurveOneD</span><span class="p">(</span> <span class="n">mPBlockCurve</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">+</span> <span class="s2">&quot;Curve_in0&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="n">vec3dCurveOneD</span><span class="p">(</span> <span class="n">mPBlockOffsetCurve</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">+</span> <span class="s2">"Curve_in1"</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="n">vec3dCurveOneD</span><span class="p">(</span> <span class="n">mPBlockCurve</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">+</span> <span class="s2">"Curve_in0"</span><span class="p">)</span>
                 
                 <span class="c1">#</span>
                 <span class="c1"># meanplane curves extending to the outlet</span>
@@ -839,8 +839,8 @@
                     
                     <span class="c1"># create the curve from a vectorDtPoint3 and appending AF</span>
                     <span class="n">mPBlockOffsetCurve</span> <span class="o">=</span> <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">mPBlockOffset</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="n">vec3dCurveOneD</span><span class="p">(</span> <span class="n">mPBlockOffsetCurve</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">+</span> <span class="s2">&quot;Curve_out1&quot;</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="n">vec3dCurveOneD</span><span class="p">(</span> <span class="n">mPBlockCurve</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">+</span> <span class="s2">&quot;Curve_out0&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="n">vec3dCurveOneD</span><span class="p">(</span> <span class="n">mPBlockOffsetCurve</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">+</span> <span class="s2">"Curve_out1"</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="n">vec3dCurveOneD</span><span class="p">(</span> <span class="n">mPBlockCurve</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">+</span> <span class="s2">"Curve_out0"</span><span class="p">)</span>
                 
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">pass</span>
@@ -874,7 +874,7 @@
             <span class="n">blockOffsetCurve_1</span> <span class="o">=</span> <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">blockOffset1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
             <span class="n">blockOffsetCurve_0</span> <span class="o">=</span> <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">blockOffset0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
             
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating trailing edge mesh blocks&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Creating trailing edge mesh blocks"</span><span class="p">)</span>
             <span class="c1"># create the block faces by skinning the curves in the list</span>
             <span class="c1">#  the structure of the list is important for the directions (see description in function)</span>
             <span class="n">vh_aF</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createBlockFaces</span><span class="p">(</span>
@@ -884,7 +884,7 @@
             
             <span class="c1"># generate the volume from the faces</span>
             <span class="n">theRef</span> <span class="o">=</span> <span class="n">vec3dTransVolThreeD_skinBSplineSurfaces</span><span class="p">(</span> <span class="n">vh_aF</span> <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
-            <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_0&quot;</span> <span class="p">)</span>
+            <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_0"</span> <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span> <span class="n">theRef</span> <span class="p">)</span>
             
             <span class="c1"># do the same for the te mesh block at u = 1</span>
@@ -895,7 +895,7 @@
                 <span class="p">)</span> 
             
             <span class="n">theRef</span> <span class="o">=</span> <span class="n">vec3dTransVolThreeD_skinBSplineSurfaces</span><span class="p">(</span> <span class="n">vh_aF</span> <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
-            <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">splits_</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">splits_</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span> <span class="n">theRef</span> <span class="p">)</span>
              
         <span class="k">return</span></div>
@@ -909,7 +909,7 @@
 <div class="viewcode-block" id="vec3dThreeD_skinAndSplit.teOffsetCurves_vec3dSurfaceTwoD">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.teOffsetCurves_vec3dSurfaceTwoD">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">teOffsetCurves_vec3dSurfaceTwoD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">,</span> <span class="n">segPercent</span><span class="p">,</span> <span class="n">blockThickness</span><span class="p">,</span> <span class="n">splitDim</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract a curve on a face and calculate points, which are tangentially offset</span>
+<span class="w">        </span><span class="sd">"""Extract a curve on a face and calculate points, which are tangentially offset</span>
 <span class="sd">        to the face.</span>
 
 <span class="sd">        This method:</span>
@@ -1006,7 +1006,7 @@
 <span class="sd">            Each computed point is appended to ``offsetPoints``.</span>
 
 <span class="sd">            The method returns ``curve`` and ``offsetPoints``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
    
         <span class="c1"># set direction f of the offset based on splitDim</span>
         <span class="k">if</span> <span class="n">segPercent</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -1087,7 +1087,7 @@
             <span class="c1">#    1</span>
             <span class="c1">#).result()</span>
 
-            <span class="c1">#tang = (vec3dCurveOneD( tangentCurve ) &lt;&lt; self.label_ + &quot;Curve_te&quot;+str(uu)+&quot;_&quot;+str(i))</span>
+            <span class="c1">#tang = (vec3dCurveOneD( tangentCurve ) &lt;&lt; self.label_ + "Curve_te"+str(uu)+"_"+str(i))</span>
             <span class="c1">#self.appendAnalyticFunction(tang)</span>
                  
         
@@ -1103,7 +1103,7 @@
 <div class="viewcode-block" id="vec3dThreeD_skinAndSplit.createBlockFaces">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.createBlockFaces">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">createBlockFaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curves</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create trailing edge block faces by skinning edge curves.</span>
+<span class="w">        </span><span class="sd">"""Create trailing edge block faces by skinning edge curves.</span>
 <span class="sd">        </span>
 <span class="sd">        This method:</span>
 
@@ -1162,7 +1162,7 @@
 <span class="sd">        and appended to ``vh_aF``.</span>
 
 <span class="sd">        Finally, the generated surfaces are returned through ``vh_aF``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         
         <span class="n">vh_aF</span> <span class="o">=</span> <span class="n">vectorHandlingConstAnalyticFunction</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">curves0</span> <span class="ow">in</span> <span class="n">curves</span><span class="p">:</span>

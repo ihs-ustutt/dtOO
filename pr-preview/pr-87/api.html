@@ -440,20 +440,20 @@ used the files are named according to the <cite>ADDDATA</cite> array. The data i
 <p class="rubric">Examples</p>
 <p>Add additional values for each individual</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATA</span> <span class="o">=</span> <span class="p">[</span>
-<span class="gp">... </span>  <span class="s1">&#39;dict&#39;</span><span class="p">,</span>
-<span class="gp">... </span>  <span class="s1">&#39;float&#39;</span><span class="p">,</span>
-<span class="gp">... </span>  <span class="s1">&#39;int&#39;</span><span class="p">,</span>
-<span class="gp">... </span>  <span class="s1">&#39;np-float-arr&#39;</span><span class="p">,</span>
-<span class="gp">... </span>  <span class="s1">&#39;np-int-arr&#39;</span><span class="p">,</span>
-<span class="gp">... </span>  <span class="s1">&#39;str&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">'dict'</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">'float'</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">'int'</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">'np-float-arr'</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">'np-int-arr'</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">'str'</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATADEF</span> <span class="o">=</span> <span class="p">[</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;key&#39;</span> <span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'key'</span> <span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
 <span class="gp">... </span>  <span class="mf">1.0</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="mi">2</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
 <span class="gp">... </span>  <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">),</span>
-<span class="gp">... </span>  <span class="s1">&#39;test&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">'test'</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">]</span>
 </pre></div>
 </div>
@@ -488,16 +488,16 @@ used the files are named according to the <cite>ADDDATA</cite> array. The data i
 </div>
 <p>Write new data</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;fitness&#39;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;objective&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;dict&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;float&#39;</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span> <span class="p">:</span> <span class="s1">&#39;myStr&#39;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">'fitness'</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">'objective'</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">'dict'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'float'</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">'str'</span> <span class="p">:</span> <span class="s1">'myStr'</span><span class="p">})</span>
 </pre></div>
 </div>
 <p>Read default data from individual</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
 <span class="go">1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">state</span><span class="p">()</span>
-<span class="go">&#39;A1_1&#39;</span>
+<span class="go">'A1_1'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">objective</span><span class="p">()</span>
 <span class="go">array([1., 2.])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">fitness</span><span class="p">()</span>
@@ -505,28 +505,28 @@ used the files are named according to the <cite>ADDDATA</cite> array. The data i
 </pre></div>
 </div>
 <p>Read additional data as str</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
-<span class="go">&#39;1.e+00&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;dict&#39;</span><span class="p">)</span>
-<span class="go">&#39;{&quot;float&quot;: 1.0, &quot;str&quot;: &quot;myStr&quot;}&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">'float'</span><span class="p">)</span>
+<span class="go">'1.e+00'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">'dict'</span><span class="p">)</span>
+<span class="go">'{"float": 1.0, "str": "myStr"}'</span>
 </pre></div>
 </div>
 <p>Read additional data with specified type</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">readFloatArray</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">readFloatArray</span><span class="p">(</span><span class="s1">'float'</span><span class="p">)</span>
 <span class="go">array([1.])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">readFloat</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">readFloat</span><span class="p">(</span><span class="s1">'float'</span><span class="p">)</span>
 <span class="go">1.0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">readArray</span><span class="p">(</span><span class="s1">&#39;np-int-arr&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">readArray</span><span class="p">(</span><span class="s1">'np-int-arr'</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 <span class="go">array([-5, -5, -5])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;np-int-arr&#39;</span><span class="p">)</span>
-<span class="go">&#39;-5 -5 -5&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">readDict</span><span class="p">(</span><span class="s1">&#39;dict&#39;</span><span class="p">)</span>
-<span class="go">{&#39;float&#39;: 1.0, &#39;str&#39;: &#39;myStr&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">'np-int-arr'</span><span class="p">)</span>
+<span class="go">'-5 -5 -5'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">readDict</span><span class="p">(</span><span class="s1">'dict'</span><span class="p">)</span>
+<span class="go">{'float': 1.0, 'str': 'myStr'}</span>
 </pre></div>
 </div>
 <p>Check data again; some checks have to fail, because the data was updated</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATA</span><span class="p">:</span>
-<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="s2">"=&gt; </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
 <span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="n">cSS</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
 <span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">cSS</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
@@ -536,7 +536,7 @@ used the files are named according to the <cite>ADDDATA</cite> array. The data i
 <span class="gp">... </span>    <span class="p">]</span>
 <span class="gp">... </span>  <span class="p">)</span>
 <span class="go">=&gt; dict</span>
-<span class="go">{&#39;float&#39;: 1.0, &#39;str&#39;: &#39;myStr&#39;}</span>
+<span class="go">{'float': 1.0, 'str': 'myStr'}</span>
 <span class="go">False</span>
 <span class="go">=&gt; float</span>
 <span class="go">1.0</span>
@@ -561,16 +561,16 @@ used the files are named according to the <cite>ADDDATA</cite> array. The data i
 <p>Numpy versions smaller than 2.0.0 return int and float instead of np.int64
 and float64, respectively.</p>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="p">(</span><span class="s1">&#39;np-int-arr&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="p">(</span><span class="s1">'np-int-arr'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 <span class="go">np.int64(-5)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="p">(</span><span class="s1">&#39;np-float-arr&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="p">(</span><span class="s1">'np-float-arr'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 <span class="go">np.float64(5.0)</span>
 </pre></div>
 </div>
 <p>Stored scalar integer values should be returned as int for both versions</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="p">(</span><span class="s1">'int'</span><span class="p">)</span>
 <span class="go">2</span>
 </pre></div>
 </div>
@@ -661,19 +661,19 @@ and float64, respectively.</p>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="go">&#39;1.e+00&#39;</span>
+<span class="go">'1.e+00'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">&#39;1&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">)</span>
-<span class="go">&#39;word&#39;</span>
+<span class="go">'1'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">(</span><span class="s1">'word'</span><span class="p">)</span>
+<span class="go">'word'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">(</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;str&#39;</span> <span class="p">:</span> <span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'str'</span> <span class="p">:</span> <span class="s1">'word'</span><span class="p">,</span> <span class="s1">'float'</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="go">&#39;{&quot;str&quot;: &quot;word&quot;, &quot;float&quot;: 1.0}&#39;</span>
+<span class="go">'{"str": "word", "float": 1.0}'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mf">1.0</span><span class="p">))</span>
-<span class="go">&#39;1.e+00 1.e+00&#39;</span>
+<span class="go">'1.e+00 1.e+00'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>  <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,])</span>
+<span class="gp">... </span>  <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">([</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,])</span>
 <span class="gp">... </span><span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 <span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 <span class="go">Unknown datatype.</span>
@@ -705,16 +705,16 @@ and float64, respectively.</p>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATA</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;dict&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATADEF</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;test&#39;</span> <span class="p">:</span> <span class="mf">2.0</span><span class="p">},]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATA</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'float'</span><span class="p">,</span> <span class="s1">'dict'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATADEF</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">{</span><span class="s1">'test'</span> <span class="p">:</span> <span class="mf">2.0</span><span class="p">},]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">fullAddRead</span><span class="p">([</span><span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;dict&#39;</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">[</span><span class="s1">&#39;float&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">fullAddRead</span><span class="p">([</span><span class="s1">'float'</span><span class="p">,</span> <span class="s1">'dict'</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">[</span><span class="s1">'float'</span><span class="p">]</span>
 <span class="go">array([1., 1.])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">[</span><span class="s1">&#39;dict&#39;</span><span class="p">]</span>
-<span class="go">array([{&#39;test&#39;: 2.0}, {&#39;test&#39;: 2.0}], dtype=object)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">[</span><span class="s1">&#39;dict&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;test&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">[</span><span class="s1">'dict'</span><span class="p">]</span>
+<span class="go">array([{'test': 2.0}, {'test': 2.0}], dtype=object)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">[</span><span class="s1">'dict'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">'test'</span><span class="p">]</span>
 <span class="go">2.0</span>
 </pre></div>
 </div>
@@ -1267,7 +1267,7 @@ Each entry represents:</p>
 </div>
 <p>Initialize builder:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">builder</span> <span class="o">=</span> <span class="n">analyticGeometry_piecewiseMeridionalRotContour</span><span class="p">(</span>
-<span class="gp">... </span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;channel&quot;</span><span class="p">,</span>
+<span class="gp">... </span> <span class="n">label</span> <span class="o">=</span> <span class="s2">"channel"</span><span class="p">,</span>
 <span class="gp">... </span> <span class="n">hubCurves</span> <span class="o">=</span> <span class="n">hubCurves</span><span class="p">,</span>
 <span class="gp">... </span> <span class="n">shroudCurves</span> <span class="o">=</span> <span class="n">shroudCurves</span><span class="p">,</span>
 <span class="gp">... </span> <span class="n">interface_hub</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]],</span>
@@ -1282,7 +1282,7 @@ Each entry represents:</p>
 </div>
 <p>Return the six sided domain and check type:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">builder</span><span class="o">.</span><span class="n">getRegChannel</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">virtualClassName</span><span class="p">()</span>
-<span class="go">&#39;partRotatingMap2dTo3d&#39;</span>
+<span class="go">'partRotatingMap2dTo3d'</span>
 </pre></div>
 </div>
 <p>The main method of this class is the constructor.
@@ -2284,7 +2284,7 @@ rotation of the regular channel faces.</p>
 </pre></div>
 </div>
 <p>Initialize builder:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">builder</span> <span class="o">=</span> <span class="n">vec3dThreeD_skinAndSplit</span><span class="p">(</span><span class="s2">&quot;unitCube&quot;</span><span class="p">,</span> <span class="n">aFOne</span><span class="p">,</span> <span class="n">aFTwo</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">builder</span> <span class="o">=</span> <span class="n">vec3dThreeD_skinAndSplit</span><span class="p">(</span><span class="s2">"unitCube"</span><span class="p">,</span> <span class="n">aFOne</span><span class="p">,</span> <span class="n">aFTwo</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Build volume:</p>
@@ -2293,7 +2293,7 @@ rotation of the regular channel faces.</p>
 </div>
 <p>Check label of first analyticFunction:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">builder</span><span class="o">.</span><span class="n">lVH_aF</span><span class="p">()</span><span class="o">.</span><span class="n">labels</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">&#39;unitCube&#39;</span>
+<span class="go">'unitCube'</span>
 </pre></div>
 </div>
 <p>The main method of this class is <a class="reference internal" href="#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.build" title="dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a>.</p>
@@ -2427,7 +2427,7 @@ surface</p></li>
 </div></blockquote>
 <p>The volumes surrounding the blade are labeled according to the following
 convention:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label_</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cc</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label_</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cc</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>With this convention, the first blade mesh block in the direction of
@@ -2942,19 +2942,19 @@ respective interfaces along the hub and shroud contours.</p></li>
 </div>
 <p>Push the mesh block curves into a vector handler.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">meshBlockCurves</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">labeledVectorHandlingAnalyticGeometry</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">label</span> <span class="o">=</span> <span class="s2">"test"</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">meshBlockCurves</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticCurve</span><span class="p">(</span> <span class="n">c_in1</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meshBlockCurve_in1&quot;</span>
+<span class="gp">... </span>    <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticCurve</span><span class="p">(</span> <span class="n">c_in1</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">"xyz_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">"_meshBlockCurve_in1"</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">meshBlockCurves</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticCurve</span><span class="p">(</span> <span class="n">c_out1</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;_meshBlockCurve_out1&quot;</span>
+<span class="gp">... </span>    <span class="n">dtOO</span><span class="o">.</span><span class="n">analyticCurve</span><span class="p">(</span> <span class="n">c_out1</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">"xyz_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">"_meshBlockCurve_out1"</span>
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Create the meanplane faces between the interfaces and the mesh block curves.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">analyticSurface_inOutFeMeanplane</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">feMeanplane</span> <span class="o">=</span> <span class="n">analyticSurface_inOutFeMeanplane</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;xyz&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">prefix</span> <span class="o">=</span> <span class="s2">"xyz"</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">curves</span> <span class="o">=</span> <span class="n">meshBlockCurves</span>
@@ -2964,7 +2964,7 @@ respective interfaces along the hub and shroud contours.</p></li>
 </div>
 <p>Check the label of the last generated geometry.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">feMeanplane</span><span class="o">.</span><span class="n">lVH_aG</span><span class="p">()</span><span class="o">.</span><span class="n">labels</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="go">&#39;xyz_test_fe_meanplane_out1&#39;</span>
+<span class="go">'xyz_test_fe_meanplane_out1'</span>
 </pre></div>
 </div>
 <p>The main method of this class is <a class="reference internal" href="#dtOOPythonApp.builder.analyticSurface_inOutFeMeanplane.analyticSurface_inOutFeMeanplane.build" title="dtOOPythonApp.builder.analyticSurface_inOutFeMeanplane.analyticSurface_inOutFeMeanplane.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a>, where all operations of this
@@ -3163,7 +3163,7 @@ This results in the hub and shroud curve directions specified in
 <a class="reference internal" href="#boundcurvetable"><span class="std std-numref">Table 5</span></a>.
 The curves are reparameterized in xyz-coordinates and pushed into <code class="docutils literal notranslate"><span class="pre">aG_</span></code> with
 the following naming convention:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;hsCurve_&quot;</span><span class="o">+</span><span class="s2">&quot;u&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">uu</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"hsCurve_"</span><span class="o">+</span><span class="s2">"u"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">uu</span><span class="p">)</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -3187,7 +3187,7 @@ The shifted parameter is reassigned to <code class="docutils literal notranslate
 Due to the definition of <code class="docutils literal notranslate"><span class="pre">interfPoints</span></code>, the resulting curve extends from
 the shroud to the hub walls of the channel.
 It is pushed into <code class="docutils literal notranslate"><span class="pre">aG_</span></code> with the following naming convention:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;interfCurve_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"interfCurve_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -3199,7 +3199,7 @@ It is pushed into <code class="docutils literal notranslate"><span class="pre">a
 <code class="docutils literal notranslate"><span class="pre">aG_</span></code> by their names.</p>
 <p>The face is returned to the geometry container of the calling class with the
 following name:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">prefix_</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_fe_meanplane_&quot;</span><span class="o">+</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">prefix_</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_fe_meanplane_"</span><span class="o">+</span><span class="n">mpCurveList</span><span class="p">[</span><span class="n">oc</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -3465,7 +3465,7 @@ to the inlet and outlet each</p>
 <p>Create the grid channel</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">multipleBoundedVolume_gridChannel</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gridChannel</span> <span class="o">=</span> <span class="n">multipleBoundedVolume_gridChannel</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">label</span> <span class="o">=</span> <span class="s2">"test"</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">meanplanes</span> <span class="o">=</span> <span class="n">meanplaneFaces</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">couplings</span> <span class="o">=</span> <span class="n">couplingFaces</span><span class="p">,</span>
@@ -3481,7 +3481,7 @@ to the inlet and outlet each</p>
 </div>
 <p>Check the class of the returned volume</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gc</span><span class="o">.</span><span class="n">virtualClassName</span><span class="p">()</span>
-<span class="go">&#39;multipleBoundedVolume&#39;</span>
+<span class="go">'multipleBoundedVolume'</span>
 </pre></div>
 </div>
 <p>The main method of this class is <a class="reference internal" href="#dtOOPythonApp.builder.multipleBoundedVolume_gridChannel.multipleBoundedVolume_gridChannel.build" title="dtOOPythonApp.builder.multipleBoundedVolume_gridChannel.multipleBoundedVolume_gridChannel.build"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code></a>.</p>
@@ -3586,7 +3586,7 @@ in <code class="docutils literal notranslate"><span class="pre">gridChannel_</sp
 <code class="docutils literal notranslate"><span class="pre">boundSurf_</span></code></p>
 <p>If debug mode is enabled, the bounding faces can be plotted using the
 following naming convention:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;debug_gridChannelFace_&quot;</span> <span class="o">+</span> <span class="n">label_</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">face</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"debug_gridChannelFace_"</span> <span class="o">+</span> <span class="n">label_</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="n">face</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -3680,7 +3680,7 @@ of these faces is specified by <code class="docutils literal notranslate"><span 
 <p>If the iteration is processing one of these faces,
 the value of <code class="docutils literal notranslate"><span class="pre">lab</span></code> is changed to <code class="docutils literal notranslate"><span class="pre">&quot;tri&quot;</span></code>. These faces are added
 to <code class="docutils literal notranslate"><span class="pre">boundSurf_</span></code> with the label</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;suction_&quot;</span> <span class="o">+</span> <span class="n">lab</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"suction_"</span> <span class="o">+</span> <span class="n">lab</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The corresponding bounding curves on the hub and shroud are
@@ -3690,7 +3690,7 @@ added to the respective containers.</p>
 <blockquote>
 <div><p>In every iteration, the rotated meanplane face is added to
 <code class="docutils literal notranslate"><span class="pre">boundSurf_</span></code> with the following label:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;pressure_&quot;</span> <span class="o">+</span> <span class="n">lab</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"pressure_"</span> <span class="o">+</span> <span class="n">lab</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The associated bounding curves are appended to <code class="docutils literal notranslate"><span class="pre">hubCurves</span></code> and
@@ -4677,7 +4677,7 @@ grading number and a string identifier.</p></li>
 <p>For a new grading, an entry is created in the dictionary <code class="docutils literal notranslate"><span class="pre">gradings</span></code>
 using <code class="docutils literal notranslate"><span class="pre">gradingLabel</span></code> as the key. The corresponding value is a list
 containing a unique grading number and identifier string of the form</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label_</span> <span class="o">+</span> <span class="s2">&quot;_gradings_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">gradingNumber</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">gradingLabel</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label_</span> <span class="o">+</span> <span class="s2">"_gradings_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">gradingNumber</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="n">gradingLabel</span>
 </pre></div>
 </div>
 <p>The grading function <code class="docutils literal notranslate"><span class="pre">theRef</span></code> is assigned this identifier string and
@@ -5017,7 +5017,7 @@ and a multiple bounded volume inside the flow domain.</p>
 <p>Initialize the builder.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">analyticGeometry_layerRegion</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">builder</span> <span class="o">=</span> <span class="n">analyticGeometry_layerRegion</span><span class="p">(</span>
-<span class="gp">... </span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">"test"</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="n">speHub</span> <span class="o">=</span> <span class="n">speHub</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="n">speShroud</span> <span class="o">=</span> <span class="n">speShroud</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="n">inOutCurves</span> <span class="o">=</span> <span class="n">inOutCurves</span><span class="p">,</span>
@@ -5033,7 +5033,7 @@ and a multiple bounded volume inside the flow domain.</p>
 </div>
 <p>Check the virtual class name.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">unstrReg</span><span class="o">.</span><span class="n">virtualClassName</span><span class="p">()</span>
-<span class="go">&#39;multipleBoundedVolume&#39;</span>
+<span class="go">'multipleBoundedVolume'</span>
 </pre></div>
 </div>
 <p>This class is used to create the geometry of a flow channel consisting of five- or six-

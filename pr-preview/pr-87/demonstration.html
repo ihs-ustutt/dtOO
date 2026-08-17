@@ -596,12 +596,12 @@ imported with</p>
 </pre></div>
 </div>
 <p>and the log file <code class="docutils literal notranslate"><span class="pre">build.log</span></code> is created with</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">logMe</span><span class="o">.</span><span class="n">initLog</span><span class="p">(</span><span class="s2">&quot;build.log&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">logMe</span><span class="o">.</span><span class="n">initLog</span><span class="p">(</span><span class="s2">"build.log"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>As previously mentioned, the kinetic turbine is created using the XML
 interface. The input and state XML file is loaded by the parser with</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtXmlParser</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;machine.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;E1_12685.xml&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtXmlParser</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s2">"machine.xml"</span><span class="p">,</span> <span class="s2">"E1_12685.xml"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>and a reference to the parser is kept in the variable <code class="docutils literal notranslate"><span class="pre">parser</span></code> by</p>
@@ -632,7 +632,7 @@ member function:</p>
 </div>
 <p>The specific state (put simply: the values of the DOFs) is loaded to the DOFs
 by:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">loadStateToConst</span><span class="p">(</span><span class="s2">&quot;E1_12685&quot;</span><span class="p">,</span> <span class="n">cV</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">loadStateToConst</span><span class="p">(</span><span class="s2">"E1_12685"</span><span class="p">,</span> <span class="n">cV</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>All other objects are created by executing the command:</p>
@@ -641,7 +641,7 @@ by:</p>
 </div>
 <p>At this point, the complete machine is available within the containers. The last
 step is to create the meshes and setup the simulation case by:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dC</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ingvrudtout_coupled_of&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">runCurrentState</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dC</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ingvrudtout_coupled_of"</span><span class="p">)</span><span class="o">.</span><span class="n">runCurrentState</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>This step may take time, because the whole meshing procedure is performed.</p>
@@ -656,8 +656,8 @@ packages</p>
 </pre></div>
 </div>
 <p>and definition of the case and state name</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">caseName</span> <span class="o">=</span> <span class="s2">&quot;ingvrudtout_coupled_of&quot;</span>
-<span class="n">stateName</span> <span class="o">=</span> <span class="s2">&quot;E1_12685&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">caseName</span> <span class="o">=</span> <span class="s2">"ingvrudtout_coupled_of"</span>
+<span class="n">stateName</span> <span class="o">=</span> <span class="s2">"E1_12685"</span>
 </pre></div>
 </div>
 <p>provides the necessary functions and attributes to correctly call PyFoam. For
@@ -670,30 +670,30 @@ the pattern:</p>
 the case is decomposed by</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Decomposer</span><span class="p">(</span>
   <span class="n">args</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">caseName</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">stateName</span><span class="p">,</span><span class="s2">&quot;4&quot;</span><span class="p">,</span><span class="s2">&quot;--method=scotch&quot;</span><span class="p">,</span><span class="s2">&quot;--clear&quot;</span><span class="p">,</span><span class="s2">&quot;--silent&quot;</span>
+    <span class="n">caseName</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">stateName</span><span class="p">,</span><span class="s2">"4"</span><span class="p">,</span><span class="s2">"--method=scotch"</span><span class="p">,</span><span class="s2">"--clear"</span><span class="p">,</span><span class="s2">"--silent"</span>
   <span class="p">]</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p>and then ready to simulate the first 100 iterations as a laminar problem by:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WriteDictionary</span><span class="p">(</span>
-   <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">caseName</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">stateName</span><span class="o">+</span><span class="s2">&quot;/system/controlDict&quot;</span><span class="p">,</span> <span class="s2">&quot;endTime&quot;</span><span class="p">,</span> <span class="s2">&quot;100&quot;</span><span class="p">]</span>
+   <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">caseName</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">stateName</span><span class="o">+</span><span class="s2">"/system/controlDict"</span><span class="p">,</span> <span class="s2">"endTime"</span><span class="p">,</span> <span class="s2">"100"</span><span class="p">]</span>
  <span class="p">)</span>
  <span class="n">WriteDictionary</span><span class="p">(</span>
-   <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">caseName</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">stateName</span><span class="o">+</span><span class="s2">&quot;/system/controlDict&quot;</span><span class="p">,</span> <span class="s2">&quot;writeInterval&quot;</span><span class="p">,</span> <span class="s2">&quot;100&quot;</span><span class="p">]</span>
+   <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">caseName</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">stateName</span><span class="o">+</span><span class="s2">"/system/controlDict"</span><span class="p">,</span> <span class="s2">"writeInterval"</span><span class="p">,</span> <span class="s2">"100"</span><span class="p">]</span>
  <span class="p">)</span>
  <span class="n">WriteDictionary</span><span class="p">(</span>
    <span class="n">args</span><span class="o">=</span><span class="p">[</span>
-     <span class="n">caseName</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">stateName</span><span class="o">+</span><span class="s2">&quot;/constant/turbulenceProperties&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;RAS[&#39;turbulence&#39;]&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;off&quot;</span>
+     <span class="n">caseName</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">stateName</span><span class="o">+</span><span class="s2">"/constant/turbulenceProperties"</span><span class="p">,</span>
+     <span class="s2">"RAS['turbulence']"</span><span class="p">,</span>
+     <span class="s2">"off"</span>
    <span class="p">]</span>
  <span class="p">)</span>
  <span class="n">Runner</span><span class="p">(</span>
    <span class="n">args</span><span class="o">=</span><span class="p">[</span>
-     <span class="s2">&quot;--silent&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;--autosense-parallel&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;simpleFoam&quot;</span><span class="p">,</span> <span class="s2">&quot;-case&quot;</span><span class="p">,</span> <span class="n">caseName</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">stateName</span>
+     <span class="s2">"--silent"</span><span class="p">,</span>
+     <span class="s2">"--autosense-parallel"</span><span class="p">,</span>
+     <span class="s2">"simpleFoam"</span><span class="p">,</span> <span class="s2">"-case"</span><span class="p">,</span> <span class="n">caseName</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">stateName</span>
    <span class="p">]</span>
  <span class="p">)</span>
 </pre></div>
@@ -701,27 +701,27 @@ the case is decomposed by</p>
 <p>The second step is the simulation of the following 900 iterations as a
 turbulent problem by executing</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">WriteDictionary</span><span class="p">(</span>
-  <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">caseName</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">stateName</span><span class="o">+</span><span class="s2">&quot;/system/controlDict&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;endTime&quot;</span><span class="p">,</span> <span class="s2">&quot;1000&quot;</span>
+  <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">caseName</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">stateName</span><span class="o">+</span><span class="s2">"/system/controlDict"</span><span class="p">,</span>
+    <span class="s2">"endTime"</span><span class="p">,</span> <span class="s2">"1000"</span>
   <span class="p">]</span>
 <span class="p">)</span>
 <span class="n">WriteDictionary</span><span class="p">(</span>
   <span class="n">args</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">caseName</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">stateName</span><span class="o">+</span><span class="s2">&quot;/system/controlDict&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;writeInterval&quot;</span><span class="p">,</span> <span class="s2">&quot;1000&quot;</span>
+    <span class="n">caseName</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">stateName</span><span class="o">+</span><span class="s2">"/system/controlDict"</span><span class="p">,</span>
+    <span class="s2">"writeInterval"</span><span class="p">,</span> <span class="s2">"1000"</span>
   <span class="p">]</span>
 <span class="p">)</span>
 <span class="n">WriteDictionary</span><span class="p">(</span>
   <span class="n">args</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">caseName</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">stateName</span><span class="o">+</span><span class="s2">&quot;/constant/turbulenceProperties&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;RAS[&#39;turbulence&#39;]&quot;</span><span class="p">,</span> <span class="s2">&quot;on&quot;</span>
+    <span class="n">caseName</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">stateName</span><span class="o">+</span><span class="s2">"/constant/turbulenceProperties"</span><span class="p">,</span>
+    <span class="s2">"RAS['turbulence']"</span><span class="p">,</span> <span class="s2">"on"</span>
   <span class="p">]</span>
 <span class="p">)</span>
 <span class="n">Runner</span><span class="p">(</span>
   <span class="n">args</span><span class="o">=</span><span class="p">[</span>
-    <span class="s2">&quot;--silent&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;--autosense-parallel&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;simpleFoam&quot;</span><span class="p">,</span> <span class="s2">&quot;-case&quot;</span><span class="p">,</span> <span class="n">caseName</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">stateName</span>
+    <span class="s2">"--silent"</span><span class="p">,</span>
+    <span class="s2">"--autosense-parallel"</span><span class="p">,</span>
+    <span class="s2">"simpleFoam"</span><span class="p">,</span> <span class="s2">"-case"</span><span class="p">,</span> <span class="n">caseName</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">stateName</span>
   <span class="p">]</span>
 <span class="p">)</span>
 </pre></div>
@@ -729,8 +729,8 @@ turbulent problem by executing</p>
 <p>and</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Runner</span><span class="p">(</span>
   <span class="n">args</span><span class="o">=</span><span class="p">[</span>
-    <span class="s1">&#39;--silent&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;reconstructPar&#39;</span><span class="p">,</span> <span class="s1">&#39;-latestTime&#39;</span><span class="p">,</span> <span class="s2">&quot;-case&quot;</span><span class="p">,</span> <span class="n">caseName</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">stateName</span>
+    <span class="s1">'--silent'</span><span class="p">,</span>
+    <span class="s1">'reconstructPar'</span><span class="p">,</span> <span class="s1">'-latestTime'</span><span class="p">,</span> <span class="s2">"-case"</span><span class="p">,</span> <span class="n">caseName</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">stateName</span>
   <span class="p">]</span>
 <span class="p">)</span>
 </pre></div>
@@ -738,18 +738,18 @@ turbulent problem by executing</p>
 <p>to reconstruct the parallel simulation case. The two commands</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ClearCase</span><span class="p">(</span>
   <span class="p">[</span>
-    <span class="s1">&#39;--keep-postprocessing&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;--processors-remove&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;--remove-analyzed&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;--keep-postprocessing&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;--clear-history&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;--keep-last&#39;</span><span class="p">,</span>
-    <span class="n">caseName</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">stateName</span>
+    <span class="s1">'--keep-postprocessing'</span><span class="p">,</span>
+    <span class="s1">'--processors-remove'</span><span class="p">,</span>
+    <span class="s1">'--remove-analyzed'</span><span class="p">,</span>
+    <span class="s1">'--keep-postprocessing'</span><span class="p">,</span>
+    <span class="s1">'--clear-history'</span><span class="p">,</span>
+    <span class="s1">'--keep-last'</span><span class="p">,</span>
+    <span class="n">caseName</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">stateName</span>
   <span class="p">])</span>
 </pre></div>
 </div>
 <p>and</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">PackCase</span><span class="p">([</span><span class="n">caseName</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">stateName</span><span class="p">,</span> <span class="s1">&#39;--last&#39;</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">PackCase</span><span class="p">([</span><span class="n">caseName</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">stateName</span><span class="p">,</span> <span class="s1">'--last'</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>are optional. They clear and pack the simulation case. This is useful when
@@ -762,8 +762,8 @@ performing an optimization to save disk space.</p>
 described functions of <code class="docutils literal notranslate"><span class="pre">build.py</span></code>. At first, the framework, the parser and
 the containers have to be defined by:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-<span class="n">logMe</span><span class="o">.</span><span class="n">initLog</span><span class="p">(</span><span class="s2">&quot;build.log&quot;</span><span class="p">)</span>
-<span class="n">dtXmlParser</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;machine.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;E1_12685.xml&quot;</span><span class="p">)</span>
+<span class="n">logMe</span><span class="o">.</span><span class="n">initLog</span><span class="p">(</span><span class="s2">"build.log"</span><span class="p">)</span>
+<span class="n">dtXmlParser</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s2">"machine.xml"</span><span class="p">,</span> <span class="s2">"E1_12685.xml"</span><span class="p">)</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">dtXmlParser</span><span class="o">.</span><span class="n">reference</span><span class="p">()</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 <span class="n">bC</span> <span class="o">=</span> <span class="n">baseContainer</span><span class="p">()</span>
@@ -778,12 +778,12 @@ the containers have to be defined by:</p>
 </div>
 <p>It is good practice to start from an existing state. Therefore, we use the
 <code class="docutils literal notranslate"><span class="pre">E1_12685</span></code> state as initialization for all DOFs:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">loadStateToConst</span><span class="p">(</span><span class="s2">&quot;E1_12685&quot;</span><span class="p">,</span> <span class="n">cV</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">loadStateToConst</span><span class="p">(</span><span class="s2">"E1_12685"</span><span class="p">,</span> <span class="n">cV</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>At this point the DOFs are created and initialized. It can also be validated by:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">currentState</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="s1">&#39;E1_12685&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s1">'E1_12685'</span>
 </pre></div>
 </div>
 <p>The output is exactly the loaded state. We can start to modify any
@@ -801,35 +801,35 @@ all defined DOFs within a simple <code class="docutils literal notranslate"><spa
 <p>Somewhere in the long list we found the inlet angle at the hub that is
 labelled as <code class="docutils literal notranslate"><span class="pre">cV_ru_alpha_1_ex_0.0</span></code> according to <a class="reference internal" href="#map-dof-lab"><span class="std std-numref">Table 1</span></a>. A
 call of the <code class="docutils literal notranslate"><span class="pre">()</span></code>-operator</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cV</span><span class="p">[</span><span class="s2">&quot;cV_ru_alpha_1_ex_0.0&quot;</span><span class="p">]()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cV</span><span class="p">[</span><span class="s2">"cV_ru_alpha_1_ex_0.0"</span><span class="p">]()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="mf">0.04964900016784668</span>
 </pre></div>
 </div>
 <p>gives the current value of the DOF. We can change the angle by:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cV</span><span class="p">[</span><span class="s2">&quot;cV_ru_alpha_1_ex_0.0&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cV</span><span class="p">[</span><span class="s2">"cV_ru_alpha_1_ex_0.0"</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>It is important to update the geometry of the runner mesh channel when the
 blade geometry is changed. Otherwise the mesh might not be correctly generated.
 The update is performed by:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ru_adjustDomain&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ru_adjustDomain"</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Put simply, the command adjusts other  dependent DOFs to generate a valid mesh.
 Checking again the state by</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">currentState</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="s1">&#39;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s1">''</span>
 </pre></div>
 </div>
 <p>shows that the current state is empty. We create a new state and validate that
 everything works correctly by:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">setState</span><span class="p">(</span><span class="s2">&quot;iahr2024_state&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">setState</span><span class="p">(</span><span class="s2">"iahr2024_state"</span><span class="p">)</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">currentState</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="s1">&#39;iahr2024_state&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s1">'iahr2024_state'</span>
 </pre></div>
 </div>
 <p>Optionally, we can extract the state and create a new state file by:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s2">&quot;iahr2024_state&quot;</span><span class="p">,</span> <span class="n">cV</span><span class="p">,</span> <span class="s2">&quot;iahr2024_state.xml&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s2">"iahr2024_state"</span><span class="p">,</span> <span class="n">cV</span><span class="p">,</span> <span class="s2">"iahr2024_state.xml"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This creates the XML file <code class="docutils literal notranslate"><span class="pre">iahr2024_state.xml</span></code> within the directory. If no
@@ -843,13 +843,13 @@ From this point, we can generate the whole machine by</p>
 </pre></div>
 </div>
 <p>and create the case directory by</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dC</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ingvrudtout_coupled_of&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">runCurrentState</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dC</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ingvrudtout_coupled_of"</span><span class="p">)</span><span class="o">.</span><span class="n">runCurrentState</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Of course, we also have to adjust the variable names, if we still use the
 above explained commands:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">caseName</span> <span class="o">=</span> <span class="s2">&quot;ingvrudtout_coupled_of&quot;</span>
-<span class="n">stateName</span> <span class="o">=</span> <span class="s2">&quot;iahr2024_state&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">caseName</span> <span class="o">=</span> <span class="s2">"ingvrudtout_coupled_of"</span>
+<span class="n">stateName</span> <span class="o">=</span> <span class="s2">"iahr2024_state"</span>
 </pre></div>
 </div>
 <p>Additionally, we have to simulate the new case written in the directory
@@ -891,7 +891,7 @@ all exceptions and returns a defined fitness value in case of an error.</p>
 <span class="gp">... </span>    <span class="n">hf</span><span class="o">.</span><span class="n">Simulate</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="n">fit</span> <span class="o">=</span> <span class="n">hf</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">()</span>
 <span class="gp">... </span>  <span class="k">except</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Catch Exception&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Catch Exception"</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">fit</span> <span class="o">=</span> <span class="n">hydFoil</span><span class="o">.</span><span class="n">FailedFitness</span><span class="p">()</span>
 <span class="gp">... </span>  <span class="k">return</span> <span class="n">fit</span>
 </pre></div>
@@ -923,7 +923,7 @@ low to have a fast code example.</p>
 </div>
 <p>Output the final result of the optimization.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-<span class="gp">... </span>  <span class="s2">&quot;Optimum found at (alpha_1, alpha_2, t_mid) = (</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">) with </span><span class="si">%f</span><span class="s2">&quot;</span>
+<span class="gp">... </span>  <span class="s2">"Optimum found at (alpha_1, alpha_2, t_mid) = (</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">) with </span><span class="si">%f</span><span class="s2">"</span>
 <span class="gp">... </span>  <span class="o">%</span>
 <span class="gp">... </span>  <span class="p">(</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="o">.</span><span class="n">fun</span> <span class="p">)</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -1249,8 +1249,8 @@ This GitHub repository serves as the database for this demonstration case.</p>
 <p>Import <code class="docutils literal notranslate"><span class="pre">logging</span></code> package and create a configuration:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> : </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">datefmt</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="nb">format</span><span class="o">=</span><span class="s1">'</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> : </span><span class="si">%(message)s</span><span class="s1">'</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">datefmt</span><span class="o">=</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S'</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
@@ -1293,35 +1293,35 @@ within Python:</p>
 <p>Clone repository
 <a class="reference external" href="https://doi.org/10.5281/zenodo.14014525">[axial_turbine_database]</a>, if
 necessary:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clone</span> <span class="o">=</span> <span class="s2">&quot;git clone https://github.com/ihs-ustutt/axial_turbine_database.git&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="s2">&quot;./axial_turbine_database&quot;</span><span class="p">):</span>
-<span class="gp">... </span>  <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Clone repository.&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clone</span> <span class="o">=</span> <span class="s2">"git clone https://github.com/ihs-ustutt/axial_turbine_database.git"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="s2">"./axial_turbine_database"</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Clone repository."</span><span class="p">)</span>
 <span class="gp">... </span>  <span class="n">ret</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">clone</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Set up <code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState</span></code> configuration:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stateCounter</span><span class="o">.</span><span class="n">PREFIX</span> <span class="o">=</span> <span class="s1">&#39;T1&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stateCounter</span><span class="o">.</span><span class="n">CASE</span> <span class="o">=</span> <span class="s1">&#39;tistos_ru_of&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stateCounter</span><span class="o">.</span><span class="n">DATADIR</span> <span class="o">=</span> <span class="s1">&#39;./axial_turbine_database/runData&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stateCounter</span><span class="o">.</span><span class="n">PREFIX</span> <span class="o">=</span> <span class="s1">'T1'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stateCounter</span><span class="o">.</span><span class="n">CASE</span> <span class="o">=</span> <span class="s1">'tistos_ru_of'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stateCounter</span><span class="o">.</span><span class="n">DATADIR</span> <span class="o">=</span> <span class="s1">'./axial_turbine_database/runData'</span>
 </pre></div>
 </div>
 <p>Define the variables stored in the database:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stateCounter</span><span class="o">.</span><span class="n">ADDDATA</span> <span class="o">=</span> <span class="p">[</span>
-<span class="gp">... </span>  <span class="s1">&#39;P&#39;</span><span class="p">,</span>
-<span class="gp">... </span>  <span class="s1">&#39;dH&#39;</span><span class="p">,</span>
-<span class="gp">... </span>  <span class="s1">&#39;eta&#39;</span><span class="p">,</span>
-<span class="gp">... </span>  <span class="s1">&#39;VCav&#39;</span><span class="p">,</span>
-<span class="gp">... </span>  <span class="s1">&#39;history&#39;</span><span class="p">,</span>
-<span class="gp">... </span>  <span class="s1">&#39;islandID&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">'P'</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">'dH'</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">'eta'</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">'VCav'</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">'history'</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">'islandID'</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Define default constructors for variables:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stateCounter</span><span class="o">.</span><span class="n">ADDDATADEF</span> <span class="o">=</span> <span class="p">[</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s2">&quot;tl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;vl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="c1"># P</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s2">&quot;tl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;vl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="c1"># dH</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s2">&quot;tl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;vl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="c1"># eta</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s2">&quot;tl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;vl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="c1"># VCav</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">"tl"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"vl"</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="c1"># P</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">"tl"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"vl"</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="c1"># dH</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">"tl"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"vl"</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="c1"># eta</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">"tl"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"vl"</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="c1"># VCav</span>
 <span class="gp">... </span>  <span class="p">{},</span> <span class="c1"># history</span>
 <span class="gp">... </span>  <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="c1"># islandID</span>
 <span class="gp">... </span><span class="p">]</span>
@@ -1330,36 +1330,36 @@ necessary:</p>
 <p>Define mapping between database’s parameters and <a class="reference internal" href="constValue.html#constvalue"><span class="std std-ref">constValue</span></a> label. The
 parameters in <code class="docutils literal notranslate"><span class="pre">runData</span></code> are in the same sequence as the mapping:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cVArr</span> <span class="o">=</span> <span class="p">[</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_alpha_1_ex_0.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.155</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.025</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_alpha_1_ex_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.19</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_alpha_1_ex_1.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.19</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_alpha_2_ex_0.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.08</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_alpha_2_ex_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.08</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_alpha_2_ex_1.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.08</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.07</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_offsetM_ex_0.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_offsetM_ex_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_offsetM_ex_1.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_ratio_0.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_ratio_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_ratio_1.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_offsetPhiR_ex_0.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_offsetPhiR_ex_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_offsetPhiR_ex_1.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_bladeLength_0.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_bladeLength_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_bladeLength_1.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">1.3</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_le_a_0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_le_a_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_le_a_1&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_mid_a_0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_mid_a_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_mid_a_1&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_te_a_0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_te_a_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_te_a_1&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_u_mid_a_0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_u_mid_a_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
-<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_u_mid_a_1&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_alpha_1_ex_0.0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.155</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.025</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_alpha_1_ex_0.5'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.19</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_alpha_1_ex_1.0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.19</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_alpha_2_ex_0.0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.08</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_alpha_2_ex_0.5'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.08</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_alpha_2_ex_1.0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.08</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.07</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_offsetM_ex_0.0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_offsetM_ex_0.5'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_offsetM_ex_1.0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_ratio_0.0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_ratio_0.5'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_ratio_1.0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_offsetPhiR_ex_0.0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_offsetPhiR_ex_0.5'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_offsetPhiR_ex_1.0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_bladeLength_0.0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_bladeLength_0.5'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_bladeLength_1.0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">1.3</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_t_le_a_0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_t_le_a_0.5'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_t_le_a_1'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_t_mid_a_0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_t_mid_a_0.5'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_t_mid_a_1'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_t_te_a_0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_t_te_a_0.5'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_t_te_a_1'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_u_mid_a_0'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_u_mid_a_0.5'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'cV_ru_u_mid_a_1'</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
 <span class="gp">... </span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1368,12 +1368,12 @@ parameters in <code class="docutils literal notranslate"><span class="pre">runDa
 </pre></div>
 </div>
 <p>Create log file:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logMe</span><span class="o">.</span><span class="n">initLog</span><span class="p">(</span><span class="s1">&#39;build-&#39;</span><span class="o">+</span><span class="n">sc</span><span class="o">.</span><span class="n">state</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;.log&#39;</span><span class="p">)</span>
-<span class="go">&#39;build-T1_21260.log&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logMe</span><span class="o">.</span><span class="n">initLog</span><span class="p">(</span><span class="s1">'build-'</span><span class="o">+</span><span class="n">sc</span><span class="o">.</span><span class="n">state</span><span class="p">()</span><span class="o">+</span><span class="s1">'.log'</span><span class="p">)</span>
+<span class="go">'build-T1_21260.log'</span>
 </pre></div>
 </div>
 <p>Initialize <code class="docutils literal notranslate"><span class="pre">XML</span></code> parser with construction and save file:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span> <span class="o">=</span> <span class="n">dtXmlParser</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;machine.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;machineSave.xml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reference</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span> <span class="o">=</span> <span class="n">dtXmlParser</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s2">"machine.xml"</span><span class="p">,</span> <span class="s2">"machineSave.xml"</span><span class="p">)</span><span class="o">.</span><span class="n">reference</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Parse <code class="docutils literal notranslate"><span class="pre">XML</span></code> files:</p>
@@ -1392,7 +1392,7 @@ parameters in <code class="docutils literal notranslate"><span class="pre">runDa
 </div>
 <p>Create <a class="reference internal" href="constValue.html#constvalue"><span class="std std-ref">constValue</span></a> instances and load the <code class="docutils literal notranslate"><span class="pre">templateState</span></code>:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span><span class="o">.</span><span class="n">createConstValue</span><span class="p">(</span><span class="n">cV</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span><span class="o">.</span><span class="n">loadStateToConst</span><span class="p">(</span><span class="s2">&quot;templateState&quot;</span><span class="p">,</span> <span class="n">cV</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span><span class="o">.</span><span class="n">loadStateToConst</span><span class="p">(</span><span class="s2">"templateState"</span><span class="p">,</span> <span class="n">cV</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Iterate over all parameters from database and set the value in the
@@ -1400,7 +1400,7 @@ correspoding <a class="reference internal" href="constValue.html#constvalue"><sp
 correct label:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cc</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">anObj</span> <span class="ow">in</span> <span class="n">sc</span><span class="o">.</span><span class="n">objective</span><span class="p">():</span>
-<span class="gp">... </span>  <span class="n">cV</span><span class="p">[</span> <span class="n">cVArr</span><span class="p">[</span><span class="n">cc</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span> <span class="n">anObj</span> <span class="p">)</span>
+<span class="gp">... </span>  <span class="n">cV</span><span class="p">[</span> <span class="n">cVArr</span><span class="p">[</span><span class="n">cc</span><span class="p">][</span><span class="s1">'label'</span><span class="p">]</span> <span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span> <span class="n">anObj</span> <span class="p">)</span>
 <span class="gp">... </span>  <span class="n">cc</span> <span class="o">=</span> <span class="n">cc</span> <span class="o">+</span> <span class="mi">1</span>
 </pre></div>
 </div>
@@ -1408,7 +1408,7 @@ correct label:</p>
 again. The plugin adjusts the runner domain by changing the DOFs; therefore,
 it necessary to create the geometry twice:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span><span class="o">.</span><span class="n">destroyAndCreate</span><span class="p">(</span><span class="n">bC</span><span class="p">,</span> <span class="n">cV</span><span class="p">,</span> <span class="n">aF</span><span class="p">,</span> <span class="n">aG</span><span class="p">,</span> <span class="n">bV</span><span class="p">,</span> <span class="n">dC</span><span class="p">,</span> <span class="n">dP</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ru_adjustDomain&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'ru_adjustDomain'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span><span class="o">.</span><span class="n">destroyAndCreate</span><span class="p">(</span><span class="n">bC</span><span class="p">,</span> <span class="n">cV</span><span class="p">,</span> <span class="n">aF</span><span class="p">,</span> <span class="n">aG</span><span class="p">,</span> <span class="n">bV</span><span class="p">,</span> <span class="n">dC</span><span class="p">,</span> <span class="n">dP</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1429,46 +1429,46 @@ operating point:</p>
 <p class="admonition-title">Note</p>
 <p>Depending on the OpenFoam installation, it might be necessary to adjust
 the decomposition method, e.g. to</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">decompose_par_dict</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;metis&#39;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">decompose_par_dict</span><span class="p">[</span><span class="s1">'method'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'metis'</span>
 </pre></div>
 </div>
 <p>or any other method. As already mentioned, it depends on the current
 installation.</p>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;tl&quot;</span> <span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;vl&quot;</span><span class="p">]:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"tl"</span> <span class="p">,</span> <span class="s2">"n"</span><span class="p">,</span> <span class="s2">"vl"</span><span class="p">]:</span>
 <span class="gp">... </span>  <span class="c1">#</span>
 <span class="gp">... </span>  <span class="c1"># Create OpenFoam case</span>
 <span class="gp">... </span>  <span class="c1">#</span>
-<span class="gp">... </span>  <span class="n">dC</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tistos_ru_of_&#39;</span><span class="o">+</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">runCurrentState</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="n">dC</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'tistos_ru_of_'</span><span class="o">+</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">runCurrentState</span><span class="p">()</span>
 <span class="gp">... </span>  <span class="c1">#</span>
 <span class="gp">... </span>  <span class="c1"># Initialize ``foamlib`` object; define parallel solution on 4</span>
 <span class="gp">... </span>  <span class="c1"># processors; simulate 100 iterations laminar with a ``faceLimited``</span>
 <span class="gp">... </span>  <span class="c1"># scheme</span>
 <span class="gp">... </span>  <span class="c1">#</span>
-<span class="gp">... </span>  <span class="n">fc</span> <span class="o">=</span> <span class="n">foamlib</span><span class="o">.</span><span class="n">FoamCase</span><span class="p">(</span> <span class="s1">&#39;tistos_ru_of_&#39;</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">sc</span><span class="o">.</span><span class="n">state</span><span class="p">()</span> <span class="p">)</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">decompose_par_dict</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;scotch&#39;</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">decompose_par_dict</span><span class="p">[</span><span class="s1">&#39;numberOfSubdomains&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">&#39;writeInterval&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">&#39;endTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">turbulence_properties</span><span class="p">[</span><span class="s2">&quot;RAS&quot;</span><span class="p">][</span><span class="s2">&quot;turbulence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;gradSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;none&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;faceLimited Gauss linear 0.33&#39;</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;gradSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;grad(p)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;faceLimited Gauss linear 0.33&#39;</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;gradSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;grad(U)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;faceLimited Gauss linear 0.33&#39;</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;divSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;div(phi,U)&#39;</span><span class="p">]</span> <span class="o">=</span> \
-<span class="gp">... </span>    <span class="s1">&#39;Gauss linearUpwindV faceLimited Gauss linear 0.33&#39;</span>
+<span class="gp">... </span>  <span class="n">fc</span> <span class="o">=</span> <span class="n">foamlib</span><span class="o">.</span><span class="n">FoamCase</span><span class="p">(</span> <span class="s1">'tistos_ru_of_'</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="s1">'_'</span><span class="o">+</span><span class="n">sc</span><span class="o">.</span><span class="n">state</span><span class="p">()</span> <span class="p">)</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">decompose_par_dict</span><span class="p">[</span><span class="s1">'method'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'scotch'</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">decompose_par_dict</span><span class="p">[</span><span class="s1">'numberOfSubdomains'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">'writeInterval'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">'endTime'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">turbulence_properties</span><span class="p">[</span><span class="s2">"RAS"</span><span class="p">][</span><span class="s2">"turbulence"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">'gradSchemes'</span><span class="p">][</span><span class="s1">'none'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'faceLimited Gauss linear 0.33'</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">'gradSchemes'</span><span class="p">][</span><span class="s1">'grad(p)'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'faceLimited Gauss linear 0.33'</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">'gradSchemes'</span><span class="p">][</span><span class="s1">'grad(U)'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'faceLimited Gauss linear 0.33'</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">'divSchemes'</span><span class="p">][</span><span class="s1">'div(phi,U)'</span><span class="p">]</span> <span class="o">=</span> \
+<span class="gp">... </span>    <span class="s1">'Gauss linearUpwindV faceLimited Gauss linear 0.33'</span>
 <span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="gp">... </span>  <span class="c1">#</span>
 <span class="gp">... </span>  <span class="c1"># Simulate until 1000 iterations reached as a turbulent simulation with</span>
 <span class="gp">... </span>  <span class="c1"># a ``cellLimited`` scheme</span>
 <span class="gp">... </span>  <span class="c1">#</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">&#39;writeInterval&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">&#39;endTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">turbulence_properties</span><span class="p">[</span><span class="s2">&quot;RAS&quot;</span><span class="p">][</span><span class="s2">&quot;turbulence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;gradSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;none&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;cellLimited Gauss linear 0.33&#39;</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;gradSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;grad(p)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;cellLimited Gauss linear 0.33&#39;</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;gradSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;grad(U)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;cellLimited Gauss linear 0.33&#39;</span>
-<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;divSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;div(phi,U)&#39;</span><span class="p">]</span> <span class="o">=</span> \
-<span class="gp">... </span>    <span class="s1">&#39;Gauss linearUpwindV cellLimited Gauss linear 0.33&#39;</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">'writeInterval'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">'endTime'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">turbulence_properties</span><span class="p">[</span><span class="s2">"RAS"</span><span class="p">][</span><span class="s2">"turbulence"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">'gradSchemes'</span><span class="p">][</span><span class="s1">'none'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'cellLimited Gauss linear 0.33'</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">'gradSchemes'</span><span class="p">][</span><span class="s1">'grad(p)'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'cellLimited Gauss linear 0.33'</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">'gradSchemes'</span><span class="p">][</span><span class="s1">'grad(U)'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'cellLimited Gauss linear 0.33'</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">'divSchemes'</span><span class="p">][</span><span class="s1">'div(phi,U)'</span><span class="p">]</span> <span class="o">=</span> \
+<span class="gp">... </span>    <span class="s1">'Gauss linearUpwindV cellLimited Gauss linear 0.33'</span>
 <span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="gp">... </span>  <span class="c1">#</span>
 <span class="gp">... </span>  <span class="c1"># Reconstruct the case</span>
@@ -1478,27 +1478,27 @@ installation.</p>
 <span class="gp">... </span>  <span class="c1"># Extract the rotation speed from the case</span>
 <span class="gp">... </span>  <span class="c1">#</span>
 <span class="gp">... </span>  <span class="n">omega</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">foamlib</span><span class="o">.</span><span class="n">FoamFile</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;constant/MRFProperties&#39;</span><span class="p">)[</span><span class="s1">&#39;MRF_RU&#39;</span><span class="p">][</span><span class="s1">&#39;omega&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">foamlib</span><span class="o">.</span><span class="n">FoamFile</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">'constant/MRFProperties'</span><span class="p">)[</span><span class="s1">'MRF_RU'</span><span class="p">][</span><span class="s1">'omega'</span><span class="p">]</span>
 <span class="gp">... </span>  <span class="p">)</span>
 <span class="gp">... </span>  <span class="k">try</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="c1">#</span>
 <span class="gp">... </span>    <span class="c1"># Read data from ``postProcessing`` folder</span>
 <span class="gp">... </span>    <span class="c1">#</span>
 <span class="gp">... </span>    <span class="n">Q_ru_dev</span> <span class="o">=</span> <span class="n">dtScalarDeveloping</span><span class="p">(</span>
-<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;postProcessing/Q_ru_in/100&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">()</span>
+<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">'postProcessing/Q_ru_in/100'</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span>    <span class="n">pIn_ru_dev</span> <span class="o">=</span> <span class="n">dtScalarDeveloping</span><span class="p">(</span>
-<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;postProcessing/ptot_ru_in/100&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">()</span>
+<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">'postProcessing/ptot_ru_in/100'</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span>    <span class="n">pOut_ru_dev</span> <span class="o">=</span> <span class="n">dtScalarDeveloping</span><span class="p">(</span>
-<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;postProcessing/ptot_ru_out/100&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">()</span>
+<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">'postProcessing/ptot_ru_out/100'</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span>    <span class="n">Vcav_dev</span> <span class="o">=</span> <span class="n">dtScalarDeveloping</span><span class="p">(</span>
-<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;postProcessing/V_CAV/100&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">()</span>
+<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">'postProcessing/V_CAV/100'</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span>    <span class="n">F_dev</span> <span class="o">=</span> <span class="n">dtForceDeveloping</span><span class="p">(</span>
-<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;postProcessing/forces&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="p">{</span><span class="s1">&#39;force.dat&#39;</span> <span class="p">:</span> <span class="s1">&#39;:,4:10&#39;</span><span class="p">,</span> <span class="s1">&#39;moment.dat&#39;</span> <span class="p">:</span> <span class="s1">&#39;:,4:10&#39;</span><span class="p">,</span> <span class="s1">&#39;*.*&#39;</span> <span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">'postProcessing/forces'</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s1">'force.dat'</span> <span class="p">:</span> <span class="s1">':,4:10'</span><span class="p">,</span> <span class="s1">'moment.dat'</span> <span class="p">:</span> <span class="s1">':,4:10'</span><span class="p">,</span> <span class="s1">'*.*'</span> <span class="p">:</span> <span class="s1">''</span><span class="p">}</span>
 <span class="gp">... </span>      <span class="p">)</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span>    <span class="c1">#</span>
@@ -1513,26 +1513,26 @@ installation.</p>
 <span class="gp">... </span>    <span class="c1"># Check if number of iterations reached and if it is a turbine not a</span>
 <span class="gp">... </span>    <span class="c1"># pump</span>
 <span class="gp">... </span>    <span class="c1">#</span>
-<span class="gp">... </span>    <span class="k">if</span> <span class="n">fc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;1000&#39;</span><span class="p">:</span>
-<span class="gp">... </span>      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Max number of iterations not reached.&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">fc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">'1000'</span><span class="p">:</span>
+<span class="gp">... </span>      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Max number of iterations not reached.'</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eta</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-<span class="gp">... </span>      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Pump detected.&#39;</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Pump detected.'</span><span class="p">)</span>
 <span class="gp">... </span>  <span class="c1">#</span>
 <span class="gp">... </span>  <span class="c1"># Handle exceptions</span>
 <span class="gp">... </span>  <span class="c1">#</span>
 <span class="gp">... </span>  <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Catch exception : </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">'Catch exception : </span><span class="si">%s</span><span class="s1">'</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Compare simulation results with the results in the database. Accept an error of
 1 %, otherwise report error:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">valLab</span><span class="p">,</span> <span class="n">valVar</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;dH&#39;</span><span class="p">,</span> <span class="s1">&#39;eta&#39;</span><span class="p">,],[</span><span class="n">P</span><span class="p">,</span> <span class="n">dH</span><span class="p">,</span> <span class="n">eta</span><span class="p">,]):</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">valLab</span><span class="p">,</span> <span class="n">valVar</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s1">'P'</span><span class="p">,</span> <span class="s1">'dH'</span><span class="p">,</span> <span class="s1">'eta'</span><span class="p">,],[</span><span class="n">P</span><span class="p">,</span> <span class="n">dH</span><span class="p">,</span> <span class="n">eta</span><span class="p">,]):</span>
 <span class="gp">... </span>  <span class="n">ref</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">readDict</span><span class="p">(</span><span class="n">valLab</span><span class="p">)</span>
-<span class="gp">... </span>  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;vl&#39;</span><span class="p">,</span> <span class="s1">&#39;tl&#39;</span><span class="p">,]:</span>
+<span class="gp">... </span>  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'n'</span><span class="p">,</span> <span class="s1">'vl'</span><span class="p">,</span> <span class="s1">'tl'</span><span class="p">,]:</span>
 <span class="gp">... </span>    <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span> <span class="p">(</span><span class="n">ref</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">valVar</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="n">ref</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>
-<span class="gp">... </span>    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Difference for </span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">] : </span><span class="si">%f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">valLab</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mf">100.</span><span class="o">*</span><span class="n">diff</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Difference for </span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">] : </span><span class="si">%f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">valLab</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mf">100.</span><span class="o">*</span><span class="n">diff</span><span class="p">))</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mf">0.01</span><span class="p">:</span>
-<span class="gp">... </span>      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Difference for </span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">] : </span><span class="si">%f</span><span class="s2"> </span><span class="si">%%</span><span class="s2"> &gt; 1</span><span class="si">%%</span><span class="s2">!&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">valLab</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mf">100.</span><span class="o">*</span><span class="n">diff</span><span class="p">))</span>
+<span class="gp">... </span>      <span class="nb">print</span><span class="p">(</span><span class="s2">"Difference for </span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">] : </span><span class="si">%f</span><span class="s2"> </span><span class="si">%%</span><span class="s2"> &gt; 1</span><span class="si">%%</span><span class="s2">!"</span> <span class="o">%</span> <span class="p">(</span><span class="n">valLab</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mf">100.</span><span class="o">*</span><span class="n">diff</span><span class="p">))</span>
 </pre></div>
 </div>
 </section>
@@ -1971,13 +1971,13 @@ and a configuration dictionary, which specifies the positions and
 curvatures of the interface curves.
 Define the configuration dictionary for the meridional contour.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">configMeridional</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;label&quot;</span> <span class="p">:</span> <span class="s2">&quot;radMeridionalContour&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"label"</span> <span class="p">:</span> <span class="s2">"radMeridionalContour"</span><span class="p">,</span>
 <span class="gp">...</span>
-<span class="gp">... </span>    <span class="s2">&quot;interface_hub&quot;</span> <span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"interface_hub"</span> <span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">],</span>
 <span class="gp">... </span>                       <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],],</span>
-<span class="gp">... </span>    <span class="s2">&quot;interface_shroud&quot;</span> <span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"interface_shroud"</span> <span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">],</span>
 <span class="gp">... </span>                          <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],],</span>
-<span class="gp">... </span>    <span class="s2">&quot;interface_curvature&quot;</span> <span class="p">:</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"interface_curvature"</span> <span class="p">:</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
 <span class="gp">... </span>                             <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],],</span>
 <span class="gp">... </span><span class="p">}</span>
 </pre></div>
@@ -2015,28 +2015,28 @@ orientation of the blade in the regular channel. If the blade extends in the
 positive u-direction of the regular channel, it is set to <code class="docutils literal notranslate"><span class="pre">1</span></code>. If the blade
 extends in the negative u-direction this value has to be set to <code class="docutils literal notranslate"><span class="pre">-1</span></code>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">configGuideVane</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;label&quot;</span> <span class="p">:</span> <span class="s2">&quot;gv&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;regChannel&quot;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;nBlades&quot;</span> <span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"label"</span> <span class="p">:</span> <span class="s2">"gv"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"regChannel"</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"nBlades"</span> <span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
 <span class="gp">...</span>
-<span class="gp">... </span>    <span class="s2">&quot;spanwiseCuts_mp&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,],</span>
-<span class="gp">... </span>    <span class="s2">&quot;alpha_1&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="nb">round</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="mf">55.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)],</span>
-<span class="gp">... </span>    <span class="s2">&quot;alpha_2&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="nb">round</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="mf">16.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)],</span>
-<span class="gp">... </span>    <span class="s2">&quot;ratioX&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;deltaY&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.12</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;offX&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.046</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;offY&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.077</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"spanwiseCuts_mp"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,],</span>
+<span class="gp">... </span>    <span class="s2">"alpha_1"</span> <span class="p">:</span> <span class="p">[</span><span class="nb">round</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="mf">55.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="s2">"alpha_2"</span> <span class="p">:</span> <span class="p">[</span><span class="nb">round</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="mf">16.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="s2">"ratioX"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"deltaY"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.12</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"offX"</span> <span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.046</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"offY"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.077</span><span class="p">],</span>
 <span class="gp">...</span>
-<span class="gp">... </span>    <span class="s2">&quot;spanwiseCuts_td&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,],</span>
-<span class="gp">... </span>    <span class="s2">&quot;t_le&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;u_le&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;t_mid&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.03</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;u_mid&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.20</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;t_te&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;u_te&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.80</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"spanwiseCuts_td"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,],</span>
+<span class="gp">... </span>    <span class="s2">"t_le"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"u_le"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"t_mid"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.03</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"u_mid"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.20</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"t_te"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"u_te"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.80</span><span class="p">],</span>
 <span class="gp">...</span>
-<span class="gp">... </span>    <span class="s2">&quot;adjustRadius&quot;</span> <span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;orientation&quot;</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"adjustRadius"</span> <span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"orientation"</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">}</span>
 </pre></div>
 </div>
@@ -2058,52 +2058,52 @@ Here, each blade parameter contains multiple values and, therefore,
 the blade varies in the spanwise direction.
 The parameter <code class="docutils literal notranslate"><span class="pre">adjustRadius</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">configRunner</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;label&quot;</span> <span class="p">:</span> <span class="s2">&quot;ru&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;regChannel&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;nBlades&quot;</span> <span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;spanwiseCuts_mp&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">,</span>  <span class="mf">0.66</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,],</span>
-<span class="gp">... </span>    <span class="s2">&quot;alpha_1&quot;</span> <span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="s2">"label"</span> <span class="p">:</span> <span class="s2">"ru"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"regChannel"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"nBlades"</span> <span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"spanwiseCuts_mp"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">,</span>  <span class="mf">0.66</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,],</span>
+<span class="gp">... </span>    <span class="s2">"alpha_1"</span> <span class="p">:</span> <span class="p">[</span>
 <span class="gp">... </span>             <span class="nb">round</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="mf">90.</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
 <span class="gp">... </span>             <span class="nb">round</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="mf">75.</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
 <span class="gp">... </span>             <span class="nb">round</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="mf">52.</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="gp">... </span>         <span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;alpha_2&quot;</span> <span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="s2">"alpha_2"</span> <span class="p">:</span> <span class="p">[</span>
 <span class="gp">... </span>             <span class="nb">round</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="mf">45.</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
 <span class="gp">... </span>             <span class="nb">round</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="mf">31.</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
 <span class="gp">... </span>             <span class="nb">round</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="mf">32.</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
 <span class="gp">... </span>             <span class="nb">round</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span> <span class="o">*</span> <span class="mf">10.</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="gp">... </span>         <span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;ratioX&quot;</span> <span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="s2">"ratioX"</span> <span class="p">:</span> <span class="p">[</span>
 <span class="gp">... </span>             <span class="mf">0.65</span><span class="p">,</span>
 <span class="gp">... </span>             <span class="mf">0.70</span><span class="p">,</span>
 <span class="gp">... </span>             <span class="mf">0.35</span><span class="p">,</span>
 <span class="gp">... </span>             <span class="mf">0.22</span>
 <span class="gp">... </span>         <span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;deltaY&quot;</span> <span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="s2">"deltaY"</span> <span class="p">:</span> <span class="p">[</span>
 <span class="gp">... </span>             <span class="mf">0.80</span><span class="p">,</span>
 <span class="gp">... </span>             <span class="mf">0.55</span><span class="p">,</span>
 <span class="gp">... </span>             <span class="mf">0.90</span><span class="p">,</span>
 <span class="gp">... </span>             <span class="mf">0.55</span>
 <span class="gp">... </span>         <span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;offX&quot;</span> <span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="s2">"offX"</span> <span class="p">:</span> <span class="p">[</span>
 <span class="gp">... </span>             <span class="mf">0.125</span><span class="p">,</span>
 <span class="gp">... </span>             <span class="mf">0.125</span><span class="p">,</span>
 <span class="gp">... </span>             <span class="mf">0.0</span>
 <span class="gp">... </span>         <span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;offY&quot;</span> <span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="s2">"offY"</span> <span class="p">:</span> <span class="p">[</span>
 <span class="gp">... </span>             <span class="mf">0.065</span><span class="p">,</span>
 <span class="gp">... </span>             <span class="mf">0.085</span><span class="p">,</span>
 <span class="gp">... </span>             <span class="mf">0.035</span>
 <span class="gp">... </span>         <span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;spanwiseCuts_td&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,],</span>
-<span class="gp">... </span>    <span class="s2">&quot;t_le&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.020</span><span class="p">,</span><span class="mf">0.018</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;u_le&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;t_mid&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.04</span><span class="p">,</span><span class="mf">0.03</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;u_mid&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.50</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;t_te&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.02</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;u_te&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.80</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="s2">&quot;adjustRadius&quot;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;orientation&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"spanwiseCuts_td"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,],</span>
+<span class="gp">... </span>    <span class="s2">"t_le"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.020</span><span class="p">,</span><span class="mf">0.018</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"u_le"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.00</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"t_mid"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.04</span><span class="p">,</span><span class="mf">0.03</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"u_mid"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.50</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"t_te"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.02</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"u_te"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.80</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"adjustRadius"</span> <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"orientation"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">}</span>
 </pre></div>
 </div>
@@ -2130,10 +2130,10 @@ of the geometry. Geometry settings for the layer region are passed to
 the class through a configuration dictionary.</p>
 <p>Create the configuration dictionary:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">configLayer</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;label&quot;</span> <span class="p">:</span> <span class="s2">&quot;radMeridionalContour&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;nSlices&quot;</span> <span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;layer_thickness&quot;</span> <span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;layer_supports&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">"label"</span> <span class="p">:</span> <span class="s2">"radMeridionalContour"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"nSlices"</span> <span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"layer_thickness"</span> <span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"layer_supports"</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">}</span>
 </pre></div>
 </div>
@@ -2656,7 +2656,7 @@ which the blade is created. The regular channel is returned by the
 <code class="docutils literal notranslate"><span class="pre">getRegChannel()</span></code> method of the <code class="docutils literal notranslate"><span class="pre">radMeridionalContour</span></code> object of class
 <cite>analyticGeometry_piecewiseMeridionalRotContour</cite>. The returned channel volume
 is labeled as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;xyz_&quot;</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_channel&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"xyz_"</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">"_channel"</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -2668,7 +2668,7 @@ is labeled as follows:</p>
 <cite>analyticSurface_threePointMeanplaneFromRatio</cite> creates the meanplane in
 the uv-parameter space. The blade surface is labeled with the following
 string:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_meanplane&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">"_meanplane"</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -2681,7 +2681,7 @@ and <code class="docutils literal notranslate"><span class="pre">u_te</span></co
 thickness distribution.</p>
 <p>The thickness distribution function in uv-parameter space is labeled as
 follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_thicknessDistribution&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">"_thicknessDistribution"</span>
 </pre></div>
 </div>
 <p>The parameterization of the blade geometry is described in more detail in
@@ -2706,7 +2706,7 @@ the function order is defined in this method.</p>
 thickness distribution using the <cite>dtOO</cite> class <cite>discreteAddNormal</cite>.
 The resulting blade is represented as a surface in uv-parameter space.
 The blade surface is labeled as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_blade&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">"_blade"</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -2729,7 +2729,7 @@ the blade surface.</p>
 <p>This is done in a manner similar to the combination of the meanplane and
 thickness distribution, using the <cite>dtOO</cite> class <cite>discreteAddNormal</cite>.</p>
 <p>The mesh block surface is assigned the following label:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_meshBlock&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">"_meshBlock"</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -2802,7 +2802,7 @@ extension toward the outlet and <code class="docutils literal notranslate"><span
 towards the inlet.</p>
 <p>The offset meanplane curves and their corresponding base curves on the
 mesh blocks are labeled using the following strings:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_meshBlock_Curve&lt;in/out&gt;&lt;0/1&gt;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">"_meshBlock_Curve&lt;in/out&gt;&lt;0/1&gt;"</span>
 </pre></div>
 </div>
 <p>The suffix <code class="docutils literal notranslate"><span class="pre">&lt;in/out&gt;</span></code> indicates whether the curves are offset toward
@@ -2832,7 +2832,7 @@ skinning the meanplane curves.</p>
 regular channel in order to maintain consistent parameter directions
 with the mesh blocks.</p>
 <p>The surfaces are labeled as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;fe_meanplane_&lt;in/out&gt;0&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">"fe_meanplane_&lt;in/out&gt;0"</span>
 </pre></div>
 </div>
 <p>The suffix <code class="docutils literal notranslate"><span class="pre">&lt;in/out&gt;</span></code> indicates whether the surface belongs to the
@@ -2870,7 +2870,7 @@ the tangentially offset meanplane curves are created using the subclass
 the regular channel as inputs.
 The surfaces are labeled as follows. The strings <code class="docutils literal notranslate"><span class="pre">&lt;in/out&gt;</span></code> have the
 same meaning as described previously.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;fe_meanplane_&lt;in/out&gt;1&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">"fe_meanplane_&lt;in/out&gt;1"</span>
 </pre></div>
 </div>
 <p>The following figure shows the four FE-meanplane surfaces together with
@@ -2954,7 +2954,7 @@ The rotation angle of the surfaces is determined by the number of blades
 <code class="docutils literal notranslate"><span class="pre">getGridChannel()</span></code> method of the class
 <cite>multipleBoundedVolume_gridChannel</cite>.</p>
 <p>The multiple bounded volume object is labeled as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;xyz_&quot;</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_gridChannel&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"xyz_"</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">"_gridChannel"</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -3011,7 +3011,7 @@ distribution along the blade surface.
 The scale factor can be adjusted using <code class="docutils literal notranslate"><span class="pre">bladeHubElementScale</span></code>.</p>
 <p>The mesh topology is stored in the container <code class="docutils literal notranslate"><span class="pre">bV</span></code> with the following
 label:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;_mesh&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">label</span> <span class="o">+</span> <span class="s2">"_mesh"</span>
 </pre></div>
 </div>
 <p>A mesh resulting from this topology is shown in <a class="reference internal" href="#gvmesh0"><span class="std std-numref">Fig. 13</span></a>.</p>
@@ -3145,7 +3145,7 @@ of a point can be extracted with</p>
 </pre></div>
 </div>
 <p>and printed:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;</span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span> <span class="n">p3</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">p3</span><span class="o">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">p3</span><span class="o">.</span><span class="n">z</span><span class="p">())</span> <span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span> <span class="s2">"</span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> </span><span class="si">%f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span> <span class="n">p3</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">p3</span><span class="o">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">p3</span><span class="o">.</span><span class="n">z</span><span class="p">())</span> <span class="p">)</span>
 <span class="go">0.000000 0.500000 0.250000</span>
 </pre></div>
 </div>
@@ -3169,7 +3169,7 @@ of revolution is constructed with the already created <cite>dtOO</cite> curve ob
 </div>
 <p>In the case at hand, the surface has the type <cite>Geom_SurfaceOfRevolution</cite>;
 therefore, the check should be true:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surface_occ</span><span class="o">.</span><span class="n">IsInstance</span><span class="p">(</span> <span class="s2">&quot;Geom_SurfaceOfRevolution&quot;</span> <span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surface_occ</span><span class="o">.</span><span class="n">IsInstance</span><span class="p">(</span> <span class="s2">"Geom_SurfaceOfRevolution"</span> <span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
 </div>
