@@ -1,0 +1,1212 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dtOOPythonApp.builder.vec3dThreeD_skinAndSplit &mdash; dtOO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/dtoo-logo-inv-nbg.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demonstration.html">Demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../test.html">Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/ihs-ustutt/dtOO">Back to GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">dtOO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dtOOPythonApp.builder.vec3dThreeD_skinAndSplit</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dtOOPythonApp.builder.vec3dThreeD_skinAndSplit</h1><div class="highlight"><pre>
+<span></span><span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1">#  dtOO &lt; design tool Object-Oriented &gt;</span>
+<span class="c1">#    </span>
+<span class="c1">#    Copyright (C) 2024 A. Tismer.</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1">#License</span>
+<span class="c1">#    This file is part of dtOO.</span>
+<span class="c1">#</span>
+<span class="c1">#    dtOO is distributed in the hope that it will be useful, but WITHOUT</span>
+<span class="c1">#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or</span>
+<span class="c1">#    FITNESS FOR A PARTICULAR PURPOSE.  See the LICENSE.txt file in the</span>
+<span class="c1">#    dtOO root directory for more details.</span>
+<span class="c1">#</span>
+<span class="c1">#    You should have received a copy of the License along with dtOO.</span>
+<span class="c1">#</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.tools.dtBundleTools</span><span class="w"> </span><span class="kn">import</span> <span class="n">dtBundleBuilder</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">bSplineCurve_pointConstructOCC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">bSplineSurface_exchangeSurfaceConstructOCC</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">vectorDtPoint3</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">dtPoint3</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">vec3dCurveOneD</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">analyticCurve</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">analyticFunction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">analyticSurface</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">dtLinearAlgebra</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">vectorHandlingConstAnalyticFunction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">vec3dTransVolThreeD_skinBSplineSurfaces</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">vec3dSurfaceTwoD</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">bSplineSurface_bSplineSurfaceSplitConstructOCC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">bSplineSurface_skinConstructOCC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">dtOCCBSplineCurve</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<div class="viewcode-block" id="vec3dThreeD_skinAndSplit">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">vec3dThreeD_skinAndSplit</span><span class="p">(</span><span class="n">dtBundleBuilder</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">"""Create mesh blocks and meanplane curves from blade and surrounding surface.</span>
+
+<span class="sd">    This class:</span>
+
+<span class="sd">        - Splits blade and the mesh block surfaces at defined positions.</span>
+<span class="sd">        - Skins mesh block volumes of the corresponding surfaces.</span>
+<span class="sd">        - Creates a meanplane curves at the inlet and outlet.</span>
+<span class="sd">        - Creates trailing edge mesh blocks.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    label_: str</span>
+<span class="sd">      Label.</span>
+<span class="sd">    aFOne_: vec3dSurfaceTwoD</span>
+<span class="sd">      First BSpline surface.</span>
+<span class="sd">    aFTwo_: vec3dSurfaceTwoD</span>
+<span class="sd">      Second BSpline surface.</span>
+<span class="sd">    splitDim_: int</span>
+<span class="sd">      Dimension where surface is splitted before skinned.</span>
+<span class="sd">    splits_: List[Tuple[float]]</span>
+<span class="sd">      Positions for splitting.</span>
+<span class="sd">    thickness_: float</span>
+<span class="sd">      Thickness of the trailing edge mesh blocks.</span>
+<span class="sd">    meanplaneFromBlocks_: bool</span>
+<span class="sd">      Activates creation of meanplane curve.</span>
+<span class="sd">    meanplaneExtOut_: float</span>
+<span class="sd">      Extention of meanplane curve towards outlet.</span>
+<span class="sd">    meanplaneExtIn_: float</span>
+<span class="sd">      Extention of meanplane curve towards inlet.</span>
+<span class="sd">    nMeanplaneBlocks_: int</span>
+<span class="sd">      Number of block faces used for the meanplane.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from dtOOPythonSWIG import dtPoint3</span>
+<span class="sd">    &gt;&gt;&gt; from dtOOPythonSWIG import bSplineCurve_pointConstructOCC</span>
+<span class="sd">    &gt;&gt;&gt; from dtOOPythonSWIG import bSplineSurface_skinConstructOCC</span>
+<span class="sd">    &gt;&gt;&gt; from dtOOPythonSWIG import vec3dSurfaceTwoD</span>
+
+<span class="sd">    Create first analyticFunction:</span>
+
+<span class="sd">    &gt;&gt;&gt; aFOne = vec3dSurfaceTwoD( </span>
+<span class="sd">    ...   bSplineSurface_skinConstructOCC(</span>
+<span class="sd">    ...     bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...       dtPoint3(0,0,0), dtPoint3(1,0,0)</span>
+<span class="sd">    ...     ).result(),</span>
+<span class="sd">    ...     bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...       dtPoint3(0,1,0), dtPoint3(1,1,0)</span>
+<span class="sd">    ...     ).result()</span>
+<span class="sd">    ...   ).result()</span>
+<span class="sd">    ... )</span>
+
+<span class="sd">    Create second analyticFunction:</span>
+
+<span class="sd">    &gt;&gt;&gt; aFTwo = vec3dSurfaceTwoD( </span>
+<span class="sd">    ...   bSplineSurface_skinConstructOCC(</span>
+<span class="sd">    ...     bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...       dtPoint3(0,0,1), dtPoint3(1,0,1)</span>
+<span class="sd">    ...     ).result(),</span>
+<span class="sd">    ...     bSplineCurve_pointConstructOCC(</span>
+<span class="sd">    ...       dtPoint3(0,1,1), dtPoint3(1,1,1)</span>
+<span class="sd">    ...     ).result()</span>
+<span class="sd">    ...   ).result()</span>
+<span class="sd">    ... )</span>
+
+<span class="sd">    Initialize builder:</span>
+
+<span class="sd">    &gt;&gt;&gt; builder = vec3dThreeD_skinAndSplit("unitCube", aFOne, aFTwo)</span>
+
+<span class="sd">    Build volume:</span>
+
+<span class="sd">    &gt;&gt;&gt; builder.build()</span>
+
+<span class="sd">    Check label of first analyticFunction:</span>
+
+<span class="sd">    &gt;&gt;&gt; builder.lVH_aF().labels()[0]</span>
+<span class="sd">    'unitCube'</span>
+<span class="sd">    </span>
+<span class="sd">    The main method of this class is :meth:`build`.</span>
+
+<span class="sd">    The analytic functions of the blade surface ``aFOne_`` and the surrounding</span>
+<span class="sd">    surface ``aFTwo_`` are split at the positions specified in ``splits_``.</span>
+<span class="sd">    The input parameter ``splitDim_`` specifies the parameter direction in which</span>
+<span class="sd">    the surfaces are split. A value of ``0`` corresponds to splitting along the</span>
+<span class="sd">    u-parameter direction.</span>
+
+<span class="sd">    The format of ``splits_`` is ``List[Tuple[float, float]]``. Each entry</span>
+<span class="sd">    ``splits_[i]`` corresponds to one resulting mesh block. A mesh block is</span>
+<span class="sd">    created by splitting the surfaces ``aFOne_`` and ``aFTwo_`` between the</span>
+<span class="sd">    normalized minimum and maximum parameter values specified by</span>
+<span class="sd">    ``splits_[i][0]`` and ``splits_[i][1]``.</span>
+
+<span class="sd">    Depending on whether ``splitDim_`` specifies the u- or v-direction, the</span>
+<span class="sd">    values in ``splits_`` are converted into the corresponding surface parameter</span>
+<span class="sd">    values.</span>
+
+<span class="sd">    The mesh block volumes are created by skinning the resulting surfaces.</span>
+
+<span class="sd">    Two trailing edge mesh blocks can additionally be created with a thickness</span>
+<span class="sd">    specified by ``teMeshBlockThickness_``. If this value is set to ``None``,</span>
+<span class="sd">    no trailing edge mesh blocks are generated.</span>
+
+<span class="sd">    Otherwise, the trailing edge mesh blocks are created by computing a</span>
+<span class="sd">    tangential offset of the edges of the first and last mesh blocks surrounding</span>
+<span class="sd">    the blade. The offset edges are computed using the method</span>
+<span class="sd">    :meth:`teOffsetCurves_vec3dSurfaceTwoD`. This method returns the base curve</span>
+<span class="sd">    and a list of points, derived from the base curve, from which the offset curve </span>
+<span class="sd">    can be constructed.</span>
+
+<span class="sd">    By skinning the base and offset curves, faces extending from the first and</span>
+<span class="sd">    last trailing edge mesh blocks are generated. A second skinning operation </span>
+<span class="sd">    is then used to create the trailing edge mesh block volumes. To maintain </span>
+<span class="sd">    consistent parameter orientations between the trailing edge mesh blocks and </span>
+<span class="sd">    the other mesh blocks, the skinning operation is performed in</span>
+<span class="sd">    :meth:`createBlockFaces`.</span>
+
+<span class="sd">    Meanplane curves are generated if the Boolean parameter</span>
+<span class="sd">    ``meanplaneFromBlocks`` is set to ``True``. Similar to the trailing edge</span>
+<span class="sd">    mesh block edges, the meanplane curves are computed as tangential offsets of</span>
+<span class="sd">    the blade mesh blocks using :meth:`teOffsetCurves_vec3dSurfaceTwoD`.</span>
+
+<span class="sd">    The first meanplane curve is offset from the first blade mesh block towards</span>
+<span class="sd">    the outlet of the regular channel.</span>
+
+<span class="sd">    The second meanplane curve is offset from the ``n``-th blade mesh block,</span>
+<span class="sd">    specified by ``nMeanplaneBlocks_``, towards the inlet.</span>
+<span class="sd">    ``nMeanplaneBlocks_`` defines the index of the mesh block from which the</span>
+<span class="sd">    meanplane curve is generated, starting at zero.</span>
+
+<span class="sd">    The extension lengths of the offsets for the two meanplane curves are</span>
+<span class="sd">    specified by ``meanplaneExtOut_`` and ``meanplaneExtIn_``.</span>
+
+<span class="sd">    The string value stored in ``label_`` is used to label the generated</span>
+<span class="sd">    analytic functions.</span>
+
+<span class="sd">    The analytic function objects of the blade mesh blocks, trailing edge mesh</span>
+<span class="sd">    blocks, and meanplane curves are added to the container object of the main</span>
+<span class="sd">    class using :meth:`appendAnalyticFunction`.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> 
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">aFOne</span><span class="p">:</span> <span class="n">analyticFunction</span><span class="p">,</span>
+        <span class="n">aFTwo</span><span class="p">:</span> <span class="n">analyticFunction</span><span class="p">,</span>
+        <span class="n">splitDim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">splits</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[[]],</span>
+        <span class="n">tEMeshBlockThickness</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">meanplaneFromBlocks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">meanplaneExtOut</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">meanplaneExtIn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">nMeanplaneBlocks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Constructor.</span>
+<span class="sd">      </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        label: str</span>
+<span class="sd">          Label.</span>
+<span class="sd">        aFOne: analyticFunction</span>
+<span class="sd">          First BSpline surface.</span>
+<span class="sd">        aFTwo_: analyticFunction</span>
+<span class="sd">          Second BSpline surface.</span>
+<span class="sd">        splitDim: int</span>
+<span class="sd">          Dimension where surface is splitted before it is skinned.</span>
+<span class="sd">        splits: List[List[float]]</span>
+<span class="sd">          Positions for splitting.</span>
+<span class="sd">        tEMeshBlockThickness: Optional[float] = None</span>
+<span class="sd">          thickness of the Trailing Edge Mesh Blocks, if not None</span>
+<span class="sd">        meanplaneFromBlocks: bool = False</span>
+<span class="sd">          activates creation of meanplane curve</span>
+<span class="sd">        meanplaneExtOut: Optional[float] = 0.01,</span>
+<span class="sd">          extention of meanplane curve towards outlet</span>
+<span class="sd">        meanplaneExtIn: Optional[float] = 0.01,</span>
+<span class="sd">          extention of meanplane curve towards inlet</span>
+<span class="sd">        nMeanplaneBlocks: Optional[int] = 3</span>
+<span class="sd">          number of block faces used for the meanplane</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">      </span>
+<span class="sd">        """</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">"Initializing </span><span class="si">%s</span><span class="s2"> ..."</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">vec3dThreeD_skinAndSplit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aFOne_</span> <span class="o">=</span> <span class="n">vec3dSurfaceTwoD</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="n">aFOne</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aFTwo_</span> <span class="o">=</span> <span class="n">vec3dSurfaceTwoD</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="n">aFTwo</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">splitDim_</span> <span class="o">=</span> <span class="n">splitDim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">splits_</span> <span class="o">=</span> <span class="n">splits</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">thickness_</span> <span class="o">=</span> <span class="n">tEMeshBlockThickness</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meanplaneFromBlocks_</span> <span class="o">=</span> <span class="n">meanplaneFromBlocks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meanplaneExtOut_</span> <span class="o">=</span> <span class="n">meanplaneExtOut</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meanplaneExtIn_</span> <span class="o">=</span> <span class="n">meanplaneExtIn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nMeanplaneBlocks_</span> <span class="o">=</span> <span class="n">nMeanplaneBlocks</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness_</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nMeanplaneBlocks_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMeanplaneBlocks_</span> <span class="o">-</span> <span class="mi">1</span>
+        
+        <span class="c1"># adjust splits to corresponding parameter space</span>
+        <span class="k">if</span> <span class="n">splits</span> <span class="o">!=</span> <span class="p">[[]]:</span>
+          <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">splits_</span><span class="p">:</span>
+            <span class="n">cc</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">splitDim_</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+              <span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aFOne_</span><span class="o">.</span><span class="n">x_percent</span><span class="p">(</span> <span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span> <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+              <span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aFOne_</span><span class="o">.</span><span class="n">x_percent</span><span class="p">(</span> <span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span> <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">splitDim_</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+              <span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aFOne_</span><span class="o">.</span><span class="n">x_percent</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+              <span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aFOne_</span><span class="o">.</span><span class="n">x_percent</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<div class="viewcode-block" id="vec3dThreeD_skinAndSplit.build">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.build">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Build part.</span>
+<span class="sd">        </span>
+<span class="sd">        This method:</span>
+
+<span class="sd">            - Splits the blade and surrounding mesh block surfaces at predefined</span>
+<span class="sd">              positions.</span>
+<span class="sd">            - Creates mesh block volumes by skinning the corresponding surfaces.</span>
+<span class="sd">            - Generates meanplane curves at the inlet and outlet.</span>
+<span class="sd">            - Creates trailing edge mesh blocks.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+
+<span class="sd">        If no split positions are defined (``splits_ == [[]]``), the two surfaces</span>
+<span class="sd">        are skinned directly, resulting in a single continuous mesh block.</span>
+
+<span class="sd">        If split positions are defined, the mesh blocks are created by iterating</span>
+<span class="sd">        over the entries in ``splits_``. Within this loop, the following entities</span>
+<span class="sd">        are generated:</span>
+
+<span class="sd">            - Mesh block volumes around the blade.</span>
+<span class="sd">            - Edge curves for the trailing edge mesh blocks.</span>
+<span class="sd">            - Meanplane curves extending towards the inlet and outlet.</span>
+
+<span class="sd">        All geometries are constructed as analytic functions. The loop iteration is</span>
+<span class="sd">        tracked using the counter ``cc``.</span>
+
+<span class="sd">        The following figure illustrates the workflow of the operations performed</span>
+<span class="sd">        within this loop.</span>
+
+<span class="sd">        .. _vec3d_activity0:</span>
+<span class="sd">        .. figure:: bladeFigs/vec3dThreeD_skinAndSplit.png</span>
+<span class="sd">           :width: 100%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Workflow of the main loop in :meth:`vec3dThreeD_skinAndSplit`.</span>
+
+<span class="sd">        **Iterate over Splits**</span>
+<span class="sd">            </span>
+<span class="sd">            ::</span>
+
+<span class="sd">                for split in splits_</span>
+<span class="sd">            </span>
+<span class="sd">            All the following operations are performed in the main loop.</span>
+
+<span class="sd">            **Split the Surfaces and Skin the Volumes**</span>
+
+<span class="sd">                For each entry in ``splits_``, the surface functions ``aFOne_`` and</span>
+<span class="sd">                ``aFTwo_`` are split within the parameter range defined by</span>
+<span class="sd">                ``split[0]`` and ``split[1]``. This operation is performed using the</span>
+<span class="sd">                `dtOO` class `bSplineSurface_bSplineSurfaceSplitConstructOCC`.</span>
+
+<span class="sd">                The resulting surfaces are stored in the variables ``bladeSurf`` and</span>
+<span class="sd">                ``blockSurf`` as ``vec3dSurfaceTwoD`` objects. These surfaces are then</span>
+<span class="sd">                skinned into a volume using the `dtOO` class</span>
+<span class="sd">                `vec3dTransVolThreeD_skinBSplineSurfaces` and appended to the</span>
+<span class="sd">                container.</span>
+
+<span class="sd">                The following figure illustrates the blade and the surrounding blade</span>
+<span class="sd">                mesh blocks. In the following documentation, the direction specified by</span>
+<span class="sd">                ``splitDim_`` corresponds to the u-direction of the blade surface.</span>
+
+<span class="sd">                .. _meshBlockMeth:</span>
+<span class="sd">                .. figure:: bladeFigs/guideVane_meshBlocks.png</span>
+<span class="sd">                   :width: 50%</span>
+<span class="sd">                   :align: center</span>
+
+<span class="sd">                   Blade surface (grey) surrounded by mesh blocks.</span>
+
+<span class="sd">                By skinning the blade surfaces with the surrounding surfaces, the</span>
+<span class="sd">                resulting volume parameter directions are defined as follows:</span>
+
+<span class="sd">                    - u: direction along the blade surface</span>
+<span class="sd">                    - v: direction from hub to shroud</span>
+<span class="sd">                    - w: direction from the blade surface towards the surrounding</span>
+<span class="sd">                      surface</span>
+
+<span class="sd">                The volumes surrounding the blade are labeled according to the following</span>
+<span class="sd">                convention:</span>
+
+<span class="sd">                ::</span>
+
+<span class="sd">                    label_ + "_" + str(cc + 1)</span>
+
+<span class="sd">                With this convention, the first blade mesh block in the direction of</span>
+<span class="sd">                ``splitDim_`` is assigned the suffix ``_1``.</span>
+<span class="sd">            </span>
+<span class="sd">            </span>
+<span class="sd">            **Creation of Offset Curves**</span>
+
+<span class="sd">                The generation of the trailing edge mesh block curves, as well as the</span>
+<span class="sd">                creation of the meanplane curves, is performed using the method</span>
+<span class="sd">                :meth:`teOffsetCurves_vec3dSurfaceTwoD`.</span>
+
+<span class="sd">                The method takes a mesh block surface as input. The first input argument</span>
+<span class="sd">                defines the normalized parametric position of the base curve on the</span>
+<span class="sd">                surface. An integer argument specifies the parameter direction in which</span>
+<span class="sd">                the base curve is extracted and offset. By providing a thickness value,</span>
+<span class="sd">                the offset distance is defined.</span>
+
+<span class="sd">                The method returns the base curve together with a ``vectorDtPoint3``</span>
+<span class="sd">                object containing the points of the offset curve.</span>
+
+<span class="sd">                Several conditional checks are performed within the loop to ensure that</span>
+<span class="sd">                the correct curves are generated.</span>
+
+<span class="sd">            **Trailing-edge mesh block curves**</span>
+
+<span class="sd">                The following condition applies:</span>
+
+<span class="sd">                ::</span>
+
+<span class="sd">                    thickness_ != None</span>
+
+<span class="sd">                Trailing-edge mesh blocks are generated only if</span>
+<span class="sd">                ``thickness_ != None``. In this case, offset curves are computed for the</span>
+<span class="sd">                surfaces ``bladeSurf`` and ``blockSurf`` of the first mesh block</span>
+<span class="sd">                (``cc == 0``) and the last mesh block</span>
+<span class="sd">                (``cc == len(splits_) - 1``).</span>
+
+<span class="sd">                The following variable names are assigned to the geometry objects</span>
+<span class="sd">                returned by :meth:`teOffsetCurves_vec3dSurfaceTwoD`:</span>
+
+<span class="sd">                    - ``bladeCurve0``: Base curve on the blade surface of the first blade mesh block.</span>
+<span class="sd">                    - ``bladeOffset0``: ``vectorDtPoint3`` object containing the offset points of ``bladeCurve0``.</span>
+<span class="sd">                    - ``blockCurve0``: Base curve on the block surface of the first blade mesh block.</span>
+<span class="sd">                    - ``blockOffset0``: ``vectorDtPoint3`` object containing the offset points of ``blockCurve0``.</span>
+<span class="sd">                    - ``bladeCurve1``: Base curve on the blade surface of the last blade mesh block.</span>
+<span class="sd">                    - ``bladeOffset1``: ``vectorDtPoint3`` object containing the offset points of ``bladeCurve1``.</span>
+<span class="sd">                    - ``blockCurve1``: Base curve on the block surface of the last blade mesh block.</span>
+<span class="sd">                    - ``blockOffset1``: ``vectorDtPoint3`` object containing the offset points of ``blockCurve1``.</span>
+
+<span class="sd">                The following figure illustrates the resulting curves for the first mesh</span>
+<span class="sd">                block surrounding the blade. The variable :math:`t_{TE}` corresponds to</span>
+<span class="sd">                the parameter ``thickness_``.</span>
+
+<span class="sd">                .. _meshBlockCurves:</span>
+<span class="sd">                .. figure:: bladeFigs/tEMesBlock_Curves.png</span>
+<span class="sd">                   :width: 70%</span>
+<span class="sd">                   :align: center</span>
+
+<span class="sd">                   Trailing-edge mesh block curves of the first mesh block</span>
+<span class="sd">                   (``cc == 0``).</span>
+
+
+<span class="sd">            **Meanplane curves**</span>
+
+<span class="sd">                The following condition applies:</span>
+
+<span class="sd">                ::</span>
+
+<span class="sd">                    meanplaneFromBlocks_ == True</span>
+
+<span class="sd">                The creation of the meanplane curves differs between two main cases.</span>
+
+<span class="sd">                **Meanplane extending towards the inlet**</span>
+
+<span class="sd">                    In the first case, the meanplane curves extending towards the inlet are</span>
+<span class="sd">                    generated. These curves are created during the iteration for which</span>
+<span class="sd">                    ``cc == nMeanplaneBlocks_`` applies.</span>
+
+<span class="sd">                    The curves are based on the third face (``face``) of the mesh </span>
+<span class="sd">                    block. The offset curve is constructed from the base curve located </span>
+<span class="sd">                    at 100 percent of the v-direction of this face.</span>
+
+<span class="sd">                    The offset length of the curve is specified by ``meanplaneExtIn_``,</span>
+<span class="sd">                    corresponding to :math:`E_{MP,in}` in :numref:`meanplaneCurves`.</span>
+
+<span class="sd">                    The returned geometry objects are assigned to the variables</span>
+<span class="sd">                    ``mPBlockCurve`` and ``mPBlockOffset``. The ``vectorDtPoint3`` object</span>
+<span class="sd">                    ``mPBlockOffset`` is converted into a curve and stored in</span>
+<span class="sd">                    ``mPBlockOffsetCurve``.</span>
+
+<span class="sd">                    The curves are labeled and appended to the container using the following</span>
+<span class="sd">                    naming convention:</span>
+
+<span class="sd">                        - ``mPBlockCurve``: ``label_ + "Curve_in0"``</span>
+<span class="sd">                        - ``mPBlockOffsetCurve``: ``label_ + "Curve_in1"``</span>
+
+<span class="sd">                    The following figure illustrates the creation of the meanplane curve</span>
+<span class="sd">                    geometries for the meanplanes extending towards the inlet and the</span>
+<span class="sd">                    outlet. In this example, the inlet meanplane is located at </span>
+<span class="sd">                    ``nMeanplaneBlocks_ = 3``. Trailing-edge mesh blocks are enabled.</span>
+
+<span class="sd">                    .. _meanplaneCurves:</span>
+<span class="sd">                    .. figure:: bladeFigs/meanplane_Curves.png</span>
+<span class="sd">                       :width: 100%</span>
+<span class="sd">                       :align: center</span>
+
+<span class="sd">                       Creation of the meanplane curves extending towards the inlet and the</span>
+<span class="sd">                       outlet. The block numbers correspond to the mesh block indices and</span>
+<span class="sd">                       the value of ``cc + 1`` within the loop.</span>
+
+<span class="sd">                **Meanplane extending towards the outlet**</span>
+
+<span class="sd">                    The curves for the meanplane extending towards the outlet are created on</span>
+<span class="sd">                    the first blade mesh block, for which ``cc == 0`` applies.</span>
+
+<span class="sd">                    The creation procedure differs depending on whether trailing edge mesh</span>
+<span class="sd">                    blocks are generated.</span>
+
+<span class="sd">                    If no trailing edge mesh blocks are created</span>
+<span class="sd">                    (``thickness_ == None``), the curves are generated from the curve at</span>
+<span class="sd">                    0 percent of the u-direction of ``blockSurf``. The offset length is</span>
+<span class="sd">                    specified by ``meanplaneExtOut_``, corresponding to</span>
+<span class="sd">                    :math:`E_{MP,out}` in :numref:`meanplaneCurves`.</span>
+
+<span class="sd">                    The generated curve objects are assigned to the variables</span>
+<span class="sd">                    ``mPBlockCurve`` and ``mPBlockOffset``.</span>
+
+<span class="sd">                    If trailing edge mesh blocks are generated, the offset length of the</span>
+<span class="sd">                    meanplane curve created from the first blade mesh block is </span>
+<span class="sd">                    ``meanplaneExtOut_ + thickness_``</span>
+
+<span class="sd">                    In this case, the base curve returned by</span>
+<span class="sd">                    :meth:`teOffsetCurves_vec3dSurfaceTwoD` is not used directly as the</span>
+<span class="sd">                    meanplane curve. Instead, the base curve is reconstructed from the</span>
+<span class="sd">                    offset points of the first trailing edge mesh block,</span>
+<span class="sd">                    ``blockOffset0``. The resulting curve overwrites ``mPBlockCurve``.</span>
+
+<span class="sd">                    In both cases, the curve ``mPBlockOffsetCurve`` is generated from the</span>
+<span class="sd">                    ``vectorDtPoint3`` object ``mPBlockOffset``.</span>
+
+<span class="sd">                    The curves are appended to the container as ``vec3dCurveOneD`` objects</span>
+<span class="sd">                    using the following naming convention:</span>
+
+<span class="sd">                        - ``mPBlockCurve``: ``label_ + "Curve_out0"``</span>
+<span class="sd">                        - ``mPBlockOffsetCurve``: ``label_ + "Curve_out1"``</span>
+
+<span class="sd">                The meanplane curves appended to the container in the selected example</span>
+<span class="sd">                are shown in the following figure.</span>
+
+<span class="sd">                .. _meanplaneCP:</span>
+<span class="sd">                .. figure:: bladeFigs/meanplane_CurvesPushed.png</span>
+<span class="sd">                   :width: 90%</span>
+<span class="sd">                   :align: center</span>
+
+<span class="sd">                   Final meanplane curves generated in this method. The labels</span>
+<span class="sd">                   ``in0``, ``in1``, ``out0``, and ``out1`` correspond to the naming</span>
+<span class="sd">                   convention used for the curves in the implementation.</span>
+
+<span class="sd">            After each iteration of the loop, the iterator is incremented </span>
+<span class="sd">            (``cc = cc + 1``)</span>
+<span class="sd">        </span>
+<span class="sd">        **Trailing Edge Mesh Blocks**</span>
+
+<span class="sd">            The trailing edge volumes are generated from the trailing edge curves.</span>
+<span class="sd">            The following operations are performed only if ``thickness_ != None`` </span>
+<span class="sd">            applies.</span>
+<span class="sd">            </span>
+<span class="sd">            **Offset Curves at Trailing Edge**</span>
+
+<span class="sd">                From the ``vectorDtPoint3`` objects of the two trailing edge mesh blocks</span>
+<span class="sd">                on the blade side, ``bladeOffset0`` and ``bladeOffset1``, the mean</span>
+<span class="sd">                points ``meanPoints`` are computed. Using these points, a mean offset</span>
+<span class="sd">                curve ``meanBladeOffsetCurve`` is generated, which defines the offset</span>
+<span class="sd">                surface of the trailing edge.</span>
+
+<span class="sd">                The ``vectorDtPoint3`` objects of the block offset curves are converted into</span>
+<span class="sd">                the curves ``blockOffsetCurve_0`` and ``blockOffsetCurve_1``.</span>
+<span class="sd">            </span>
+<span class="sd">            **Trailing Edge Mesh Block Surfaces**</span>
+
+<span class="sd">                The trailing edge mesh block surfaces extending from the blade and from the mesh block surfaces </span>
+<span class="sd">                are generated using the method :meth:`createBlockFaces`. The method expects an input </span>
+<span class="sd">                list with the following structure:</span>
+
+<span class="sd">                .. code-block:: python</span>
+
+<span class="sd">                    blockEdges = Tuple[</span>
+<span class="sd">                        Tuple[</span>
+<span class="sd">                            analyticGeometry, analyticGeometry</span>
+<span class="sd">                        ],</span>
+<span class="sd">                        Tuple[</span>
+<span class="sd">                            analyticGeometry, analyticGeometry</span>
+<span class="sd">                        ]</span>
+<span class="sd">                    ]</span>
+
+<span class="sd">                The method returns a</span>
+<span class="sd">                ``vectorHandlingConstAnalyticFunction`` object ``vh_aF`` containing</span>
+<span class="sd">                analytic surface functions generated by skinning the curves within each</span>
+<span class="sd">                second-level ``Tuple`` entry.</span>
+
+<span class="sd">                The skinning directions are defined as follows:</span>
+
+<span class="sd">                    - ``vh_aF[0]``: from ``blockEdges[0][0]`` to ``blockEdges[0][1]``</span>
+<span class="sd">                    - ``vh_aF[1]``: from ``blockEdges[1][0]`` to ``blockEdges[1][1]``</span>
+
+<span class="sd">                By applying the `dtOO` class `bSplineSurface_exchangeSurfaceConstructOCC` </span>
+<span class="sd">                on the skinned surface in the method, the parameter directions of the</span>
+<span class="sd">                surfaces are kept consistent with the blade and mesh block surfaces.</span>
+<span class="sd">            </span>
+<span class="sd">            **Trailing Edge Mesh Block Volumes**</span>
+
+<span class="sd">                The returned vector handler is passed to the ``dtOO`` class</span>
+<span class="sd">                ``vec3dTransVolThreeD_skinBSplineSurfaces`` to create the trailing edge</span>
+<span class="sd">                mesh block volumes ``theRef``.</span>
+
+<span class="sd">                The volume skinning direction is defined as follows:</span>
+
+<span class="sd">                    - ``theRef``: from ``vh_aF[0]`` to ``vh_aF[1]``</span>
+
+<span class="sd">                The following figure illustrates the skinning of the curves and surfaces.</span>
+
+<span class="sd">                .. _meshBlockSkinning:</span>
+<span class="sd">                .. figure:: bladeFigs/tEMesBlock_skinning.png</span>
+<span class="sd">                   :width: 80%</span>
+<span class="sd">                   :align: center</span>
+
+<span class="sd">                   Skinning of the first trailing edge mesh block. Surface skinning is</span>
+<span class="sd">                   shown on the left, and volume skinning on the right. The arrows</span>
+<span class="sd">                   indicate the skinning directions.</span>
+
+<span class="sd">                By arranging the order of the curves in the input list passed to</span>
+<span class="sd">                :meth:`createBlockFaces`, the parameter directions of the trailing edge</span>
+<span class="sd">                mesh block volumes remain consistent with those of the blade mesh</span>
+<span class="sd">                blocks.</span>
+
+<span class="sd">                The generated volumes are appended to the analytic function container</span>
+<span class="sd">                using the same naming convention as the blade mesh blocks.</span>
+
+<span class="sd">                The first trailing edge mesh block is labeled with the index zero:</span>
+
+<span class="sd">                    ``label_ + "_0"``</span>
+
+<span class="sd">                The last trailing edge mesh block receives the label:</span>
+
+<span class="sd">                    ``label_ + "_" + str(len(splits_) + 1)``</span>
+
+<span class="sd">                The following figure shows the resulting mesh block volumes.</span>
+
+<span class="sd">                .. _TEmeshBlockMeth:</span>
+<span class="sd">                .. figure:: bladeFigs/guideVane_TEmeshBlocks.png</span>
+<span class="sd">                   :width: 50%</span>
+<span class="sd">                   :align: center</span>
+
+<span class="sd">                   Blade surface (grey) with blade mesh blocks and trailing edge mesh</span>
+<span class="sd">                   blocks.</span>
+
+<span class="sd">        """</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">"Building </span><span class="si">%s</span><span class="s2"> ..."</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">)</span> <span class="p">)</span>
+                                        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">splits_</span> <span class="o">==</span> <span class="p">[[]]:</span> 
+          <span class="c1">#</span>
+          <span class="c1"># if no split positions are defined, one volume is created</span>
+          <span class="c1">#</span>
+          <span class="n">vh_aF</span> <span class="o">=</span> <span class="n">vectorHandlingConstAnalyticFunction</span><span class="p">()</span>
+          <span class="n">vh_aF</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aFOne_</span> <span class="p">)</span>
+          <span class="n">vh_aF</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aFTwo_</span> <span class="p">)</span>
+          <span class="n">theRef</span> <span class="o">=</span> <span class="n">vec3dTransVolThreeD_skinBSplineSurfaces</span><span class="p">(</span> <span class="n">vh_aF</span> <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+          <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span> <span class="n">theRef</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="c1">#</span>
+          <span class="c1"># splits are defined</span>
+          <span class="c1">#</span>
+          <span class="n">cc</span> <span class="o">=</span> <span class="mi">0</span>
+
+          <span class="c1">#</span>
+          <span class="c1"># iterate over the split positions</span>
+          <span class="c1">#</span>
+          <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">splits_</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"meshBlock nr : </span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="n">cc</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> 
+              <span class="s2">"Split between </span><span class="si">%f</span><span class="s2"> &lt;--&gt; </span><span class="si">%f</span><span class="s2"> in direction </span><span class="si">%d</span><span class="s2">"</span> 
+              <span class="o">%</span> 
+              <span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">splitDim_</span><span class="p">)</span> 
+            <span class="p">)</span>
+            <span class="n">vh_aF</span> <span class="o">=</span> <span class="n">vectorHandlingConstAnalyticFunction</span><span class="p">()</span>
+            
+            <span class="c1">#</span>
+            <span class="c1"># split the blade surface</span>
+            <span class="c1">#</span>
+            <span class="c1">#vh_aF.push_back( </span>
+            <span class="n">bladeSurf</span> <span class="o">=</span> <span class="n">vec3dSurfaceTwoD</span><span class="p">(</span>
+                <span class="n">bSplineSurface_bSplineSurfaceSplitConstructOCC</span><span class="p">(</span>
+                  <span class="bp">self</span><span class="o">.</span><span class="n">aFOne_</span><span class="o">.</span><span class="n">constPtrDtSurface</span><span class="p">(),</span> 
+                  <span class="bp">self</span><span class="o">.</span><span class="n">splitDim_</span><span class="p">,</span> 
+                  <span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
+                  <span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="n">vh_aF</span><span class="o">.</span><span class="n">push_back</span><span class="p">((</span><span class="n">bladeSurf</span><span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+            
+            <span class="c1">#</span>
+            <span class="c1"># split the surrounding surface</span>
+            <span class="c1">#</span>
+            <span class="c1">#vh_aF.push_back( </span>
+            <span class="n">blockSurf</span> <span class="o">=</span> <span class="n">vec3dSurfaceTwoD</span><span class="p">(</span>
+                <span class="n">bSplineSurface_bSplineSurfaceSplitConstructOCC</span><span class="p">(</span>
+                  <span class="bp">self</span><span class="o">.</span><span class="n">aFTwo_</span><span class="o">.</span><span class="n">constPtrDtSurface</span><span class="p">(),</span> 
+                  <span class="bp">self</span><span class="o">.</span><span class="n">splitDim_</span><span class="p">,</span> 
+                  <span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
+                  <span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="p">)</span>  
+            <span class="n">vh_aF</span><span class="o">.</span><span class="n">push_back</span><span class="p">((</span><span class="n">blockSurf</span><span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+            
+            <span class="c1">#</span>
+            <span class="c1"># skin the split surfaces to create the mesh block volume</span>
+            <span class="c1">#</span>
+            <span class="n">theRef</span> <span class="o">=</span> <span class="n">vec3dTransVolThreeD_skinBSplineSurfaces</span><span class="p">(</span> <span class="n">vh_aF</span> <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="c1"># trailing edge active</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness_</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">cc</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+            <span class="c1"># trailing edge not active</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span> <span class="n">theRef</span> <span class="p">)</span>
+            
+            <span class="c1">#</span>
+            <span class="c1"># generate trailing edge mesh block</span>
+            <span class="c1"># only done, if thickness_ is defined</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness_</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                
+                <span class="c1">#</span>
+                <span class="c1"># te mesh blocks will be located downstream of the first and last mesh blocks</span>
+                <span class="c1">#</span>
+                <span class="c1"># first mesh block</span>
+                <span class="k">if</span> <span class="n">cc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Extracting trailing edge and block curves from mesh block </span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">cc</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># needed curves:</span>
+                    <span class="c1"># curve on blade and block,</span>
+                    <span class="c1">#  their offsets in the tangential direction of the blade and block surfaces</span>
+                    <span class="c1"># segPercent specifies the u direction where the trailing edge is located on the faces,</span>
+                    <span class="c1">#  this is different for the first and last blocks because the u direction "wraps"</span>
+                    <span class="c1">#  around the blade</span>
+                    <span class="c1"># offset curves for block and blade are calculated in two function calls</span>
+                    <span class="c1">#</span>
+                    <span class="n">bladeCurve0</span><span class="p">,</span> <span class="n">bladeOffset0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">teOffsetCurves_vec3dSurfaceTwoD</span><span class="p">(</span>
+                            <span class="n">bladeSurf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness_</span><span class="p">,</span> <span class="mi">0</span>
+                        <span class="p">)</span>
+                    <span class="n">blockCurve0</span><span class="p">,</span> <span class="n">blockOffset0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">teOffsetCurves_vec3dSurfaceTwoD</span><span class="p">(</span>
+                            <span class="n">blockSurf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness_</span><span class="p">,</span> <span class="mi">0</span>
+                        <span class="p">)</span>
+                    
+                <span class="c1"># last mesh block</span>
+                <span class="k">if</span> <span class="n">cc</span> <span class="o">==</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">splits_</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Extracting trailing edge and block curves from mesh block </span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">cc</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+                    <span class="n">bladeCurve1</span><span class="p">,</span> <span class="n">bladeOffset1</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">teOffsetCurves_vec3dSurfaceTwoD</span><span class="p">(</span>
+                            <span class="n">bladeSurf</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness_</span><span class="p">,</span> <span class="mi">0</span>
+                        <span class="p">)</span>  
+                    <span class="n">blockCurve1</span><span class="p">,</span> <span class="n">blockOffset1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">teOffsetCurves_vec3dSurfaceTwoD</span><span class="p">(</span>
+                            <span class="n">blockSurf</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness_</span><span class="p">,</span> <span class="mi">0</span>
+                        <span class="p">)</span>
+            
+            <span class="c1">#</span>
+            <span class="c1"># meanplane extention curves</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">meanplaneFromBlocks_</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span> 
+                
+                <span class="c1">#</span>
+                <span class="c1"># meanplane curves extending to the inlet</span>
+                <span class="c1">#</span>
+                <span class="k">if</span> <span class="n">cc</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMeanplaneBlocks_</span><span class="p">:</span>
+                
+                    <span class="c1"># face 3 of the mesh block is the one normal to the blade</span>
+                    <span class="n">face</span> <span class="o">=</span> <span class="n">vec3dSurfaceTwoD</span><span class="o">.</span><span class="n">DownCast</span><span class="p">(</span>
+                        <span class="n">theRef</span><span class="o">.</span><span class="n">constPtrVec3dTwoD</span><span class="p">(</span> <span class="mi">3</span> <span class="p">)</span>
+                    <span class="p">)</span>
+                    
+                    <span class="c1">## debug statement to plot analytical face</span>
+                    <span class="c1">#plotFace = vec3dSurfaceTwoD.DownCast(</span>
+                    <span class="c1">#        theRef.constPtrVec3dTwoD(</span>
+                    <span class="c1">#           3 </span>
+                    <span class="c1">#        )</span>
+                    <span class="c1">#    )</span>
+                    <span class="c1">#plotFace.setLabel("TEST_"+self.label_+"_plotFace")</span>
+                    <span class="c1">#self.appendAnalyticFunction(plotFace)</span>
+                    
+                    <span class="c1"># calculate the tangentially offset curve based on the face</span>
+                    <span class="n">mPBlockCurve</span><span class="p">,</span> <span class="n">mPBlockOffset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">teOffsetCurves_vec3dSurfaceTwoD</span><span class="p">(</span>
+                            <span class="n">face</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meanplaneExtIn_</span><span class="p">),</span> <span class="mi">1</span>
+                        <span class="p">)</span> 
+                    <span class="c1"># create the curve from a vectorDtPoint3 and append AF</span>
+                    <span class="n">mPBlockOffsetCurve</span> <span class="o">=</span> <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">mPBlockOffset</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="n">vec3dCurveOneD</span><span class="p">(</span> <span class="n">mPBlockOffsetCurve</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">+</span> <span class="s2">"Curve_in1"</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="n">vec3dCurveOneD</span><span class="p">(</span> <span class="n">mPBlockCurve</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">+</span> <span class="s2">"Curve_in0"</span><span class="p">)</span>
+                
+                <span class="c1">#</span>
+                <span class="c1"># meanplane curves extending to the outlet</span>
+                <span class="c1">#</span>
+                <span class="k">elif</span> <span class="n">cc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness_</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="c1"># calculating offset curve</span>
+                        <span class="n">mPBlockCurve</span><span class="p">,</span> <span class="n">mPBlockOffset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">teOffsetCurves_vec3dSurfaceTwoD</span><span class="p">(</span>
+                            <span class="n">blockSurf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meanplaneExtOut_</span><span class="p">),</span> <span class="mi">0</span>
+                        <span class="p">)</span>
+                    
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># the meanplane offset curve is calculated from the same blockSurf which is used</span>
+                        <span class="c1">#  for the trailing edge mesh block</span>
+                        <span class="c1"># the offset distance is (self.thickness_+self.meanplaneExtOut_)</span>
+                        <span class="n">mPBlockCurve</span><span class="p">,</span> <span class="n">mPBlockOffset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">teOffsetCurves_vec3dSurfaceTwoD</span><span class="p">(</span>
+                            <span class="n">blockSurf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thickness_</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">meanplaneExtOut_</span><span class="p">),</span> <span class="mi">0</span>
+                        <span class="p">)</span>
+                        <span class="c1"># mPBlockCurve is overwritten with blockOfsset of the trailing edge mesh block</span>
+                        <span class="n">mPBlockCurve</span> <span class="o">=</span> <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">blockOffset0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                    
+                    <span class="c1"># create the curve from a vectorDtPoint3 and appending AF</span>
+                    <span class="n">mPBlockOffsetCurve</span> <span class="o">=</span> <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">mPBlockOffset</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="n">vec3dCurveOneD</span><span class="p">(</span> <span class="n">mPBlockOffsetCurve</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">+</span> <span class="s2">"Curve_out1"</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span><span class="n">vec3dCurveOneD</span><span class="p">(</span> <span class="n">mPBlockCurve</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">+</span> <span class="s2">"Curve_out0"</span><span class="p">)</span>
+                
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">pass</span>
+
+            <span class="n">cc</span> <span class="o">=</span> <span class="n">cc</span> <span class="o">+</span> <span class="mi">1</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># Create the trailing edge mesh block volumes</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness_</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1">#</span>
+            <span class="c1"># calculate mean offset of the blade trailing edge.</span>
+            <span class="c1">#  trailing edge converges at u = 0 and u = 1 in one curve,</span>
+            <span class="c1">#  here two tangential directions are returned by the two calls </span>
+            <span class="c1">#  of teBlockCurves_vec3dSurfaceTwoD() (at the first and last meshBlocks)</span>
+            <span class="c1"># from the two offsets a mean is calculated</span>
+            <span class="c1">#</span>
+            <span class="n">meanPoints</span> <span class="o">=</span> <span class="n">vectorDtPoint3</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bladeOffset0</span><span class="p">)):</span>
+                <span class="n">meanPoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">dtPoint3</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">bladeOffset0</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">bladeOffset1</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">bladeOffset0</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">bladeOffset1</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">bladeOffset0</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">bladeOffset1</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span>    
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="c1"># create the curve of the blade offset</span>
+            <span class="n">meanBladeOffsetCurve</span> <span class="o">=</span> <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">meanPoints</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+
+            <span class="c1"># create the curves of the block offsets</span>
+            <span class="n">blockOffsetCurve_1</span> <span class="o">=</span> <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">blockOffset1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="n">blockOffsetCurve_0</span> <span class="o">=</span> <span class="n">bSplineCurve_pointConstructOCC</span><span class="p">(</span><span class="n">blockOffset0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Creating trailing edge mesh blocks"</span><span class="p">)</span>
+            <span class="c1"># create the block faces by skinning the curves in the list</span>
+            <span class="c1">#  the structure of the list is important for the directions (see description in function)</span>
+            <span class="n">vh_aF</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createBlockFaces</span><span class="p">(</span>
+                    <span class="p">[[</span><span class="n">meanBladeOffsetCurve</span><span class="p">,</span> <span class="n">bladeCurve0</span><span class="p">],</span>
+                     <span class="p">[</span><span class="n">blockOffsetCurve_0</span><span class="p">,</span> <span class="n">blockCurve0</span><span class="p">]]</span>
+                <span class="p">)</span> 
+            
+            <span class="c1"># generate the volume from the faces</span>
+            <span class="n">theRef</span> <span class="o">=</span> <span class="n">vec3dTransVolThreeD_skinBSplineSurfaces</span><span class="p">(</span> <span class="n">vh_aF</span> <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_0"</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span> <span class="n">theRef</span> <span class="p">)</span>
+            
+            <span class="c1"># do the same for the te mesh block at u = 1</span>
+            <span class="n">vh_aF</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createBlockFaces</span><span class="p">(</span>
+                    <span class="p">[[</span><span class="n">bladeCurve0</span><span class="p">,</span> <span class="n">meanBladeOffsetCurve</span><span class="p">],</span>
+                     <span class="p">[</span><span class="n">blockCurve1</span><span class="p">,</span> <span class="n">blockOffsetCurve_1</span><span class="p">]</span>
+                    <span class="p">]</span>
+                <span class="p">)</span> 
+            
+            <span class="n">theRef</span> <span class="o">=</span> <span class="n">vec3dTransVolThreeD_skinBSplineSurfaces</span><span class="p">(</span> <span class="n">vh_aF</span> <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">splits_</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span> <span class="n">theRef</span> <span class="p">)</span>
+             
+        <span class="k">return</span></div>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Extracts the necessary curves and their offsets for the generation of the trailing edge meshBlocks</span>
+    <span class="c1">#  and the generation of the meanplane curves</span>
+    <span class="c1"># segPercent is 0 for the first and 1 for the last mesh blocks </span>
+    <span class="c1">#</span>
+<div class="viewcode-block" id="vec3dThreeD_skinAndSplit.teOffsetCurves_vec3dSurfaceTwoD">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.teOffsetCurves_vec3dSurfaceTwoD">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">teOffsetCurves_vec3dSurfaceTwoD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">,</span> <span class="n">segPercent</span><span class="p">,</span> <span class="n">blockThickness</span><span class="p">,</span> <span class="n">splitDim</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Extract a curve on a face and calculate points, which are tangentially offset</span>
+<span class="sd">        to the face.</span>
+
+<span class="sd">        This method:</span>
+
+<span class="sd">            - Extracts a curve from a surface at a constant parameter value.</span>
+<span class="sd">            - Computes tangential offset points along the curve span.</span>
+<span class="sd">            - Returns the extracted curve together with the offset points.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        surf : vec3dSurfaceTwoD</span>
+<span class="sd">            Input surface.</span>
+
+<span class="sd">        segPercent : float</span>
+<span class="sd">            Normalized parameter position at which the curve is extracted from</span>
+<span class="sd">            the surface.</span>
+
+<span class="sd">        blockThickness : float</span>
+<span class="sd">            Offset distance used for the tangential offset curve.</span>
+
+<span class="sd">        splitDim : int</span>
+<span class="sd">            Parameter direction in which the curve is extracted</span>
+<span class="sd">            (u- or v-direction).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        curve : analyticGeometry</span>
+<span class="sd">            Curve extracted from the surface at ``segPercent`` in the direction</span>
+<span class="sd">            specified by ``splitDim``.</span>
+
+<span class="sd">        offsetPoints : vectorDtPoint3</span>
+<span class="sd">            Container holding the points of the tangentially offset curve.</span>
+
+
+<span class="sd">        The surface from which the curve is extracted is provided through the</span>
+<span class="sd">        parameter ``surf``. The normalized parameter position ``segPercent``</span>
+<span class="sd">        defines where the curve is extracted. It can be either ``0`` or</span>
+<span class="sd">        ``1``, corresponding to the minimum or maximum parameter boundary of the</span>
+<span class="sd">        surface.</span>
+
+<span class="sd">        The parameter ``splitDim`` specifies whether the extraction is performed</span>
+<span class="sd">        in the u- or v-direction of the surface. The following convention is</span>
+<span class="sd">        used:</span>
+
+<span class="sd">            - u-direction: ``0``</span>
+<span class="sd">            - v-direction: ``1``</span>
+
+<span class="sd">        The parameter ``blockThickness`` defines the offset distance.</span>
+
+<span class="sd">        The following figure illustrates the workflow of this method.</span>
+
+<span class="sd">        .. _createOffset_activity0:</span>
+<span class="sd">        .. figure:: bladeFigs/createOffsetCurves.png</span>
+<span class="sd">           :width: 60%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Workflow of method :meth:`teOffsetCurves_vec3dSurfaceTwoD`.</span>
+<span class="sd">        </span>
+<span class="sd">        **Set Direction**</span>
+
+<span class="sd">            Depending on the value of ``segPercent``, the offset direction factor</span>
+<span class="sd">            ``f`` is assigned either ``-1`` or ``1``.</span>
+<span class="sd">        </span>
+<span class="sd">        **Check splitDim**</span>
+
+<span class="sd">            Depending on ``splitDim``, the base curve ``curve`` is extracted from</span>
+<span class="sd">            ``surf`` at either a constant u-parameter or a constant v-parameter.</span>
+<span class="sd">            The normalized position ``segPercent`` is assigned to either ``uu`` or</span>
+<span class="sd">            ``vv`` as the constant parameter value.</span>
+<span class="sd">        </span>
+<span class="sd">        **Get Number of Control Points and Create Container**</span>
+
+<span class="sd">            The extracted ``curve`` is converted into a B-spline curve using the</span>
+<span class="sd">            ``dtOO`` class ``dtOCCBSplineCurve``. This allows the control point</span>
+<span class="sd">            count of the curve to be queried and stored in ``n``.</span>
+
+<span class="sd">            The output container ``offsetPoints`` of type ``vectorDtPoint3`` is then</span>
+<span class="sd">            initialized.</span>
+<span class="sd">        </span>
+<span class="sd">        **Iterate over Control Points**</span>
+
+<span class="sd">            The offset points are computed by iterating over the control point</span>
+<span class="sd">            indices. Depending on ``splitDim``, tangent vectors in either the</span>
+<span class="sd">            u-direction or the v-direction of the surface are evaluated at the</span>
+<span class="sd">            surface coordinates defined by ``uu`` and ``vv``.</span>
+
+<span class="sd">            One parameter value remains constant, while the second parameter value</span>
+<span class="sd">            is computed from the normalized iterator expression ``i / (n - 1)``.</span>
+
+<span class="sd">            The offset point is computed as the surface point evaluated at</span>
+<span class="sd">            ``(uu, vv)`` plus the corresponding tangent vector multiplied by</span>
+<span class="sd">            ``blockThickness`` and the direction factor ``f`` (see :numref:`meshBlockCurves`).</span>
+
+<span class="sd">            Each computed point is appended to ``offsetPoints``.</span>
+
+<span class="sd">            The method returns ``curve`` and ``offsetPoints``.</span>
+<span class="sd">        """</span>
+   
+        <span class="c1"># set direction f of the offset based on splitDim</span>
+        <span class="k">if</span> <span class="n">segPercent</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">segPercent</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="mi">1</span>
+        
+        <span class="c1"># convert the surface to an analytic surface</span>
+        <span class="n">surf</span> <span class="o">=</span> <span class="n">analyticSurface</span><span class="p">(</span><span class="n">surf</span><span class="o">.</span><span class="n">constPtrDtSurface</span><span class="p">())</span> 
+        
+        <span class="c1"># </span>
+        <span class="c1"># Depending on splitDim the operations are performed in different </span>
+        <span class="c1"># surface directions</span>
+        <span class="c1">#</span>
+        <span class="c1"># surface directions:</span>
+        <span class="c1">#   splitDim = 0:</span>
+        <span class="c1">#     v-direction is the hub-to-shroud direction </span>
+        <span class="c1">#     u-direction is along the blade contour</span>
+        <span class="c1">#   splitDim = 1:</span>
+        <span class="c1">#     v-direction is the blade skin to block skin direction</span>
+        <span class="c1">#     u-direction is the hub to shroud direction</span>
+
+        <span class="c1"># according to the split dimension which is set the curve is cut out</span>
+        <span class="c1"># and segPercent set on uu or vv</span>
+        <span class="k">if</span> <span class="n">splitDim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># u-direction</span>
+            <span class="n">curve</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span>
+                    <span class="n">surf</span><span class="o">.</span><span class="n">segmentConstUPercent</span><span class="p">(</span><span class="n">segPercent</span><span class="p">)</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">ptrConstDtCurve</span><span class="p">()</span>
+            <span class="n">uu</span> <span class="o">=</span> <span class="n">segPercent</span>
+
+        <span class="k">elif</span> <span class="n">splitDim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># v-direction</span>
+            <span class="n">curve</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span>
+                    <span class="n">surf</span><span class="o">.</span><span class="n">segmentConstVPercent</span><span class="p">(</span><span class="n">segPercent</span><span class="p">)</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">ptrConstDtCurve</span><span class="p">()</span>
+            <span class="n">vv</span> <span class="o">=</span> <span class="n">segPercent</span>
+        
+        <span class="c1"># get number of control points of the curve </span>
+        <span class="n">bsc_curve</span> <span class="o">=</span> <span class="n">dtOCCBSplineCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">bsc_curve</span><span class="o">.</span><span class="n">nControlPoints</span><span class="p">()</span>
+
+        <span class="c1"># initialize point vectors for the offset curves </span>
+        <span class="n">offsetPoints</span> <span class="o">=</span> <span class="n">vectorDtPoint3</span><span class="p">()</span>
+        
+        <span class="c1"># iterate over control points</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            
+            <span class="c1"># calculate the percentual vv or uu position by normalizing the number of</span>
+            <span class="c1"># controlpoints</span>
+            <span class="c1"># calculate the tangential directions of the faces at the support points</span>
+            <span class="k">if</span> <span class="n">splitDim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>    
+                <span class="n">vv</span> <span class="o">=</span> <span class="n">i</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="c1"># tangential direction of the blade at the trailing edge</span>
+                <span class="n">tangent</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span>
+                        <span class="n">surf</span><span class="o">.</span><span class="n">firstDerU</span><span class="p">(</span><span class="n">surf</span><span class="o">.</span><span class="n">u_percent</span><span class="p">(</span><span class="n">uu</span><span class="p">),</span> <span class="n">surf</span><span class="o">.</span><span class="n">v_percent</span><span class="p">(</span><span class="n">vv</span><span class="p">))</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">splitDim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">uu</span> <span class="o">=</span> <span class="n">i</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="c1"># tangential direction of the face normal between blade and thickness faces</span>
+                <span class="n">tangent</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span>
+                        <span class="n">surf</span><span class="o">.</span><span class="n">firstDerV</span><span class="p">(</span><span class="n">surf</span><span class="o">.</span><span class="n">u_percent</span><span class="p">(</span><span class="n">uu</span><span class="p">),</span> <span class="n">surf</span><span class="o">.</span><span class="n">v_percent</span><span class="p">(</span><span class="n">vv</span><span class="p">))</span>
+                    <span class="p">)</span>
+            
+            <span class="c1"># appending the blade point offset in tangential direction</span>
+            <span class="c1">#  the offset will have the specified thickness, f sets the direction</span>
+            <span class="n">offsetPoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">surf</span><span class="o">.</span><span class="n">getPoint</span><span class="p">(</span>
+                        <span class="n">surf</span><span class="o">.</span><span class="n">u_percent</span><span class="p">(</span><span class="n">uu</span><span class="p">),</span> <span class="n">surf</span><span class="o">.</span><span class="n">v_percent</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span>
+                    <span class="p">)</span> <span class="o">+</span> <span class="n">tangent</span> <span class="o">*</span> <span class="n">blockThickness</span><span class="o">*</span><span class="n">f</span>
+                <span class="p">)</span>
+            
+            <span class="c1">## Debug statement to plot tangents</span>
+            <span class="c1">#tangentCurve = bSplineCurve_pointConstructOCC(</span>
+            <span class="c1">#    vectorDtPoint3()</span>
+            <span class="c1">#      &lt;&lt; surf.getPoint(surf.u_percent(uu), surf.v_percent(vv))</span>
+            <span class="c1">#      &lt;&lt; surf.getPoint(surf.u_percent(uu), surf.v_percent(vv)) + tangent * blockThickness*f,</span>
+            <span class="c1">#    1</span>
+            <span class="c1">#).result()</span>
+
+            <span class="c1">#tang = (vec3dCurveOneD( tangentCurve ) &lt;&lt; self.label_ + "Curve_te"+str(uu)+"_"+str(i))</span>
+            <span class="c1">#self.appendAnalyticFunction(tang)</span>
+                 
+        
+        <span class="c1"># return the curve on the surface and the vector with the offset points</span>
+        <span class="c1"># the offset points and not the offset curves are returned, because a </span>
+        <span class="c1"># mean offset has to be calculated for trailing edge at the blade</span>
+        <span class="k">return</span> <span class="n">curve</span><span class="p">,</span> <span class="n">offsetPoints</span></div>
+
+    
+    <span class="c1">#</span>
+    <span class="c1"># creating the faces for the trailing edge meshBlocks</span>
+    <span class="c1">#</span>
+<div class="viewcode-block" id="vec3dThreeD_skinAndSplit.createBlockFaces">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.vec3dThreeD_skinAndSplit.vec3dThreeD_skinAndSplit.createBlockFaces">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">createBlockFaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curves</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Create trailing edge block faces by skinning edge curves.</span>
+<span class="sd">        </span>
+<span class="sd">        This method:</span>
+
+<span class="sd">            - Iterates over the first-level curve list.</span>
+<span class="sd">            - Skins the curve pairs defined in the second-level lists.</span>
+<span class="sd">            - Returns the generated surfaces in a container.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        curves : Tuple[Tuple[analyticGeometry, analyticGeometry],Tuple[analyticGeometry, analyticGeometry]]</span>
+<span class="sd">            Collection of curve pairs to be skinned with each other.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        vh_aF : vectorHandlingConstAnalyticFunction</span>
+<span class="sd">            Container holding the analytic functions of the generated surfaces.</span>
+
+
+<span class="sd">        The curves to be skinned are provided to the method in the following</span>
+<span class="sd">        format:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            curves = Tuple[</span>
+<span class="sd">                Tuple[</span>
+<span class="sd">                    analyticGeometry, analyticGeometry</span>
+<span class="sd">                ],</span>
+<span class="sd">                Tuple[</span>
+<span class="sd">                    analyticGeometry, analyticGeometry</span>
+<span class="sd">                ]</span>
+<span class="sd">            ]</span>
+
+<span class="sd">        The method initializes a</span>
+<span class="sd">        ``vectorHandlingConstAnalyticFunction`` object named ``vh_aF``.</span>
+
+<span class="sd">        The skinning operation is performed by iterating over the first-level</span>
+<span class="sd">        ``Tuple`` using:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            for curves0 in curves:</span>
+
+<span class="sd">        For each entry ``curves0``, the skinning operation is performed from</span>
+<span class="sd">        ``curves0[0]`` to ``curves0[1]``.</span>
+
+<span class="sd">        After skinning, the ``dtOO`` class</span>
+<span class="sd">        ``bSplineSurface_exchangeSurfaceConstructOCC`` is applied in order to</span>
+<span class="sd">        exchange the parameter directions of the resulting surface.</span>
+
+<span class="sd">        This produces the following parameter directions on the surface:</span>
+
+<span class="sd">            - u: direction from ``curves0[0]`` to ``curves0[1]``</span>
+<span class="sd">            - v: direction from hub to shroud</span>
+
+<span class="sd">        The resulting surfaces are converted into ``vec3dSurfaceTwoD`` objects</span>
+<span class="sd">        and appended to ``vh_aF``.</span>
+
+<span class="sd">        Finally, the generated surfaces are returned through ``vh_aF``.</span>
+<span class="sd">        """</span>
+        
+        <span class="n">vh_aF</span> <span class="o">=</span> <span class="n">vectorHandlingConstAnalyticFunction</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">curves0</span> <span class="ow">in</span> <span class="n">curves</span><span class="p">:</span>
+            <span class="n">vh_aF</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span>
+                    <span class="n">vec3dSurfaceTwoD</span><span class="p">(</span>
+                        <span class="n">bSplineSurface_exchangeSurfaceConstructOCC</span><span class="p">(</span>
+                            <span class="n">bSplineSurface_skinConstructOCC</span><span class="p">(</span>
+                                <span class="n">curves0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">curves0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>    
+                            <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">vh_aF</span></div>
+</div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Alexander Tismer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
