@@ -23,6 +23,9 @@ License
 #include "dtMesh3DOperator.h"
 #include <logMe/dtMacros.h>
 
+class MVertex;
+class MTriangle;
+class MTetrahedron;
 class GRegion;
 void meshNormalsPointOutOfTheRegion(::GRegion *gr);
 
@@ -39,6 +42,18 @@ public:
   virtual bool isStatusIndependent(void);
   void operator()(dtGmshRegion *dtgr);
 
+private:
+  void optimizeNetgen(dtGmshRegion *dtgr) const;
+  template <typename T>
+  std::vector<::MVertex *> extractVerts(std::vector<T *> elems) const;
+  std::vector<::MTriangle *>
+  extractSingleFaces(std::vector<::MTetrahedron *> tets) const;
+  template <typename T>
+  std::vector<::MTriangle *> extractCommonFaces(
+    const std::vector<T *> &others, const std::vector<::MTetrahedron *> &tets
+  ) const;
+
+public:
 private:
   static bool _registrated;
 };

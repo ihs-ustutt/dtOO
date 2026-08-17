@@ -21,8 +21,6 @@ License
 #include "dtGmshModel.h"
 #include "dtGmshRegion.h"
 #include "dtMeshOperatorFactory.h"
-#include <gmsh/MPyramid.h>
-#include <gmsh/MQuadrangle.h>
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/MTriangle.h>
 #include <gmsh/MVertex.h>
@@ -78,165 +76,247 @@ void dtOptimizeMeshGRegion::operator()(dtGmshRegion *dtgr)
 
   if (config().lookupDef<bool>("_netgen", true))
   {
-    //
-    // create cloneRegion and cloneFace
-    //
-    dtGmshRegion cloneRegion(
-      dtgr->model(), dtgr->refDtGmshModel().getMaxRegionTag() + 1
+    Msg::Info(
+      "dtOptimizeMeshGRegion()() volume %d : Optimize netgen", dtgr->tag()
     );
-    dtGmshFace cloneFace(
-      dtgr->model(), dtgr->refDtGmshModel().getMaxFaceTag() + 1
-    );
-    dtGmshFace cloneFaceApex(
-      dtgr->model(), dtgr->refDtGmshModel().getMaxFaceTag() + 1
-    );
-
-    //
-    // add region to model
-    //
-    cloneRegion.addGEntity(&cloneFace);
-    cloneRegion.addGEntity(&cloneFaceApex);
-    dtgr->model()->add(&cloneFace);
-    dtgr->model()->add(&cloneFaceApex);
-    dtgr->model()->add(&cloneRegion);
-
-    //
-    // add mesh entities to cloneFace
-    //
-    dt__forAllRefAuto(dtgr->vertices(), anEnt)
-    {
-      dt__forAllRefAuto(anEnt->mesh_vertices, aVert)
-      {
-        cloneFace.addMeshVertex(aVert);
-      }
-    }
-    dt__forAllRefAuto(dtgr->edges(), anEnt)
-    {
-      dt__forAllRefAuto(anEnt->mesh_vertices, aVert)
-      {
-        cloneFace.addMeshVertex(aVert);
-      }
-    }
-    dt__forAllRefAuto(dtgr->faces(), aFace)
-    {
-      //
-      // mesh vertices
-      //
-      dt__forAllRefAuto(aFace->mesh_vertices, aVert)
-      {
-        cloneFace.addMeshVertex(aVert);
-      }
-      //
-      // mesh triangles
-      //
-      if (aFace->triangles.size())
-      {
-        dt__forAllRefAuto(aFace->triangles, aTri)
-        {
-          cloneFace.addElement((::MElement *)aTri);
-        }
-      }
-    }
-
-    //
-    // tetrahedra
-    //
-    dt__forAllRefAuto(dtgr->tetrahedra, aTet)
-    {
-      cloneRegion.addElement((::MElement *)aTet);
-    }
-    //
-    // pyramids
-    //
-    dt__forAllRefAuto(dtgr->pyramids, aPyr)
-    {
-      dt__throwIf(
-        aPyr->getVertex(0)->onWhat()->dim() > 2 &&
-          aPyr->getVertex(1)->onWhat()->dim() > 2 &&
-          aPyr->getVertex(2)->onWhat()->dim() > 2 &&
-          aPyr->getVertex(3)->onWhat()->dim() > 2,
-        operator()()
-      );
-      aPyr->getVertex(4)->setEntity(&cloneFaceApex);
-      cloneFaceApex.addElement(new ::MTriangle(
-        aPyr->getVertex(0), aPyr->getVertex(1), aPyr->getVertex(4)
-      ));
-      cloneFaceApex.addElement(new ::MTriangle(
-        aPyr->getVertex(1), aPyr->getVertex(2), aPyr->getVertex(4)
-      ));
-      cloneFaceApex.addElement(new ::MTriangle(
-        aPyr->getVertex(2), aPyr->getVertex(3), aPyr->getVertex(4)
-      ));
-      cloneFaceApex.addElement(new ::MTriangle(
-        aPyr->getVertex(3), aPyr->getVertex(0), aPyr->getVertex(4)
-      ));
-    }
-    //
-    // add entities to cloneRegion
-    //
-    dt__forAllRefAuto(dtgr->mesh_vertices, aVert)
-    {
-      if (aVert->onWhat() != &cloneFaceApex)
-      {
-        cloneRegion.addMeshVertex(aVert);
-        aVert->setEntity(&cloneRegion);
-      }
-    }
-
-    //
-    // do optimization
-    //
-    ::optimizeMeshGRegionNetgen()(&cloneRegion);
-
-    //
-    // clean and reset dtgr mesh
-    //
-    std::vector<::MVertex *> newVert;
-    dt__forAllRefAuto(dtgr->mesh_vertices, aVert)
-    {
-      if (aVert->onWhat() == &cloneFaceApex)
-      {
-        aVert->setEntity(dtgr);
-        newVert.push_back(aVert);
-      }
-    }
-    dtgr->mesh_vertices.clear();
-    dt__forAllRefAuto(newVert, aVert) dtgr->addMeshVertex(aVert);
-    dtgr->tetrahedra.clear();
-
-    //
-    // transfer mesh vertices and mesh elements of cloneFace,
-    // cloneFaceApex and cloneRegion back to dtgr
-    //
-    dt__forAllRefAuto(cloneRegion.mesh_vertices, aVert)
-    {
-      dtgr->addMeshVertex(aVert);
-      aVert->setEntity(dtgr);
-    }
-    dt__forAllRefAuto(cloneRegion.tetrahedra, aTet)
-    {
-      dtgr->addElement((::MElement *)aTet);
-    }
-    dt__forAllRefAuto(cloneFaceApex.triangles, aTri) delete aTri;
-
-    //
-    // delete GEntities
-    //
-    cloneFace.mesh_vertices.clear();
-    cloneFace.triangles.clear();
-    cloneRegion.mesh_vertices.clear();
-    cloneRegion.tetrahedra.clear();
-    cloneFaceApex.mesh_vertices.clear();
-    cloneFaceApex.triangles.clear();
-
-    cloneRegion.deleteFace(&cloneFace);
-    cloneRegion.deleteFace(&cloneFaceApex);
-    cloneFace.delRegion(&cloneRegion);
-    cloneFaceApex.delRegion(&cloneRegion);
-
-    dtgr->model()->remove(&cloneRegion);
-    dtgr->model()->remove(&cloneFace);
-    dtgr->model()->remove(&cloneFaceApex);
+    this->optimizeNetgen(dtgr);
   }
+}
+
+void dtOptimizeMeshGRegion::optimizeNetgen(dtGmshRegion *dtgr) const
+{
+  //
+  // create pseudoRegion and pseudoFace; pseudoFace contains all tetrahedra
+  // faces with no counterpart
+  //
+  dtGmshRegion *pseudoRegionPtr = new dtGmshRegion(
+    dtgr->model(), dtgr->refDtGmshModel().getMaxRegionTag() + 1
+  );
+  dtGmshFace *pseudoFacePtr =
+    new dtGmshFace(dtgr->model(), dtgr->refDtGmshModel().getMaxFaceTag() + 1);
+  dtGmshRegion &pseudoRegion = *pseudoRegionPtr;
+  dtGmshFace &pseudoFace = *pseudoFacePtr;
+
+  //
+  // add region to model
+  //
+  pseudoRegion.addGEntity(&pseudoFace);
+  dtgr->model()->add(&pseudoRegion);
+
+  //
+  // extract mesh vertices from tetrahedrons
+  //
+  std::vector<::MVertex *> tet_verts = extractVerts(dtgr->tetrahedra);
+
+  //
+  // clone mesh vertices of tetrahedrons
+  //
+  std::map<::MVertex *, ::MVertex *> clone_org;
+  std::map<::MVertex *, ::MVertex *> org_clone;
+  dt__forAllRefAuto(tet_verts, aVert)
+  {
+    clone_org[aVert] = new ::MVertex(aVert->x(), aVert->y(), aVert->z(), NULL);
+    org_clone[clone_org[aVert]] = aVert;
+  }
+
+  //
+  // extract coupling faces pyramids/tetrahedra and prisms/tetrahedra
+  //
+  Msg::Info("Extract outter faces of tetrahedra");
+  std::vector<::MTriangle *> single_faces =
+    extractSingleFaces(dtgr->tetrahedra);
+  //
+  // add coupling faces to cloneFaceElem
+  //
+  dt__forAllRefAuto(single_faces, aTri) { pseudoFace.addElement(aTri); }
+
+  //
+  // copy all tetrahedrons
+  //
+  dt__forAllRefAuto(dtgr->tetrahedra, aTet)
+  {
+    MTetrahedron *aTetCopy = new ::MTetrahedron(
+      aTet->getVertex(0),
+      aTet->getVertex(1),
+      aTet->getVertex(2),
+      aTet->getVertex(3)
+    );
+    pseudoRegion.addTetrahedron(aTetCopy);
+  }
+
+  //
+  // replace old vertices in triangles and tetrahedra with new cloned vertices
+  //
+  dt__forAllRefAuto(pseudoFace.triangles, aTri)
+  {
+    dt__forFromToIndex(0, aTri->getNumVertices(), vertIndex)
+    {
+      ::MVertex *org = aTri->getVertex(vertIndex);
+      auto it_clone = clone_org.find(org);
+      dt__throwIfWithMessage(
+        it_clone == clone_org.end(),
+        optimizeNetgen(),
+        << "Vertex on pseudoFace was not cloned."
+      );
+      aTri->setVertex(vertIndex, it_clone->second);
+    }
+  }
+  dt__forAllRefAuto(pseudoRegion.tetrahedra, aTet)
+  {
+    dt__forFromToIndex(0, aTet->getNumVertices(), vertIndex)
+    {
+      ::MVertex *org = aTet->getVertex(vertIndex);
+      auto it_clone = clone_org.find(org);
+      dt__throwIfWithMessage(
+        it_clone == clone_org.end(),
+        optimizeNetgen(),
+        << "Vertex in pseudoRegion was not cloned."
+      );
+      aTet->setVertex(vertIndex, it_clone->second);
+    }
+  }
+
+  //
+  // set clone vertices to correct new clone entity
+  //
+  dt__forAllRefAuto(pseudoRegion.tetrahedra, aTet)
+  {
+    dt__forFromToIndex(0, aTet->getNumVertices(), vertIndex)
+    {
+      ::MVertex *org = aTet->getVertex(vertIndex);
+      if (org->onWhat() == NULL)
+      {
+        org->setEntity(&pseudoRegion);
+        pseudoRegion.addMeshVertex(org);
+      }
+    }
+  }
+  dt__forAllRefAuto(pseudoFace.triangles, aTri)
+  {
+    dt__forFromToIndex(0, aTri->getNumVertices(), vertIndex)
+    {
+      ::MVertex *org = aTri->getVertex(vertIndex);
+      if (org->onWhat() == &pseudoRegion)
+      {
+        pseudoRegion.removeMeshVertex(org);
+        org->setEntity(&pseudoFace);
+        pseudoFace.addMeshVertex(org);
+      }
+    }
+  }
+
+  //
+  // do optimization
+  //
+  ::optimizeMeshGRegionNetgen()(&pseudoRegion);
+
+  //
+  // destroy old tetrahedrons
+  //
+  dt__forAllRefAuto(dtgr->tetrahedra, aTet) { delete aTet; }
+  dtgr->tetrahedra.clear();
+
+  //
+  // remove mesh vertices cloned in dtgr region
+  //
+  dt__forAllRefAuto(org_clone, aPair)
+  {
+    // if (aPair.second->onWhat() == dtgr)
+    if (aPair.first->onWhat() == &pseudoRegion)
+    {
+      dtgr->removeMeshVertex(aPair.second, true);
+    }
+  }
+
+  // int counter = 0;
+  dt__forAllIndex(pseudoRegion.tetrahedra, ii)
+  {
+    ::MTetrahedron *aTet = pseudoRegion.tetrahedra[ii];
+    dtgr->tetrahedra.push_back(aTet);
+    dt__forFromToIndex(0, aTet->getNumVertices(), vertIndex)
+    {
+      // move vertex to dtgr
+      ::MVertex *vert = aTet->getVertex(vertIndex);
+      if (vert->onWhat() == &pseudoRegion)
+      {
+        dtgr->addMeshVertex(vert);
+        vert->setEntity(dtgr);
+        pseudoRegion.removeMeshVertex(vert);
+      }
+      // vertex is still in dtgr, it was a coupling faces vertex
+      else if (vert->onWhat() == &pseudoFace)
+      {
+        aTet->setVertex(vertIndex, org_clone[vert]);
+        pseudoFace.removeMeshVertex(vert, true);
+      }
+    }
+  }
+  // only clear tetrahedra vector, because the tet were moved to the dtgr
+  // region
+  pseudoRegion.tetrahedra.clear();
+
+  //
+  // clear model
+  //
+  pseudoRegion.deleteFace(&pseudoFace);
+  pseudoFace.delRegion(&pseudoRegion);
+  dtgr->model()->remove(&pseudoRegion);
+  dtgr->model()->remove(&pseudoFace);
+}
+
+template <typename T>
+std::vector<::MVertex *>
+dtOptimizeMeshGRegion::extractVerts(std::vector<T *> elems) const
+{
+  std::vector<::MVertex *> verts;
+  dt__forAllRefAuto(elems, anElem)
+  {
+    dt__forFromToIndex(0, anElem->getNumVertices(), vertIndex)
+    {
+      MVertex *aVert = anElem->getVertex(vertIndex);
+      verts.push_back(aVert);
+    }
+  }
+  std::sort(verts.begin(), verts.end());
+  verts.erase(unique(verts.begin(), verts.end()), verts.end());
+  return verts;
+}
+
+template std::vector<::MVertex *>
+dtOptimizeMeshGRegion::extractVerts(std::vector<::MTetrahedron *> elems) const;
+
+std::vector<::MTriangle *>
+dtOptimizeMeshGRegion::extractSingleFaces(std::vector<::MTetrahedron *> tets
+) const
+{
+  int faceCounter = 0;
+  std::map<std::vector<::MVertex *>, ::MTetrahedron *> tet_face;
+  dt__forAllRefAuto(tets, aTet)
+  {
+    dt__forFromToIndex(0, aTet->getNumFaces(), faceIndex)
+    {
+      faceCounter = faceCounter + 1;
+      std::vector<::MVertex *> verts;
+      aTet->getFace(faceIndex).getOrderedVertices(verts);
+      dt__throwIf(verts.size() != 3, extractCoupleFaces);
+      std::sort(verts.begin(), verts.end());
+      auto it = tet_face.find(verts);
+      if (it == tet_face.end())
+      {
+        tet_face[verts] = aTet;
+      }
+      else
+      {
+        tet_face.erase(it);
+      }
+    }
+  }
+  std::vector<::MTriangle *> faces;
+  dt__forAllRefAuto(tet_face, it)
+  {
+    faces.push_back(new ::MTriangle(it.first));
+  }
+
+  return faces;
 }
 } // namespace dtOO
