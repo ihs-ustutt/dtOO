@@ -103,7 +103,7 @@
 <div class="viewcode-block" id="multipleBoundedVolume_gridChannel">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.multipleBoundedVolume_gridChannel.multipleBoundedVolume_gridChannel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">multipleBoundedVolume_gridChannel</span><span class="p">(</span><span class="n">dtBundleBuilder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Create the grid channel as a multiple bounded volume.</span>
+<span class="w">    </span><span class="sd">""" Create the grid channel as a multiple bounded volume.</span>
 <span class="sd">    </span>
 <span class="sd">    This class:</span>
 <span class="sd">        </span>
@@ -269,7 +269,7 @@
 
 <span class="sd">    &gt;&gt;&gt; from dtOOPythonApp.builder import multipleBoundedVolume_gridChannel</span>
 <span class="sd">    &gt;&gt;&gt; gridChannel = multipleBoundedVolume_gridChannel(</span>
-<span class="sd">    ...     label = &quot;test&quot;,</span>
+<span class="sd">    ...     label = "test",</span>
 <span class="sd">    ...     channel = channel,</span>
 <span class="sd">    ...     meanplanes = meanplaneFaces,</span>
 <span class="sd">    ...     couplings = couplingFaces,</span>
@@ -285,7 +285,7 @@
 <span class="sd">    Check the class of the returned volume</span>
 
 <span class="sd">    &gt;&gt;&gt; gc.virtualClassName()</span>
-<span class="sd">    &#39;multipleBoundedVolume&#39;</span>
+<span class="sd">    'multipleBoundedVolume'</span>
 <span class="sd">    </span>
 <span class="sd">    The main method of this class is :meth:`build`.</span>
 
@@ -361,39 +361,39 @@
 <span class="sd">    </span>
 <span class="sd">    The following face labels are used for the bounding faces:</span>
 
-<span class="sd">        - ``&quot;inlet&quot;``:</span>
+<span class="sd">        - ``"inlet"``:</span>
 <span class="sd">          Inlet boundary (:numref:`bounds` red)</span>
 
-<span class="sd">        - ``&quot;outlet&quot;``:</span>
+<span class="sd">        - ``"outlet"``:</span>
 <span class="sd">          Outlet boundary (:numref:`bounds` red)</span>
 
-<span class="sd">        - ``&quot;suction_tri_&quot; + str(i)``:</span>
+<span class="sd">        - ``"suction_tri_" + str(i)``:</span>
 <span class="sd">          Suction boundary built from meanplane faces</span>
 <span class="sd">          (:numref:`bounds` and :numref:`meanplanesAndCouplings` yellow)</span>
 
-<span class="sd">        - ``&quot;coupling_&quot; + str(i)``:</span>
+<span class="sd">        - ``"coupling_" + str(i)``:</span>
 <span class="sd">          Boundary connecting to the blade mesh block</span>
 <span class="sd">          (:numref:`bounds` cyan)</span>
 
-<span class="sd">        - ``&quot;pressure_tri_&quot; + str(i)``:</span>
+<span class="sd">        - ``"pressure_tri_" + str(i)``:</span>
 <span class="sd">          Pressure boundary built from rotated meanplane faces</span>
 <span class="sd">          (:numref:`bounds` yellow)</span>
 
-<span class="sd">        - ``&quot;pressure_quad_&quot; + str(i)``:</span>
+<span class="sd">        - ``"pressure_quad_" + str(i)``:</span>
 <span class="sd">          Pressure boundary built from rotated meanplane faces</span>
 <span class="sd">          (:numref:`bounds` green)</span>
 
-<span class="sd">        - ``&quot;hub&quot;``:</span>
+<span class="sd">        - ``"hub"``:</span>
 <span class="sd">          Multiple bounded surface on the hub</span>
 
-<span class="sd">        - ``&quot;shroud&quot;``:</span>
+<span class="sd">        - ``"shroud"``:</span>
 <span class="sd">          Multiple bounded surface on the shroud</span>
 
-<span class="sd">    The strings ``&quot;pressure&quot;`` and ``&quot;suction&quot;`` correspond to the periodic</span>
+<span class="sd">    The strings ``"pressure"`` and ``"suction"`` correspond to the periodic</span>
 <span class="sd">    faces associated with the pressure and suction sides of a turbine</span>
 <span class="sd">    channel created with this class.</span>
 
-<span class="sd">    The markers ``&quot;tri&quot;`` and ``&quot;quad&quot;`` in the naming of the pressure and</span>
+<span class="sd">    The markers ``"tri"`` and ``"quad"`` in the naming of the pressure and</span>
 <span class="sd">    suction boundaries are used to distinguish between faces meshed</span>
 <span class="sd">    unstructured with prism elements and faces meshed transfinite with</span>
 <span class="sd">    hexahedral elements.</span>
@@ -410,9 +410,9 @@
 
 <span class="sd">    ::</span>
 
-<span class="sd">        &quot;debug_gridChannelFace_&quot; + label_ + &quot;_&quot; + face.getLabel()</span>
+<span class="sd">        "debug_gridChannelFace_" + label_ + "_" + face.getLabel()</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -425,7 +425,7 @@
         <span class="n">orientation</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
 
       <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        label: str</span>
@@ -448,12 +448,12 @@
 <span class="sd">          </span>
 <span class="sd">            - 1 : Blade is oriented in u-direction of channel</span>
 <span class="sd">            - -1 : Blade is oriented in negative u-direction of the channel</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">(</span>
           <span class="n">multipleBoundedVolume_gridChannel</span><span class="p">,</span> <span class="bp">self</span>
         <span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Initializing </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Initializing </span><span class="si">%s</span><span class="s2"> ..."</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">=</span> <span class="n">label</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel_</span> <span class="o">=</span> <span class="n">map3dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span> <span class="n">channel</span> <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meanplanes_</span> <span class="o">=</span> <span class="n">meanplanes</span>
@@ -466,7 +466,7 @@
 <div class="viewcode-block" id="multipleBoundedVolume_gridChannel.build">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.multipleBoundedVolume_gridChannel.multipleBoundedVolume_gridChannel.build">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build part.</span>
+<span class="w">        </span><span class="sd">"""Build part.</span>
 
 <span class="sd">        This method:</span>
 
@@ -531,7 +531,7 @@
 <span class="sd">            ``face``. The bounding surfaces of the grid channel are extracted </span>
 <span class="sd">            from ``vol`` as segments of constant parameter coordinates.</span>
 
-<span class="sd">            Initially, the string ``lab`` is set to ``&quot;quad&quot;``.</span>
+<span class="sd">            Initially, the string ``lab`` is set to ``"quad"``.</span>
 <span class="sd">            </span>
 <span class="sd">            **Interface Meanplane**</span>
 
@@ -546,7 +546,7 @@
 <span class="sd">                contains the inlet surface.</span>
 
 <span class="sd">                The inlet and outlet boundaries are added to ``boundSurf_`` with</span>
-<span class="sd">                the labels ``&quot;inlet&quot;`` and ``&quot;outlet&quot;``, respectively.</span>
+<span class="sd">                the labels ``"inlet"`` and ``"outlet"``, respectively.</span>
 
 <span class="sd">                The corresponding bounding curves on the hub and shroud are appended</span>
 <span class="sd">                to ``hubCurves`` and ``shroudCurves``.</span>
@@ -563,12 +563,12 @@
 <span class="sd">                of these faces is specified by ``nInOutSurf_``.</span>
 
 <span class="sd">                If the iteration is processing one of these faces,</span>
-<span class="sd">                the value of ``lab`` is changed to ``&quot;tri&quot;``. These faces are added</span>
+<span class="sd">                the value of ``lab`` is changed to ``"tri"``. These faces are added</span>
 <span class="sd">                to ``boundSurf_`` with the label</span>
 
 <span class="sd">                ::</span>
 
-<span class="sd">                    &quot;suction_&quot; + lab + &quot;_&quot; + str(i)</span>
+<span class="sd">                    "suction_" + lab + "_" + str(i)</span>
 
 <span class="sd">                The corresponding bounding curves on the hub and shroud are </span>
 <span class="sd">                added to the respective containers.</span>
@@ -580,7 +580,7 @@
 <span class="sd">                </span>
 <span class="sd">                ::</span>
 
-<span class="sd">                    &quot;pressure_&quot; + lab + &quot;_&quot; + str(i)</span>
+<span class="sd">                    "pressure_" + lab + "_" + str(i)</span>
 
 <span class="sd">                The associated bounding curves are appended to ``hubCurves`` and</span>
 <span class="sd">                ``shroudCurves``.</span>
@@ -613,7 +613,7 @@
 <span class="sd">            The grid channel volume is created using the ``dtOO`` class</span>
 <span class="sd">            ``multipleBoundedVolume`` from ``boundSurf_``. The resulting object is</span>
 <span class="sd">            stored in ``gridChannel_``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1">#</span>
         <span class="c1"># prepare container objects for geometires</span>
         <span class="c1">#</span>
@@ -671,11 +671,11 @@
         <span class="c1">## Debug statement to plot the hub and shroud faces</span>
         <span class="c1">#self.appendAnalyticGeometry(</span>
         <span class="c1">#        m2d_hub,</span>
-        <span class="c1">#        &quot;TEST_m2d_hub_&quot;+self.label_</span>
+        <span class="c1">#        "TEST_m2d_hub_"+self.label_</span>
         <span class="c1">#    )</span>
         <span class="c1">#self.appendAnalyticGeometry(</span>
         <span class="c1">#        m2d_shr,</span>
-        <span class="c1">#        &quot;TEST_m2d_shr_&quot;+self.label_</span>
+        <span class="c1">#        "TEST_m2d_shr_"+self.label_</span>
         <span class="c1">#    )</span>
 
         <span class="c1"># iterate over meanplane faces</span>
@@ -690,18 +690,18 @@
                 <span class="p">)</span> 
             <span class="c1"># Faces are found by cutting segments from the volume</span>
             
-            <span class="c1"># label &quot;quad&quot; for faces which are meshed with hexagonal faces</span>
+            <span class="c1"># label "quad" for faces which are meshed with hexagonal faces</span>
             <span class="c1">#  (faces with rotational periodicity to mesh blocks)</span>
-            <span class="n">lab</span> <span class="o">=</span> <span class="s2">&quot;quad&quot;</span>
+            <span class="n">lab</span> <span class="o">=</span> <span class="s2">"quad"</span>
             
             <span class="c1">#</span>
             <span class="c1"># outlet or inlet boundary of region (first or last meanplane face)</span>
             <span class="c1">#</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meanplanes_</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">let</span> <span class="o">=</span> <span class="s2">&quot;outlet&quot;</span>
+                    <span class="n">let</span> <span class="o">=</span> <span class="s2">"outlet"</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meanplanes_</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                    <span class="n">let</span> <span class="o">=</span> <span class="s2">&quot;inlet&quot;</span>
+                    <span class="n">let</span> <span class="o">=</span> <span class="s2">"inlet"</span>
                 <span class="n">inOut</span> <span class="o">=</span> <span class="n">vol</span><span class="o">.</span><span class="n">segmentConstVPercent</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">boundSurf_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">inOut</span> <span class="o">&lt;&lt;</span> <span class="n">let</span><span class="p">)</span>
                 
@@ -721,13 +721,13 @@
             <span class="c1">#  the mesh blocks and inlet or outlet</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">nInOutSurf_</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meanplanes_</span><span class="p">)</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">nInOutSurf_</span><span class="p">:</span>
                 
-                <span class="c1"># label &quot;tri&quot; for faces which are meshed with prisms</span>
+                <span class="c1"># label "tri" for faces which are meshed with prisms</span>
                 <span class="c1">#  (faces with rotational periodicity to suction and pressure)</span>
-                <span class="n">lab</span> <span class="o">=</span> <span class="s2">&quot;tri&quot;</span>
+                <span class="n">lab</span> <span class="o">=</span> <span class="s2">"tri"</span>
 
                 <span class="c1"># suction boundary (second periodic)</span>
                 <span class="n">per1</span> <span class="o">=</span> <span class="n">vol</span><span class="o">.</span><span class="n">segmentConstUPercent</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">boundSurf_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">per1</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;suction_&quot;</span><span class="o">+</span><span class="n">lab</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">boundSurf_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">per1</span> <span class="o">&lt;&lt;</span> <span class="s2">"suction_"</span><span class="o">+</span><span class="n">lab</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
                 
                 <span class="c1"># boundary curves for multiple bounded surfaces at hub and shroud</span>
                 <span class="n">hub</span> <span class="o">=</span> <span class="n">vol</span><span class="o">.</span><span class="n">segmentConstWPercent</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">segmentConstUPercent</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -737,9 +737,9 @@
             
             <span class="c1"># pressure boundary (first periodic)</span>
             <span class="c1">#  here always the meanpalne is used</span>
-            <span class="c1">#  lab changes from &quot;quad&quot; to &quot;tri&quot; depending on the periodicity</span>
+            <span class="c1">#  lab changes from "quad" to "tri" depending on the periodicity</span>
             <span class="n">per0</span> <span class="o">=</span> <span class="n">vol</span><span class="o">.</span><span class="n">segmentConstUPercent</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">boundSurf_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">per0</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;pressure_&quot;</span><span class="o">+</span><span class="n">lab</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boundSurf_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">per0</span> <span class="o">&lt;&lt;</span> <span class="s2">"pressure_"</span><span class="o">+</span><span class="n">lab</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
             
             <span class="c1"># boundary curves for multiple bounded surfaces at hub and shroud</span>
             <span class="c1"># hub boundary</span>
@@ -753,7 +753,7 @@
         <span class="c1"># Iterate over coupling faces</span>
         <span class="c1">#</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">face</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">couplings_</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">boundSurf_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">face</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;coupling_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boundSurf_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">face</span> <span class="o">&lt;&lt;</span> <span class="s2">"coupling_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
             
             <span class="c1"># boundary curves for multiple bounded surfaces at hub and shroud</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">couplings_</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span>
@@ -770,25 +770,25 @@
         <span class="n">mbs_hub</span> <span class="o">=</span> <span class="n">multipleBoundedSurface</span><span class="p">(</span><span class="n">m2d_hub</span><span class="p">,</span> <span class="n">hubCurves</span><span class="p">)</span>
         <span class="n">mbs_shroud</span> <span class="o">=</span> <span class="n">multipleBoundedSurface</span><span class="p">(</span><span class="n">m2d_shr</span><span class="p">,</span> <span class="n">shroudCurves</span><span class="p">)</span>
          
-        <span class="bp">self</span><span class="o">.</span><span class="n">boundSurf_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">mbs_hub</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;hub&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">boundSurf_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">mbs_shroud</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;shroud&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boundSurf_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">mbs_hub</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s2">"hub"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boundSurf_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">mbs_shroud</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s2">"shroud"</span><span class="p">)</span>
         
         <span class="c1"># append boundaries if debug is enabeled</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundSurf_</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">face</span><span class="p">,</span>
-                        <span class="s2">&quot;debug_gridChannelFace_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">face</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span>
+                        <span class="s2">"debug_gridChannelFace_"</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">face</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span>
                     <span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">curve</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hubCurves</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">curve</span><span class="p">,</span>
-                        <span class="s2">&quot;debug_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_hubCurve_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                        <span class="s2">"debug_"</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_hubCurve_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
                     <span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">curve</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shroudCurves</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">curve</span><span class="p">,</span>
-                        <span class="s2">&quot;debug_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_shroudCurve_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                        <span class="s2">"debug_"</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_shroudCurve_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
                     <span class="p">)</span>
              
         <span class="c1"># creat grid channel as multi bounded volume</span>
@@ -799,7 +799,7 @@
 <div class="viewcode-block" id="multipleBoundedVolume_gridChannel.calcRotParams">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.multipleBoundedVolume_gridChannel.multipleBoundedVolume_gridChannel.calcRotParams">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">calcRotParams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the u-parameter of a point within the channel.</span>
+<span class="w">        </span><span class="sd">"""Calculate the u-parameter of a point within the channel.</span>
 
 <span class="sd">        This method:</span>
 
@@ -817,7 +817,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        uvwP0 : float</span>
 <span class="sd">            u-parameter of the point in the channel reduced by the tolerance.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># reparametrize the point in uwv-parameters of the channel</span>
         <span class="c1"># get the u coordinate in percent and adding 0.01 tolerance</span>
         <span class="n">uvwP0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_</span><span class="o">.</span><span class="n">percent_u</span><span class="p">(</span>
@@ -837,7 +837,7 @@
 <div class="viewcode-block" id="multipleBoundedVolume_gridChannel.getGridChannel">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.multipleBoundedVolume_gridChannel.multipleBoundedVolume_gridChannel.getGridChannel">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">getGridChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the grid channel volume ``gridChannel_`` and its bounding surfaces ``boundSurf_``.</span>
+<span class="w">        </span><span class="sd">"""Return the grid channel volume ``gridChannel_`` and its bounding surfaces ``boundSurf_``.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -849,7 +849,7 @@
 <span class="sd">          Multiple bounded volume of the grid channel</span>
 <span class="sd">        boundSurf_: labeledVectorHandlingAnalyticGeometry</span>
 <span class="sd">          List of bounding faces</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gridChannel_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundSurf_</span> </div>
 </div>
 

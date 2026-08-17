@@ -120,7 +120,7 @@
 <div class="viewcode-block" id="analyticGeometry_piecewiseMeridionalRotContour">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">analyticGeometry_piecewiseMeridionalRotContour</span><span class="p">(</span><span class="n">dtBundleBuilder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create regular channels and special hub and shroud curves.</span>
+<span class="w">    </span><span class="sd">"""Create regular channels and special hub and shroud curves.</span>
 
 <span class="sd">    This class:</span>
 
@@ -235,7 +235,7 @@
 <span class="sd">    Initialize builder:</span>
 
 <span class="sd">    &gt;&gt;&gt; builder = analyticGeometry_piecewiseMeridionalRotContour(</span>
-<span class="sd">    ...  label = &quot;channel&quot;,</span>
+<span class="sd">    ...  label = "channel",</span>
 <span class="sd">    ...  hubCurves = hubCurves, </span>
 <span class="sd">    ...  shroudCurves = shroudCurves,</span>
 <span class="sd">    ...  interface_hub = [[0, 0.7]],</span>
@@ -250,7 +250,7 @@
 <span class="sd">    Return the six sided domain and check type:</span>
 
 <span class="sd">    &gt;&gt;&gt; builder.getRegChannel(0, 12).virtualClassName()</span>
-<span class="sd">    &#39;partRotatingMap2dTo3d&#39;</span>
+<span class="sd">    'partRotatingMap2dTo3d'</span>
 <span class="sd">   </span>
 <span class="sd">     </span>
 <span class="sd">    The main method of this class is the constructor.</span>
@@ -258,7 +258,7 @@
 <span class="sd">    as well as the lists defining the interface parameters </span>
 <span class="sd">    (``interface_hub``, ``interface_shroud`` and ``interface_curvature``).</span>
 
-<span class="sd">    The normal axis ``normalAxis_`` of the flow channel&#39;s cross-section </span>
+<span class="sd">    The normal axis ``normalAxis_`` of the flow channel's cross-section </span>
 <span class="sd">    is returned by the method :meth:`calculateNormalAxis`.</span>
 <span class="sd">    It is used to determine the direction of the interface curves.</span>
 
@@ -325,7 +325,7 @@
 
 <span class="sd">    The getter method :meth:`getLayerRegionCurves` returns the lists</span>
 <span class="sd">    ``speHub_``, ``speShroud_``, and ``inOutLayerReg_``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="analyticGeometry_piecewiseMeridionalRotContour.__init__">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.__init__">[docs]</a>
@@ -339,7 +339,7 @@
         <span class="n">interface_curvature</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[],</span>   <span class="c1"># [curvature offset, percent, direction]</span>
         <span class="n">rotVector</span><span class="p">:</span> <span class="n">dtVector3</span> <span class="o">=</span> <span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor.</span>
+<span class="w">        </span><span class="sd">"""Constructor.</span>
 <span class="sd">        </span>
 <span class="sd">        This method:</span>
 
@@ -567,9 +567,9 @@
 <span class="sd">               ``speHub_`` and ``speShroud_`` lists.</span>
 <span class="sd">               The inlet and outlet curves of the layered flow channel are stored in ``inOutLayerReg_``.</span>
 <span class="sd"> </span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initializing </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Initializing </span><span class="si">%s</span><span class="s2"> ..."</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">))</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">analyticGeometry_piecewiseMeridionalRotContour</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">=</span> <span class="n">label</span>
         
@@ -583,7 +583,7 @@
             <span class="n">hubCurves</span> <span class="o">+</span> <span class="n">shroudCurves</span>
         <span class="p">)</span>
        
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;###   Creating Interfaces&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"###   Creating Interfaces"</span><span class="p">)</span>
         
         <span class="c1">#</span>
         <span class="c1"># Generate interface curves</span>
@@ -595,7 +595,7 @@
                                                <span class="n">interface_curvature</span><span class="p">,</span>
                                                <span class="bp">self</span><span class="o">.</span><span class="n">normalAxis_</span><span class="p">)</span>
         
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;###   Preparing Splits&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"###   Preparing Splits"</span><span class="p">)</span>
         
         <span class="c1">#</span>
         <span class="c1"># makes split lists with number of empty lists </span>
@@ -618,7 +618,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">shroudSplits_</span><span class="p">[</span><span class="n">interface_shroud</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">interface_shroud</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span><span class="n">i</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">shroudSplits_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;###   Creating Hub Splits&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"###   Creating Hub Splits"</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="c1"># Create splits of hub and shroud curves</span>
         <span class="c1"># hub_cti and shroud_cti (curve_to_interface) contains a datastructure list</span>
@@ -629,12 +629,12 @@
         <span class="c1"># every cut curve will be appointed the ID of its respective reg channel defined by its interface</span>
         <span class="c1"># None means that the curve is part of a layer channel</span>
         <span class="c1">#</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hubCurves_</span><span class="p">,</span> <span class="n">hub_cti</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createSplits</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hubSplits_</span><span class="p">,</span> <span class="n">hubCurves</span><span class="p">,</span> <span class="s2">&quot;Hub&quot;</span><span class="p">)</span>
-        <span class="n">hub_cti</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">propagate_interface_ids_next</span><span class="p">(</span><span class="n">hub_cti</span><span class="p">,</span> <span class="s1">&#39;Hub&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hubCurves_</span><span class="p">,</span> <span class="n">hub_cti</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createSplits</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hubSplits_</span><span class="p">,</span> <span class="n">hubCurves</span><span class="p">,</span> <span class="s2">"Hub"</span><span class="p">)</span>
+        <span class="n">hub_cti</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">propagate_interface_ids_next</span><span class="p">(</span><span class="n">hub_cti</span><span class="p">,</span> <span class="s1">'Hub'</span><span class="p">)</span>
         
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;###   Creating Shroud Splits&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">shroudCurves_</span><span class="p">,</span> <span class="n">shroud_cti</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createSplits</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shroudSplits_</span><span class="p">,</span> <span class="n">shroudCurves</span><span class="p">,</span> <span class="s2">&quot;Shroud&quot;</span><span class="p">)</span>
-        <span class="n">shroud_cti</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">propagate_interface_ids_next</span><span class="p">(</span><span class="n">shroud_cti</span><span class="p">,</span> <span class="s1">&#39;Shroud&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"###   Creating Shroud Splits"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shroudCurves_</span><span class="p">,</span> <span class="n">shroud_cti</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createSplits</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shroudSplits_</span><span class="p">,</span> <span class="n">shroudCurves</span><span class="p">,</span> <span class="s2">"Shroud"</span><span class="p">)</span>
+        <span class="n">shroud_cti</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">propagate_interface_ids_next</span><span class="p">(</span><span class="n">shroud_cti</span><span class="p">,</span> <span class="s1">'Shroud'</span><span class="p">)</span>
         
         <span class="c1">#</span>
         <span class="c1"># Add inlet and outlet curves</span>
@@ -661,10 +661,10 @@
         
         <span class="c1"># Returning if no interfaces are defined</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">interfaces_</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;NO INTERFACES DEFINED&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"NO INTERFACES DEFINED"</span><span class="p">)</span>
             <span class="k">return</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;###   Creating Regular Channels&quot;</span><span class="p">)</span> 
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"###   Creating Regular Channels"</span><span class="p">)</span> 
         <span class="c1">#</span>
         <span class="c1"># Generating regular channels from the interfaces</span>
         <span class="c1"># here all the channels are defined trough the hub and shroud curves and the interface</span>
@@ -679,7 +679,7 @@
         <span class="c1"># (interface_hub and ..._shroud have to be the same size)</span>
         <span class="c1">#</span>
         <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">interface_hub</span><span class="p">)):</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;# Regular Channel[</span><span class="si">%i</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="n">ii</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"# Regular Channel[</span><span class="si">%i</span><span class="s2">]"</span> <span class="o">%</span> <span class="n">ii</span><span class="p">)</span>
 
             <span class="n">vhc</span> <span class="o">=</span> <span class="n">vectorHandlingConstDtCurve</span><span class="p">()</span>
             <span class="c1">#</span>
@@ -692,7 +692,7 @@
             <span class="c1">#</span>
 
             <span class="c1"># finding the hub curves which belong to the interface</span>
-            <span class="n">regCurve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChannelCurves</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hubCurves_</span><span class="p">,</span> <span class="n">hub_cti</span><span class="p">,</span> <span class="n">ii</span><span class="p">,</span> <span class="s1">&#39;Hub&#39;</span><span class="p">)</span>            
+            <span class="n">regCurve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChannelCurves</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hubCurves_</span><span class="p">,</span> <span class="n">hub_cti</span><span class="p">,</span> <span class="n">ii</span><span class="p">,</span> <span class="s1">'Hub'</span><span class="p">)</span>            
             <span class="n">vhc</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">regCurve</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">())</span>
             
             <span class="c1"># setting the inlet boundary for the regular channel</span>
@@ -704,7 +704,7 @@
                 <span class="n">vhc</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interfaces_</span><span class="p">[</span><span class="n">ii</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">())</span>
             
             <span class="c1"># finding the shroud curves which belong to the interface</span>
-            <span class="n">regCurve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChannelCurves</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shroudCurves_</span><span class="p">,</span> <span class="n">shroud_cti</span><span class="p">,</span> <span class="n">ii</span><span class="p">,</span> <span class="s1">&#39;Shroud&#39;</span><span class="p">)</span>            
+            <span class="n">regCurve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChannelCurves</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shroudCurves_</span><span class="p">,</span> <span class="n">shroud_cti</span><span class="p">,</span> <span class="n">ii</span><span class="p">,</span> <span class="s1">'Shroud'</span><span class="p">)</span>            
             <span class="n">vhc</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">regCurve</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">())</span>
             
             <span class="c1"># the outlet boundary is always the current interface</span>
@@ -719,9 +719,9 @@
                 <span class="p">)</span>
             <span class="p">)</span>  
             <span class="k">del</span> <span class="n">vhc</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> regular channels created.&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regChannels_</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"</span><span class="si">%d</span><span class="s2"> regular channels created."</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regChannels_</span><span class="p">))</span>
         
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;###   Preparing Layer Curves&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"###   Preparing Layer Curves"</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="c1"># checking in the cti which curves will get a layer and appending them to speHub, </span>
         <span class="c1">#</span>
@@ -754,7 +754,7 @@
                         <span class="n">interface_shroud</span><span class="p">,</span> 
                         <span class="n">curve</span><span class="p">,</span> 
                         <span class="n">normalAxis</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create interface curve between hub and shroud.</span>
+<span class="w">        </span><span class="sd">"""Create interface curve between hub and shroud.</span>
 <span class="sd">        </span>
 <span class="sd">        This method:</span>
 
@@ -855,7 +855,7 @@
 
 <span class="sd">        .. _map-fig-var_interface0:</span>
 <span class="sd">        .. csv-table:: Mapping between mathematical symbols and variable names.</span>
-<span class="sd">           :header: &quot;Symbol&quot;, &quot;Label&quot;</span>
+<span class="sd">           :header: "Symbol", "Label"</span>
 <span class="sd">           :widths: 10, 20</span>
 <span class="sd">           :escape: #</span>
 <span class="sd">           :align: center</span>
@@ -863,7 +863,7 @@
 <span class="sd">           :math:`a`, ``curve[i][0]``</span>
 <span class="sd">           :math:`b`, ``curve[i][1]``</span>
 <span class="sd">           :math:`c`, ``curve[i][2]``</span>
-<span class="sd">           &quot;:math:`MP,lin`&quot;, ``MP_linear``</span>
+<span class="sd">           ":math:`MP,lin`", ``MP_linear``</span>
 
 <span class="sd">        The curvature is defined using a single control point ``pointCurve`` (:math:`\\mathbf{P_{C}}`).</span>
 <span class="sd">        This control point is computed by applying an offset from a point (:math:`\\mathbf{P_{MP}}`)</span>
@@ -906,13 +906,13 @@
 <span class="sd">        statements.</span>
 
 <span class="sd">        The list of interface curves is returned by the method. </span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         
         <span class="c1">#</span>
         <span class="c1"># check that the interface arreays have the same amount of entries</span>
         <span class="c1">#</span>
         <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">interface_hub</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">interface_shroud</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">interface_hub</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">curve</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;interface arrays need the same no. of entries.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"interface arrays need the same no. of entries."</span><span class="p">)</span>
 
         <span class="n">interfaces</span> <span class="o">=</span> <span class="p">[]</span>
         
@@ -932,10 +932,10 @@
                     <span class="n">shroudCurves</span><span class="p">[</span><span class="n">interface_shroud</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">getPointPercent</span><span class="p">(</span>
                             <span class="n">interface_shroud</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
             
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Interface [</span><span class="si">%d</span><span class="s2">] at hub[</span><span class="si">%d</span><span class="s2">] [</span><span class="si">%f</span><span class="s2">]&quot;</span> <span class="o">%</span>  <span class="p">(</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Interface [</span><span class="si">%d</span><span class="s2">] at hub[</span><span class="si">%d</span><span class="s2">] [</span><span class="si">%f</span><span class="s2">]"</span> <span class="o">%</span>  <span class="p">(</span>
                 <span class="n">ii</span><span class="p">,</span> <span class="n">interface_hub</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">interface_hub</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
             <span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Interface [</span><span class="si">%d</span><span class="s2">] at shroud[</span><span class="si">%d</span><span class="s2">] [</span><span class="si">%f</span><span class="s2">]&quot;</span> <span class="o">%</span>  <span class="p">(</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Interface [</span><span class="si">%d</span><span class="s2">] at shroud[</span><span class="si">%d</span><span class="s2">] [</span><span class="si">%f</span><span class="s2">]"</span> <span class="o">%</span>  <span class="p">(</span>
                 <span class="n">ii</span><span class="p">,</span> <span class="n">interface_shroud</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">interface_shroud</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
             <span class="p">)</span>
             
@@ -984,13 +984,13 @@
                     <span class="mi">2</span>
                 <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
             <span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Interface [</span><span class="si">%d</span><span class="s2">] : curve offset[</span><span class="si">%f</span><span class="s2">], percent[</span><span class="si">%f</span><span class="s2">], direction[</span><span class="si">%d</span><span class="s2">]&quot;</span> <span class="o">%</span>  <span class="p">(</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Interface [</span><span class="si">%d</span><span class="s2">] : curve offset[</span><span class="si">%f</span><span class="s2">], percent[</span><span class="si">%f</span><span class="s2">], direction[</span><span class="si">%d</span><span class="s2">]"</span> <span class="o">%</span>  <span class="p">(</span>
                 <span class="n">ii</span><span class="p">,</span> <span class="n">curve</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">curve</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">curve</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
             <span class="p">)</span>
 
 
             <span class="n">interfaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interface</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Copy interface [</span><span class="si">%d</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span><span class="p">))</span> 
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Copy interface [</span><span class="si">%d</span><span class="s2">]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span><span class="p">))</span> 
         
         <span class="c1">#</span>
         <span class="c1"># check if the generated interfaces are intersecting with any hub or shroud curves </span>
@@ -1002,18 +1002,18 @@
         <span class="c1"># logging or warning if intersections occur</span>
         <span class="c1">#</span>
         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">intersects_hub</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">intersects_shroud</span><span class="p">):</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Interfaces created without any illegal intersections&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Interfaces created without any illegal intersections"</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i_hub</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">intersects_hub</span><span class="p">)):</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;Illegal intersect between interface no. </span><span class="si">%i</span><span class="s2"> and hub curve no. </span><span class="si">%i</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="s2">"Illegal intersect between interface no. </span><span class="si">%i</span><span class="s2"> and hub curve no. </span><span class="si">%i</span><span class="s2">"</span><span class="p">,</span>
                     <span class="n">intersects_hub</span><span class="p">[</span><span class="n">i_hub</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
                     <span class="n">intersects_hub</span><span class="p">[</span><span class="n">i_hub</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
                 <span class="p">)</span>
 
             <span class="k">for</span> <span class="n">i_shroud</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">intersects_shroud</span><span class="p">)):</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;Illegal intersect between interface no. </span><span class="si">%i</span><span class="s2"> and shroud curve no. </span><span class="si">%i</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="s2">"Illegal intersect between interface no. </span><span class="si">%i</span><span class="s2"> and shroud curve no. </span><span class="si">%i</span><span class="s2">"</span><span class="p">,</span>
                     <span class="n">intersects_shroud</span><span class="p">[</span><span class="n">i_shroud</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> 
                     <span class="n">intersects_shroud</span><span class="p">[</span><span class="n">i_shroud</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
                 <span class="p">)</span>
@@ -1027,7 +1027,7 @@
 <div class="viewcode-block" id="analyticGeometry_piecewiseMeridionalRotContour.detectIntersect">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.detectIntersect">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">detectIntersect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interfaces</span><span class="p">,</span> <span class="n">curves</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Detect intersections between curves from two lists.</span>
+<span class="w">        </span><span class="sd">"""Detect intersections between curves from two lists.</span>
 
 <span class="sd">        This method:</span>
 
@@ -1080,7 +1080,7 @@
 <span class="sd">            - ``intersectList[i][2]``: ``True`` if intersection is detected</span>
 
 <span class="sd">        The intersection list is returned by the method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         
         <span class="n">intersect_list</span> <span class="o">=</span> <span class="p">[]</span>
         
@@ -1135,7 +1135,7 @@
 <div class="viewcode-block" id="analyticGeometry_piecewiseMeridionalRotContour.propagate_interface_ids_next">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.propagate_interface_ids_next">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">propagate_interface_ids_next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve_to_interface</span><span class="p">,</span><span class="n">lab</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Map curves to IDs of regular channels.</span>
+<span class="w">        </span><span class="sd">"""Map curves to IDs of regular channels.</span>
 <span class="sd">        </span>
 <span class="sd">        This method:</span>
 
@@ -1187,9 +1187,9 @@
 
 <span class="sd">        The resulting list contains, for each curve, either the corresponding regular channel ID or</span>
 <span class="sd">        ``None``. The updated list is returned at the end of the method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;propagating </span><span class="si">%s</span><span class="s2">_cti&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lab</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"propagating </span><span class="si">%s</span><span class="s2">_cti"</span> <span class="o">%</span> <span class="p">(</span><span class="n">lab</span><span class="p">))</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">curve_to_interface</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
         
@@ -1212,12 +1212,12 @@
                 <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">end</span><span class="p">]</span>
         
         <span class="n">groups</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Interface and Layers on </span><span class="si">%s</span><span class="s2"> curves&quot;</span> <span class="o">%</span> <span class="n">lab</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Interface/Layer : Curves&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Interface and Layers on </span><span class="si">%s</span><span class="s2"> curves"</span> <span class="o">%</span> <span class="n">lab</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Interface/Layer : Curves"</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
             <span class="n">groups</span><span class="p">[</span><span class="n">val</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">val</span><span class="p">,</span> <span class="n">indices</span> <span class="ow">in</span> <span class="n">groups</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">indices</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="s1">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">indices</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         
         <span class="c1"># segments after the last interface remain None</span>
         <span class="k">return</span> <span class="n">result</span></div>
@@ -1232,7 +1232,7 @@
                           <span class="n">ii</span><span class="p">,</span>
                           <span class="n">lab</span>
                           <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find and combine curves belonging to a regular channel.</span>
+<span class="w">        </span><span class="sd">"""Find and combine curves belonging to a regular channel.</span>
 <span class="sd">        </span>
 <span class="sd">        This method:</span>
 
@@ -1281,7 +1281,7 @@
 <span class="sd">        ``regCurve`` using the `dtOO` class `bSplineCurve_curveConnectConstructOCC`.</span>
 
 <span class="sd">        The combined curve of the regular channel is returned in ``curve_list``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
  
         <span class="n">curve_list</span> <span class="o">=</span> <span class="p">[]</span>
         
@@ -1318,7 +1318,7 @@
         <span class="c1"># The combined channel curve is returned in a list with a single entrie.</span>
         <span class="c1">#</span>
         <span class="n">curve_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">regCurve</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>           
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Combined regular channel curves of </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">lab</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Combined regular channel curves of </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">lab</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">curve_list</span></div>
 
      
@@ -1330,7 +1330,7 @@
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.createSplits">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">createSplits</span><span class="p">(</span><span class="n">splits</span><span class="p">,</span> <span class="n">inCurves</span><span class="p">,</span> <span class="n">lab</span><span class="p">):</span> 
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Split the curves at the defined positions.</span>
+<span class="w">        </span><span class="sd">"""Split the curves at the defined positions.</span>
 
 <span class="sd">        This method:</span>
 
@@ -1444,7 +1444,7 @@
 <span class="sd">        and ``None`` is appended to ``curve_to_interface``.</span>
 
 <span class="sd">        Finally, the lists ``outCurves`` and ``curve_to_interface`` are returned.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># list with the split curves</span>
         <span class="n">outCurves</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1512,7 +1512,7 @@
                         <span class="n">iface_id</span> <span class="o">=</span> <span class="n">interface_ids</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">interface_ids</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
                         <span class="n">curve_to_interface</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iface_id</span><span class="p">)</span>
                     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                        <span class="s2">&quot;Split </span><span class="si">%s</span><span class="s2">[</span><span class="si">%d</span><span class="s2">] [</span><span class="si">%5f</span><span class="s2">, </span><span class="si">%5f</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="n">cc</span><span class="p">,</span> <span class="n">split_pos</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">split_pos</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="s2">"Split </span><span class="si">%s</span><span class="s2">[</span><span class="si">%d</span><span class="s2">] [</span><span class="si">%5f</span><span class="s2">, </span><span class="si">%5f</span><span class="s2">]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="n">cc</span><span class="p">,</span> <span class="n">split_pos</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">split_pos</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
                     <span class="p">)</span>
             
             <span class="c1">#</span>
@@ -1520,12 +1520,12 @@
             <span class="c1">#</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">outCurves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inCurves</span><span class="p">[</span><span class="n">cc</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>                
-                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Copy </span><span class="si">%s</span><span class="s2">[</span><span class="si">%d</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="n">cc</span><span class="p">))</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Copy </span><span class="si">%s</span><span class="s2">[</span><span class="si">%d</span><span class="s2">]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="n">cc</span><span class="p">))</span>
                 <span class="c1"># adds none to curve to interface</span>
                 <span class="n">curve_to_interface</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-                <span class="c1"># as string identifier &quot;segm&quot; will be set</span>
+                <span class="c1"># as string identifier "segm" will be set</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished splitting </span><span class="si">%s</span><span class="s2"> curves. </span><span class="si">%i</span><span class="s2"> curves created&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">outCurves</span><span class="p">)))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Finished splitting </span><span class="si">%s</span><span class="s2"> curves. </span><span class="si">%i</span><span class="s2"> curves created"</span> <span class="o">%</span> <span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">outCurves</span><span class="p">)))</span>
         <span class="c1"># returns the cut curves and the cti    </span>
         <span class="k">return</span> <span class="n">outCurves</span><span class="p">,</span> <span class="n">curve_to_interface</span>    </div>
 
@@ -1537,7 +1537,7 @@
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.calculateNormalAxis">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">calculateNormalAxis</span><span class="p">(</span><span class="n">curves</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the bounding box and normal axis of curves in one plane.</span>
+<span class="w">        </span><span class="sd">"""Calculate the bounding box and normal axis of curves in one plane.</span>
 <span class="sd">        </span>
 <span class="sd">        This method:</span>
 <span class="sd">            </span>
@@ -1560,7 +1560,7 @@
 <span class="sd">        bb: pairDtPoint3</span>
 <span class="sd">          Bounding box points.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">vv</span> <span class="o">=</span> <span class="n">vectorDtPoint3</span><span class="p">()</span>                 
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="n">curves</span><span class="p">:</span>
@@ -1568,15 +1568,15 @@
         <span class="c1"># calculates a bounding box of all the start and endpoints of the curves</span>
         <span class="n">bb</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">boundingBox</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span>                                    
         <span class="n">dist</span> <span class="o">=</span> <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Create bounding box from </span><span class="si">%d</span><span class="s2"> points.&quot;</span> <span class="o">%</span> <span class="n">vv</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Create bounding box from </span><span class="si">%d</span><span class="s2"> points."</span> <span class="o">%</span> <span class="n">vv</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-            <span class="s2">&quot;  bb[0] : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+            <span class="s2">"  bb[0] : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
         <span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-            <span class="s2">&quot;  bb[1] : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+            <span class="s2">"  bb[1] : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
         <span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;  dist  : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dist</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dist</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="s2">"  dist  : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dist</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dist</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
         <span class="p">)</span>
         <span class="c1"># calculates the normal axis</span>
         <span class="n">normalAxis</span> <span class="o">=</span> <span class="n">dtVector3</span><span class="p">(</span>
@@ -1585,7 +1585,7 @@
             <span class="nb">float</span><span class="p">(</span><span class="n">analyticGeometry</span><span class="o">.</span><span class="n">inXYZTolerance</span><span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="mi">2</span><span class="p">])),</span>
         <span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;  -&gt; normalAxis = (</span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">)&quot;</span>
+            <span class="s2">"  -&gt; normalAxis = (</span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">)"</span>
             <span class="o">%</span> <span class="p">(</span><span class="n">normalAxis</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">normalAxis</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">normalAxis</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>     <span class="c1"># normal axis to bounding box</span>
         <span class="p">)</span>
         
@@ -1595,7 +1595,7 @@
             <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span>
             <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Centerpoint : [</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bbCenter</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bbCenter</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">bbCenter</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Centerpoint : [</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">bbCenter</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bbCenter</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">bbCenter</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
         <span class="k">return</span> <span class="n">normalAxis</span><span class="p">,</span> <span class="n">bbCenter</span><span class="p">,</span> <span class="n">bb</span></div>
 
     
@@ -1604,7 +1604,7 @@
 <div class="viewcode-block" id="analyticGeometry_piecewiseMeridionalRotContour.build">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.build">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the instantiated geometries in paraview if debug is enabeled.</span>
+<span class="w">        </span><span class="sd">"""Plot the instantiated geometries in paraview if debug is enabeled.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1617,8 +1617,8 @@
 
 <span class="sd">        This method appends the geometries to the ``dtBundle`` objects for </span>
 <span class="sd">        debugging.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Building </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">))</span>
+<span class="sd">        """</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Building </span><span class="si">%s</span><span class="s2"> ..."</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
@@ -1626,7 +1626,7 @@
                 <span class="k">for</span> <span class="n">interface</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">interfaces_</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">interface</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_interface_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                        <span class="s2">"debug_interface_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">except</span><span class="p">:</span>
@@ -1636,7 +1636,7 @@
                 <span class="k">for</span> <span class="n">aCurve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">shroudCurves_</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">aCurve</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_shroudCurve_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                        <span class="s2">"debug_shroudCurve_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">except</span><span class="p">:</span>
@@ -1646,7 +1646,7 @@
                 <span class="k">for</span> <span class="n">aCurve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hubCurves_</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">aCurve</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_hubCurve_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                        <span class="s2">"debug_hubCurve_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>            
             <span class="k">except</span><span class="p">:</span>
@@ -1656,7 +1656,7 @@
                 <span class="k">for</span> <span class="n">aCurve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">speHub_</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">aCurve</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_speHub_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                        <span class="s2">"debug_speHub_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">except</span><span class="p">:</span>
@@ -1666,7 +1666,7 @@
                 <span class="k">for</span> <span class="n">aCurve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">speShroud_</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">aCurve</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_speShroud_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                        <span class="s2">"debug_speShroud_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">except</span><span class="p">:</span>
@@ -1676,7 +1676,7 @@
                 <span class="k">for</span> <span class="n">aCurve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inOutCurves_</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">aCurve</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_inOutCurve_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                        <span class="s2">"debug_inOutCurve_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">except</span><span class="p">:</span>
@@ -1696,7 +1696,7 @@
                             <span class="n">off</span> <span class="o">-</span> <span class="mf">0.05</span><span class="p">,</span>         <span class="c1"># min segment in percent </span>
                             <span class="n">off</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">,</span>         <span class="c1"># max segment in percent</span>
                         <span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_channel_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                        <span class="s2">"debug_channel_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">except</span><span class="p">:</span>
@@ -1713,7 +1713,7 @@
                    <span class="n">pos</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                    <span class="n">nSlices</span><span class="p">:</span> <span class="nb">int</span>
                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">analyticGeometry</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a regular channel.</span>
+<span class="w">        </span><span class="sd">"""Return a regular channel.</span>
 <span class="sd">        </span>
 <span class="sd">        This method:</span>
 
@@ -1754,9 +1754,9 @@
 <span class="sd">           Regular channel volumes created by rotating the first (yellow) and second </span>
 <span class="sd">           (green) regular channel faces.</span>
 <span class="sd">           </span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Request regChannel[ </span><span class="si">%d</span><span class="s2"> ]&quot;</span> <span class="o">%</span> <span class="n">pos</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Request regChannel[ </span><span class="si">%d</span><span class="s2"> ]"</span> <span class="o">%</span> <span class="n">pos</span><span class="p">)</span>
         
         <span class="c1"># whole rotational domain</span>
         <span class="k">if</span> <span class="n">nSlices</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -1777,7 +1777,7 @@
 <div class="viewcode-block" id="analyticGeometry_piecewiseMeridionalRotContour.getLayerRegionCurves">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_piecewiseMeridionalRotContour.analyticGeometry_piecewiseMeridionalRotContour.getLayerRegionCurves">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">getLayerRegionCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the bounding curves for the layered region.</span>
+<span class="w">        </span><span class="sd">"""Returns the bounding curves for the layered region.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1795,7 +1795,7 @@
 
 <span class="sd">        Returns the bounding curves of the layered region shown in </span>
 <span class="sd">        :numref:`speCurvesClass`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">speHub_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">speShroud_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inOutLayerReg_</span></div>
 </div>
 

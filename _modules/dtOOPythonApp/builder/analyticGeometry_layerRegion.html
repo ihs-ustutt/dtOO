@@ -126,7 +126,7 @@
 <div class="viewcode-block" id="analyticGeometry_layerRegion">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">analyticGeometry_layerRegion</span><span class="p">(</span><span class="n">dtBundleBuilder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create flow channel as five or six sided layer regions on the walls </span>
+<span class="w">    </span><span class="sd">"""Create flow channel as five or six sided layer regions on the walls </span>
 <span class="sd">    and a multiple bounded volume inside the flow domain.</span>
 <span class="sd">    </span>
 <span class="sd">    This class:</span>
@@ -233,7 +233,7 @@
 
 <span class="sd">    &gt;&gt;&gt; from dtOOPythonApp.builder import analyticGeometry_layerRegion</span>
 <span class="sd">    &gt;&gt;&gt; builder = analyticGeometry_layerRegion(</span>
-<span class="sd">    ...   label = &quot;test&quot;,</span>
+<span class="sd">    ...   label = "test",</span>
 <span class="sd">    ...   speHub = speHub,</span>
 <span class="sd">    ...   speShroud = speShroud,</span>
 <span class="sd">    ...   inOutCurves = inOutCurves,</span>
@@ -249,7 +249,7 @@
 <span class="sd">    Check the virtual class name.</span>
 
 <span class="sd">    &gt;&gt;&gt; unstrReg.virtualClassName()</span>
-<span class="sd">    &#39;multipleBoundedVolume&#39;</span>
+<span class="sd">    'multipleBoundedVolume'</span>
 <span class="sd">    </span>
 <span class="sd">    This class is used to create the geometry of a flow channel consisting of five- or six-</span>
 <span class="sd">    sided layer volumes on the hub and shroud walls, as well as a multiple bounded volume</span>
@@ -326,7 +326,7 @@
 <span class="sd">    unstructured region together with a list containing its boundary surfaces.</span>
 
 <span class="sd">    The :meth:`build` method is used to visualize the created geometries in `ParaView`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="analyticGeometry_layerRegion.__init__">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.__init__">[docs]</a>
@@ -341,7 +341,7 @@
         <span class="n">rotVector</span><span class="p">:</span> <span class="n">dtVector3</span> <span class="o">=</span> <span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
         <span class="n">origin</span><span class="p">:</span> <span class="n">dtPoint3</span> <span class="o">=</span> <span class="n">dtPoint3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor.</span>
+<span class="w">        </span><span class="sd">"""Constructor.</span>
 <span class="sd">        </span>
 <span class="sd">        This method:</span>
 
@@ -511,8 +511,8 @@
 <span class="sd">        ``bSplineSurface_bSplineCurveFillConstructOCC`` with ``layer_vhc`` as input.</span>
 <span class="sd">        The resulting layer faces are stored in the lists ``hubLayers_`` and</span>
 <span class="sd">        ``shroudLayers_``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initializing </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">))</span>
+<span class="sd">        """</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Initializing </span><span class="si">%s</span><span class="s2"> ..."</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">))</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">analyticGeometry_layerRegion</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">=</span> <span class="n">label</span>
         
@@ -527,7 +527,7 @@
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">normalAxis_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">speCenter_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">speBb_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateNormalAxis</span><span class="p">(</span><span class="n">speHub</span> <span class="o">+</span> <span class="n">speShroud</span><span class="p">)</span>
         
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;### Creating Hub Layer Curves&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"### Creating Hub Layer Curves"</span><span class="p">)</span>
         <span class="c1">#</span>
         <span class="c1"># Creating the boundary curves for the layers</span>
         <span class="c1"># each layer is defined by four curves those returned through self.hubLayerCurves_</span>
@@ -552,16 +552,16 @@
                 <span class="n">inOutCurves</span><span class="p">,</span>
                 <span class="n">layer_thickness</span><span class="p">,</span> 
                 <span class="n">layer_supports</span><span class="p">,</span>
-                <span class="s1">&#39;Hub&#39;</span>
+                <span class="s1">'Hub'</span>
             <span class="p">)</span>
         
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;### Creating Shroud Layer Curves&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"### Creating Shroud Layer Curves"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shroudLayerCurves_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shroudRadZero_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shroudUnstructBounds_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createLayerBounds</span><span class="p">(</span>
                 <span class="n">speShroud</span><span class="p">,</span>  
                 <span class="n">inOutCurves</span><span class="p">,</span>
                 <span class="n">layer_thickness</span><span class="p">,</span>
                 <span class="n">layer_supports</span><span class="p">,</span>
-                <span class="s1">&#39;Shroud&#39;</span>
+                <span class="s1">'Shroud'</span>
             <span class="p">)</span>
         
         <span class="c1">#</span>
@@ -609,7 +609,7 @@
         <span class="c1"># adding the outlet boundary last</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unstructVH_</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outletUnstructBound_</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span> 
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;###   Creating Hub Layer Faces&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"###   Creating Hub Layer Faces"</span><span class="p">)</span>
         <span class="c1"># creatig the layer faces from the curves </span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hubLayers_</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hubLayerCurves_</span><span class="p">)):</span>
@@ -625,7 +625,7 @@
             <span class="p">)</span> 
             <span class="k">del</span> <span class="n">layer_vhc</span>
         
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;###   Creating Shroud Layer Faces&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"###   Creating Shroud Layer Faces"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shroudLayers_</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shroudLayerCurves_</span><span class="p">)):</span>
             <span class="n">layer_vhc</span> <span class="o">=</span> <span class="n">vectorHandlingConstDtCurve</span><span class="p">()</span>
@@ -644,7 +644,7 @@
 <div class="viewcode-block" id="analyticGeometry_layerRegion.createLayerBounds">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.createLayerBounds">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">createLayerBounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layerCurve</span><span class="p">,</span> <span class="n">inOutCurves</span><span class="p">,</span> <span class="n">thickness</span><span class="p">,</span> <span class="n">supports</span><span class="p">,</span> <span class="n">lab</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create boundary curves of the layer faces.</span>
+<span class="w">        </span><span class="sd">"""Create boundary curves of the layer faces.</span>
 <span class="sd">        </span>
 <span class="sd">        This method:</span>
 <span class="sd">            </span>
@@ -1054,7 +1054,7 @@
 <span class="sd">        The method returns the lists ``returnBounds``, ``on_rad_zero``, and</span>
 <span class="sd">        ``layerParallel``.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         
         <span class="c1">#</span>
         <span class="c1"># preparing lists</span>
@@ -1093,7 +1093,7 @@
             <span class="n">onRotAxis_0</span> <span class="o">=</span> <span class="n">analyticGeometry</span><span class="o">.</span><span class="n">inXYZTolerance</span><span class="p">(</span><span class="n">rz_0</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">onRotAxis_1</span> <span class="o">=</span> <span class="n">analyticGeometry</span><span class="o">.</span><span class="n">inXYZTolerance</span><span class="p">(</span><span class="n">rz_1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                <span class="s2">&quot;speHub: |&lt;- </span><span class="si">%5.2f</span><span class="s2"> --- </span><span class="si">%5.2f</span><span class="s2"> -&gt;|&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rz_0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rz_1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="s2">"speHub: |&lt;- </span><span class="si">%5.2f</span><span class="s2"> --- </span><span class="si">%5.2f</span><span class="s2"> -&gt;|"</span> <span class="o">%</span> <span class="p">(</span><span class="n">rz_0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rz_1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="p">)</span>
             <span class="c1">#</span>
             <span class="c1"># if the radius is zero the curve will be assigned as the second global boundary</span>
@@ -1103,7 +1103,7 @@
                 
                 <span class="c1"># overwrites the outlet curve as global boundary</span>
                 <span class="n">boundsGlob</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">layerCurve</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Set </span><span class="si">%s</span><span class="s2"> curve no. </span><span class="si">%i</span><span class="s2"> as the global layer boundary&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Set </span><span class="si">%s</span><span class="s2"> curve no. </span><span class="si">%i</span><span class="s2"> as the global layer boundary"</span> <span class="o">%</span> <span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
                 <span class="n">on_rad_zero</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
                 
                 <span class="c1"># saving the segment of the curve from the thickness to the maximum </span>
@@ -1158,7 +1158,7 @@
                     <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
                 <span class="p">)</span>
                 <span class="k">del</span> <span class="n">on_rad_zero</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Combining curves </span><span class="si">%i</span><span class="s2"> and </span><span class="si">%i</span><span class="s2"> to make one layer&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Combining curves </span><span class="si">%i</span><span class="s2"> and </span><span class="si">%i</span><span class="s2"> to make one layer"</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
             <span class="c1"># else the curves will be appended</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">speCurve</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_curve</span><span class="p">)</span>
@@ -1167,7 +1167,7 @@
         <span class="c1"># appending the last curve outside of the loop</span>
         <span class="c1"># speCurve will be used in the rest of this method</span>
         <span class="n">speCurve</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_curve</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating </span><span class="si">%i</span><span class="s2"> Layers on </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">speCurve</span><span class="p">),</span> <span class="n">lab</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Creating </span><span class="si">%i</span><span class="s2"> Layers on </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">speCurve</span><span class="p">),</span> <span class="n">lab</span><span class="p">))</span>
         
         <span class="c1">#</span>
         <span class="c1"># third loop</span>
@@ -1186,7 +1186,7 @@
                     <span class="n">base</span><span class="o">.</span><span class="n">pointPercent</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">dc</span><span class="o">.</span><span class="n">pointPercent</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">analyticGeometry</span><span class="o">.</span><span class="n">inXYZTolerance</span><span class="p">(</span><span class="n">distance</span><span class="p">):</span>                  
-                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Reverse direction. distance = </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">distance</span><span class="p">))</span> 
+                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Reverse direction. distance = </span><span class="si">%f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">distance</span><span class="p">))</span> 
                     <span class="n">dc</span> <span class="o">=</span> <span class="n">geomCurve_curveReverseConstructOCC</span><span class="p">(</span><span class="n">dc</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
                     <span class="n">direction</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>          
                 
@@ -1198,7 +1198,7 @@
                         <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Created orthogonal layer boundary no. </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Created orthogonal layer boundary no. </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
             
             <span class="c1"># the last layer boundary is built from the second global boundary</span>
             <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">speCurve</span><span class="p">):</span>
@@ -1208,7 +1208,7 @@
                     <span class="n">base</span><span class="o">.</span><span class="n">pointPercent</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">dc</span><span class="o">.</span><span class="n">pointPercent</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">analyticGeometry</span><span class="o">.</span><span class="n">inXYZTolerance</span><span class="p">(</span><span class="n">distance</span><span class="p">):</span>                  
-                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Reverse direction. distance = </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">distance</span><span class="p">))</span> 
+                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Reverse direction. distance = </span><span class="si">%f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">distance</span><span class="p">))</span> 
                     <span class="n">dc</span> <span class="o">=</span> <span class="n">geomCurve_curveReverseConstructOCC</span><span class="p">(</span><span class="n">dc</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
                     <span class="n">direction</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
                 
@@ -1219,7 +1219,7 @@
                         <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Created orthogonal layer boundary no. </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Created orthogonal layer boundary no. </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
                 <span class="c1"># calculates the parallel curve to the channel curve</span>
                 <span class="n">v0</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">speCurve</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                 <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layerCurve</span><span class="p">(</span>
@@ -1231,7 +1231,7 @@
                         <span class="n">lab</span>
                 <span class="p">)</span>   
                 <span class="n">layerParallel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Created parallel layer boundary on curve no. </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Created parallel layer boundary on curve no. </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 
                 <span class="c1"># appends the boundary curves for this boundary to the return list</span>
                 <span class="n">newLayer</span> <span class="o">=</span> <span class="p">[</span>
@@ -1313,12 +1313,12 @@
                         <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Created orthogonal layer boundary no. </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Created orthogonal layer boundary no. </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
 
                 <span class="c1"># creating the layer curve parallel to the channel curve</span>
                 <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layerCurve</span><span class="p">(</span><span class="n">layerStreamOrtho</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">thickness</span><span class="p">,</span> <span class="n">supports</span><span class="p">,</span> <span class="n">lab</span><span class="p">)</span>
                 <span class="n">layerParallel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Created parallel layer boundary on curve no. </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Created parallel layer boundary on curve no. </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
 
                 <span class="c1"># appending the curves for return</span>
                 <span class="c1"># the curves of one layer are appended in clockwise direction</span>
@@ -1329,7 +1329,7 @@
                         <span class="n">layerStreamOrtho</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>   <span class="c1"># ortho1</span>
                     <span class="p">]</span>
                 <span class="n">returnBounds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newLayer</span><span class="p">)</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished creating </span><span class="si">%s</span><span class="s2"> layer curves&quot;</span> <span class="o">%</span> <span class="n">lab</span><span class="p">)</span> 
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Finished creating </span><span class="si">%s</span><span class="s2"> layer curves"</span> <span class="o">%</span> <span class="n">lab</span><span class="p">)</span> 
             
         <span class="c1"># appending the curve on radius 0 if it exists</span>
         <span class="c1"># the parallel boundaries and the radius 0 curve are needed as boundaries for the</span>
@@ -1347,7 +1347,7 @@
 <div class="viewcode-block" id="analyticGeometry_layerRegion.layerCurve">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.layerCurve">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">layerCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layerStreamOrtho</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">curve</span><span class="p">,</span> <span class="n">thickness</span><span class="p">,</span> <span class="n">supports</span><span class="p">,</span> <span class="n">lab</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create third boundary curve extending paralell to the wall.</span>
+<span class="w">        </span><span class="sd">"""Create third boundary curve extending paralell to the wall.</span>
 
 <span class="sd">        This method:</span>
 
@@ -1462,8 +1462,8 @@
 <span class="sd">            container.</span>
 
 <span class="sd">        The method returns the generated curve.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;creating layer curve no. </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span> 
+<span class="sd">        """</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"creating layer curve no. </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span> 
         <span class="c1"># finding the correct curves for the layer</span>
         <span class="c1"># bound is the curve orthogonal to the streamwise direction</span>
         <span class="n">bound0</span> <span class="o">=</span> <span class="n">analyticCurve</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">layerStreamOrtho</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">ptrDtCurve</span><span class="p">()</span>
@@ -1483,7 +1483,7 @@
         <span class="p">)</span>
         <span class="n">direction</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">dotProduct</span><span class="p">(</span><span class="n">normalVec</span><span class="p">,</span> <span class="n">insideVec</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;changing offset direction&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"changing offset direction"</span><span class="p">)</span>
             <span class="n">direction</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
                 
         <span class="c1"># Create point container;</span>
@@ -1523,7 +1523,7 @@
             <span class="c1">#              1</span>
             <span class="c1">#        ).result()</span>
             <span class="c1">#    ),</span>
-            <span class="c1">#    &quot;debug_supportVector_&quot;+lab+str(i)+&quot;_&quot;+str(support)</span>
+            <span class="c1">#    "debug_supportVector_"+lab+str(i)+"_"+str(support)</span>
             <span class="c1">#)</span>
         <span class="c1"># last point</span>
         <span class="n">container</span> <span class="o">=</span> <span class="n">container</span> <span class="o">&lt;&lt;</span> <span class="n">bound1</span><span class="o">.</span><span class="n">pointPercent</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>          
@@ -1539,7 +1539,7 @@
 <div class="viewcode-block" id="analyticGeometry_layerRegion.rz_xyz">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.rz_xyz">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">rz_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pp</span><span class="p">:</span> <span class="n">dtPoint3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dtPoint2</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform a point in cartesian coordinates into cylindric coordinates.</span>
+<span class="w">        </span><span class="sd">"""Transform a point in cartesian coordinates into cylindric coordinates.</span>
 
 <span class="sd">        This method:</span>
 
@@ -1563,7 +1563,7 @@
 <span class="sd">        Returns the radius ``rr`` and the z-coordinate ``zz`` in a `dtPoint2` </span>
 <span class="sd">        object.</span>
 <span class="sd">        </span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">vv</span> <span class="o">=</span> <span class="n">pp</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_</span>
         <span class="n">zz</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">dotProduct</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotVector_</span><span class="p">)</span>
         <span class="n">rr</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">vv</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotVector_</span> <span class="o">*</span> <span class="n">zz</span><span class="p">)</span>
@@ -1577,7 +1577,7 @@
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.calculateNormalAxis">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">calculateNormalAxis</span><span class="p">(</span><span class="n">curves</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the bounding box and normal axis of curves in one plane.</span>
+<span class="w">        </span><span class="sd">"""Calculate the bounding box and normal axis of curves in one plane.</span>
 <span class="sd">        </span>
 <span class="sd">        This method:</span>
 <span class="sd">            </span>
@@ -1600,7 +1600,7 @@
 <span class="sd">        bb: pairDtPoint3</span>
 <span class="sd">          Bounding box points.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">vv</span> <span class="o">=</span> <span class="n">vectorDtPoint3</span><span class="p">()</span>                 
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="n">curves</span><span class="p">:</span>
@@ -1608,15 +1608,15 @@
         <span class="c1"># calculates a bounding box of all the start and endpoints of the curves</span>
         <span class="n">bb</span> <span class="o">=</span> <span class="n">dtLinearAlgebra</span><span class="o">.</span><span class="n">boundingBox</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span>                                    
         <span class="n">dist</span> <span class="o">=</span> <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Create bounding box from </span><span class="si">%d</span><span class="s2"> points.&quot;</span> <span class="o">%</span> <span class="n">vv</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Create bounding box from </span><span class="si">%d</span><span class="s2"> points."</span> <span class="o">%</span> <span class="n">vv</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-            <span class="s2">&quot;  bb[0] : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+            <span class="s2">"  bb[0] : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
         <span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-            <span class="s2">&quot;  bb[1] : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+            <span class="s2">"  bb[1] : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
         <span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;  dist  : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dist</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dist</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="s2">"  dist  : </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dist</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dist</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
         <span class="p">)</span>
         <span class="c1"># calculates the normal axis</span>
         <span class="n">normalAxis</span> <span class="o">=</span> <span class="n">dtVector3</span><span class="p">(</span>
@@ -1625,7 +1625,7 @@
             <span class="nb">float</span><span class="p">(</span><span class="n">analyticGeometry</span><span class="o">.</span><span class="n">inXYZTolerance</span><span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="mi">2</span><span class="p">])),</span>
         <span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;  -&gt; normalAxis = (</span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">)&quot;</span>
+            <span class="s2">"  -&gt; normalAxis = (</span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2"> </span><span class="si">%5.2f</span><span class="s2">)"</span>
             <span class="o">%</span> <span class="p">(</span><span class="n">normalAxis</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">normalAxis</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">normalAxis</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>     <span class="c1"># normal axis to bounding box</span>
         <span class="p">)</span>
         
@@ -1635,14 +1635,14 @@
             <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span>
             <span class="p">(</span><span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Centerpoint : [</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bbCenter</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bbCenter</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">bbCenter</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Centerpoint : [</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">bbCenter</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bbCenter</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">bbCenter</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
         <span class="k">return</span> <span class="n">normalAxis</span><span class="p">,</span> <span class="n">bbCenter</span><span class="p">,</span> <span class="n">bb</span></div>
 
     
 <div class="viewcode-block" id="analyticGeometry_layerRegion.build">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.build">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the instantiated geometries in paraview if debug is enabeled.</span>
+<span class="w">        </span><span class="sd">"""Plot the instantiated geometries in paraview if debug is enabeled.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1657,8 +1657,8 @@
 <span class="sd">        adding them to the analytic geometry container.</span>
 <span class="sd">        If the code is run in paraview, the geometries can be found with the </span>
 <span class="sd">        `FindAndShow` method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Building </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">))</span>
+<span class="sd">        """</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Building </span><span class="si">%s</span><span class="s2"> ..."</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>        
@@ -1666,7 +1666,7 @@
                 <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hubLayers_</span><span class="p">:</span>   
                     <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">layer</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_hubLayer_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                        <span class="s2">"debug_hubLayer_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">except</span><span class="p">:</span>
@@ -1676,7 +1676,7 @@
                 <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">shroudLayers_</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">layer</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_shroudLayer_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                        <span class="s2">"debug_shroudLayer_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">except</span><span class="p">:</span>
@@ -1686,7 +1686,7 @@
                 <span class="k">for</span> <span class="n">aCurve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unstructVH_</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">aCurve</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_unstructBound_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                        <span class="s2">"debug_unstructBound_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span><span class="o">+</span><span class="mi">1</span>
             <span class="k">except</span><span class="p">:</span>
@@ -1696,7 +1696,7 @@
                     <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hubLayerCurves_</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span> <span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">hubLayerCurves_</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_hubLayerCurve_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                        <span class="s2">"debug_hubLayerCurve_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
                     <span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">pass</span>
@@ -1705,7 +1705,7 @@
                     <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shroudLayerCurves_</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span> <span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">shroudLayerCurves_</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_shroudLayerCurve_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                        <span class="s2">"debug_shroudLayerCurve_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
                     <span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">pass</span>
@@ -1724,7 +1724,7 @@
                             <span class="n">off</span> <span class="o">-</span> <span class="mf">0.05</span><span class="p">,</span>         <span class="c1"># min segment in percent </span>
                             <span class="n">off</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">,</span>         <span class="c1"># max segment in percent</span>
                         <span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_layer_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
+                        <span class="s2">"debug_layer_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">ii</span> <span class="o">=</span> <span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">except</span><span class="p">:</span>
@@ -1744,7 +1744,7 @@
                     <span class="n">List</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
                 <span class="p">]</span>
             <span class="p">]:</span>      
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the layer volumes and return the layer data.</span>
+<span class="w">        </span><span class="sd">"""Create the layer volumes and return the layer data.</span>
 
 <span class="sd">        This method:</span>
 
@@ -1812,9 +1812,9 @@
 <span class="sd">        - ``layerList[i][0]``: List of layer volumes</span>
 <span class="sd">        - ``layerList[i][1]``: List of Boolean values indicating whether the</span>
 <span class="sd">          corresponding layer is located on a radius of zero</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Request Layer Volumes: </span><span class="si">%i</span><span class="s2"> Slices&quot;</span> <span class="o">%</span> <span class="n">nSlices</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Request Layer Volumes: </span><span class="si">%i</span><span class="s2"> Slices"</span> <span class="o">%</span> <span class="n">nSlices</span><span class="p">)</span>
         
         <span class="c1">#</span>
         <span class="c1"># Create the layer volumes</span>
@@ -1859,7 +1859,7 @@
 <div class="viewcode-block" id="analyticGeometry_layerRegion.getUnstructuredRegion">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.analyticGeometry_layerRegion.analyticGeometry_layerRegion.getUnstructuredRegion">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">getUnstructuredRegion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nSlices</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">]]:</span> 
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create and return the unstructured region together with its</span>
+<span class="w">        </span><span class="sd">"""Create and return the unstructured region together with its</span>
 <span class="sd">        bounding surfaces.</span>
 
 <span class="sd">        This method:</span>
@@ -1984,9 +1984,9 @@
 
 <span class="sd">            The method returns both the multiple bounded volume and the vector</span>
 <span class="sd">            handler ``boundSurf`` containing all generated boundary surfaces.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Request Volume of unstructured Region: </span><span class="si">%i</span><span class="s2"> Slices&quot;</span> <span class="o">%</span> <span class="n">nSlices</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Request Volume of unstructured Region: </span><span class="si">%i</span><span class="s2"> Slices"</span> <span class="o">%</span> <span class="n">nSlices</span><span class="p">)</span>
 
         <span class="c1"># rotation angle defined by the number of slices</span>
         <span class="n">rotAngle</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">nSlices</span>
@@ -2010,16 +2010,16 @@
                 <span class="p">)</span>
             <span class="c1"># setting labels for the interface and the outlet surface</span>
             <span class="k">if</span> <span class="n">ib</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">bs</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;interface_unstruct&quot;</span><span class="p">)</span>
+                <span class="n">bs</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"interface_unstruct"</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">ib</span> <span class="o">==</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unstructVH_</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-                <span class="n">bs</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;outlet_unstruct&quot;</span><span class="p">)</span>
+                <span class="n">bs</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"outlet_unstruct"</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">bs</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;para&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ib</span><span class="p">))</span>
+                <span class="n">bs</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"para"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ib</span><span class="p">))</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">bs</span><span class="o">.</span><span class="n">degenerated</span><span class="p">():</span>
                 <span class="n">boundSurf</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">bs</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Degenerated MBV boundary: </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="n">bs</span><span class="o">.</span><span class="n">getLabel</span><span class="p">())</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Degenerated MBV boundary: </span><span class="si">%s</span><span class="s2"> "</span> <span class="o">%</span> <span class="n">bs</span><span class="o">.</span><span class="n">getLabel</span><span class="p">())</span>
 
             <span class="n">ib</span> <span class="o">=</span> <span class="n">ib</span> <span class="o">+</span> <span class="mi">1</span>
         
@@ -2044,14 +2044,14 @@
         
         <span class="c1"># creating the first multi bounded surface  and pushing it into the VH</span>
         <span class="n">mbs1</span> <span class="o">=</span> <span class="n">multipleBoundedSurface</span><span class="p">(</span><span class="n">m2d</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unstructVH_</span><span class="p">)</span>
-        <span class="n">mbs1</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;periodicUnstruct_0&quot;</span><span class="p">)</span>
+        <span class="n">mbs1</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"periodicUnstruct_0"</span><span class="p">)</span>
         <span class="n">boundSurf</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">mbs1</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
         
         <span class="c1"># initializing a rotation dtTransformer</span>
         <span class="n">cfg</span> <span class="o">=</span> <span class="n">jsonPrimitive</span><span class="p">()</span>
-        <span class="n">cfg</span><span class="o">.</span><span class="n">appendDtPoint3</span><span class="p">(</span><span class="s2">&quot;_origin&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_</span><span class="p">)</span>
-        <span class="n">cfg</span><span class="o">.</span><span class="n">appendDtVector3</span><span class="p">(</span><span class="s2">&quot;_rotVector&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotVector_</span><span class="p">)</span>
-        <span class="n">cfg</span><span class="o">.</span><span class="n">appendReal</span><span class="p">(</span><span class="s2">&quot;_angle&quot;</span><span class="p">,</span> <span class="n">rotAngle</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">appendDtPoint3</span><span class="p">(</span><span class="s2">"_origin"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin_</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">appendDtVector3</span><span class="p">(</span><span class="s2">"_rotVector"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotVector_</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">appendReal</span><span class="p">(</span><span class="s2">"_angle"</span><span class="p">,</span> <span class="n">rotAngle</span><span class="p">)</span>
         
         <span class="c1"># creating transformer object</span>
         <span class="n">rot</span> <span class="o">=</span> <span class="n">rotate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
@@ -2066,7 +2066,7 @@
         
         <span class="c1"># creating the rotated mbs and pushing it</span>
         <span class="n">mbs2</span> <span class="o">=</span> <span class="n">multipleBoundedSurface</span><span class="p">(</span><span class="n">m2d_rot</span><span class="p">,</span> <span class="n">unstructVH_rot</span><span class="p">)</span>
-        <span class="n">mbs2</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;periodicUnstruct_1&quot;</span><span class="p">)</span>
+        <span class="n">mbs2</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"periodicUnstruct_1"</span><span class="p">)</span>
         <span class="n">boundSurf</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">mbs2</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
  
         <span class="c1"># generating the multiple bounded volume</span>

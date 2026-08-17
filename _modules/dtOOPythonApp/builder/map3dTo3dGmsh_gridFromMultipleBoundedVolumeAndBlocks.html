@@ -132,7 +132,7 @@
 <div class="viewcode-block" id="map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks</span><span class="p">(</span><span class="n">dtBundleBuilder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create mesh&#39;s topology as map3dTo3dGmsh.</span>
+<span class="w">    </span><span class="sd">"""Create mesh's topology as map3dTo3dGmsh.</span>
 <span class="sd">    </span>
 <span class="sd">    This class:</span>
 
@@ -238,12 +238,12 @@
 
 <span class="sd">    By iterating over ``blocks_``, the corresponding surfaces are added to</span>
 <span class="sd">    the topology. For each mesh block, the blade surface is added and labeled</span>
-<span class="sd">    with the identifier ``&quot;blade&quot;``.</span>
+<span class="sd">    with the identifier ``"blade"``.</span>
 
 <span class="sd">    The number of mesh block surfaces that belong to the mean plane is</span>
 <span class="sd">    specified by the input ``nMeanplaneBlocks_``. These surfaces do not</span>
 <span class="sd">    connect to the multiple bounded volume channel. In this class, they are</span>
-<span class="sd">    labeled with the identifier ``&quot;block&quot;``.</span>
+<span class="sd">    labeled with the identifier ``"block"``.</span>
 
 <span class="sd">    The remaining faces shown in :numref:`meshFaces`, together with the hub,</span>
 <span class="sd">    shroud, and coupling surfaces, are added to the topology through</span>
@@ -251,19 +251,19 @@
 <span class="sd">    figure.</span>
 
 <span class="sd">    The coupling faces between the mesh blocks and the channel multiple</span>
-<span class="sd">    bounded volume are labeled with the identifier ``&quot;coupling&quot;``. The hub</span>
-<span class="sd">    and shroud bounding surfaces are labeled with the identifiers ``&quot;hub&quot;``</span>
-<span class="sd">    and ``&quot;shroud&quot;``, respectively.</span>
+<span class="sd">    bounded volume are labeled with the identifier ``"coupling"``. The hub</span>
+<span class="sd">    and shroud bounding surfaces are labeled with the identifiers ``"hub"``</span>
+<span class="sd">    and ``"shroud"``, respectively.</span>
 <span class="sd">    </span>
-<span class="sd">    The periodic faces of the topology are those labeled ``&quot;suction&quot;``,</span>
-<span class="sd">    ``&quot;pressure&quot;``, and ``&quot;block&quot;``. The labels ``&quot;suction&quot;`` and</span>
-<span class="sd">    ``&quot;pressure&quot;`` correspond to the suction and pressure sides of a turbine</span>
+<span class="sd">    The periodic faces of the topology are those labeled ``"suction"``,</span>
+<span class="sd">    ``"pressure"``, and ``"block"``. The labels ``"suction"`` and</span>
+<span class="sd">    ``"pressure"`` correspond to the suction and pressure sides of a turbine</span>
 <span class="sd">    blade.</span>
 
 <span class="sd">    Periodically connected faces that are meshed using an unstructured mesh</span>
-<span class="sd">    are labeled with the identifier ``&quot;tri&quot;``. The faces periodic to the</span>
-<span class="sd">    ``&quot;block&quot;`` faces are meshed as transfinite surfaces and are assigned the</span>
-<span class="sd">    identifier ``&quot;quad&quot;``. Periodicity on these faces is defined using the</span>
+<span class="sd">    are labeled with the identifier ``"tri"``. The faces periodic to the</span>
+<span class="sd">    ``"block"`` faces are meshed as transfinite surfaces and are assigned the</span>
+<span class="sd">    identifier ``"quad"``. Periodicity on these faces is defined using the</span>
 <span class="sd">    observer ``bVOSetRotationalPeriodicity``.</span>
 
 <span class="sd">    The boolean value ``meshTEBlocks_`` controls whether trailing edge mesh</span>
@@ -274,37 +274,37 @@
 <span class="sd">    identification. The following faces are added to the topology when</span>
 <span class="sd">    trailing edge mesh blocks are enabled:</span>
 
-<span class="sd">        - ``&quot;hub_0&quot;`` ... ``&quot;hub_&quot;+str(N)``</span>
+<span class="sd">        - ``"hub_0"`` ... ``"hub_"+str(N)``</span>
 
-<span class="sd">        - ``&quot;shroud_0&quot;`` ... ``&quot;shroud_&quot;+str(N)``</span>
+<span class="sd">        - ``"shroud_0"`` ... ``"shroud_"+str(N)``</span>
 
-<span class="sd">        - ``&quot;inlet_0&quot;``</span>
+<span class="sd">        - ``"inlet_0"``</span>
 
-<span class="sd">        - ``&quot;outlet_0&quot;``</span>
+<span class="sd">        - ``"outlet_0"``</span>
 
-<span class="sd">        - ``&quot;suction_tri_0&quot;``, ``&quot;suction_tri_1&quot;``,</span>
-<span class="sd">          ``&quot;suction_tri_&quot;+str(nMeanplaneBlocks_+3)``,</span>
-<span class="sd">          ``&quot;suction_tri_&quot;+str(nMeanplaneBlocks_+4)``</span>
+<span class="sd">        - ``"suction_tri_0"``, ``"suction_tri_1"``,</span>
+<span class="sd">          ``"suction_tri_"+str(nMeanplaneBlocks_+3)``,</span>
+<span class="sd">          ``"suction_tri_"+str(nMeanplaneBlocks_+4)``</span>
 
-<span class="sd">        - ``&quot;block_0&quot;`` ... ``&quot;block_&quot;+str(nMeanplaneBlocks_)``</span>
+<span class="sd">        - ``"block_0"`` ... ``"block_"+str(nMeanplaneBlocks_)``</span>
 
-<span class="sd">        - ``&quot;pressure_tri_0&quot;``, ``&quot;pressure_tri_1&quot;``,</span>
-<span class="sd">          ``&quot;pressure_tri_&quot;+str(nMeanplaneBlocks_+3)``,</span>
-<span class="sd">          ``&quot;pressure_tri_&quot;+str(nMeanplaneBlocks_+4)``</span>
+<span class="sd">        - ``"pressure_tri_0"``, ``"pressure_tri_1"``,</span>
+<span class="sd">          ``"pressure_tri_"+str(nMeanplaneBlocks_+3)``,</span>
+<span class="sd">          ``"pressure_tri_"+str(nMeanplaneBlocks_+4)``</span>
 
-<span class="sd">        - ``&quot;pressure_quad_2&quot;`` ...</span>
-<span class="sd">          ``&quot;pressure_quad_&quot;+str(nMeanplaneBlocks_+2)``</span>
+<span class="sd">        - ``"pressure_quad_2"`` ...</span>
+<span class="sd">          ``"pressure_quad_"+str(nMeanplaneBlocks_+2)``</span>
 
-<span class="sd">        - ``&quot;blade_0&quot;`` ... ``&quot;blade_&quot;+str(N-1)``</span>
+<span class="sd">        - ``"blade_0"`` ... ``"blade_"+str(N-1)``</span>
 
-<span class="sd">        - ``&quot;coupling_0&quot;`` ...</span>
-<span class="sd">          ``&quot;coupling_&quot;+str(N+2-nMeanplaneBlocks_-1)``</span>
+<span class="sd">        - ``"coupling_0"`` ...</span>
+<span class="sd">          ``"coupling_"+str(N+2-nMeanplaneBlocks_-1)``</span>
 
-<span class="sd">    Prismatic boundary layers are generated on the ``&quot;hub&quot;`` and</span>
-<span class="sd">    ``&quot;shroud&quot;`` faces. The number of elements in these layers is specified</span>
+<span class="sd">    Prismatic boundary layers are generated on the ``"hub"`` and</span>
+<span class="sd">    ``"shroud"`` faces. The number of elements in these layers is specified</span>
 <span class="sd">    by ``nBoundaryLayers_``. The boundary layers extend onto the</span>
-<span class="sd">    ``&quot;inlet&quot;``, ``&quot;outlet&quot;``, ``&quot;suction&quot;``, ``&quot;pressure&quot;``, and</span>
-<span class="sd">    ``&quot;coupling&quot;`` faces of the multiple bounded volume.</span>
+<span class="sd">    ``"inlet"``, ``"outlet"``, ``"suction"``, ``"pressure"``, and</span>
+<span class="sd">    ``"coupling"`` faces of the multiple bounded volume.</span>
 
 <span class="sd">    The minimum and maximum characteristic mesh sizes of the unstructured</span>
 <span class="sd">    mesh are specified by the inputs ``charLengthMin`` and</span>
@@ -351,21 +351,21 @@
 
 <span class="sd">       * - ``hubToShroudLines``</span>
 <span class="sd">         - ``nElementsSpanwise_``</span>
-<span class="sd">         - ``&quot;hubToShroud&quot;``</span>
+<span class="sd">         - ``"hubToShroud"``</span>
 <span class="sd">           </span>
 <span class="sd">           ``firstElementSizeHubToShroud_``</span>
 
 <span class="sd">       * - ``bladeHubLines``</span>
 <span class="sd">         - ``bladeHubElementSize_``</span>
-<span class="sd">         - ``&quot;tangentialBlade_*&quot;``</span>
+<span class="sd">         - ``"tangentialBlade_*"``</span>
 
 <span class="sd">       * - ``bladeShroudLines``</span>
 <span class="sd">         - ``bladeShroudElementSize_``</span>
-<span class="sd">         - ``&quot;tangentialBlade_*&quot;``</span>
+<span class="sd">         - ``"tangentialBlade_*"``</span>
 
 <span class="sd">       * - ``bladeToBlockLines``</span>
 <span class="sd">         - ``nElementsNormal_``</span>
-<span class="sd">         - ``&quot;normalBlade&quot;``</span>
+<span class="sd">         - ``"normalBlade"``</span>
 <span class="sd">           </span>
 <span class="sd">           ``firstElementSizeNormalBlade_``</span>
 
@@ -388,7 +388,7 @@
 <span class="sd">    the number of elements assigned to the edge.</span>
 
 <span class="sd">    To ensure a smooth transition in element sizes between consecutive</span>
-<span class="sd">    edges, the ``&quot;tangentialBlade_*&quot;`` grading is adjusted at both the start</span>
+<span class="sd">    edges, the ``"tangentialBlade_*"`` grading is adjusted at both the start</span>
 <span class="sd">    and end vertices.</span>
 
 <span class="sd">    Trailing edge mesh blocks are generated only if ``meshTEBlocks_`` is set</span>
@@ -407,32 +407,32 @@
 <span class="sd">       * - Original name</span>
 <span class="sd">         - Boundary name</span>
 
-<span class="sd">       * - ``&quot;*hub*&quot;``</span>
-<span class="sd">         - ``label_+&quot;_hub&quot;``</span>
+<span class="sd">       * - ``"*hub*"``</span>
+<span class="sd">         - ``label_+"_hub"``</span>
 
-<span class="sd">       * - ``&quot;*shroud*&quot;``</span>
-<span class="sd">         - ``label_+&quot;_shroud&quot;``</span>
+<span class="sd">       * - ``"*shroud*"``</span>
+<span class="sd">         - ``label_+"_shroud"``</span>
 
-<span class="sd">       * - ``&quot;*blade*&quot;``</span>
-<span class="sd">         - ``label_+&quot;_blade&quot;``</span>
+<span class="sd">       * - ``"*blade*"``</span>
+<span class="sd">         - ``label_+"_blade"``</span>
 
-<span class="sd">       * - ``&quot;*inlet*&quot;``</span>
-<span class="sd">         - ``label_+&quot;_inlet&quot;``</span>
+<span class="sd">       * - ``"*inlet*"``</span>
+<span class="sd">         - ``label_+"_inlet"``</span>
 
-<span class="sd">       * - ``&quot;*outlet*&quot;``</span>
-<span class="sd">         - ``label_+&quot;_outlet&quot;``</span>
+<span class="sd">       * - ``"*outlet*"``</span>
+<span class="sd">         - ``label_+"_outlet"``</span>
 
-<span class="sd">       * - ``&quot;*suction*&quot;``</span>
-<span class="sd">         - ``label_+&quot;_suction&quot;``</span>
+<span class="sd">       * - ``"*suction*"``</span>
+<span class="sd">         - ``label_+"_suction"``</span>
 
-<span class="sd">       * - ``&quot;*block*&quot;``</span>
-<span class="sd">         - ``label_+&quot;_suction&quot;``</span>
+<span class="sd">       * - ``"*block*"``</span>
+<span class="sd">         - ``label_+"_suction"``</span>
 
-<span class="sd">       * - ``&quot;*pressure*&quot;``</span>
-<span class="sd">         - ``label_+&quot;_pressure&quot;``</span>
+<span class="sd">       * - ``"*pressure*"``</span>
+<span class="sd">         - ``label_+"_pressure"``</span>
 
 <span class="sd">    If debug mode is enabled the geometries are plotted and prefixed with</span>
-<span class="sd">    ``&quot;debug_&quot;``.</span>
+<span class="sd">    ``"debug_"``.</span>
 
 <span class="sd">    The following observers are also added:</span>
 
@@ -455,7 +455,7 @@
 <span class="sd">       :align: center</span>
 
 <span class="sd">       Mesh of a bladed channel resultuing from the described topology.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span> 
         <span class="bp">self</span><span class="p">,</span> 
         <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
@@ -478,7 +478,7 @@
         <span class="n">meshTEBlocks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parameters </span>
 <span class="sd">        ----------</span>
 <span class="sd">        label: str</span>
@@ -517,8 +517,8 @@
 <span class="sd">          Sets gmsh attribute `Mesh.CharacteristicLengthMax`.</span>
 <span class="sd">        meshTEBlocks: Bool</span>
 <span class="sd">          Marker if trailing edge mesh blocks should be meshed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">&quot;Initializing </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">"Initializing </span><span class="si">%s</span><span class="s2"> ..."</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="p">)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">=</span> <span class="n">label</span>
@@ -545,39 +545,39 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">meshTEBlocks_</span> <span class="o">=</span> <span class="n">meshTEBlocks</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">map3dTo3dGmshJson_</span> <span class="o">=</span> <span class="n">jsonPrimitive</span><span class="p">(</span>
-          <span class="s1">&#39;{&#39;</span>
-            <span class="s1">&#39;&quot;label&quot; : &quot;&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">&#39;&quot;, &#39;</span>
-            <span class="s1">&#39;&quot;option&quot; : [&#39;</span>
-              <span class="s1">&#39;{&quot;name&quot; : &quot;[gmsh]General.Terminal&quot;, &quot;value&quot; : &quot;1.&quot;},&#39;</span>
-              <span class="s1">&#39;{&quot;name&quot; : &quot;[gmsh]General.Verbosity&quot;, &quot;value&quot; : &quot;100.&quot;},&#39;</span>
-              <span class="s1">&#39;{&quot;name&quot; : &quot;[gmsh]General.ExpertMode&quot;, &quot;value&quot; : &quot;1.&quot;},&#39;</span>
-              <span class="s1">&#39;{&#39;</span>
-                <span class="s1">&#39;&quot;name&quot; : &quot;[gmsh]Mesh.LcIntegrationPrecision&quot;, &#39;</span>
-                <span class="s1">&#39;&quot;value&quot; : &quot;1.0E-04&quot;&#39;</span>
-              <span class="s1">&#39;},&#39;</span>
-              <span class="s1">&#39;{&#39;</span>
-                <span class="s1">&#39;&quot;name&quot; : &quot;[gmsh]Mesh.CharacteristicLengthMin&quot;, &#39;</span>
-                <span class="s1">&#39;&quot;value&quot; : &quot;&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">charLengthMin</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span>
-              <span class="s1">&#39;},&#39;</span>
-              <span class="s1">&#39;{&#39;</span>
-                <span class="s1">&#39;&quot;name&quot; : &quot;[gmsh]Mesh.CharacteristicLengthMax&quot;, &#39;</span>
-                <span class="s1">&#39;&quot;value&quot; : &quot;&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">charLengthMax</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span>
-              <span class="s1">&#39;},&#39;</span>
-              <span class="s1">&#39;{&quot;name&quot; : &quot;[gmsh]Mesh.Algorithm&quot;, &quot;value&quot; : &quot;1&quot;},&#39;</span>
-              <span class="s1">&#39;{&#39;</span>
-                <span class="s1">&#39;&quot;name&quot; : &quot;[gmsh]Mesh.MeshSizeExtendFromBoundary&quot;, &#39;</span>
-                <span class="s1">&#39;&quot;value&quot; : &quot;1&quot;&#39;</span>
-              <span class="s1">&#39;},&#39;</span>
-              <span class="s1">&#39;{&quot;name&quot; : &quot;[gmsh]Mesh.MeshSizeFromPoints&quot;, &quot;value&quot; : &quot;1&quot;}&#39;</span>
-            <span class="s1">&#39;],&#39;</span>
-            <span class="s1">&#39;&quot;analyticGeometry&quot; : []&#39;</span>
-          <span class="s1">&#39;}&#39;</span>
+          <span class="s1">'{'</span>
+            <span class="s1">'"label" : "'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'", '</span>
+            <span class="s1">'"option" : ['</span>
+              <span class="s1">'{"name" : "[gmsh]General.Terminal", "value" : "1."},'</span>
+              <span class="s1">'{"name" : "[gmsh]General.Verbosity", "value" : "100."},'</span>
+              <span class="s1">'{"name" : "[gmsh]General.ExpertMode", "value" : "1."},'</span>
+              <span class="s1">'{'</span>
+                <span class="s1">'"name" : "[gmsh]Mesh.LcIntegrationPrecision", '</span>
+                <span class="s1">'"value" : "1.0E-04"'</span>
+              <span class="s1">'},'</span>
+              <span class="s1">'{'</span>
+                <span class="s1">'"name" : "[gmsh]Mesh.CharacteristicLengthMin", '</span>
+                <span class="s1">'"value" : "'</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">charLengthMin</span><span class="p">)</span><span class="o">+</span><span class="s1">'"'</span>
+              <span class="s1">'},'</span>
+              <span class="s1">'{'</span>
+                <span class="s1">'"name" : "[gmsh]Mesh.CharacteristicLengthMax", '</span>
+                <span class="s1">'"value" : "'</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">charLengthMax</span><span class="p">)</span><span class="o">+</span><span class="s1">'"'</span>
+              <span class="s1">'},'</span>
+              <span class="s1">'{"name" : "[gmsh]Mesh.Algorithm", "value" : "1"},'</span>
+              <span class="s1">'{'</span>
+                <span class="s1">'"name" : "[gmsh]Mesh.MeshSizeExtendFromBoundary", '</span>
+                <span class="s1">'"value" : "1"'</span>
+              <span class="s1">'},'</span>
+              <span class="s1">'{"name" : "[gmsh]Mesh.MeshSizeFromPoints", "value" : "1"}'</span>
+            <span class="s1">'],'</span>
+            <span class="s1">'"analyticGeometry" : []'</span>
+          <span class="s1">'}'</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.build">
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.build">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build part.</span>
+<span class="w">        </span><span class="sd">"""Build part.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -611,8 +611,8 @@
 <span class="sd">            ``blocks_`` using ``i, block in enumerate(blocks_)``.</span>
 <span class="sd">            The block faces on the blade wall and the surrounding surfaces are</span>
 <span class="sd">            extracted using the method :meth:`detectFirstAndSecond`.</span>
-<span class="sd">            The faces on the blade wall are labeled ``&quot;blade_&quot; + str(i)``, while the</span>
-<span class="sd">            surrounding surfaces are labeled ``&quot;block_&quot; + str(i)``.</span>
+<span class="sd">            The faces on the blade wall are labeled ``"blade_" + str(i)``, while the</span>
+<span class="sd">            surrounding surfaces are labeled ``"block_" + str(i)``.</span>
 
 <span class="sd">            The block volumes are ordered so that their sequence in ``blocks_``</span>
 <span class="sd">            follows the u-direction of the blade surface ``blade_``.</span>
@@ -623,7 +623,7 @@
 <span class="sd">            (``meshTEBlocks_ == True``), the blade faces of the first and last mesh</span>
 <span class="sd">            blocks are not added to ``aG``. Only block faces that are part of the</span>
 <span class="sd">            mean plane are added to ``aG`` (``i &lt;= nMeanplaneBlocks_``),</span>
-<span class="sd">            corresponding to the ``&quot;block&quot;`` faces shown in :numref:`meshFaces`.</span>
+<span class="sd">            corresponding to the ``"block"`` faces shown in :numref:`meshFaces`.</span>
 
 <span class="sd">            The block volumes are added to the model as ``dtRegion`` objects and</span>
 <span class="sd">            configured to be meshed using transfinite meshing with recursive</span>
@@ -685,8 +685,8 @@
 <span class="sd">            The faces that are meshed unstructured, and</span>
 <span class="sd">            their hub-to-shroud edges, are stored in the list</span>
 <span class="sd">            ``unstrFacesAndh2sLines``. These faces are identified in ``aG`` by</span>
-<span class="sd">            their physical labels ``&quot;inlet&quot;``, ``&quot;outlet&quot;``, ``&quot;suction_tri&quot;``,</span>
-<span class="sd">            and ``&quot;pressure_tri&quot;`` (see :numref:`meshFaces`).</span>
+<span class="sd">            their physical labels ``"inlet"``, ``"outlet"``, ``"suction_tri"``,</span>
+<span class="sd">            and ``"pressure_tri"`` (see :numref:`meshFaces`).</span>
 
 <span class="sd">            The list has the following structure:</span>
 
@@ -729,9 +729,9 @@
 <span class="sd">            input.</span>
 
 <span class="sd">            The grading associated with ``hubToShroudLines`` is assigned the label</span>
-<span class="sd">            ``&quot;hubToShroud&quot;`` and uses the first element size</span>
+<span class="sd">            ``"hubToShroud"`` and uses the first element size</span>
 <span class="sd">            ``firstElementSizeHubToShroud_``. The grading associated with</span>
-<span class="sd">            ``bladeToBlockLines`` is assigned the label ``&quot;normalBlade&quot;`` and uses</span>
+<span class="sd">            ``bladeToBlockLines`` is assigned the label ``"normalBlade"`` and uses</span>
 <span class="sd">            the first element size ``firstElementSizeNormalBlade_``.</span>
 
 <span class="sd">            The number of elements and the grading functions are then applied to the</span>
@@ -779,7 +779,7 @@
 <span class="sd">            the current iteration.</span>
 
 <span class="sd">            For each edge, a grading function with the label</span>
-<span class="sd">            ``&quot;tangentialBlade_*&quot;`` is created. The start and end element sizes of</span>
+<span class="sd">            ``"tangentialBlade_*"`` is created. The start and end element sizes of</span>
 <span class="sd">            the grading are set to ``ms_0`` and ``ms_1``, respectively.</span>
 <span class="sd"> </span>
 <span class="sd">        **Set Mesh Rules**</span>
@@ -796,23 +796,23 @@
 <span class="sd">            observer.</span>
 
 <span class="sd">            Meshing of the unstructured region is performed using the rules</span>
-<span class="sd">            ``&quot;dtMeshGFaceWithTransfiniteLayer&quot;`` and</span>
-<span class="sd">            ``&quot;dtMeshGRegionWithBoundaryLayer&quot;``.</span>
+<span class="sd">            ``"dtMeshGFaceWithTransfiniteLayer"`` and</span>
+<span class="sd">            ``"dtMeshGRegionWithBoundaryLayer"``.</span>
 
-<span class="sd">            The rule ``&quot;dtMeshGFaceWithTransfiniteLayer&quot;`` is applied to the faces</span>
-<span class="sd">            that are meshed unstructured, namely ``&quot;*inlet*&quot;``,</span>
-<span class="sd">            ``&quot;*outlet*&quot;``, ``&quot;*suction_tri*&quot;`` and ``&quot;*pressure_tri*&quot;``.</span>
+<span class="sd">            The rule ``"dtMeshGFaceWithTransfiniteLayer"`` is applied to the faces</span>
+<span class="sd">            that are meshed unstructured, namely ``"*inlet*"``,</span>
+<span class="sd">            ``"*outlet*"``, ``"*suction_tri*"`` and ``"*pressure_tri*"``.</span>
 
-<span class="sd">            The rule ``&quot;dtMeshGRegionWithBoundaryLayer&quot;`` is applied to the region</span>
-<span class="sd">            corresponding to the multiple bounded volume, ``&quot;R_0&quot;``.</span>
-<span class="sd">            The hub and shroud faces, ``&quot;hub_0&quot;`` and ``&quot;shroud_0&quot;``, on which the</span>
-<span class="sd">            boundary layers are generated, are added to the ``&quot;_faceLabel&quot;``</span>
+<span class="sd">            The rule ``"dtMeshGRegionWithBoundaryLayer"`` is applied to the region</span>
+<span class="sd">            corresponding to the multiple bounded volume, ``"R_0"``.</span>
+<span class="sd">            The hub and shroud faces, ``"hub_0"`` and ``"shroud_0"``, on which the</span>
+<span class="sd">            boundary layers are generated, are added to the ``"_faceLabel"``</span>
 <span class="sd">            entry.</span>
 
-<span class="sd">            The boundary layers extend onto the faces of ``&quot;R_0&quot;`` labeled</span>
-<span class="sd">            ``&quot;*inlet*&quot;``, ``&quot;*outlet*&quot;``, ``&quot;*pressure_*&quot;``,</span>
-<span class="sd">            ``&quot;*suction_*&quot;``, and ``&quot;*coupling_*&quot;``. These faces are added to the</span>
-<span class="sd">            ``&quot;_slidableFaceLabel&quot;`` entry.</span>
+<span class="sd">            The boundary layers extend onto the faces of ``"R_0"`` labeled</span>
+<span class="sd">            ``"*inlet*"``, ``"*outlet*"``, ``"*pressure_*"``,</span>
+<span class="sd">            ``"*suction_*"``, and ``"*coupling_*"``. These faces are added to the</span>
+<span class="sd">            ``"_slidableFaceLabel"`` entry.</span>
 
 <span class="sd">            The number of boundary layer elements is specified by</span>
 <span class="sd">            ``nBoundaryLayers_``, while the boundary layer orientation is defined by</span>
@@ -840,8 +840,8 @@
 
 <span class="sd">        The created mesh topology ``m3dGmsh`` is returned to the</span>
 <span class="sd">        calling class using the method ``appendBoundedVolume``. </span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">&quot;Building </span><span class="si">%s</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">)</span> <span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">"Building </span><span class="si">%s</span><span class="s2"> ..."</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">)</span> <span class="p">)</span>
 
         <span class="n">m3dGmsh</span> <span class="o">=</span> <span class="n">map3dTo3dGmsh</span><span class="p">()</span>
         <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
@@ -887,13 +887,13 @@
                 <span class="c1">#  when trailing edge blocks were build.</span>
                 <span class="c1"># this face is not added</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blocks_</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                    <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">bladeFace</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;blade_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                    <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">bladeFace</span> <span class="o">&lt;&lt;</span> <span class="s2">"blade_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">bladeFace</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;blade_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">bladeFace</span> <span class="o">&lt;&lt;</span> <span class="s2">"blade_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
 
             <span class="c1"># only the block faces which are part of the meanplane are pushed</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMeanplaneBlocks_</span><span class="p">:</span>
-                <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">blockFace</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;block_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">blockFace</span> <span class="o">&lt;&lt;</span> <span class="s2">"block_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
             
             <span class="c1"># add block volumes, those are 6-sided and meshed transfinite</span>
             <span class="n">rid</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">addIfRegionToGmshModel</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
@@ -911,7 +911,7 @@
         <span class="c1">#  - R_(N) : (N)^th mesh block</span>
         <span class="c1">#</span>
         <span class="n">ob</span> <span class="o">=</span> <span class="n">bVONameRegions</span><span class="p">()</span>
-        <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span> <span class="n">jsonPrimitive</span><span class="p">(</span><span class="s1">&#39;{ &quot;_regionLabel&quot; : [] }&#39;</span><span class="p">),</span> <span class="n">m3dGmsh</span> <span class="p">)</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span> <span class="n">jsonPrimitive</span><span class="p">(</span><span class="s1">'{ "_regionLabel" : [] }'</span><span class="p">),</span> <span class="n">m3dGmsh</span> <span class="p">)</span>
         <span class="n">ob</span><span class="o">.</span><span class="n">preUpdate</span><span class="p">()</span>
 
         <span class="c1">#</span>
@@ -933,22 +933,22 @@
             <span class="n">tEHub</span><span class="p">,</span> <span class="n">tEShroud</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extractEdgesInFirstAndSecond</span><span class="p">(</span>
               <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">(),</span> 
               <span class="p">[</span><span class="n">tEBlade</span><span class="p">],</span> 
-              <span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;hub&quot;</span><span class="p">]),</span> 
-              <span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;shroud&quot;</span><span class="p">])</span>
+              <span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">aG</span><span class="p">[</span><span class="s2">"hub"</span><span class="p">]),</span> 
+              <span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">aG</span><span class="p">[</span><span class="s2">"shroud"</span><span class="p">])</span>
             <span class="p">)</span>
             <span class="c1">#   first block</span>
             <span class="n">tEBlock0_Hub</span><span class="p">,</span> <span class="n">tEBlock0_Shroud</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extractEdgesInFirstAndSecond</span><span class="p">(</span>
               <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">(),</span> 
               <span class="p">[</span><span class="n">tEBlock0</span><span class="p">],</span> 
-              <span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;hub&quot;</span><span class="p">]),</span> 
-              <span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;shroud&quot;</span><span class="p">])</span>
+              <span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">aG</span><span class="p">[</span><span class="s2">"hub"</span><span class="p">]),</span> 
+              <span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">aG</span><span class="p">[</span><span class="s2">"shroud"</span><span class="p">])</span>
             <span class="p">)</span>
             <span class="c1">#   last block</span>
             <span class="n">tEBlock1_Hub</span><span class="p">,</span> <span class="n">tEBlock1_Shroud</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extractEdgesInFirstAndSecond</span><span class="p">(</span>
               <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">(),</span> 
               <span class="p">[</span><span class="n">tEBlock1</span><span class="p">],</span> 
-              <span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;hub&quot;</span><span class="p">]),</span> 
-              <span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;shroud&quot;</span><span class="p">])</span>
+              <span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">aG</span><span class="p">[</span><span class="s2">"hub"</span><span class="p">]),</span> 
+              <span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">aG</span><span class="p">[</span><span class="s2">"shroud"</span><span class="p">])</span>
             <span class="p">)</span>
             <span class="c1"># create a mesh list containing the edges and a float </span>
             <span class="c1">#  &gt;/&lt;0 for grading directions</span>
@@ -964,21 +964,21 @@
         <span class="n">ob</span> <span class="o">=</span> <span class="n">bVOAnalyticGeometryToFace</span><span class="p">()</span>
         <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span> 
           <span class="n">jsonPrimitive</span><span class="p">(</span>
-            <span class="s1">&#39;{&#39;</span>
-              <span class="s1">&#39;&quot;analyticGeometry&quot; : [&#39;</span>
-                <span class="s1">&#39;{&quot;label&quot; : &quot;hub&quot;},&#39;</span>
-                <span class="s1">&#39;{&quot;label&quot; : &quot;shroud&quot;},&#39;</span>
-                <span class="s1">&#39;{&quot;label&quot; : &quot;inlet&quot;},&#39;</span>
-                <span class="s1">&#39;{&quot;label&quot; : &quot;outlet&quot;},&#39;</span>
-                <span class="s1">&#39;{&quot;labels&quot; : &quot;suction_*&quot;},&#39;</span>
-                <span class="s1">&#39;{&quot;labels&quot; : &quot;pressure_*&quot;},&#39;</span>
-                <span class="s1">&#39;{&quot;labels&quot; : &quot;blade_*&quot;},&#39;</span>
-                <span class="s1">&#39;{&quot;labels&quot; : &quot;block_*&quot;},&#39;</span>
-                <span class="s1">&#39;{&quot;labels&quot; : &quot;coupling_*&quot;}&#39;</span>
-              <span class="s1">&#39;],&#39;</span>
-              <span class="s1">&#39;&quot;_inc&quot; : 10.0,&#39;</span>
-              <span class="s1">&#39;&quot;_facesPerEntry&quot; : []&#39;</span>
-            <span class="s1">&#39;}&#39;</span>
+            <span class="s1">'{'</span>
+              <span class="s1">'"analyticGeometry" : ['</span>
+                <span class="s1">'{"label" : "hub"},'</span>
+                <span class="s1">'{"label" : "shroud"},'</span>
+                <span class="s1">'{"label" : "inlet"},'</span>
+                <span class="s1">'{"label" : "outlet"},'</span>
+                <span class="s1">'{"labels" : "suction_*"},'</span>
+                <span class="s1">'{"labels" : "pressure_*"},'</span>
+                <span class="s1">'{"labels" : "blade_*"},'</span>
+                <span class="s1">'{"labels" : "block_*"},'</span>
+                <span class="s1">'{"labels" : "coupling_*"}'</span>
+              <span class="s1">'],'</span>
+              <span class="s1">'"_inc" : 10.0,'</span>
+              <span class="s1">'"_facesPerEntry" : []'</span>
+            <span class="s1">'}'</span>
           <span class="p">),</span> 
           <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">aG</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m3dGmsh</span> 
         <span class="p">)</span>
@@ -990,18 +990,18 @@
          
         <span class="c1"># organize periodic faces</span>
         <span class="c1">#  the order is set by adding the faces seqentially and the naming</span>
-        <span class="n">periodic_pressure</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceListByPhysical</span><span class="p">(</span><span class="s2">&quot;*pressure_*&quot;</span><span class="p">)</span>
+        <span class="n">periodic_pressure</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceListByPhysical</span><span class="p">(</span><span class="s2">"*pressure_*"</span><span class="p">)</span>
         
         <span class="c1"># suction faces</span>
         <span class="n">periodic_suction</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">periodic_suction</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">&quot;*suction_tri_0*&quot;</span><span class="p">))</span>
-        <span class="n">periodic_suction</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">&quot;*suction_tri_1*&quot;</span><span class="p">))</span>
-        <span class="n">periodic_block</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceListByPhysical</span><span class="p">(</span><span class="s2">&quot;*block_*&quot;</span><span class="p">)</span>
+        <span class="n">periodic_suction</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">"*suction_tri_0*"</span><span class="p">))</span>
+        <span class="n">periodic_suction</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">"*suction_tri_1*"</span><span class="p">))</span>
+        <span class="n">periodic_block</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceListByPhysical</span><span class="p">(</span><span class="s2">"*block_*"</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">periodic_block</span><span class="p">:</span>
             <span class="n">periodic_suction</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
         <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">periodic_suction</span><span class="p">)</span>
-        <span class="n">periodic_suction</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">&quot;*suction_tri_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;*&quot;</span><span class="p">))</span>
-        <span class="n">periodic_suction</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">&quot;*suction_tri_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;*&quot;</span><span class="p">))</span>
+        <span class="n">periodic_suction</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">"*suction_tri_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">))</span>
+        <span class="n">periodic_suction</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">"*suction_tri_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">))</span>
         
         <span class="c1"># list with periodic faces</span>
         <span class="n">periodics</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">periodic_suction</span><span class="p">,</span> <span class="n">periodic_pressure</span><span class="p">))</span>
@@ -1009,7 +1009,7 @@
         <span class="c1"># all hub to shroud lines</span>
         <span class="n">hubToShroudLines</span> <span class="o">=</span> \
             <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeTagListByFromToPhysical</span><span class="p">(</span>
-                <span class="s2">&quot;*hub*&quot;</span><span class="p">,</span> <span class="s2">&quot;*shroud*&quot;</span>
+                <span class="s2">"*hub*"</span><span class="p">,</span> <span class="s2">"*shroud*"</span>
             <span class="p">)</span>
         
         <span class="c1"># unstructured faces and their lines, they will later get a boundary layer</span>
@@ -1019,13 +1019,13 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">face</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">aG</span><span class="p">):</span>
             <span class="c1"># faces with boundary layer</span>
             <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
-                    <span class="p">(</span><span class="s2">&quot;inlet&quot;</span><span class="p">,</span> <span class="s2">&quot;outlet&quot;</span><span class="p">,</span> <span class="s2">&quot;suction_tri_&quot;</span><span class="p">,</span> <span class="s2">&quot;pressure_tri_&quot;</span><span class="p">)</span>
+                    <span class="p">(</span><span class="s2">"inlet"</span><span class="p">,</span> <span class="s2">"outlet"</span><span class="p">,</span> <span class="s2">"suction_tri_"</span><span class="p">,</span> <span class="s2">"pressure_tri_"</span><span class="p">)</span>
                 <span class="p">):</span>
 
                 <span class="n">f</span> <span class="o">=</span> <span class="n">map2dTo3d</span><span class="o">.</span><span class="n">MustDownCast</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
                 <span class="c1"># get all edges on the face</span>
                 <span class="n">faceLines</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeTagListByFromToPhysical</span><span class="p">(</span>
-                    <span class="s2">&quot;*&quot;</span><span class="o">+</span><span class="n">face</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span><span class="o">+</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="o">+</span><span class="n">face</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span><span class="o">+</span><span class="s2">&quot;*&quot;</span>
+                    <span class="s2">"*"</span><span class="o">+</span><span class="n">face</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span><span class="o">+</span><span class="s2">"*"</span><span class="p">,</span> <span class="s2">"*"</span><span class="o">+</span><span class="n">face</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span><span class="o">+</span><span class="s2">"*"</span>
                 <span class="p">)</span>
                 <span class="c1"># keep the edges extending from hub to shroud</span>
                 <span class="n">hsLines</span> <span class="o">=</span> <span class="p">(</span>
@@ -1039,28 +1039,28 @@
         <span class="c1"># getting other relevant edges</span>
         <span class="n">hubLines</span> <span class="o">=</span> \
             <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeTagListByFromToPhysical</span><span class="p">(</span>
-                <span class="s2">&quot;*hub*&quot;</span><span class="p">,</span> <span class="s2">&quot;*hub*&quot;</span>
+                <span class="s2">"*hub*"</span><span class="p">,</span> <span class="s2">"*hub*"</span>
             <span class="p">)</span>
         <span class="n">shroudLines</span> <span class="o">=</span> \
        <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeTagListByFromToPhysical</span><span class="p">(</span>
-                <span class="s2">&quot;*shroud*&quot;</span><span class="p">,</span> <span class="s2">&quot;*shroud*&quot;</span>
+                <span class="s2">"*shroud*"</span><span class="p">,</span> <span class="s2">"*shroud*"</span>
             <span class="p">)</span>
         <span class="n">hAndSLines</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">hubLines</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">shroudLines</span><span class="p">))</span>
         
         <span class="n">bladeToBlockLines_0</span> <span class="o">=</span> \
             <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeTagListByFromToPhysical</span><span class="p">(</span>
-                <span class="s2">&quot;*blade_*&quot;</span><span class="p">,</span> <span class="s2">&quot;*block_*&quot;</span>
+                <span class="s2">"*blade_*"</span><span class="p">,</span> <span class="s2">"*block_*"</span>
             <span class="p">)</span>
         <span class="n">bladeToBlockLines_1</span> <span class="o">=</span> \
             <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeTagListByFromToPhysical</span><span class="p">(</span>
-                <span class="s2">&quot;*blade_*&quot;</span><span class="p">,</span> <span class="s2">&quot;*coupling_*&quot;</span>
+                <span class="s2">"*blade_*"</span><span class="p">,</span> <span class="s2">"*coupling_*"</span>
             <span class="p">)</span>
         <span class="n">bladeToBlockLines</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">bladeToBlockLines_0</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">bladeToBlockLines_1</span><span class="p">))</span>
         <span class="n">bladeToBlockLines</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">bladeToBlockLines</span><span class="p">)</span><span class="o">&amp;</span><span class="nb">set</span><span class="p">(</span><span class="n">hAndSLines</span><span class="p">)</span>
 
         <span class="n">bladeLines</span> <span class="o">=</span> \
             <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeTagListByFromToPhysical</span><span class="p">(</span>
-                <span class="s2">&quot;*blade_*&quot;</span><span class="p">,</span> <span class="s2">&quot;*blade_*&quot;</span>
+                <span class="s2">"*blade_*"</span><span class="p">,</span> <span class="s2">"*blade_*"</span>
             <span class="p">)</span>
 
         <span class="n">bladeHubLines</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">bladeLines</span><span class="p">)</span><span class="o">&amp;</span><span class="nb">set</span><span class="p">(</span><span class="n">hubLines</span><span class="p">)</span>
@@ -1106,40 +1106,40 @@
             
             <span class="c1"># all faces</span>
             <span class="k">for</span> <span class="n">faceLabel</span> <span class="ow">in</span> <span class="p">[</span>
-                  <span class="s2">&quot;*hub*&quot;</span><span class="p">,</span> <span class="s2">&quot;*shroud*&quot;</span><span class="p">,</span> 
-                  <span class="s2">&quot;*inlet*&quot;</span><span class="p">,</span> <span class="s2">&quot;*outlet*&quot;</span><span class="p">,</span> 
-                  <span class="s2">&quot;*suction_*&quot;</span><span class="p">,</span> <span class="s2">&quot;*pressure_*&quot;</span><span class="p">,</span> 
-                  <span class="s2">&quot;*blade_*&quot;</span><span class="p">,</span> <span class="s2">&quot;*block_*&quot;</span><span class="p">,</span>
-                  <span class="s2">&quot;*coupling_*&quot;</span>
+                  <span class="s2">"*hub*"</span><span class="p">,</span> <span class="s2">"*shroud*"</span><span class="p">,</span> 
+                  <span class="s2">"*inlet*"</span><span class="p">,</span> <span class="s2">"*outlet*"</span><span class="p">,</span> 
+                  <span class="s2">"*suction_*"</span><span class="p">,</span> <span class="s2">"*pressure_*"</span><span class="p">,</span> 
+                  <span class="s2">"*blade_*"</span><span class="p">,</span> <span class="s2">"*block_*"</span><span class="p">,</span>
+                  <span class="s2">"*coupling_*"</span>
                 <span class="p">]:</span>
                 
                 <span class="n">faces</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceListByPhysical</span><span class="p">(</span><span class="n">faceLabel</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">face</span><span class="o">.</span><span class="n">getMap2dTo3d</span><span class="p">(),</span> 
-                        <span class="s2">&quot;debug_faceAll_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">face</span><span class="o">.</span><span class="n">getPhysicalString</span><span class="p">()</span>
+                        <span class="s2">"debug_faceAll_"</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">face</span><span class="o">.</span><span class="n">getPhysicalString</span><span class="p">()</span>
                     <span class="p">)</span>
             <span class="c1"># slidable faces for boundary layer meshing of MBV</span>
             <span class="k">for</span> <span class="n">faceLabel</span> <span class="ow">in</span> <span class="p">[</span>
-                <span class="s2">&quot;*inlet*&quot;</span><span class="p">,</span> <span class="s2">&quot;*outlet*&quot;</span><span class="p">,</span> <span class="s2">&quot;*pressure_*&quot;</span><span class="p">,</span> <span class="s2">&quot;*suction_*&quot;</span><span class="p">,</span> <span class="s2">&quot;*coupling_*&quot;</span>
+                <span class="s2">"*inlet*"</span><span class="p">,</span> <span class="s2">"*outlet*"</span><span class="p">,</span> <span class="s2">"*pressure_*"</span><span class="p">,</span> <span class="s2">"*suction_*"</span><span class="p">,</span> <span class="s2">"*coupling_*"</span>
                 <span class="p">]:</span>
                 
                 <span class="n">faces</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceListByPhysical</span><span class="p">(</span><span class="n">faceLabel</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">face</span><span class="o">.</span><span class="n">getMap2dTo3d</span><span class="p">(),</span> 
-                        <span class="s2">&quot;debug_faceMBV_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">face</span><span class="o">.</span><span class="n">getPhysicalString</span><span class="p">()</span>
+                        <span class="s2">"debug_faceMBV_"</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">face</span><span class="o">.</span><span class="n">getPhysicalString</span><span class="p">()</span>
                     <span class="p">)</span>
             <span class="c1"># lines to which element numbers and gradings are assigned </span>
             <span class="k">for</span> <span class="n">lab</span><span class="p">,</span> <span class="n">lines</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
                 <span class="p">[</span>
-                  <span class="s2">&quot;hubToShroudLines&quot;</span><span class="p">,</span>
-                  <span class="s2">&quot;bladeToBlockLines&quot;</span><span class="p">,</span>
-                  <span class="s2">&quot;bladeHubLines&quot;</span><span class="p">,</span>
-                  <span class="c1">#&quot;TrailingEdgeLines&quot;,</span>
-                  <span class="s2">&quot;bladeShroudLines&quot;</span><span class="p">,</span>
-                  <span class="c1">#&quot;otherHubLines&quot;,</span>
-                  <span class="c1">#&quot;otherShroudLines&quot;</span>
+                  <span class="s2">"hubToShroudLines"</span><span class="p">,</span>
+                  <span class="s2">"bladeToBlockLines"</span><span class="p">,</span>
+                  <span class="s2">"bladeHubLines"</span><span class="p">,</span>
+                  <span class="c1">#"TrailingEdgeLines",</span>
+                  <span class="s2">"bladeShroudLines"</span><span class="p">,</span>
+                  <span class="c1">#"otherHubLines",</span>
+                  <span class="c1">#"otherShroudLines"</span>
                 <span class="p">],</span>
                 <span class="p">[</span> 
                   <span class="n">hubToShroudLines</span><span class="p">,</span>
@@ -1154,29 +1154,29 @@
                 <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
                   <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                     <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeByTag</span><span class="p">(</span> <span class="n">ii</span> <span class="p">)</span><span class="o">.</span><span class="n">getMap1dTo3d</span><span class="p">(),</span>
-                    <span class="s2">&quot;debug_lineNE_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">lab</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span>
+                    <span class="s2">"debug_lineNE_"</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">lab</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span>
                   <span class="p">)</span>
             <span class="c1"># faces and lines which will be meshed unstructured with boundary layer</span>
             <span class="k">for</span> <span class="n">faceAndLines</span> <span class="ow">in</span> <span class="n">unstrFacesAndh2sLines</span><span class="p">:</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">faceAndLines</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                        <span class="s2">&quot;debug_faceUnstr_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">faceAndLines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span>
+                        <span class="s2">"debug_faceUnstr_"</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">faceAndLines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span>
                     <span class="p">)</span>
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">faceAndLines</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                         <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeByTag</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">getMap1dTo3d</span><span class="p">(),</span>
-                        <span class="s2">&quot;debug_lineUnstr_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">faceAndLines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                        <span class="s2">"debug_lineUnstr_"</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">faceAndLines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
                     <span class="p">)</span>
             <span class="c1"># periodic boundary faces</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">periodic</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">periodics</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                     <span class="n">periodic</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getMap2dTo3d</span><span class="p">(),</span>
-                    <span class="s2">&quot;debug_periodic0_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">periodic</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getPhysicalString</span><span class="p">()</span>
+                    <span class="s2">"debug_periodic0_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">periodic</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getPhysicalString</span><span class="p">()</span>
                 <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
                     <span class="n">periodic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getMap2dTo3d</span><span class="p">(),</span>
-                    <span class="s2">&quot;debug_periodic1_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">periodic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getPhysicalString</span><span class="p">()</span>
+                    <span class="s2">"debug_periodic1_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">periodic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getPhysicalString</span><span class="p">()</span>
                 <span class="p">)</span>
 
         <span class="c1">#</span>
@@ -1193,7 +1193,7 @@
               <span class="mf">0.1</span><span class="p">,</span> <span class="mf">5.0</span>
             <span class="p">)</span>
           <span class="p">),</span>
-          <span class="s2">&quot;hubToShroud&quot;</span><span class="p">,</span>
+          <span class="s2">"hubToShroud"</span><span class="p">,</span>
           <span class="n">m3dGmsh</span><span class="p">,</span>
           <span class="bp">self</span><span class="o">.</span><span class="n">firstElementSizeHubToShroud_</span>
         <span class="p">)</span>
@@ -1207,7 +1207,7 @@
               <span class="mf">0.1</span><span class="p">,</span> <span class="mf">5.0</span>
             <span class="p">)</span>
           <span class="p">),</span>
-          <span class="s2">&quot;normalBlade&quot;</span><span class="p">,</span>
+          <span class="s2">"normalBlade"</span><span class="p">,</span>
           <span class="n">m3dGmsh</span><span class="p">,</span>
           <span class="bp">self</span><span class="o">.</span><span class="n">firstElementSizeNormalBlade_</span>
         <span class="p">)</span>
@@ -1220,7 +1220,7 @@
             <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">blade_</span><span class="p">,</span> <span class="n">bladeShroudLines</span><span class="p">],</span>
           <span class="p">]</span>
         <span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;bladeHubShroudDirection = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">bladeHubShroudDirection</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"bladeHubShroudDirection = </span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="n">bladeHubShroudDirection</span><span class="p">)</span>
 
         <span class="c1">#</span>
         <span class="c1"># mesh settings</span>
@@ -1230,14 +1230,14 @@
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">hubToShroudLines</span><span class="p">:</span>
             <span class="n">theEdge</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeByTag</span><span class="p">(</span> <span class="n">line</span> <span class="p">)</span>
             <span class="n">theEdge</span><span class="o">.</span><span class="n">setNElements</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">nElementsSpanwise_</span> <span class="p">)</span>
-            <span class="n">theEdge</span><span class="o">.</span><span class="n">setGrading</span><span class="p">(</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">gradings</span><span class="p">[</span><span class="s2">&quot;hubToShroud&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+            <span class="n">theEdge</span><span class="o">.</span><span class="n">setGrading</span><span class="p">(</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">gradings</span><span class="p">[</span><span class="s2">"hubToShroud"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
         
         <span class="c1"># along blade</span>
         <span class="k">for</span> <span class="n">lines</span><span class="p">,</span> <span class="n">elementSize</span><span class="p">,</span> <span class="n">elementScale</span><span class="p">,</span> <span class="n">outStr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
             <span class="p">[</span><span class="n">bladeShroudLines</span><span class="p">,</span> <span class="n">bladeHubLines</span><span class="p">,],</span>
             <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bladeShroudElementSize_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bladeHubElementSize_</span><span class="p">,],</span>
             <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bladeShroudElementScale_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bladeHubElementScale_</span><span class="p">,],</span>
-            <span class="p">[</span><span class="s2">&quot;BladeShroud&quot;</span><span class="p">,</span> <span class="s2">&quot;BladeHub&quot;</span><span class="p">,],</span>
+            <span class="p">[</span><span class="s2">"BladeShroud"</span><span class="p">,</span> <span class="s2">"BladeHub"</span><span class="p">,],</span>
         <span class="p">):</span>
             <span class="n">direction</span> <span class="o">=</span> <span class="n">bladeHubShroudDirection</span>
             <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
@@ -1257,10 +1257,10 @@
                     <span class="p">)</span>
 
                     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  </span><span class="si">%s</span><span class="s2"> Edge </span><span class="si">%d</span><span class="s2"> / length </span><span class="si">%f</span><span class="s2"> &quot;</span>
-                        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    p_uv: (</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">) -&gt; (</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">) &quot;</span>
-                        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    meshLength: (</span><span class="si">%f</span><span class="s2">) -&gt; (</span><span class="si">%f</span><span class="s2">) &quot;</span>
-                        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    nElements (</span><span class="si">%f</span><span class="s2"> -&gt; </span><span class="si">%d</span><span class="s2">) -&gt; (</span><span class="si">%f</span><span class="s2"> -&gt; </span><span class="si">%d</span><span class="s2">) =&gt; </span><span class="si">%d</span><span class="s2">&quot;</span>
+                        <span class="s2">"</span><span class="se">\n</span><span class="s2">  </span><span class="si">%s</span><span class="s2"> Edge </span><span class="si">%d</span><span class="s2"> / length </span><span class="si">%f</span><span class="s2"> "</span>
+                        <span class="s2">"</span><span class="se">\n</span><span class="s2">    p_uv: (</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">) -&gt; (</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">) "</span>
+                        <span class="s2">"</span><span class="se">\n</span><span class="s2">    meshLength: (</span><span class="si">%f</span><span class="s2">) -&gt; (</span><span class="si">%f</span><span class="s2">) "</span>
+                        <span class="s2">"</span><span class="se">\n</span><span class="s2">    nElements (</span><span class="si">%f</span><span class="s2"> -&gt; </span><span class="si">%d</span><span class="s2">) -&gt; (</span><span class="si">%f</span><span class="s2"> -&gt; </span><span class="si">%d</span><span class="s2">) =&gt; </span><span class="si">%d</span><span class="s2">"</span>
                       <span class="o">%</span>
                       <span class="p">(</span>
                         <span class="n">outStr</span><span class="p">,</span>
@@ -1282,12 +1282,12 @@
                           <span class="mf">1.</span><span class="o">-</span><span class="mf">1.</span><span class="o">/</span><span class="n">nE</span><span class="p">,</span> <span class="p">(</span><span class="n">eL</span><span class="o">-</span><span class="n">ms_1</span><span class="p">)</span> <span class="o">/</span> <span class="n">eL</span><span class="p">,</span>
                         <span class="p">)</span>
                       <span class="p">),</span>
-                      <span class="s2">&quot;tangentialBlade_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">),</span>
+                      <span class="s2">"tangentialBlade_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">),</span>
                       <span class="n">m3dGmsh</span><span class="p">,</span>
                       <span class="n">ms_0</span><span class="p">,</span>
                       <span class="n">ms_1</span>
                     <span class="p">)</span>
-                    <span class="n">theEdge</span><span class="o">.</span><span class="n">setGrading</span><span class="p">(</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">gradings</span><span class="p">[</span><span class="s2">&quot;tangentialBlade_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+                    <span class="n">theEdge</span><span class="o">.</span><span class="n">setGrading</span><span class="p">(</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">gradings</span><span class="p">[</span><span class="s2">"tangentialBlade_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
                 
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">theEdge</span><span class="o">.</span><span class="n">meshTransfiniteWNElements</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">5</span> <span class="p">)</span>
@@ -1296,7 +1296,7 @@
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">bladeToBlockLines</span><span class="p">:</span>
             <span class="n">theEdge</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeByTag</span><span class="p">(</span> <span class="n">line</span> <span class="p">)</span>
             <span class="n">theEdge</span><span class="o">.</span><span class="n">setNElements</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">nElementsNormal_</span> <span class="p">)</span>
-            <span class="n">theEdge</span><span class="o">.</span><span class="n">setGrading</span><span class="p">(</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">gradings</span><span class="p">[</span><span class="s2">&quot;normalBlade&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+            <span class="n">theEdge</span><span class="o">.</span><span class="n">setGrading</span><span class="p">(</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">gradings</span><span class="p">[</span><span class="s2">"normalBlade"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
         
         <span class="c1"># makes mesh settings for Trailing edge mesh blocks</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">meshTEBlocks_</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
@@ -1310,7 +1310,7 @@
                 <span class="k">for</span> <span class="n">edgeTag</span> <span class="ow">in</span> <span class="n">meshList</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
                     <span class="n">edge</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeByTag</span><span class="p">(</span><span class="n">edgeTag</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                     <span class="n">edge</span><span class="o">.</span><span class="n">setNElements</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">nElementsNormal_</span> <span class="p">)</span>
-                    <span class="c1">#edge.setGrading( meshList[1], gradings[&quot;normalBlade&quot;][0] )</span>
+                    <span class="c1">#edge.setGrading( meshList[1], gradings["normalBlade"][0] )</span>
         
         <span class="c1">#</span>
         <span class="c1"># add observers</span>
@@ -1321,10 +1321,10 @@
         <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
           <span class="n">jsonPrimitive</span><span class="p">(</span>
-            <span class="s1">&#39;{&#39;</span>
-              <span class="s1">&#39;&quot;_filename&quot; : &quot;&quot;,&#39;</span>
-              <span class="s1">&#39;&quot;_mustRead&quot; : false&#39;</span>
-            <span class="s1">&#39;}&#39;</span>
+            <span class="s1">'{'</span>
+              <span class="s1">'"_filename" : "",'</span>
+              <span class="s1">'"_mustRead" : false'</span>
+            <span class="s1">'}'</span>
           <span class="p">),</span>
           <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m3dGmsh</span>
         <span class="p">)</span>
@@ -1336,10 +1336,10 @@
         <span class="n">theT</span> <span class="o">=</span> <span class="n">xYz_rPhiZ</span><span class="p">()</span>
         <span class="n">theT</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span> 
           <span class="n">jsonPrimitive</span><span class="p">()</span>\
-            <span class="o">.</span><span class="n">appendStr</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;xYz_rPhiZ&quot;</span><span class="p">)</span>\
-            <span class="o">.</span><span class="n">appendDtPoint3</span><span class="p">(</span><span class="s2">&quot;_origin&quot;</span><span class="p">,</span> <span class="n">dtPoint3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>\
-            <span class="o">.</span><span class="n">appendDtVector3</span><span class="p">(</span><span class="s2">&quot;_rotAxis&quot;</span><span class="p">,</span> <span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>\
-            <span class="o">.</span><span class="n">appendDtVector3</span><span class="p">(</span><span class="s2">&quot;_refAxis&quot;</span><span class="p">,</span> <span class="n">dtVector3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span> 
+            <span class="o">.</span><span class="n">appendStr</span><span class="p">(</span><span class="s2">"label"</span><span class="p">,</span> <span class="s2">"xYz_rPhiZ"</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">appendDtPoint3</span><span class="p">(</span><span class="s2">"_origin"</span><span class="p">,</span> <span class="n">dtPoint3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>\
+            <span class="o">.</span><span class="n">appendDtVector3</span><span class="p">(</span><span class="s2">"_rotAxis"</span><span class="p">,</span> <span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>\
+            <span class="o">.</span><span class="n">appendDtVector3</span><span class="p">(</span><span class="s2">"_refAxis"</span><span class="p">,</span> <span class="n">dtVector3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span> 
           <span class="kc">None</span><span class="p">,</span> 
           <span class="kc">None</span><span class="p">,</span> 
           <span class="kc">None</span><span class="p">,</span> 
@@ -1353,9 +1353,9 @@
             <span class="n">ob</span> <span class="o">=</span> <span class="n">bVOSetRotationalPeriodicity</span><span class="p">()</span>
             <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
               <span class="n">jsonPrimitive</span><span class="p">()</span>\
-                <span class="o">.</span><span class="n">appendStr</span><span class="p">(</span><span class="s2">&quot;_faceMaster&quot;</span><span class="p">,</span> <span class="n">periodic</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getPhysicalString</span><span class="p">())</span>\
-                <span class="o">.</span><span class="n">appendStr</span><span class="p">(</span><span class="s2">&quot;_faceSlave&quot;</span><span class="p">,</span> <span class="n">periodic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getPhysicalString</span><span class="p">())</span>\
-                <span class="o">.</span><span class="n">appendDtTransformer</span><span class="p">(</span> <span class="s2">&quot;_dtT&quot;</span><span class="p">,</span> <span class="n">theT</span> <span class="p">),</span> 
+                <span class="o">.</span><span class="n">appendStr</span><span class="p">(</span><span class="s2">"_faceMaster"</span><span class="p">,</span> <span class="n">periodic</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getPhysicalString</span><span class="p">())</span>\
+                <span class="o">.</span><span class="n">appendStr</span><span class="p">(</span><span class="s2">"_faceSlave"</span><span class="p">,</span> <span class="n">periodic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getPhysicalString</span><span class="p">())</span>\
+                <span class="o">.</span><span class="n">appendDtTransformer</span><span class="p">(</span> <span class="s2">"_dtT"</span><span class="p">,</span> <span class="n">theT</span> <span class="p">),</span> 
               <span class="n">bC</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m3dGmsh</span> 
             <span class="p">)</span>
             <span class="n">ob</span><span class="o">.</span><span class="n">preUpdate</span><span class="p">()</span>
@@ -1382,88 +1382,88 @@
         <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
           <span class="n">jsonPrimitive</span><span class="p">(</span>
-            <span class="s1">&#39;{&#39;</span>
-              <span class="s1">&#39;&quot;option&quot; : [&#39;</span>
-                <span class="s1">&#39;{&quot;name&quot; : &quot;debug&quot;, &quot;value&quot; : &quot;true&quot;}&#39;</span>
-              <span class="s1">&#39;],&#39;</span>
-              <span class="s1">&#39;&quot;_rule1D&quot; : [&#39;</span>
-                <span class="s1">&#39;&quot;dtMeshFreeGradingGEdge(*)&quot;&#39;</span>
-              <span class="s1">&#39;],&#39;</span>
-              <span class="s1">&#39;&quot;_rule2D&quot; : [&#39;</span>
-                <span class="s1">&#39;&quot;dtMeshGFaceWithTransfiniteLayer(*inlet*)&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;dtMeshGFaceWithTransfiniteLayer(*outlet*)&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;dtMeshGFaceWithTransfiniteLayer(*suction_tri_*)&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;dtMeshGFaceWithTransfiniteLayer(*pressure_tri_*)&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;dtMeshTransfiniteGFace(*)&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;dtMeshGFace(*)&quot;&#39;</span>
-              <span class="s1">&#39;],&#39;</span>
-              <span class="s1">&#39;&quot;_rule3D&quot; : [&#39;</span>
-                <span class="s1">&#39;&quot;dtMeshGRegionWithBoundaryLayer(R_0)&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;dtMeshGRegion(*)&quot;&#39;</span>
-              <span class="s1">&#39;],&#39;</span>
-              <span class="s1">&#39;&quot;_only&quot; : [],&#39;</span>
-              <span class="s1">&#39;&quot;dtMeshOperator&quot; : [&#39;</span>
-                <span class="s1">&#39;{&#39;</span>
-                  <span class="s1">&#39;&quot;name&quot; : &quot;dtMeshFreeGradingGEdge&quot;,&#39;</span>
-                  <span class="s1">&#39;&quot;label&quot; : &quot;dtMeshFreeGradingGEdge&quot;,&#39;</span>
-                  <span class="s1">&#39;&quot;typeTransfinite&quot; : &#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">gradingsTypeTransfinite</span><span class="p">(</span><span class="n">gradings</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;,&#39;</span>
-                  <span class="s1">&#39;&quot;gradingFunctions&quot; : {&#39;</span>
-                    <span class="s1">&#39;&quot;analyticFunction&quot; &#39;</span>
-                      <span class="s1">&#39;: &#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">gradingsGradingFunctions</span><span class="p">(</span><span class="n">gradings</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; &#39;</span>
-                  <span class="s1">&#39;}&#39;</span>
-                <span class="s1">&#39;},&#39;</span>
-               <span class="s1">&#39;{&#39;</span>
-                  <span class="s1">&#39;&quot;name&quot; : &quot;dtMeshGEdge&quot;,&#39;</span>
-                  <span class="s1">&#39;&quot;label&quot; : &quot;dtMeshGEdge&quot;&#39;</span>
-                <span class="s1">&#39;},&#39;</span>
-                <span class="s1">&#39;{&#39;</span>
-                  <span class="s1">&#39;&quot;name&quot; : &quot;dtMeshGFace&quot;,&#39;</span>
-                  <span class="s1">&#39;&quot;label&quot; : &quot;dtMeshGFace&quot;&#39;</span>
-                <span class="s1">&#39;},&#39;</span>
-                <span class="s1">&#39;{&#39;</span>
-                  <span class="s1">&#39;&quot;name&quot; : &quot;dtMeshTransfiniteGFace&quot;,&#39;</span>
-                  <span class="s1">&#39;&quot;label&quot; : &quot;dtMeshTransfiniteGFace&quot;&#39;</span>
-                <span class="s1">&#39;},&#39;</span>
-                <span class="s1">&#39;{&#39;</span>
-                  <span class="s1">&#39;&quot;name&quot; : &quot;dtMeshGRegion&quot;,&#39;</span>
-                  <span class="s1">&#39;&quot;label&quot; : &quot;dtMeshGRegion&quot;,&#39;</span>
-                  <span class="s1">&#39;&quot;_minQShapeMetric&quot; : 0.0,&#39;</span>
-                  <span class="s1">&#39;&quot;_relax&quot; : 0.1,&#39;</span>
-                  <span class="s1">&#39;&quot;_nPyramidOpenSteps&quot; : 10,&#39;</span>
-                  <span class="s1">&#39;&quot;_nSmooths&quot; : 3&#39;</span>
-                <span class="s1">&#39;},&#39;</span>
-                <span class="s1">&#39;{&#39;</span>
-                  <span class="s1">&#39;&quot;option&quot; : [&#39;</span>
-                    <span class="s1">&#39;{&quot;name&quot; : &quot;debug&quot;, &quot;value&quot; : &quot;true&quot;}&#39;</span>
-                  <span class="s1">&#39;],&#39;</span>
-                  <span class="s1">&#39;&quot;name&quot; : &quot;dtMeshGRegionWithBoundaryLayer&quot;,&#39;</span>
-                  <span class="s1">&#39;&quot;label&quot; : &quot;dtMeshGRegionWithBoundaryLayer&quot;,&#39;</span>
-                  <span class="c1">#&#39;&quot;_nSpacingSteps&quot; : [&#39;</span>
-                  <span class="c1">#+str(self.nBoundaryLayers_-1)+&#39;, &#39;</span>
+            <span class="s1">'{'</span>
+              <span class="s1">'"option" : ['</span>
+                <span class="s1">'{"name" : "debug", "value" : "true"}'</span>
+              <span class="s1">'],'</span>
+              <span class="s1">'"_rule1D" : ['</span>
+                <span class="s1">'"dtMeshFreeGradingGEdge(*)"'</span>
+              <span class="s1">'],'</span>
+              <span class="s1">'"_rule2D" : ['</span>
+                <span class="s1">'"dtMeshGFaceWithTransfiniteLayer(*inlet*)",'</span>
+                <span class="s1">'"dtMeshGFaceWithTransfiniteLayer(*outlet*)",'</span>
+                <span class="s1">'"dtMeshGFaceWithTransfiniteLayer(*suction_tri_*)",'</span>
+                <span class="s1">'"dtMeshGFaceWithTransfiniteLayer(*pressure_tri_*)",'</span>
+                <span class="s1">'"dtMeshTransfiniteGFace(*)",'</span>
+                <span class="s1">'"dtMeshGFace(*)"'</span>
+              <span class="s1">'],'</span>
+              <span class="s1">'"_rule3D" : ['</span>
+                <span class="s1">'"dtMeshGRegionWithBoundaryLayer(R_0)",'</span>
+                <span class="s1">'"dtMeshGRegion(*)"'</span>
+              <span class="s1">'],'</span>
+              <span class="s1">'"_only" : [],'</span>
+              <span class="s1">'"dtMeshOperator" : ['</span>
+                <span class="s1">'{'</span>
+                  <span class="s1">'"name" : "dtMeshFreeGradingGEdge",'</span>
+                  <span class="s1">'"label" : "dtMeshFreeGradingGEdge",'</span>
+                  <span class="s1">'"typeTransfinite" : '</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">gradingsTypeTransfinite</span><span class="p">(</span><span class="n">gradings</span><span class="p">)</span><span class="o">+</span><span class="s1">','</span>
+                  <span class="s1">'"gradingFunctions" : {'</span>
+                    <span class="s1">'"analyticFunction" '</span>
+                      <span class="s1">': '</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">gradingsGradingFunctions</span><span class="p">(</span><span class="n">gradings</span><span class="p">)</span><span class="o">+</span><span class="s1">' '</span>
+                  <span class="s1">'}'</span>
+                <span class="s1">'},'</span>
+               <span class="s1">'{'</span>
+                  <span class="s1">'"name" : "dtMeshGEdge",'</span>
+                  <span class="s1">'"label" : "dtMeshGEdge"'</span>
+                <span class="s1">'},'</span>
+                <span class="s1">'{'</span>
+                  <span class="s1">'"name" : "dtMeshGFace",'</span>
+                  <span class="s1">'"label" : "dtMeshGFace"'</span>
+                <span class="s1">'},'</span>
+                <span class="s1">'{'</span>
+                  <span class="s1">'"name" : "dtMeshTransfiniteGFace",'</span>
+                  <span class="s1">'"label" : "dtMeshTransfiniteGFace"'</span>
+                <span class="s1">'},'</span>
+                <span class="s1">'{'</span>
+                  <span class="s1">'"name" : "dtMeshGRegion",'</span>
+                  <span class="s1">'"label" : "dtMeshGRegion",'</span>
+                  <span class="s1">'"_minQShapeMetric" : 0.0,'</span>
+                  <span class="s1">'"_relax" : 0.1,'</span>
+                  <span class="s1">'"_nPyramidOpenSteps" : 10,'</span>
+                  <span class="s1">'"_nSmooths" : 3'</span>
+                <span class="s1">'},'</span>
+                <span class="s1">'{'</span>
+                  <span class="s1">'"option" : ['</span>
+                    <span class="s1">'{"name" : "debug", "value" : "true"}'</span>
+                  <span class="s1">'],'</span>
+                  <span class="s1">'"name" : "dtMeshGRegionWithBoundaryLayer",'</span>
+                  <span class="s1">'"label" : "dtMeshGRegionWithBoundaryLayer",'</span>
+                  <span class="c1">#'"_nSpacingSteps" : ['</span>
+                  <span class="c1">#+str(self.nBoundaryLayers_-1)+', '</span>
                   <span class="c1">#  +str(self.nBoundaryLayers_-1)+</span>
-                  <span class="c1">#&#39;],&#39;</span>
-                  <span class="s1">&#39;&quot;_nSpacingSteps&quot; &#39;</span>
-                    <span class="s1">&#39;: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span>
+                  <span class="c1">#'],'</span>
+                  <span class="s1">'"_nSpacingSteps" '</span>
+                    <span class="s1">': '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span>
                       <span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nBoundaryLayers_</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nBoundaryLayers_</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
-                    <span class="p">)</span><span class="o">+</span><span class="s1">&#39;,&#39;</span>
-                  <span class="s1">&#39;&quot;_nNormalSmoothingSteps&quot; : 1000,&#39;</span>
-                  <span class="s1">&#39;&quot;_nGrowingSmoothingSteps&quot; : 1000,&#39;</span>
-                  <span class="s1">&#39;&quot;_maxGrowingRatePerStep&quot; : 1.10,&#39;</span>
-                  <span class="s1">&#39;&quot;_maxDihedralAngle&quot; : &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mf">360.</span><span class="o">/</span><span class="mf">180.</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;,&#39;</span>
-                  <span class="s1">&#39;&quot;_faceLabel&quot; : [&#39;</span>
-                    <span class="s1">&#39;&quot;hub_0&quot;, &quot;shroud_0&quot;&#39;</span>
-                  <span class="s1">&#39;],&quot;&#39;</span>
-                  <span class="s1">&#39;_slidableFaceLabel&quot; : [&#39;</span>
-                    <span class="s1">&#39;&quot;*inlet*&quot;, &quot;*outlet*&quot;, &quot;*pressure_*&quot;, &quot;*suction_*&quot;, &quot;*coupling_*&quot;&#39;</span>
-                  <span class="s1">&#39;],&#39;</span>
-                  <span class="s1">&#39;&quot;dtMesh3DOperator&quot; : &quot;dtMeshGRegion&quot;,&#39;</span>
-                  <span class="s1">&#39;&quot;_fixedFaceLabel&quot; : [&#39;</span>
-                  <span class="s1">&#39;]&#39;</span>
-              <span class="s1">&#39;},&#39;</span>
+                    <span class="p">)</span><span class="o">+</span><span class="s1">','</span>
+                  <span class="s1">'"_nNormalSmoothingSteps" : 1000,'</span>
+                  <span class="s1">'"_nGrowingSmoothingSteps" : 1000,'</span>
+                  <span class="s1">'"_maxGrowingRatePerStep" : 1.10,'</span>
+                  <span class="s1">'"_maxDihedralAngle" : '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mf">360.</span><span class="o">/</span><span class="mf">180.</span><span class="p">))</span><span class="o">+</span><span class="s1">','</span>
+                  <span class="s1">'"_faceLabel" : ['</span>
+                    <span class="s1">'"hub_0", "shroud_0"'</span>
+                  <span class="s1">'],"'</span>
+                  <span class="s1">'_slidableFaceLabel" : ['</span>
+                    <span class="s1">'"*inlet*", "*outlet*", "*pressure_*", "*suction_*", "*coupling_*"'</span>
+                  <span class="s1">'],'</span>
+                  <span class="s1">'"dtMesh3DOperator" : "dtMeshGRegion",'</span>
+                  <span class="s1">'"_fixedFaceLabel" : ['</span>
+                  <span class="s1">']'</span>
+              <span class="s1">'},'</span>
                 <span class="o">+</span><span class="n">jsonPrimitive</span><span class="p">()</span>\
-                  <span class="o">.</span><span class="n">appendStr</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;dtMeshGFaceWithTransfiniteLayer&quot;</span><span class="p">)</span>\
-                  <span class="o">.</span><span class="n">appendStr</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;dtMeshGFaceWithTransfiniteLayer&quot;</span><span class="p">)</span>\
-                  <span class="o">.</span><span class="n">appendVectorInt</span><span class="p">(</span><span class="s2">&quot;_nLayers&quot;</span><span class="p">,</span>
+                  <span class="o">.</span><span class="n">appendStr</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"dtMeshGFaceWithTransfiniteLayer"</span><span class="p">)</span>\
+                  <span class="o">.</span><span class="n">appendStr</span><span class="p">(</span><span class="s2">"label"</span><span class="p">,</span> <span class="s2">"dtMeshGFaceWithTransfiniteLayer"</span><span class="p">)</span>\
+                  <span class="o">.</span><span class="n">appendVectorInt</span><span class="p">(</span><span class="s2">"_nLayers"</span><span class="p">,</span>
                     <span class="n">vectorInt</span><span class="p">(</span>
                       <span class="p">[</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">nBoundaryLayers_</span><span class="p">,</span>
@@ -1471,11 +1471,11 @@
                       <span class="p">]</span>
                     <span class="p">)</span>
                   <span class="p">)</span>\
-                  <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_direction&quot;</span><span class="p">,</span> <span class="n">boundaryLayerDir</span><span class="p">)</span>\
-                  <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_nSmooth&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>\
+                  <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">"_direction"</span><span class="p">,</span> <span class="n">boundaryLayerDir</span><span class="p">)</span>\
+                  <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">"_nSmooth"</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>\
                   <span class="o">.</span><span class="n">toStdString</span><span class="p">()</span><span class="o">+</span>
-              <span class="s1">&#39;]&#39;</span>
-            <span class="s1">&#39;}&#39;</span>
+              <span class="s1">']'</span>
+            <span class="s1">'}'</span>
           <span class="p">),</span>
           <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lVH_aF</span><span class="p">(),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m3dGmsh</span>
         <span class="p">)</span>
@@ -1486,22 +1486,22 @@
         <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
           <span class="n">jsonPrimitive</span><span class="p">(</span>
-            <span class="s1">&#39;{&#39;</span>
-              <span class="s1">&#39;&quot;_patchRule&quot; : [&#39;</span>
-                <span class="s1">&#39;&quot;:*hub*::&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">&#39;_hub:&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;:*shroud*::&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">&#39;_shroud:&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;:*blade*::&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">&#39;_blade:&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;:*inlet*::&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">&#39;_inlet:&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;:*outlet*::&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">&#39;_outlet:&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;:*suction*::&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">&#39;_suction:&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;:*block*::&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">&#39;_suction:&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;:*pressure*::&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">&#39;_pressure:&quot;,&#39;</span>
-                <span class="s1">&#39;&quot;:*coupling*:::&quot;&#39;</span>
-              <span class="s1">&#39;],&#39;</span>
-              <span class="s1">&#39;&quot;_regRule&quot; : [&#39;</span>
-                <span class="s1">&#39;&quot;:*::&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">&#39;:&quot;&#39;</span>
-              <span class="s1">&#39;]&#39;</span>
-            <span class="s1">&#39;}&#39;</span>
+            <span class="s1">'{'</span>
+              <span class="s1">'"_patchRule" : ['</span>
+                <span class="s1">'":*hub*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_hub:",'</span>
+                <span class="s1">'":*shroud*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_shroud:",'</span>
+                <span class="s1">'":*blade*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_blade:",'</span>
+                <span class="s1">'":*inlet*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_inlet:",'</span>
+                <span class="s1">'":*outlet*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_outlet:",'</span>
+                <span class="s1">'":*suction*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_suction:",'</span>
+                <span class="s1">'":*block*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_suction:",'</span>
+                <span class="s1">'":*pressure*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_pressure:",'</span>
+                <span class="s1">'":*coupling*:::"'</span>
+              <span class="s1">'],'</span>
+              <span class="s1">'"_regRule" : ['</span>
+                <span class="s1">'":*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">':"'</span>
+              <span class="s1">']'</span>
+            <span class="s1">'}'</span>
           <span class="p">),</span>
           <span class="n">m3dGmsh</span>
         <span class="p">)</span>
@@ -1511,7 +1511,7 @@
         <span class="n">ob</span> <span class="o">=</span> <span class="n">bVOWriteMSH</span><span class="p">()</span>
         <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
-          <span class="n">jsonPrimitive</span><span class="p">(</span><span class="s1">&#39;{&quot;_filename&quot; : &quot;&quot;, &quot;_saveAll&quot; : true}&#39;</span><span class="p">),</span>
+          <span class="n">jsonPrimitive</span><span class="p">(</span><span class="s1">'{"_filename" : "", "_saveAll" : true}'</span><span class="p">),</span>
           <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m3dGmsh</span>
         <span class="p">)</span>
         <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">attachBVObserver</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
@@ -1521,7 +1521,7 @@
         <span class="n">ob</span> <span class="o">=</span> <span class="n">bVOOrientCellVolumes</span><span class="p">()</span>
         <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
-            <span class="n">jsonPrimitive</span><span class="p">(</span><span class="s1">&#39;{&quot;_positive&quot; : true}&#39;</span><span class="p">),</span> <span class="n">m3dGmsh</span>
+            <span class="n">jsonPrimitive</span><span class="p">(</span><span class="s1">'{"_positive" : true}'</span><span class="p">),</span> <span class="n">m3dGmsh</span>
         <span class="p">)</span>
         <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">attachBVObserver</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
 
@@ -1537,7 +1537,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">detectFirstAndSecond</span><span class="p">(</span>
         <span class="n">channel</span><span class="p">:</span> <span class="n">map3dTo3d</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">int</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">map2dTo3d</span><span class="p">,</span> <span class="n">map2dTo3d</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Detect first and second faces in a volume&#39;s parameter direction.</span>
+<span class="w">        </span><span class="sd">"""Detect first and second faces in a volume's parameter direction.</span>
 <span class="sd">        </span>
 <span class="sd">        This method returns the faces of a `map3dTo3d` object at </span>
 <span class="sd">        0 and 100 percent of the u-, v-, or w-paramter.</span>
@@ -1559,7 +1559,7 @@
 <span class="sd">          First segment in direction</span>
 <span class="sd">        second: map2dTo3d</span>
 <span class="sd">          Second segment in direction</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">firstPar</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">secondPar</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -1577,7 +1577,7 @@
           <span class="n">first</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">segmentConstWPercent</span><span class="p">(</span><span class="n">firstPar</span><span class="p">)</span>
           <span class="n">second</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">segmentConstWPercent</span><span class="p">(</span><span class="n">secondPar</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-          <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Wrong direction.&quot;</span><span class="p">)</span>
+          <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Wrong direction."</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span></div>
 
@@ -1591,7 +1591,7 @@
         <span class="n">first</span><span class="p">:</span> <span class="n">map2dTo3d</span><span class="p">,</span> 
         <span class="n">second</span><span class="p">:</span> <span class="n">map2dTo3d</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts edges of faces which lie on another first or second face.</span>
+<span class="w">        </span><span class="sd">"""Extracts edges of faces which lie on another first or second face.</span>
 <span class="sd">        </span>
 <span class="sd">        This method: </span>
 
@@ -1619,7 +1619,7 @@
 <span class="sd">          Edges of on first face</span>
 <span class="sd">        secondEdges: List[int]</span>
 <span class="sd">          Edges of on second face</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">firstEdges</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">secondEdges</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1637,16 +1637,16 @@
               <span class="n">firstEdges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> 
                 <span class="n">theModel</span><span class="o">.</span><span class="n">addIfEdgeToGmshModel</span><span class="p">(</span> <span class="n">edge</span> <span class="p">)</span>
               <span class="p">)</span> 
-              <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Detect first edge tag = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">firstEdges</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+              <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Detect first edge tag = </span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="n">firstEdges</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
               
               <span class="c1"># check if the face lies on the second face</span>
             <span class="k">elif</span> <span class="n">bool_map1dTo3dInMap2dTo3d</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">second</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">():</span>
               <span class="n">secondEdges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> 
                 <span class="n">theModel</span><span class="o">.</span><span class="n">addIfEdgeToGmshModel</span><span class="p">(</span> <span class="n">edge</span> <span class="p">)</span>
               <span class="p">)</span>
-              <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Detect second edge tag = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">secondEdges</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+              <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Detect second edge tag = </span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="n">secondEdges</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-          <span class="s2">&quot;firstEdges = </span><span class="si">%s</span><span class="s2">, secondEdges = </span><span class="si">%s</span><span class="s2">&quot;</span> 
+          <span class="s2">"firstEdges = </span><span class="si">%s</span><span class="s2">, secondEdges = </span><span class="si">%s</span><span class="s2">"</span> 
           <span class="o">%</span> 
           <span class="p">(</span>
             <span class="nb">str</span><span class="p">(</span><span class="n">firstEdges</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">secondEdges</span><span class="p">)</span>
@@ -1663,7 +1663,7 @@
         <span class="n">theModel</span><span class="p">:</span> <span class="n">dtGmshModel</span><span class="p">,</span> 
         <span class="n">boundaryLayerDirCheck</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">List</span><span class="p">[</span> <span class="n">Union</span><span class="p">[</span> <span class="n">map2dTo3d</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine the boundary layer direction of a face from two edges.</span>
+<span class="w">        </span><span class="sd">"""Determine the boundary layer direction of a face from two edges.</span>
 
 <span class="sd">        This method:</span>
 
@@ -1719,7 +1719,7 @@
 <span class="sd">        value. If ``boundaryLayerDir[0]`` equals ``1``, the method returns</span>
 <span class="sd">        ``0``. If ``boundaryLayerDir[0]`` equals ``2``, the method returns</span>
 <span class="sd">        ``1``. Any other value results in an exception.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># set tolerance</span>
         <span class="n">tol</span> <span class="o">=</span> <span class="mf">0.01</span>
@@ -1759,10 +1759,10 @@
               <span class="n">boundaryLayerDirT</span> <span class="o">=</span> <span class="n">boundaryLayerDirT</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="p">(</span> <span class="ow">not</span> <span class="n">map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks</span><span class="o">.</span><span class="n">inTolerance</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="n">p0_uv</span><span class="o">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">p1_uv</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="p">)</span> <span class="p">):</span>
               <span class="n">boundaryLayerDirT</span> <span class="o">=</span> <span class="n">boundaryLayerDirT</span> <span class="o">+</span> <span class="mi">2</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;face: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">faceLines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getLabel</span><span class="p">())</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;p0_uv = (</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">p0_uv</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">p0_uv</span><span class="o">.</span><span class="n">y</span><span class="p">()))</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;p1_uv = (</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">p1_uv</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">p1_uv</span><span class="o">.</span><span class="n">y</span><span class="p">()))</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;boundaryLayerDirT = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">boundaryLayerDirT</span><span class="p">))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"face: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">faceLines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getLabel</span><span class="p">())</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"p0_uv = (</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">)"</span> <span class="o">%</span> <span class="p">(</span><span class="n">p0_uv</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">p0_uv</span><span class="o">.</span><span class="n">y</span><span class="p">()))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"p1_uv = (</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">)"</span> <span class="o">%</span> <span class="p">(</span><span class="n">p1_uv</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">p1_uv</span><span class="o">.</span><span class="n">y</span><span class="p">()))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"boundaryLayerDirT = </span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">boundaryLayerDirT</span><span class="p">))</span>
 
             <span class="c1"># append the value to the list</span>
             <span class="n">boundaryLayerDir</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">boundaryLayerDirT</span> <span class="p">)</span>
@@ -1772,10 +1772,10 @@
 
         <span class="c1"># check that all directions are uniform</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">boundaryLayerDir</span><span class="p">)</span><span class="o">!=</span><span class="mi">1</span><span class="p">:</span>
-          <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;BoundaryLayerDirection is not equal in all faces.&quot;</span><span class="p">)</span>
+          <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"BoundaryLayerDirection is not equal in all faces."</span><span class="p">)</span>
         
         <span class="n">boundaryLayerDir</span> <span class="o">=</span> <span class="n">boundaryLayerDir</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;boundaryLayerDir = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">boundaryLayerDir</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"boundaryLayerDir = </span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="n">boundaryLayerDir</span><span class="p">)</span>
         
         <span class="c1"># return the direction depending on the value</span>
         <span class="k">if</span> <span class="n">boundaryLayerDir</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
@@ -1783,7 +1783,7 @@
         <span class="k">elif</span> <span class="n">boundaryLayerDir</span> <span class="o">==</span><span class="mi">2</span><span class="p">:</span>
           <span class="k">return</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
-          <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Direction should be 1 or 2.&quot;</span><span class="p">)</span></div>
+          <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Direction should be 1 or 2."</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.detectBoundaryLayerDirection">
@@ -1793,7 +1793,7 @@
         <span class="n">theModel</span><span class="p">:</span> <span class="n">dtGmshModel</span><span class="p">,</span> 
         <span class="n">boundaryLayerDirCheck</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span> <span class="n">List</span><span class="p">[</span> <span class="n">Union</span><span class="p">[</span> <span class="n">map2dTo3d</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine the boundary layer direction of a face from two edges.</span>
+<span class="w">        </span><span class="sd">"""Determine the boundary layer direction of a face from two edges.</span>
 <span class="sd">        </span>
 <span class="sd">        This method: </span>
 
@@ -1815,7 +1815,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">boundaryLayerDir</span> <span class="o">=</span> \
           <span class="n">map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks</span><span class="o">.</span><span class="n">boundaryEdgeDirection</span><span class="p">(</span>
             <span class="n">theModel</span><span class="p">,</span> <span class="n">boundaryLayerDirCheck</span>
@@ -1836,7 +1836,7 @@
             <span class="n">p0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
             <span class="n">p1</span><span class="p">:</span> <span class="nb">float</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if two float values lie within a tolerance.</span>
+<span class="w">        </span><span class="sd">"""Check if two float values lie within a tolerance.</span>
 <span class="sd">        </span>
 <span class="sd">        This method: </span>
 
@@ -1855,7 +1855,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">p0</span> <span class="o">&gt;=</span> <span class="n">p1</span><span class="p">:</span>
             <span class="n">diff</span> <span class="o">=</span> <span class="n">p0</span><span class="o">-</span><span class="n">p1</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1879,7 +1879,7 @@
         <span class="n">firstElementSize</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
         <span class="n">lastElementSize</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a grading and add it to the grading dictionary.</span>
+<span class="w">        </span><span class="sd">"""Create a grading and add it to the grading dictionary.</span>
 
 <span class="sd">        This method:</span>
 
@@ -1932,7 +1932,7 @@
 
 <span class="sd">        ::</span>
 
-<span class="sd">            label_ + &quot;_gradings_&quot; + str(gradingNumber) + &quot;_&quot; + gradingLabel</span>
+<span class="sd">            label_ + "_gradings_" + str(gradingNumber) + "_" + gradingLabel</span>
 
 <span class="sd">        The grading function ``theRef`` is assigned this identifier string and</span>
 <span class="sd">        added to the analytic function container of the calling class.</span>
@@ -1947,7 +1947,7 @@
 <span class="sd">        The observer is then added to the topology.</span>
 
 <span class="sd">        Finally, the updated grading dictionary is returned.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># set grading number</span>
         <span class="n">gradingNumber</span> <span class="o">=</span> <span class="mi">2</span>
@@ -1958,10 +1958,10 @@
         <span class="c1"># create entry to grading dictionary</span>
         <span class="n">gradings</span><span class="p">[</span><span class="n">gradingLabel</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
           <span class="n">gradingNumber</span><span class="p">,</span> 
-          <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">&quot;_gradings_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">gradingNumber</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">gradingLabel</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s2">"_gradings_"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">gradingNumber</span><span class="p">)</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="n">gradingLabel</span>
         <span class="p">]</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-          <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+          <span class="s2">"</span><span class="si">%d</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span>
             <span class="n">gradings</span><span class="p">[</span><span class="n">gradingLabel</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">gradings</span><span class="p">[</span><span class="n">gradingLabel</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
           <span class="p">)</span>
         <span class="p">)</span>
@@ -1976,10 +1976,10 @@
           <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
           <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span> 
             <span class="n">jsonPrimitive</span><span class="p">()</span>\
-              <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_type&quot;</span><span class="p">,</span> <span class="n">gradings</span><span class="p">[</span><span class="n">gradingLabel</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>\
-              <span class="o">.</span><span class="n">appendReal</span><span class="p">(</span><span class="s2">&quot;_firstElementSize&quot;</span><span class="p">,</span> <span class="n">firstElementSize</span><span class="p">)</span>\
+              <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">"_type"</span><span class="p">,</span> <span class="n">gradings</span><span class="p">[</span><span class="n">gradingLabel</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>\
+              <span class="o">.</span><span class="n">appendReal</span><span class="p">(</span><span class="s2">"_firstElementSize"</span><span class="p">,</span> <span class="n">firstElementSize</span><span class="p">)</span>\
               <span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span>
-                <span class="s2">&quot;_grading&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lVH_aF</span><span class="p">()[</span> <span class="n">gradings</span><span class="p">[</span><span class="n">gradingLabel</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="p">]</span>
+                <span class="s2">"_grading"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lVH_aF</span><span class="p">()[</span> <span class="n">gradings</span><span class="p">[</span><span class="n">gradingLabel</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="p">]</span>
               <span class="p">),</span> 
             <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lVH_aF</span><span class="p">(),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m3dGmsh</span> 
           <span class="p">)</span>
@@ -1989,11 +1989,11 @@
           <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
           <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span> 
             <span class="n">jsonPrimitive</span><span class="p">()</span>\
-              <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">&quot;_type&quot;</span><span class="p">,</span> <span class="n">gradings</span><span class="p">[</span><span class="n">gradingLabel</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>\
-              <span class="o">.</span><span class="n">appendReal</span><span class="p">(</span><span class="s2">&quot;_firstElementSize&quot;</span><span class="p">,</span> <span class="n">firstElementSize</span><span class="p">)</span>\
-              <span class="o">.</span><span class="n">appendReal</span><span class="p">(</span><span class="s2">&quot;_lastElementSize&quot;</span><span class="p">,</span> <span class="n">lastElementSize</span><span class="p">)</span>\
+              <span class="o">.</span><span class="n">appendInt</span><span class="p">(</span><span class="s2">"_type"</span><span class="p">,</span> <span class="n">gradings</span><span class="p">[</span><span class="n">gradingLabel</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>\
+              <span class="o">.</span><span class="n">appendReal</span><span class="p">(</span><span class="s2">"_firstElementSize"</span><span class="p">,</span> <span class="n">firstElementSize</span><span class="p">)</span>\
+              <span class="o">.</span><span class="n">appendReal</span><span class="p">(</span><span class="s2">"_lastElementSize"</span><span class="p">,</span> <span class="n">lastElementSize</span><span class="p">)</span>\
               <span class="o">.</span><span class="n">appendAnalyticFunction</span><span class="p">(</span>
-                <span class="s2">&quot;_grading&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lVH_aF</span><span class="p">()[</span> <span class="n">gradings</span><span class="p">[</span><span class="n">gradingLabel</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="p">]</span>
+                <span class="s2">"_grading"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lVH_aF</span><span class="p">()[</span> <span class="n">gradings</span><span class="p">[</span><span class="n">gradingLabel</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="p">]</span>
               <span class="p">),</span> 
             <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lVH_aF</span><span class="p">(),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m3dGmsh</span> 
           <span class="p">)</span>
@@ -2006,7 +2006,7 @@
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.gradingsTypeTransfinite">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">gradingsTypeTransfinite</span><span class="p">(</span><span class="n">gradings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the list of grading numbers and return it as a string.</span>
+<span class="w">        </span><span class="sd">"""Get the list of grading numbers and return it as a string.</span>
 <span class="sd">        </span>
 <span class="sd">        This method: </span>
 <span class="sd">        </span>
@@ -2026,11 +2026,11 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">retList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">gradings</span><span class="p">:</span>
           <span class="n">retList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">gradings</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> 
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Convert to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">retList</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Convert to </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">retList</span><span class="p">))</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">retList</span><span class="p">)</span></div>
 
 
@@ -2038,7 +2038,7 @@
 <a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.gradingsGradingFunctions">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">gradingsGradingFunctions</span><span class="p">(</span><span class="n">gradings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a string of grading identifiers in a jsonPrimitive format.</span>
+<span class="w">        </span><span class="sd">"""Create a string of grading identifiers in a jsonPrimitive format.</span>
 <span class="sd">        </span>
 <span class="sd">        This method: </span>
 <span class="sd">        </span>
@@ -2059,17 +2059,17 @@
 <span class="sd">        -------</span>
 <span class="sd">        retStr: str</span>
 <span class="sd">          Return string</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">retStr</span> <span class="o">=</span> <span class="s1">&#39;[&#39;</span>
+<span class="sd">        """</span>
+        <span class="n">retStr</span> <span class="o">=</span> <span class="s1">'['</span>
         <span class="n">first</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">gradings</span><span class="p">:</span>
           <span class="k">if</span> <span class="n">first</span><span class="p">:</span>
-            <span class="n">retStr</span> <span class="o">=</span> <span class="n">retStr</span> <span class="o">+</span> <span class="s1">&#39;{ &quot;label&quot; : &quot;&#39;</span><span class="o">+</span><span class="n">gradings</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;&quot; }&#39;</span>
+            <span class="n">retStr</span> <span class="o">=</span> <span class="n">retStr</span> <span class="o">+</span> <span class="s1">'{ "label" : "'</span><span class="o">+</span><span class="n">gradings</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s1">'" }'</span>
             <span class="n">first</span> <span class="o">=</span> <span class="kc">False</span>
           <span class="k">else</span><span class="p">:</span>
-            <span class="n">retStr</span> <span class="o">=</span> <span class="n">retStr</span> <span class="o">+</span> <span class="s1">&#39;, { &quot;label&quot; : &quot;&#39;</span><span class="o">+</span><span class="n">gradings</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;&quot; }&#39;</span>
-        <span class="n">retStr</span> <span class="o">=</span> <span class="n">retStr</span> <span class="o">+</span> <span class="s1">&#39;]&#39;</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Convert to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">retStr</span><span class="p">)</span>
+            <span class="n">retStr</span> <span class="o">=</span> <span class="n">retStr</span> <span class="o">+</span> <span class="s1">', { "label" : "'</span><span class="o">+</span><span class="n">gradings</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s1">'" }'</span>
+        <span class="n">retStr</span> <span class="o">=</span> <span class="n">retStr</span> <span class="o">+</span> <span class="s1">']'</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Convert to </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">retStr</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">retStr</span> </div>
 </div>
 
