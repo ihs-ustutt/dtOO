@@ -26,6 +26,9 @@ from .analyticSurface_threePointMeanplane import (
   analyticSurface_threePointMeanplane,
   analyticSurface_threePointMeanplaneFromRatio
 )
+from .vectorHandlingAnalyticGeometry_sortCurves import (
+  vectorHandlingAnalyticGeometry_sortCurves
+)
 from .vec3dSurfaceTwoD_guideVaneMeanplane import (
   vec3dSurfaceTwoD_guideVaneMeanplane
 )

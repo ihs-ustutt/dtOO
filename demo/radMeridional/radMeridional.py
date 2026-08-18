@@ -2080,7 +2080,7 @@ class radMeridional:
         self.aG.push_back(
             gc << "xyz_"+label+"_gridChannel"
         )
-         
+        """ 
         #
         # Apply the mesh settings to the grid channel.
         #
@@ -2139,7 +2139,9 @@ class radMeridional:
         #    charLengthMin=0.1,
         #    meshTEBlocks = True,
         #).enableDebug().buildExtract( self.container )
+        """
         
+
     #
     # returns a list with dtPoint2 types and spline orders
     #  with spanwise cut percentage and blade input parameters
