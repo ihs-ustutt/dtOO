@@ -95,7 +95,6 @@
     <option name="[gmsh]Mesh.SecondOrderLinear" value="1."/>
     <option name="[gmsh]Mesh.CharacteristicLengthMin" value="#cV_ruMech_charLMin#"/>
     <option name="[gmsh]Mesh.CharacteristicLengthMax" value="#cV_ruMech_charCLMax#*#cV_ruMech_charLMin#"/>
-    <option name="[gmsh]General.NumThreads" value="4"/>
     <bVObserver name="bVODumpModel"/>
     <bVObserver name="bVONameRegions" regionLabel=""/>
     <bVObserver name="bVODumpModel"/>

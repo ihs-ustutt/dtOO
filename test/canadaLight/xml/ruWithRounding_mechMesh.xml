@@ -11,7 +11,6 @@
     <option name="[gmsh]General.ExpertMode" value="1."/>
     <option name="[gmsh]Mesh.LcIntegrationPrecision" value="#cV_ruMech_lcIntPrec#"/>
     <option name="[gmsh]Mesh.SecondOrderLinear" value="1."/>
-    <option name="[gmsh]General.NumThreads" value="4"/>
     <option name="[gmsh]Mesh.Algorithm" value="1"/>
     <option name="[gmsh]Mesh.CharacteristicLengthMin" value="0.0"/>
     <option name="[gmsh]Mesh.CharacteristicLengthMax" value="1.e22"/>

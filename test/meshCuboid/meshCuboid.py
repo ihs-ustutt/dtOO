@@ -37,7 +37,6 @@ Define ``dtOO``'s options:
 ...         '{"name" : "geometry_render_resolution_u", "value" : "21"},'
 ...         '{"name" : "geometry_render_resolution_v", "value" : "21"},'
 ...         '{"name" : "geometry_render_resolution_w", "value" : "21"},'
-...         '{"name" : "ompNumThreads", "value" : "2"},'
 ...         '{"name" : "map1dTo3d_deltaPer", "value" : "0.01"},'
 ...         '{"name" : "map2dTo3d_deltaPer", "value" : "0.01"},'
 ...         '{"name" : "map3dTo3d_deltaPer", "value" : "0.01"},'

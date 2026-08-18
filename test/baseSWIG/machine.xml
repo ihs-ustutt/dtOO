@@ -24,7 +24,6 @@
     <option name="root_printLevel"              value="0"/>		
     <option name="root_maxIterations"           value="1000"/>
     <option name="root_maxFunctionCalls"        value="1000000"/>
-    <option name="ompNumThreads"                value="2"/>
     <option name="map1dTo3d_deltaPer"           value="0.01"/>
     <option name="map2dTo3d_deltaPer"           value="0.01"/>
     <option name="map3dTo3d_deltaPer"           value="0.01"/>
