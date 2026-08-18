@@ -52,8 +52,11 @@ private:
   std::vector<::MTriangle *> extractCommonFaces(
     const std::vector<T *> &others, const std::vector<::MTetrahedron *> &tets
   ) const;
+  void sortTetrahedraDeterministically(
+    std::vector<::MTetrahedron *> &tets,
+    const std::map<::MVertex *, ::MVertex *> &org_clone
+  ) const;
 
-public:
 private:
   static bool _registrated;
 };

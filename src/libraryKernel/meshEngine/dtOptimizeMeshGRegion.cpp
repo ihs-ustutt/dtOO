@@ -120,6 +120,13 @@ void dtOptimizeMeshGRegion::optimizeNetgen(dtGmshRegion *dtgr) const
   }
 
   //
+  // sort original tetrahedra deterministically before creating the
+  // pseudoRegion. The original vertices are used here, so getNum() is
+  // directly available.
+  //
+  sortTetrahedraDeterministically(dtgr->tetrahedra, org_clone);
+
+  //
   // extract coupling faces pyramids/tetrahedra and prisms/tetrahedra
   //
   Msg::Info("Extract outter faces of tetrahedra");
@@ -211,6 +218,11 @@ void dtOptimizeMeshGRegion::optimizeNetgen(dtGmshRegion *dtgr) const
   ::optimizeMeshGRegionNetgen()(&pseudoRegion);
 
   //
+  // restore deterministic tetrahedron ordering after Netgen
+  //
+  sortTetrahedraDeterministically(pseudoRegion.tetrahedra, org_clone);
+
+  //
   // destroy old tetrahedrons
   //
   dt__forAllRefAuto(dtgr->tetrahedra, aTet) { delete aTet; }
@@ -277,7 +289,8 @@ dtOptimizeMeshGRegion::extractVerts(std::vector<T *> elems) const
       verts.push_back(aVert);
     }
   }
-  std::sort(verts.begin(), verts.end());
+  // sort by deterministic MVertex number instead of pointer address
+  std::sort(verts.begin(), verts.end(), MVertexPtrLessThan());
   verts.erase(unique(verts.begin(), verts.end()), verts.end());
   return verts;
 }
@@ -290,7 +303,38 @@ dtOptimizeMeshGRegion::extractSingleFaces(std::vector<::MTetrahedron *> tets
 ) const
 {
   int faceCounter = 0;
-  std::map<std::vector<::MVertex *>, ::MTetrahedron *> tet_face;
+
+  //
+  // Compare face keys using MVertex::getNum(), not pointer addresses.
+  //
+  struct MVertexVectorPtrLessThan {
+    bool operator()(
+      const std::vector<::MVertex *> &a, const std::vector<::MVertex *> &b
+    ) const
+    {
+      if (a.size() != b.size())
+      {
+        return a.size() < b.size();
+      }
+
+      for (std::size_t ii = 0; ii < a.size(); ++ii)
+      {
+        const int aNum = a[ii]->getNum();
+        const int bNum = b[ii]->getNum();
+
+        if (aNum != bNum)
+        {
+          return aNum < bNum;
+        }
+      }
+
+      return false;
+    }
+  };
+
+  std::map<std::vector<::MVertex *>, ::MTetrahedron *, MVertexVectorPtrLessThan>
+    tet_face;
+
   dt__forAllRefAuto(tets, aTet)
   {
     dt__forFromToIndex(0, aTet->getNumFaces(), faceIndex)
@@ -299,7 +343,8 @@ dtOptimizeMeshGRegion::extractSingleFaces(std::vector<::MTetrahedron *> tets
       std::vector<::MVertex *> verts;
       aTet->getFace(faceIndex).getOrderedVertices(verts);
       dt__throwIf(verts.size() != 3, extractCoupleFaces);
-      std::sort(verts.begin(), verts.end());
+      // canonical face vertex ordering by MVertex::getNum()
+      std::sort(verts.begin(), verts.end(), MVertexPtrLessThan());
       auto it = tet_face.find(verts);
       if (it == tet_face.end())
       {
@@ -319,4 +364,49 @@ dtOptimizeMeshGRegion::extractSingleFaces(std::vector<::MTetrahedron *> tets
 
   return faces;
 }
+
+void dtOptimizeMeshGRegion::sortTetrahedraDeterministically(
+  std::vector<::MTetrahedron *> &tets,
+  const std::map<::MVertex *, ::MVertex *> &org_clone
+) const
+{
+  std::sort(
+    tets.begin(),
+    tets.end(),
+    [&org_clone](::MTetrahedron *a, ::MTetrahedron *b) {
+      std::array<int, 4> aNum;
+      std::array<int, 4> bNum;
+
+      for (int ii = 0; ii < 4; ++ii)
+      {
+        ::MVertex *aVert = a->getVertex(ii);
+        ::MVertex *bVert = b->getVertex(ii);
+
+        //
+        // Netgen operates on cloned vertices. Map them back to the
+        // original vertices so that the deterministic original
+        // MVertex::getNum() values are used.
+        //
+        auto aIt = org_clone.find(aVert);
+        auto bIt = org_clone.find(bVert);
+
+        aNum[ii] =
+          (aIt != org_clone.end()) ? aIt->second->getNum() : aVert->getNum();
+
+        bNum[ii] =
+          (bIt != org_clone.end()) ? bIt->second->getNum() : bVert->getNum();
+      }
+
+      //
+      // The orientation/order inside the MTetrahedron is not changed.
+      // Only the four vertex numbers are copied into a sorted key.
+      //
+      std::sort(aNum.begin(), aNum.end());
+      std::sort(bNum.begin(), bNum.end());
+
+      return aNum < bNum;
+    }
+  );
+}
+
 } // namespace dtOO
