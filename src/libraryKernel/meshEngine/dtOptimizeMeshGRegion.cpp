@@ -256,10 +256,11 @@ void dtOptimizeMeshGRegion::optimizeNetgen(dtGmshRegion *dtgr) const
         pseudoRegion.removeMeshVertex(vert);
       }
       // vertex is still in dtgr, it was a coupling faces vertex
+      // vertex should not be deleted at this point
       else if (vert->onWhat() == &pseudoFace)
       {
         aTet->setVertex(vertIndex, org_clone[vert]);
-        pseudoFace.removeMeshVertex(vert, true);
+        pseudoFace.removeMeshVertex(vert, false);
       }
     }
   }
