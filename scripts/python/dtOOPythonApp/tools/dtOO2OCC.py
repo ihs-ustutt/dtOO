@@ -454,18 +454,6 @@ class dtOO2OCC:
 
         return transform.Shape()
 
-    def checkTopo(shapes: list):
-
-        for i, shape in enumerate(shapes):
-            analyzer = BRepCheck_Analyzer(shape)
-            
-            
-            print(
-                f"{type(shape)} {i + 1}: "
-                f"{analyzer.IsValid()}"
-            )
-        return 
-
     def WriteSTEP( shapes: List[ TopoDS_Shape ], fname : str ) -> None:
         """Write the STEP file.
 

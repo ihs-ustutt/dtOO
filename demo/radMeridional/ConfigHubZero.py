@@ -465,7 +465,7 @@ if __name__ == "__main__":
     perList1 = []
     
     #
-    # Getting surfaces of the bladed channel segment as wel as the 
+    # Get surfaces of the bladed channel segment as wel as the 
     # hub and shroud edges
     #
 
@@ -545,7 +545,7 @@ if __name__ == "__main__":
         shroudEdges.append(per.segmentConstUPercent(1))
         perList1.append(per)
     
-    # ordering the edges on the bladed channels hub and shroud 
+    # order the edges on the bladed channels hub and shroud 
     # by connectivity. Changing the directions if necessary
     from dtOOPythonApp.builder import vectorHandlingAnalyticGeometry_sortCurves
     sort = vectorHandlingAnalyticGeometry_sortCurves(
@@ -559,26 +559,27 @@ if __name__ == "__main__":
     container = sort.buildExtract(container)
     shroudEdges = sort.getSortedCurves()
     
-    # transforming the blade and channe hub and shroud edges into 
+    # transform the blade and channel hub and shroud edges into 
     # occ-objects
     bladeHub = dtOO2OCC.TopoDS([bladeHub])
     bladeShroud = dtOO2OCC.TopoDS([bladeShroud])
     hubEdges = dtOO2OCC.TopoDS(hubEdges)
     shroudEdges = dtOO2OCC.TopoDS(shroudEdges)
     
-    # trimming the bounding surfaces of the hub and shroud with the
+    # trimm the bounding surfaces of the hub and shroud with the
     # edge lists
     hub = dtOO2OCC.makeTopoDS_FaceAndEdges(
             face = hub[0], 
             edgesTrim = hubEdges, 
-            #edgesHole = bladeHub
+            edgesHole = bladeHub
         )
     shroud = dtOO2OCC.makeTopoDS_FaceAndEdges(
             face = shroud[0], 
             edgesTrim = shroudEdges, 
-            #edgesHole = bladeShroud
+            edgesHole = bladeShroud
         )
     
+    # split blade into two surfaces
     blade0 = dtOO.analyticSurface(
         dtOO.bSplineSurface_bSplineSurfaceSplitConstructOCC(
             blade.ptrConstDtSurface(),
@@ -595,49 +596,28 @@ if __name__ == "__main__":
             blade.v_percent(1.0),
         ).result()
     )
-    ## creating shells
-    #walls = dtOO2OCC.createShell([hub, shroud] + dtOO2OCC.TopoDS([blade]))
-    #periodic0 = dtOO2OCC.createShell(dtOO2OCC.TopoDS(perList0))
-    #periodic1 = dtOO2OCC.createShell(dtOO2OCC.TopoDS(perList1))
-    #
-    #inOutList = dtOO2OCC.TopoDS(inOutList)
-    
-    
-    ## creating a shell of all surfaces
-    #omniShell = dtOO2OCC.createShell(
-    #    dtOO2OCC.TopoDS( 
-    #        perList0
-    #    ) + dtOO2OCC.TopoDS(
-    #        perList1
-    #    ) + dtOO2OCC.TopoDS(
-    #        inOutList 
-    #    ) + [ 
-    #        hub, 
-    #        shroud
-    #    ] + dtOO2OCC.TopoDS(
-    #        [ blade0, blade1 ]
-    #    )
-    #)
-    # creating a shell of all surfaces
-    omniShell = dtOO2OCC.createShell([ 
-        hub, 
-        shroud
-        ]  + dtOO2OCC.TopoDS(
+     
+    # create a shell of all surfaces
+    omniShell = dtOO2OCC.createShell(
+        dtOO2OCC.TopoDS( 
             perList0
         ) + dtOO2OCC.TopoDS(
             perList1
         ) + dtOO2OCC.TopoDS(
-            inOutList
+            inOutList 
+        ) + [ 
+            hub, 
+            shroud
+        ] + dtOO2OCC.TopoDS(
+            [ blade0, blade1 ]
         )
     )
     
-    # creating a solid body bounded by the shell
+    # create a solid body bounded by the shell
     solid = dtOO2OCC.createSolid(omniShell)
     
 
-    solid = dtOO2OCC.scale(solid, 1000)
-     
-    
+    solid = dtOO2OCC.scale(solid, 1000) 
 
     dtOO2OCC.WriteSTEP(
       [solid],
