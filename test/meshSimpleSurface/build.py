@@ -47,7 +47,6 @@ staticPropertiesHandler.getInstance().jInit(
         '{"name" : "root_printLevel", "value" : "0"},'		
         '{"name" : "root_maxIterations", "value" : "1000"},'
         '{"name" : "root_maxFunctionCalls", "value" : "1000000"},'
-        '{"name" : "ompNumThreads", "value" : "2"},'
         '{"name" : "map1dTo3d_deltaPer", "value" : "0.01"},'
         '{"name" : "map2dTo3d_deltaPer", "value" : "0.01"},'
         '{"name" : "map3dTo3d_deltaPer", "value" : "0.01"},'

@@ -23,20 +23,11 @@ License
 #include "dtMesh3DOperator.h"
 #include <logMe/dtMacros.h>
 
-// class Ng_Mesh;
-// class Ng_Result;
+class MVertex;
+class MTriangle;
+class MTetrahedron;
 class GRegion;
 void meshNormalsPointOutOfTheRegion(::GRegion *gr);
-
-// Ng_Mesh *buildNetgenStructure(
-//   GRegion *gr, bool importVolumeMesh, std::vector<MVertex*> &numberedV
-//);
-// Ng_Result Ng_OptimizeVolumeMesh( Ng_Mesh *mesh, double maxh );
-// void TransferVolumeMesh(
-//   GRegion *gr, Ng_Mesh *ngmesh, std::vector<MVertex*> &numberedV
-//);
-// void Ng_DeleteMesh (Ng_Mesh * mesh);
-// void Ng_Exit();
 
 namespace dtOO {
 class dtGmshRegion;
@@ -46,14 +37,25 @@ public:
   dt__classOnlyName(dtOptimizeMeshGRegion);
   dt__classSelfCreate(dtOptimizeMeshGRegion);
   dtOptimizeMeshGRegion();
-  dtOptimizeMeshGRegion(bool gmsh, bool netgen);
   dtOptimizeMeshGRegion(const dtOptimizeMeshGRegion &orig);
   virtual ~dtOptimizeMeshGRegion();
+  virtual bool isStatusIndependent(void);
   void operator()(dtGmshRegion *dtgr);
 
 private:
-  bool _gmsh;
-  bool _netgen;
+  void optimizeNetgen(dtGmshRegion *dtgr) const;
+  template <typename T>
+  std::vector<::MVertex *> extractVerts(std::vector<T *> elems) const;
+  std::vector<::MTriangle *>
+  extractSingleFaces(std::vector<::MTetrahedron *> tets) const;
+  template <typename T>
+  std::vector<::MTriangle *> extractCommonFaces(
+    const std::vector<T *> &others, const std::vector<::MTetrahedron *> &tets
+  ) const;
+  void sortTetrahedraDeterministically(
+    std::vector<::MTetrahedron *> &tets,
+    const std::map<::MVertex *, ::MVertex *> &org_clone
+  ) const;
 
 private:
   static bool _registrated;

@@ -388,10 +388,13 @@ void bVOMeshRule::preUpdate(void)
     );
     dt__forAllRefAuto(rr, aReg)
     {
-      if ((aReg->_status != ::GEntity::MeshGenerationStatus::DONE) &&
-          gm->matchWildCardPhysical(currentGEntityStr, aReg) &&
-          (aReg->getMeshMaster() == aReg))
-        (*current3D)(aReg);
+      if (current3D->isStatusIndependent() ||
+          aReg->_status != ::GEntity::MeshGenerationStatus::DONE)
+      {
+        if (gm->matchWildCardPhysical(currentGEntityStr, aReg) &&
+            (aReg->getMeshMaster() == aReg))
+          (*current3D)(aReg);
+      }
       if (!cFileName.empty())
         gm->writeMSH(cFileName, 2.2, false, true);
     }
