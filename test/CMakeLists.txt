@@ -38,20 +38,46 @@ function(DTOO_ADD_DOCTEST TESTNAME SCRIPT WDIRPOSTFIX)
     set_property(TEST ${TESTNAME} PROPERTY LABELS base-test)
 endfunction()
 
+function(APPLY_TEST_TO stringA stringB result)
+    string(REGEX MATCH "~([^~.]+)" match "${stringA}")
+    if(NOT match)
+        set(${result} TRUE PARENT_SCOPE)
+        return()
+    endif()
+    set(substring "${CMAKE_MATCH_1}")
+    string(FIND "${stringB}" "${substring}" position)
+    if(position GREATER_EQUAL 0)
+        set(${result} TRUE PARENT_SCOPE)
+    else()
+        set(${result} FALSE PARENT_SCOPE)
+    endif()
+endfunction()
+
 # Add additional mesh check to test
 function(DTOO_ADDTESTWLABEL TNAME)
     file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/${TNAME}/*.xz")
+    file(GLOB cmp_sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/${TNAME}/*cmp*")
+
     foreach(xzFilePath ${sources_list})
+      foreach(cmpTestPath ${cmp_sources_list})
         get_filename_component(xzFile "${xzFilePath}" NAME)
-        string(REGEX MATCH "gcc-[^ $!~]+" gccVer ${xzFile})
-        message("**> Add test ${TNAME}-cmp-${xzFile} / gccVer=${gccVer}")
-        add_test(
-            NAME ${TNAME}-cmp-${xzFile}
-            COMMAND sh "cmp.sh" "${xzFile}"
+        get_filename_component(cmpTest "${cmpTestPath}" NAME)
+        APPLY_TEST_TO("${cmpTest}" "${xzFile}" APPLY_TO)
+        if (APPLY_TO)
+          string(REGEX MATCH "gcc-[^ $!~]+" gccVer ${xzFile})
+          message("**> Add test ${TNAME}-${cmpTest}-${xzFile} / gccVer=${gccVer}")
+          add_test(
+            NAME ${TNAME}-${cmpTest}-${xzFile}
+            COMMAND ./${cmpTest} "${xzFile}"
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${TNAME}
-        )
-        set_tests_properties(${TNAME}-cmp-${xzFile} PROPERTIES DEPENDS "${TNAME}")
-        set_property(TEST ${TNAME}-cmp-${xzFile} PROPERTY LABELS ${gccVer})
+          )
+          set_tests_properties(${TNAME}-${cmpTest}-${xzFile} PROPERTIES DEPENDS "${TNAME}")
+          set_property(TEST ${TNAME}-${cmpTest}-${xzFile} PROPERTY LABELS ${gccVer})
+        else()
+          message("**> Skip test ${TNAME}-${cmpTest}-${xzFile} / gccVer=${gccVer}")
+        endif()
+
+      endforeach()
     endforeach()
 endfunction()
 
