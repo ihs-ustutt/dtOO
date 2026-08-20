@@ -71,8 +71,12 @@ function(DTOO_ADDTESTWLABEL TNAME)
             COMMAND ./${cmpTest} "${xzFile}"
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${TNAME}
           )
-          set_tests_properties(${TNAME}-${cmpTest}-${xzFile} PROPERTIES DEPENDS "${TNAME}")
-          set_property(TEST ${TNAME}-${cmpTest}-${xzFile} PROPERTY LABELS ${gccVer})
+          set_tests_properties(
+            ${TNAME}-${cmpTest}-${xzFile} PROPERTIES 
+            DEPENDS "${TNAME}"
+            LABELS ${gccVer}
+            ENVIRONMENT "${TESTENVLIST}"
+          )
         else()
           message("**> Skip test ${TNAME}-${cmpTest}-${xzFile} / gccVer=${gccVer}")
         endif()
