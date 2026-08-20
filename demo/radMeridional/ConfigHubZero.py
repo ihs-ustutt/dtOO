@@ -414,6 +414,7 @@ def run(*args, **kwargs):
 
     cc = generate.getContainer()
     
+
     rr = dtOOInParaVIEW( cc )
     
     #rr.Show( rr.Find( "xyz_gv_channel", True), "xyz_gv_channel" )
@@ -445,17 +446,192 @@ if __name__ == "__main__":
     generate = radMeridional.radMeridional()
 
     generate.createMeridional(configM, hubCurves, shroudCurves)
-    generate.createBlade(configGV)
+    #generate.createBlade(configGV)
     generate.createBlade(configRu)
-    generate.createLayerRegion(configL)
+    #generate.createLayerRegion(configL)
     
     container = generate.getContainer()
-    #bV = container.cptr_bV()
+    from dtOOPythonApp.tools import dtOO2OCC
+    
+    lab = "ru"
+    
+    # lists for hub and shroud edges
+    hubEdges = []
+    shroudEdges = []
+    
+    # lists for inlet and outlet surfaces and periodic surfaces
+    inOutList = []
+    perList0 = []
+    perList1 = []
+    
+    #
+    # Get surfaces of the bladed channel segment as wel as the 
+    # hub and shroud edges
+    #
 
+    # blade
+    blade = dtOO2OCC.analyticSurface_analyticGeometry(
+        container.cptr_aG()["xyz_"+lab+"_blade"]
+      ).approx(uInts=np.linspace(0.0, 1.0, 501))
+    bladeHub = blade.segmentConstUPercent(0)
+    bladeShroud = blade.segmentConstUPercent(1)
+    
+    # inlet
+    inlet = dtOO2OCC.analyticSurface_analyticGeometry(
+        container.cptr_aG()["debug_gridChannelFace_"+lab+"_inlet"]
+      ).approx(uInts=np.linspace(0.0, 1.0, 501))
+    inOutList.append(inlet)
+    hubEdges.append(inlet.segmentConstUPercent(0))
+    shroudEdges.append(inlet.segmentConstUPercent(1))
+    
+    # outlet
+    outlet = dtOO2OCC.analyticSurface_analyticGeometry(
+        container.cptr_aG()["debug_gridChannelFace_"+lab+"_outlet"]
+      ).approx(uInts=np.linspace(0.0, 1.0, 501))
+    inOutList.append(outlet)
+    hubEdges.append(outlet.segmentConstUPercent(0))
+    shroudEdges.append(outlet.segmentConstUPercent(1))
+    
+    # bounding surface of the hub-mbs
+    hub = dtOO2OCC.TopoDS([
+      dtOO2OCC.analyticSurface_analyticGeometry(
+        dtOO.multipleBoundedSurface.MustDownCast(
+          container.cptr_aG()["debug_gridChannelFace_"+lab+"_hub"]
+        ).surfaceConstPtr()
+      ).approx(uInts=np.linspace(0.0, 1.0, 501))
+      ])
+    
+    # bounding surface of the shroud-mbs
+    shroud = dtOO2OCC.TopoDS([
+      dtOO2OCC.analyticSurface_analyticGeometry(
+        dtOO.multipleBoundedSurface.MustDownCast(
+          container.cptr_aG()["debug_gridChannelFace_"+lab+"_shroud"]
+        ).surfaceConstPtr()
+      ).approx(uInts=np.linspace(0.0, 1.0, 501))
+      ])
+    
+    # mesh block faces forming the periodic menaplane
+    # -> periodic 0
+    for iNum in container.cptr_aG().getIndices("xyz_"+lab+"_meanplaneFaceOnBlock_*"):
+        ii = container.cptr_aG().getLabel( iNum )
+        
+        per = dtOO2OCC.analyticSurface_analyticGeometry(
+                container.cptr_aG()[ii]
+            ).approx(uInts=np.linspace(0.0, 1.0, 501))
+        hubEdges.append(per.segmentConstUPercent(0))
+        shroudEdges.append(per.segmentConstUPercent(1))
+        perList0.append(per)
+    
+    # fe-meanplane faces
+    # -> periodic 0
+    for iNum in container.cptr_aG().getIndices("xyz_"+lab+"_fe_meanplane_*"):
+        ii = container.cptr_aG().getLabel( iNum )
+
+        per = dtOO2OCC.analyticSurface_analyticGeometry(
+                container.cptr_aG()[ii]
+            ).approx(uInts=np.linspace(0.0, 1.0, 501))
+        hubEdges.append(per.segmentConstUPercent(0))
+        shroudEdges.append(per.segmentConstUPercent(1))
+        perList0.append(per)
+    
+    # -> periodic 1
+    for iNum in container.cptr_aG().getIndices("debug_gridChannelFace_"+lab+"_pressure_*"):
+        ii = container.cptr_aG().getLabel( iNum )
+
+        per = dtOO2OCC.analyticSurface_analyticGeometry(
+                container.cptr_aG()[ii]
+            ).approx(uInts=np.linspace(0.0, 1.0, 501))
+        hubEdges.append(per.segmentConstUPercent(0))
+        shroudEdges.append(per.segmentConstUPercent(1))
+        perList1.append(per)
+    
+    # order the edges on the bladed channels hub and shroud 
+    # by connectivity. Changing the directions if necessary
+    from dtOOPythonApp.builder import vectorHandlingAnalyticGeometry_sortCurves
+    sort = vectorHandlingAnalyticGeometry_sortCurves(
+            curvesUnsorted = hubEdges
+        ).enableDebug()
+    container = sort.buildExtract(container)
+    hubEdges = sort.getSortedCurves()
+    sort = vectorHandlingAnalyticGeometry_sortCurves(
+            curvesUnsorted = shroudEdges
+        ).enableDebug()
+    container = sort.buildExtract(container)
+    shroudEdges = sort.getSortedCurves()
+    
+    # transform the blade and channel hub and shroud edges into 
+    # occ-objects
+    bladeHub = dtOO2OCC.TopoDS([bladeHub])
+    bladeShroud = dtOO2OCC.TopoDS([bladeShroud])
+    hubEdges = dtOO2OCC.TopoDS(hubEdges)
+    shroudEdges = dtOO2OCC.TopoDS(shroudEdges)
+    
+    # trimm the bounding surfaces of the hub and shroud with the
+    # edge lists
+    hub = dtOO2OCC.makeTopoDS_FaceAndEdges(
+            face = hub[0], 
+            edgesTrim = hubEdges, 
+            edgesHole = bladeHub
+        )
+    shroud = dtOO2OCC.makeTopoDS_FaceAndEdges(
+            face = shroud[0], 
+            edgesTrim = shroudEdges, 
+            edgesHole = bladeShroud
+        )
+    
+    # split blade into two surfaces
+    blade0 = dtOO.analyticSurface(
+        dtOO.bSplineSurface_bSplineSurfaceSplitConstructOCC(
+            blade.ptrConstDtSurface(),
+            1,
+            blade.v_percent(0),
+            blade.v_percent(0.5),
+        ).result()
+    )
+    blade1 = dtOO.analyticSurface(
+        dtOO.bSplineSurface_bSplineSurfaceSplitConstructOCC(
+            blade.ptrConstDtSurface(),
+            1,
+            blade.v_percent(0.5),
+            blade.v_percent(1.0),
+        ).result()
+    )
+     
+    # create a shell of all surfaces
+    omniShell = dtOO2OCC.createShell(
+        dtOO2OCC.TopoDS( 
+            perList0
+        ) + dtOO2OCC.TopoDS(
+            perList1
+        ) + dtOO2OCC.TopoDS(
+            inOutList 
+        ) + [ 
+            hub, 
+            shroud
+        ] + dtOO2OCC.TopoDS(
+            [ blade0, blade1 ]
+        )
+    )
+    
+    # create a solid body bounded by the shell
+    solid = dtOO2OCC.createSolid(omniShell)
+    
+
+    solid = dtOO2OCC.scale(solid, 1000) 
+
+    dtOO2OCC.WriteSTEP(
+      [solid],
+      #[walls, periodic0, periodic1]+inOutList,
+      #[hub, shroud] + inOutList,
+      #dtOO2OCC.TopoDS([blade0, blade1]), 
+      lab + ".stp"
+    )
+
+    #bV = container.cptr_bV()
     #bV["ru_mesh"].makeGrid()
     stateLbl = "hubZero"
     indiv = "0"
-
-    createOFCase(container, stateLbl, indiv)
+    
+    #createOFCase(container, stateLbl, indiv)
 
     # ------------------- EOF ------------------- #
