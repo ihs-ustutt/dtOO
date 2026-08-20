@@ -437,6 +437,49 @@ is added. The machine is created by:</p>
 </pre></div>
 </div>
 <p>This results in a machine with an outlet angle at the shroud of 40 degree.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">dtOO2OCC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtOO2OCC</span><span class="o">.</span><span class="n">WriteSTEP</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtOO2OCC</span><span class="o">.</span><span class="n">TopoDS</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span>
+<span class="gp">... </span>      <span class="n">dtOO2OCC</span><span class="o">.</span><span class="n">analyticSurface_analyticGeometry</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">bundle</span><span class="o">.</span><span class="n">cptr_aG</span><span class="p">()[</span><span class="s2">"xyz_blade"</span><span class="p">]</span>
+<span class="gp">... </span>      <span class="p">)</span><span class="o">.</span><span class="n">approx</span><span class="p">(</span><span class="n">uInts</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">501</span><span class="p">)),</span>
+<span class="gp">... </span>      <span class="n">dtOO2OCC</span><span class="o">.</span><span class="n">analyticSurface_analyticGeometry</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span>
+<span class="gp">... </span>          <span class="n">bundle</span><span class="o">.</span><span class="n">cptr_aG</span><span class="p">()[</span><span class="s2">"xyz_gridChannel"</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="p">)</span><span class="o">.</span><span class="n">segmentConstUPercent</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="p">)</span><span class="o">.</span><span class="n">approx</span><span class="p">(),</span>
+<span class="gp">... </span>      <span class="n">dtOO2OCC</span><span class="o">.</span><span class="n">analyticSurface_analyticGeometry</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span>
+<span class="gp">... </span>          <span class="n">bundle</span><span class="o">.</span><span class="n">cptr_aG</span><span class="p">()[</span><span class="s2">"xyz_gridChannel"</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="p">)</span><span class="o">.</span><span class="n">segmentConstUPercent</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="p">)</span><span class="o">.</span><span class="n">approx</span><span class="p">(),</span>
+<span class="gp">... </span>      <span class="n">dtOO2OCC</span><span class="o">.</span><span class="n">analyticSurface_analyticGeometry</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span>
+<span class="gp">... </span>          <span class="n">bundle</span><span class="o">.</span><span class="n">cptr_aG</span><span class="p">()[</span><span class="s2">"xyz_gridChannel"</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="p">)</span><span class="o">.</span><span class="n">segmentConstVPercent</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="p">)</span><span class="o">.</span><span class="n">approx</span><span class="p">(),</span>
+<span class="gp">... </span>      <span class="n">dtOO2OCC</span><span class="o">.</span><span class="n">analyticSurface_analyticGeometry</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span>
+<span class="gp">... </span>          <span class="n">bundle</span><span class="o">.</span><span class="n">cptr_aG</span><span class="p">()[</span><span class="s2">"xyz_gridChannel"</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="p">)</span><span class="o">.</span><span class="n">segmentConstVPercent</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="p">)</span><span class="o">.</span><span class="n">approx</span><span class="p">(),</span>
+<span class="gp">... </span>      <span class="n">dtOO2OCC</span><span class="o">.</span><span class="n">analyticSurface_analyticGeometry</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span>
+<span class="gp">... </span>          <span class="n">bundle</span><span class="o">.</span><span class="n">cptr_aG</span><span class="p">()[</span><span class="s2">"xyz_gridChannel"</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="p">)</span><span class="o">.</span><span class="n">segmentConstWPercent</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="p">)</span><span class="o">.</span><span class="n">approx</span><span class="p">(),</span>
+<span class="gp">... </span>      <span class="n">dtOO2OCC</span><span class="o">.</span><span class="n">analyticSurface_analyticGeometry</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span>
+<span class="gp">... </span>          <span class="n">bundle</span><span class="o">.</span><span class="n">cptr_aG</span><span class="p">()[</span><span class="s2">"xyz_gridChannel"</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="p">)</span><span class="o">.</span><span class="n">segmentConstWPercent</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="p">)</span><span class="o">.</span><span class="n">approx</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span>  <span class="p">),</span>
+<span class="gp">... </span>  <span class="s2">"simpleAxialRunner.stp"</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
 <p>The OpenFOAMCase is created by:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bundle</span><span class="o">.</span><span class="n">cptr_dC</span><span class="p">()[</span><span class="s2">"of"</span><span class="p">]</span><span class="o">.</span><span class="n">runCurrentState</span><span class="p">()</span>
 </pre></div>

@@ -88,6 +88,48 @@
 
 <span class="sd">This results in a machine with an outlet angle at the shroud of 40 degree.</span>
 
+<span class="sd">&gt;&gt;&gt; from dtOOPythonApp.tools import dtOO2OCC</span>
+<span class="sd">&gt;&gt;&gt; dtOO2OCC.WriteSTEP(</span>
+<span class="sd">...   dtOO2OCC.TopoDS(</span>
+<span class="sd">...     [ </span>
+<span class="sd">...       dtOO2OCC.analyticSurface_analyticGeometry(</span>
+<span class="sd">...         bundle.cptr_aG()["xyz_blade"]</span>
+<span class="sd">...       ).approx(uInts=np.linspace(0.0, 1.0, 501)),</span>
+<span class="sd">...       dtOO2OCC.analyticSurface_analyticGeometry(</span>
+<span class="sd">...         dtOO.map3dTo3d.ConstDownCast( </span>
+<span class="sd">...           bundle.cptr_aG()["xyz_gridChannel"] </span>
+<span class="sd">...         ).segmentConstUPercent(0.0)</span>
+<span class="sd">...       ).approx(),</span>
+<span class="sd">...       dtOO2OCC.analyticSurface_analyticGeometry(</span>
+<span class="sd">...         dtOO.map3dTo3d.ConstDownCast( </span>
+<span class="sd">...           bundle.cptr_aG()["xyz_gridChannel"] </span>
+<span class="sd">...         ).segmentConstUPercent(1.0)</span>
+<span class="sd">...       ).approx(),</span>
+<span class="sd">...       dtOO2OCC.analyticSurface_analyticGeometry(</span>
+<span class="sd">...         dtOO.map3dTo3d.ConstDownCast( </span>
+<span class="sd">...           bundle.cptr_aG()["xyz_gridChannel"] </span>
+<span class="sd">...         ).segmentConstVPercent(0.0)</span>
+<span class="sd">...       ).approx(),</span>
+<span class="sd">...       dtOO2OCC.analyticSurface_analyticGeometry(</span>
+<span class="sd">...         dtOO.map3dTo3d.ConstDownCast( </span>
+<span class="sd">...           bundle.cptr_aG()["xyz_gridChannel"] </span>
+<span class="sd">...         ).segmentConstVPercent(1.0)</span>
+<span class="sd">...       ).approx(),</span>
+<span class="sd">...       dtOO2OCC.analyticSurface_analyticGeometry(</span>
+<span class="sd">...         dtOO.map3dTo3d.ConstDownCast( </span>
+<span class="sd">...           bundle.cptr_aG()["xyz_gridChannel"] </span>
+<span class="sd">...         ).segmentConstWPercent(0.0)</span>
+<span class="sd">...       ).approx(),</span>
+<span class="sd">...       dtOO2OCC.analyticSurface_analyticGeometry(</span>
+<span class="sd">...         dtOO.map3dTo3d.ConstDownCast( </span>
+<span class="sd">...           bundle.cptr_aG()["xyz_gridChannel"] </span>
+<span class="sd">...         ).segmentConstWPercent(1.0)</span>
+<span class="sd">...       ).approx(),</span>
+<span class="sd">...     ]</span>
+<span class="sd">...   ), </span>
+<span class="sd">...   "simpleAxialRunner.stp"</span>
+<span class="sd">... )</span>
+
 <span class="sd">The OpenFOAMCase is created by:</span>
 
 <span class="sd">&gt;&gt;&gt; bundle.cptr_dC()["of"].runCurrentState()</span>
