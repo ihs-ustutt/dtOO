@@ -346,6 +346,7 @@ namespace dtOO {
 #include <map3dTo3dGmsh.h>
 #include <customGmsh.h>
 #include <combineGmsh.h>
+#include <readMOABMesh.h>
 #include <dtCase.h>
 #ifdef DTOO_HAS_OpenFOAM
   #include <ofOpenFOAMCase/ofOpenFOAMCase.h>
@@ -696,6 +697,7 @@ namespace dtOO {
 %include map3dTo3dGmsh.h
 %include customGmsh.h
 %include combineGmsh.h
+%include readMOABMesh.h
 %include dtCase.h
 #ifdef DTOO_HAS_OpenFOAM
   %include ofOpenFOAMCase/ofOpenFOAMCase.h

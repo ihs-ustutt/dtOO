@@ -36,6 +36,7 @@ License
 #include <gmsh/MHexahedron.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MVertex.h>
+#include <jsonHeaven/jsonPrimitive.h>
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshRegion.h>
@@ -63,7 +64,10 @@ void readMOABMesh::init(
   //
   gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
 
-  _fileName = getOption("mesh_file");
+  jsonPrimitive config;
+  config.append<std::string>("_fileName", getOption("mesh_file"));
+
+  gmshBoundedVolume::jInit(config, bC, cV, aF, aG, bV);
 }
 
 void readMOABMesh::makeGrid(void)
@@ -89,7 +93,7 @@ void readMOABMesh::makeGrid(void)
   //
   // load mesh
   //
-  rval = _mb->load_mesh(_fileName.c_str());
+  rval = _mb->load_mesh(config().lookup<std::string>("_fileName").c_str());
   moab__throwIf(rval != moab::MB_SUCCESS, makeGrid());
 
   //
@@ -135,7 +139,7 @@ void readMOABMesh::convertToGmsh(void)
   //
   // logContainer
   //
-  logContainer<readMOABMesh> logC(logINFO, "getRender()");
+  logContainer<readMOABMesh> logC(logINFO, "convertToGmsh()");
 
   //
   // output
