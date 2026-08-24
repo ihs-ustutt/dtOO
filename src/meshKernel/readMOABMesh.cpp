@@ -33,10 +33,10 @@ License
 #include <moab/Core.hpp>
 
 #include "boundedVolumeFactory.h"
-#include <jsonHeaven/jsonPrimitive.h>
 #include <gmsh/MHexahedron.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MVertex.h>
+#include <jsonHeaven/jsonPrimitive.h>
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshRegion.h>
