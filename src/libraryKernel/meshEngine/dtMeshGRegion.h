@@ -15,8 +15,8 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef DTMESHGREGION_H
-#define DTMESHGREGION_H
+#ifndef dtMeshGRegion_H
+#define dtMeshGRegion_H
 
 #include <dtOOTypeDef.h>
 
@@ -53,11 +53,13 @@ public:
 private:
   void createPyramids(dtGmshRegion *dtgr);
   void createOVM(dtGmshRegion *dtgr, dtOVMMesh &ovm);
-  static dtReal pyramidHeight(::MPyramid *pyr);
+  // static dtReal pyramidHeight(::MPyramid *pyr);
+  static dtPoint3
+  extractPyramidGoalPosition(ovmVertexH const &vH, dtOVMMesh &ovm);
+  static bool validShift(ovmVertexH const vH, dtOVMMesh & ovm);
 
-private:
 private:
   static bool _registrated;
 };
 } // namespace dtOO
-#endif /* DTMESHGREGION_H */
+#endif /* dtMeshGRegion_H */

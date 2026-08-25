@@ -23,15 +23,19 @@ License
 #include "dtMeshOperatorFactory.h"
 #include "dtOVMMesh.h"
 #include "dtOptimizeMeshGRegion.h"
-#include "qShapeMetric.h"
+#include <dtLinearAlgebra.h>
 #include <gmsh/MElementOctree.h>
 #include <gmsh/MPyramid.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/MTriangle.h>
+#include <gmsh/SPoint3.h>
 #include <gmsh/meshGRegion.h>
-#include <interfaceHeaven/barChart.h>
+#include <limits>
+#include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 #include <progHelper.h>
+#include <vector>
 #include <xmlHeaven/dtXmlParserBase.h>
 
 namespace dtOO {
@@ -60,16 +64,6 @@ void dtMeshGRegion::init(
   dtMesh3DOperator::init(element, bC, cV, aF, aG, bV, mO);
 
   jsonPrimitive jE;
-  jE.append<dtReal>(
-    "_relax",
-    dtXmlParserBase::getAttributeFloatMuParse("relax", element, cV, aF)
-  );
-  jE.append<dtReal>(
-    "_minQShapeMetric",
-    dtXmlParserBase::getAttributeFloatMuParse(
-      "minQShapeMetric", element, cV, aF
-    )
-  );
   jE.append<dtInt>(
     "_nPyramidOpenSteps",
     dtXmlParserBase::getAttributeIntMuParse(
@@ -79,12 +73,6 @@ void dtMeshGRegion::init(
   jE.append<dtInt>(
     "_nSmooths",
     dtXmlParserBase::getAttributeIntMuParse("nSmooths", element, cV, aF)
-  );
-  jE.append<dtReal>(
-    "_maxHeight",
-    dtXmlParserBase::getAttributeFloatMuParse(
-      "maxHeight", element, cV, aF, std::numeric_limits<dtReal>::max()
-    )
   );
   dtMeshGRegion::jInit(jE, bC, cV, aF, aG, bV, mO);
 }
@@ -146,12 +134,16 @@ void dtMeshGRegion::operator()(dtGmshRegion *dtgr)
     ::meshGRegion mr(delauny);
     mr(dtgr);
     MeshDelaunayVolume(delauny);
-    dt__forFromToIndex(0, config().lookup<dtInt>("_nSmooths"), ii)
-    {
-      dtOptimizeMeshGRegion()(dtgr);
-    }
 
     dtgr->_status = ::GEntity::MeshGenerationStatus::DONE;
+  }
+
+  dt__forFromToIndex(0, config().lookup<dtInt>("_nSmooths"), ii)
+  {
+    dtOptimizeMeshGRegion opt;
+    if (optionHandling::debugTrue())
+      opt.setOption("debug", "true");
+    opt(dtgr);
   }
 }
 
@@ -229,7 +221,7 @@ void dtMeshGRegion::createPyramids(dtGmshRegion *dtgr)
       //
       // calculate barycenter, inner radius and normal
       //
-      SPoint3 bb = (*it)->barycenter();
+      ::SPoint3 bb = (*it)->barycenter();
 
       //
       // create new mesh vertex
@@ -284,12 +276,10 @@ void dtMeshGRegion::createPyramids(dtGmshRegion *dtgr)
   //
   // add mesh vertices and pyramids to old volume
   //
-  std::map<::MVertex *, dtReal> minQ_mv;
   dt__forAllRefAuto(vertices, aVert)
   {
     aVert->setEntity(dtgr);
     dtgr->addMeshVertex(aVert);
-    minQ_mv[aVert] = std::numeric_limits<dtReal>::min();
   }
   dt__forAllRefAuto(pyramids, aPyr) dtgr->addPyramid(aPyr);
 
@@ -315,58 +305,35 @@ void dtMeshGRegion::createPyramids(dtGmshRegion *dtgr)
     dtgr->model()->remove(aPair.second);
   }
 
-  //
-  // create barChart
-  //
-  barChart QTet_0("QTet_0", -1., 1., 30);
-  dt__forAllRefAuto(dtgr->tetrahedra, aTet) QTet_0(qShapeMetric()(aTet));
-  dt__info(createPyramids(), << QTet_0);
-
   dtOVMMesh ovm;
   createOVM(dtgr, ovm);
+  ::OpenVolumeMesh::VertexPropertyT<int> nShifts =
+    ovm.request_vertex_property<int>("nShifts", 0);
+  ::OpenVolumeMesh::VertexPropertyT<dtPoint3> goalPosition =
+    ovm.request_vertex_property<dtPoint3>("goalPosition");
+  ::OpenVolumeMesh::VertexPropertyT<dtPoint3> orgPosition =
+    ovm.request_vertex_property<dtPoint3>("orgPosition");
 
   //
-  // first open
+  // test opening of pyramids to barycenter of adjacent tetrahedra; it is
+  // necessary to make sure that the pyramid has a positive volume
   //
-  dt__forAllRefAuto(vertices, aVert)
+  dt__forAllRefAuto(dtgr->pyramids, aPyr)
   {
+    MVertex *aVert = aPyr->getVertex(4);
     ovmVertexH const &vH = ovm.at(aVert);
     dt__throwIf(!vH.is_valid(), createPyramids());
 
-    dtPoint3 cC = dtGmshModel::extractPosition(aVert);
+    orgPosition[vH] = dtGmshModel::extractPosition(aVert);
+    goalPosition[vH] = extractPyramidGoalPosition(vH, ovm);
 
     //
     // set vertex position
     //
-    std::vector<dtPoint3> pp = ovm.adjacentVertices(vH);
-    dtPoint3 c1 = dtLinearAlgebra::toDtPoint3(
-      (1. / pp.size()) * dtLinearAlgebra::sum(dtLinearAlgebra::toDtVector3(pp))
-    );
-    ovm.replacePosition(vH, cC + 0.01 * (c1 - cC));
-  }
-  dt__forAllRefAuto(pyramids, aPyr)
-  {
+    ovm.replacePosition(vH, goalPosition[vH]);
     if (aPyr->getVolume() < 0.)
       aPyr->reverse();
-  }
-
-  //
-  // get minimal shape metric
-  //
-  dtReal gMinQ = std::numeric_limits<dtReal>::max();
-  dtReal gPyrMinQ = std::numeric_limits<dtReal>::max();
-  dtReal gMinL = std::numeric_limits<dtReal>::max();
-  dtReal gMaxL = std::numeric_limits<dtReal>::min();
-  dt__forAllRefAuto(dtgr->tetrahedra, aTet)
-  {
-    gMinQ = std::min(qShapeMetric()(aTet), gMinQ);
-    gMinL = std::min<dtReal>(aTet->minEdge(), gMinL);
-    gMaxL = std::max<dtReal>(aTet->maxEdge(), gMaxL);
-  }
-  dt__forAllRefAuto(dtgr->pyramids, aPyr)
-  {
-    gMinQ = std::min(qShapeMetric()(aPyr), gMinQ);
-    gPyrMinQ = std::min(qShapeMetric()(aPyr), gPyrMinQ);
+    ovm.replacePosition(vH, orgPosition[vH]);
   }
 
   //
@@ -374,6 +341,8 @@ void dtMeshGRegion::createPyramids(dtGmshRegion *dtgr)
   //
   dt__forFromToIndex(0, config().lookup<dtInt>("_nPyramidOpenSteps"), ii)
   {
+    dtReal const cRelax =
+      float(ii + 1) / float(config().lookup<dtInt>("_nPyramidOpenSteps"));
     dtInt vertMove = 0;
     dtInt vertFix = 0;
     dt__forAllRefAuto(vertices, aVert)
@@ -381,174 +350,203 @@ void dtMeshGRegion::createPyramids(dtGmshRegion *dtgr)
       ovmVertexH const &vH = ovm.at(aVert);
       dt__throwIf(!vH.is_valid(), createPyramids());
 
-      dtPoint3 cC = dtGmshModel::extractPosition(aVert);
+      dtPoint3 const cOrg = orgPosition.at(vH);
+      dtPoint3 const cGoal = goalPosition.at(vH);
+      dtPoint3 const cCur = dtGmshModel::extractPosition(ovm.at(vH));
 
       //
       // set vertex position
       //
-      std::vector<dtPoint3> pp = ovm.adjacentVertices(vH);
-      dtPoint3 c1 = dtLinearAlgebra::toDtPoint3(
-        (1. / pp.size()) *
-        dtLinearAlgebra::sum(dtLinearAlgebra::toDtVector3(pp))
-      );
-      ovm.replacePosition(
-        vH, cC + config().lookup<dtReal>("_relax") * (c1 - cC)
-      );
+      ovm.replacePosition(vH, cOrg + cRelax * (cGoal - cOrg));
 
-      dtReal pyrShape = std::numeric_limits<dtReal>::min();
-      ::MPyramid *pyr = NULL;
-      ;
-      std::vector<dtReal> qq;
-      for (ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); ++vcIt)
+      // check if any neighbor tetrahedra gets inverted by the shift
+      if (validShift(vH, ovm))
       {
-        qq.push_back(qShapeMetric()(ovm.at(*vcIt)));
-
-        // tetrahedra
-        if (ovm.at(*vcIt)->getNumVertices() == 4)
-        {
-          //
-          // detect volume sign change --> element gets inverted
-          //
-          dtReal vol = ovm[*vcIt]->getVolume();
-          dtReal iVol = ovm.request_cell_property<dtReal>("iV")[*vcIt];
-          if ((iVol * vol) <= 0.)
-          {
-            qq[qq.size() - 1] = -1. * fabs(qq[qq.size() - 1]);
-          }
-        }
-        // pyramid
-        else
-        {
-          pyrShape = qq.back();
-          pyr = dynamic_cast<::MPyramid *>(ovm[*vcIt]);
-        }
+        vertMove++;
+        nShifts[vH] = nShifts[vH] + 1;
       }
-
-      //
-      // check if step is not ok
-      //
-      // min shape metric should not decrease
-      if (progHelper::min(qq) < gMinQ)
-      {
-        ovm.replacePosition(vH, cC);
-        vertFix++;
-      }
-      // inverted element
-      else if (progHelper::min(qq) < 0.)
-      {
-        ovm.replacePosition(vH, cC);
-        vertFix++;
-      }
-      // pyramid violates maxHeight
-      else if (pyramidHeight(pyr) >
-               config().lookupDef<dtReal>(
-                 "_maxHeight", std::numeric_limits<dtReal>::max()
-               ))
-      {
-        // revert last step
-        ovm.replacePosition(vH, cC);
-        vertFix++;
-      }
+      // shift inverts at least one tetrahedra
       else
       {
-        gMinQ = std::min(progHelper::min(qq), gMinQ);
-        gPyrMinQ = std::min(pyrShape, gPyrMinQ);
-        minQ_mv[aVert] = progHelper::min(qq);
-        vertMove++;
+        // retract last step
+        ovm.replacePosition(vH, cCur);
+        vertFix++;
       }
     }
-    logC(
-    ) << logMe::dtFormat("%3i / %3i : %8i / %8i => Q = %8.2e / Q_pyr = %8.2e") %
-           ii % config().lookup<dtInt>("_nPyramidOpenSteps") % vertMove %
-           vertFix % gMinQ % gPyrMinQ
-      << std::endl;
+    logC() << logMe::dtFormat("%3i / %3i ( %f ) : %8i / %8i") % ii %
+                config().lookup<dtInt>("_nPyramidOpenSteps") % cRelax %
+                vertMove % vertFix
+           << std::endl;
   }
-  barChart QTet_1("QTet_1", -1., 1., 30);
-  dt__forAllRefAuto(dtgr->tetrahedra, aTet)
-  {
-    QTet_1(fabs(qShapeMetric()(aTet)));
-  }
-  dt__info(createPyramids(), << QTet_1);
 
-  barChart QPyr_1("QPyr_1", -1., 1., 30);
-  dt__forAllRefAuto(dtgr->pyramids, aPyr)
-  {
-    QPyr_1(fabs(qShapeMetric()(aPyr)));
-  }
-  dt__info(createPyramids(), << QPyr_1);
+  //
+  // make sure that all vertices are shifted one time; if not throw an
+  // exception
+  //
+  dt__forAllRefAuto(vertices, aVert)
+    dt__throwIf(nShifts.at(ovm.at(aVert)) == 0, createPyramids());
 
   dt__forFromToIndex(0, config().lookup<dtInt>("_nSmooths"), ii)
   {
-    dtOptimizeMeshGRegion()(dtgr);
+    dtOptimizeMeshGRegion opt;
+    if (optionHandling::debugTrue())
+      opt.setOption("debug", "true");
+    opt(dtgr);
   }
-
-  barChart QTet_2("QTet_2", -1., 1., 30);
-  dt__forAllRefAuto(dtgr->tetrahedra, aTet)
-  {
-    QTet_2(fabs(qShapeMetric()(aTet)));
-  }
-  dt__info(createPyramids(), << QTet_2);
-
-  barChart QPyr_2("QPyr_2", -1., 1., 30);
-  dt__forAllRefAuto(dtgr->pyramids, aPyr)
-  {
-    QPyr_2(fabs(qShapeMetric()(aPyr)));
-  }
-  dt__info(createPyramids(), << QPyr_2);
 }
 
 void dtMeshGRegion::createOVM(dtGmshRegion *dtgr, dtOVMMesh &ovm)
 {
   //
-  // create overall element vector
-  //
-  std::vector<::MElement *> me(dtgr->getNumMeshElements());
-  dt__forFromToIndex(0, dtgr->getNumMeshElements(), ii)
-  {
-    me[ii] = dtgr->getMeshElement(ii);
-  }
-
-  //
-  // create octree
-  //
-  ::MElementOctree oct(me);
-
-  //
   // create OpenVolumeMesh
   //
   ::OpenVolumeMesh::CellPropertyT<dtReal> iV =
-    ovm.request_cell_property<dtReal>("iV");
+    ovm.request_cell_property<dtReal>(
+      "iVol", std::numeric_limits<dtReal>::infinity()
+    );
   ovm.set_persistent(iV);
 
-  dtInt zeroVol = 0;
-  dt__forAllRefAuto(dtgr->pyramids, aPyr)
+  dt__forFromToIndex(0, dtgr->getNumMeshElements(), ii)
   {
-    dt__forFromToIndex(0, 5, ii)
-    {
-      std::vector<::MElement *> meVec = oct.findAll(
-        aPyr->getVertex(ii)->x(),
-        aPyr->getVertex(ii)->y(),
-        aPyr->getVertex(ii)->z(),
-        -1
-      );
-      dt__forAllRefAuto(meVec, aMe)
-      {
-        if (aMe->getVolume() == 0.)
-          zeroVol++;
-        ovmCellH cH = ovm.addCell(aMe);
-        ovm.request_cell_property<dtReal>("iV")[cH] = aMe->getVolume();
-      }
-    }
+    ::MElement *aMe = dtgr->getMeshElement(ii);
+    ovmCellH cH = ovm.addCell(aMe);
+    iV[cH] = aMe->getVolume();
   }
 }
 
-dtReal dtMeshGRegion::pyramidHeight(::MPyramid *pyr)
+dtPoint3
+dtMeshGRegion::extractPyramidGoalPosition(ovmVertexH const &vH, dtOVMMesh &ovm)
 {
-  SPoint3 bary = pyr->getFace(4).barycenter();
-  return sqrt(
-    (bary.x() - pyr->getVertex(4)->x()) * (bary.x() - pyr->getVertex(4)->x()) +
-    (bary.y() - pyr->getVertex(4)->y()) * (bary.y() - pyr->getVertex(4)->y()) +
-    (bary.z() - pyr->getVertex(4)->z()) * (bary.z() - pyr->getVertex(4)->z())
+  std::vector<dtPoint3> pp;
+  int nTets = 0;
+  int nPyrs = 0;
+  dtVector3 n_pyr;
+  dtPoint3 bary_pyr;
+  dtReal l_pyr;
+
+  // iterate neighbor cells of vertex
+  for (ovmVertexCellI c_it = ovm.vc_iter(vH); c_it.valid(); ++c_it)
+  {
+    ::MElement *me = ovm[*c_it];
+    //
+    // store barycenter of neighbor tetrahedron in vector; increase tetrahedra
+    // counter
+    //
+    if (dynamic_cast<::MTetrahedron *>(me))
+    {
+      nTets = nTets + 1;
+      ::SPoint3 const bary = me->barycenter();
+      pp.push_back(dtPoint3(bary.x(), bary.y(), bary.z()));
+    }
+    //
+    // store barycenter, characterisitc length and normal of neighbor pyramid;
+    // the normal is calculated orthogonal to pyramid's quadrangle; the
+    // direction of the normal is "corrected" afterwards to point into the
+    // direction of the maximum distance between quadrangle center and one
+    // tetrahedron's bary center
+    //
+    else if (dynamic_cast<::MPyramid *>(me))
+    {
+      nPyrs = nPyrs + 1;
+      dtPoint3 const v0 = dtGmshModel::extractPosition(me->getVertex(0));
+      dtPoint3 const v1 = dtGmshModel::extractPosition(me->getVertex(1));
+      dtPoint3 const v2 = dtGmshModel::extractPosition(me->getVertex(2));
+      dtPoint3 const v3 = dtGmshModel::extractPosition(me->getVertex(3));
+      // calculate normal direction
+      n_pyr = dtLinearAlgebra::normalize(
+        dtLinearAlgebra::crossProduct(v1 - v0, v3 - v0)
+      );
+      ::SPoint3 const bary = me->barycenter();
+      bary_pyr = dtPoint3(bary.x(), bary.y(), bary.z());
+      // calucate characterisitc pyramid length as the minimum edge length of
+      // the pyramid's rectangle
+      l_pyr = std::min(
+        dtLinearAlgebra::distance(v0, v3),
+        std::min(
+          dtLinearAlgebra::distance(v3, v2),
+          std::min(
+            dtLinearAlgebra::distance(v2, v1), dtLinearAlgebra::distance(v1, v0)
+          )
+        )
+      );
+    }
+  }
+
+  dt__throwIf(nTets == 0, extractPyramidGoalPosition());
+  dt__throwIf(nPyrs != 1, extractPyramidGoalPosition());
+
+  //
+  // calculate dot product of distance tetrahedron's barycenter to rectangle's
+  // centroid
+  //
+  std::vector<dtReal> ss;
+  dt__forAllRefAuto(pp, aP)
+  {
+    ss.push_back(dtLinearAlgebra::dotProduct(n_pyr, aP - bary_pyr));
+  }
+
+  //
+  // find max and min value of dot products
+  //
+  dtReal maxS = *std::max_element(ss.begin(), ss.end());
+  dtReal minS = *std::min_element(ss.begin(), ss.end());
+
+  //
+  // barycenter with the maximum absolute values defines the "correct side";
+  // store direction in dir as +1.0 or -1.0
+  //
+  dtReal dir = 1.0;
+  if (fabs(maxS) > fabs(minS))
+  {
+    if (maxS < 0.0)
+      dir = -1.0;
+  }
+  else
+  {
+    if (minS < 0.0)
+      dir = -1.0;
+  }
+
+  dtPoint3 const cGoal = bary_pyr + l_pyr / 2.0 * dir * n_pyr;
+
+  Msg::Debug(
+    "vH = %d / nTets = %d / pp.size() = %d / %f %f %f -> %f %f %f / dir = %f / "
+    "l_pyr = %f",
+    vH,
+    nTets,
+    pp.size(),
+    ovm[vH]->x(),
+    ovm[vH]->y(),
+    ovm[vH]->z(),
+    cGoal.x(),
+    cGoal.y(),
+    cGoal.z(),
+    dir,
+    l_pyr
   );
+
+  return cGoal;
+}
+
+bool dtMeshGRegion::validShift(ovmVertexH const vH, dtOVMMesh &ovm)
+{
+  // check if any neighbor tetrahedra gets inverted by the shift
+  for (ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); ++vcIt)
+  {
+    // tetrahedra
+    if (ovm.at(*vcIt)->getNumVertices() == 4)
+    {
+      //
+      // detect volume sign change --> element gets inverted
+      //
+      dtReal vol = ovm[*vcIt]->getVolume();
+      dtReal iVol = ovm.request_cell_property<dtReal>("iVol")[*vcIt];
+      if ((iVol * vol) <= 0.)
+      {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 } // namespace dtOO
