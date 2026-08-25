@@ -38,6 +38,7 @@ public:
   std::ostringstream &GetNoHeader(TLogLevel level = logERROR);
 
 public:
+  static dtReal LogTime( void );
   static TLogLevel &ReportingLevel(void);
   static std::string ToString(TLogLevel level);
   static TLogLevel FromString(const std::string &level);
@@ -71,6 +72,11 @@ template <typename T> std::ostringstream &logBase<T>::Get(TLogLevel level)
 
   myLogLevel = level;
   return os;
+}
+
+template <typename T> dtReal logBase<T>::LogTime( void )
+{
+  return (float(clock() - startTime) / (float CLOCKS_PER_SEC));
 }
 
 template <typename T>
