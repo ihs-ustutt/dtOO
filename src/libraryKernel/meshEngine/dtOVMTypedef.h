@@ -40,6 +40,7 @@ typedef ::OpenVolumeMesh::CellHandle ovmCellH;
 // iterators
 //
 typedef ::OpenVolumeMesh::VertexIter ovmVertexI;
+typedef ::OpenVolumeMesh::CellIter ovmCellI;
 typedef ::OpenVolumeMesh::VertexOHalfEdgeIter ovmVertexOHalfedgeI;
 typedef ::OpenVolumeMesh::VertexCellIter ovmVertexCellI;
 typedef ::OpenVolumeMesh::CellVertexIter ovmCellVertexI;
