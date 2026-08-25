@@ -24,7 +24,6 @@ License
 #include "dtGmshFace.h"
 #include "dtGmshModel.h"
 #include "dtGmshRegion.h"
-#include "dtGmshVertex.h"
 #include "dtMoabCore.h"
 #include "dtOMMeshDivided.h"
 #include "dtOMMeshManifold.h"
@@ -1026,7 +1025,9 @@ void dtMeshGRegionWithBoundaryLayer::adjustThickness(void)
   //
   // smooth
   //
-  dt__forFromToIndex(0, config().lookup<dtInt>("_nGrowingSmoothingSteps"), ii)
+  dt__forFromToIndex(
+    0, config().lookup<dtInt>("_nGrowingSmoothingSteps"), sStep
+  )
   {
     dtOMVertexField<dtReal> tFTwin("tFTwin", _omInit, 0.);
 
@@ -1061,7 +1062,9 @@ void dtMeshGRegionWithBoundaryLayer::adjustThickness(void)
   //
   // adjust thickness
   //
-  dt__forFromToIndex(0, config().lookup<dtInt>("_nGrowingSmoothingSteps"), ii)
+  dt__forFromToIndex(
+    0, config().lookup<dtInt>("_nGrowingSmoothingSteps"), sStep
+  )
   {
     dt__forFromToIter(
       omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
@@ -1074,10 +1077,10 @@ void dtMeshGRegionWithBoundaryLayer::adjustThickness(void)
         if (_buddyF.at(*vv_it).empty() || _slidableF.at(*vv_it))
           continue;
 
-        std::vector<::MVertex *> &thisBuddies = _buddyF[*vv_it];
-        std::vector<dtReal> &thisRealSpacing = _realSpacing[*vv_it];
-        dtReal &thisThickness = _tF[*vv_it];
-        dtVector3 &thisNormal = _nF[*vv_it];
+        std::vector<::MVertex *> const &thisBuddies = _buddyF.at(*vv_it);
+        std::vector<dtReal> const &thisRealSpacing = _realSpacing.at(*vv_it);
+        dtReal const &thisThickness = _tF.at(*vv_it);
+        dtVector3 const &thisNormal = _nF.at(*vv_it);
         dtPoint3 thisStart = dtGmshModel::extractPosition(_omInit[*vv_it]);
         dt__forAllIndex(thisRealSpacing, ii)
         {
