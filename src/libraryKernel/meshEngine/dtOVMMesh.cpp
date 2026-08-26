@@ -232,9 +232,10 @@ bool dtOVMMesh::removeTet(ovmCellH const &cH)
 
   auto it = std::find(_me.begin(), _me.end(), me);
 
-  if (it != _me.end())
-    //*it = nullptr;
+  if (it != _me.end()) {
     delete *it;
+    *it = nullptr;
+  }
   //
   // delete the OVM cell
   //
@@ -252,18 +253,13 @@ ovmVertexH dtOVMMesh::splitEdge(ovmVertexH const &v0, ovmVertexH const &v1)
   // find all tetrahedra containing the edge.
   //
   std::vector<ovmCellH> cells;
-
   for (ovmVertexCellI c_it = vc_iter(v0); c_it.valid(); ++c_it)
   {
     ovmCellH const cH = *c_it;
-
     ::MElement *me = (*this)[cH];
-
     if (!dynamic_cast<::MTetrahedron *>(me))
       continue;
-
     bool hasV1 = false;
-
     for (ovmCellVertexI v_it = cv_iter(cH); v_it.valid(); ++v_it)
     {
       if (*v_it == v1)
@@ -272,7 +268,6 @@ ovmVertexH dtOVMMesh::splitEdge(ovmVertexH const &v0, ovmVertexH const &v1)
         break;
       }
     }
-
     if (hasV1)
       cells.push_back(cH);
   }
@@ -280,13 +275,9 @@ ovmVertexH dtOVMMesh::splitEdge(ovmVertexH const &v0, ovmVertexH const &v1)
   if (cells.empty())
     return ovmVertexH();
 
-  //
   // Create midpoint vertex.
-  //
   dtPoint3 const p0 = dtGmshModel::extractPosition((*this)[v0]);
-
   dtPoint3 const p1 = dtGmshModel::extractPosition((*this)[v1]);
-
   ::MVertex *mv = new ::MVertex(
     0.5 * (p0.x() + p1.x()), 0.5 * (p0.y() + p1.y()), 0.5 * (p0.z() + p1.z())
   );
@@ -298,23 +289,19 @@ ovmVertexH dtOVMMesh::splitEdge(ovmVertexH const &v0, ovmVertexH const &v1)
   {
     mv->setEntity(this->at(v0)->onWhat());
   }
-
   ovmVertexH const vm = addVertex(mv);
 
   //
   // Store the old tetrahedra.
   //
   std::vector<std::vector<ovmVertexH>> oldCells;
-
   for (ovmCellH const &cH : cells)
   {
     std::vector<ovmVertexH> vv;
-
     for (ovmCellVertexI v_it = cv_iter(cH); v_it.valid(); ++v_it)
     {
       vv.push_back(*v_it);
     }
-
     oldCells.push_back(vv);
   }
 
@@ -324,24 +311,18 @@ ovmVertexH dtOVMMesh::splitEdge(ovmVertexH const &v0, ovmVertexH const &v1)
   for (ovmCellH const &cH : cells)
     removeTet(cH);
 
-  //
   // Split every tetrahedron into two tetrahedra.
-  //
   for (std::vector<ovmVertexH> const &vv : oldCells)
   {
     std::vector<ovmVertexH> other;
-
     for (ovmVertexH const &vH : vv)
     {
       if (vH != v0 && vH != v1)
         other.push_back(vH);
     }
-
     if (other.size() != 2)
       continue;
-
     addTet(v0, vm, other[0], other[1]);
-
     addTet(vm, v1, other[0], other[1]);
   }
 
@@ -483,13 +464,10 @@ bool dtOVMMesh::trySplitEdge(
   // Remove all tetrahedra incident to the new vertex.
   //
   std::vector<ovmCellH> newCells;
-
   for (ovmVertexCellI c_it = vc_iter(vNew); c_it.valid(); ++c_it)
   {
     ovmCellH const cH = *c_it;
-
     ::MElement *me = (*this)[cH];
-
     if (dynamic_cast<::MTetrahedron *>(me))
       newCells.push_back(cH);
   }
@@ -497,9 +475,7 @@ bool dtOVMMesh::trySplitEdge(
   for (ovmCellH const &cH : newCells)
   {
     ::MElement *me = (*this)[cH];
-
     _ovm_gmshElement.erase(me);
-
     ovmMesh::delete_cell(cH);
   }
 
@@ -507,9 +483,7 @@ bool dtOVMMesh::trySplitEdge(
   // Remove the newly created vertex.
   //
   _ovm_gmsh.erase((*this)[vNew]);
-
   _mv.pop_back();
-
   ovmMesh::delete_vertex(vNew);
 
   //
@@ -533,6 +507,243 @@ bool dtOVMMesh::trySplitEdge(
 
     addCell(tet);
   }
+
+  return false;
+}
+
+bool dtOVMMesh::tryRemoveTet(
+  ovmCellH const &cH,
+  std::function<bool(std::vector<ovmVertexH> const &)> const &accept
+)
+{
+  if (!cH.is_valid())
+    return false;
+
+  ::MElement *me0 = (*this)[cH];
+
+  if (!dynamic_cast<::MTetrahedron *>(me0))
+    return false;
+
+  //
+  // Get vertices of the first tetrahedron.
+  //
+  std::vector<ovmVertexH> tet0;
+
+  for (ovmCellVertexI v_it = cv_iter(cH); v_it.valid(); ++v_it)
+  {
+    tet0.push_back(*v_it);
+  }
+
+  if (tet0.size() != 4)
+    return false;
+
+  //
+  // Find a neighbouring tetrahedron sharing a complete face.
+  //
+  ovmCellH neighbour;
+  std::vector<ovmVertexH> shared;
+
+  for (ovmCellI c_it = c_iter(); c_it.valid(); ++c_it)
+  {
+    ovmCellH const cH2 = *c_it;
+
+    if (cH2 == cH)
+      continue;
+
+    ::MElement *me2 = (*this)[cH2];
+
+    if (!dynamic_cast<::MTetrahedron *>(me2))
+      continue;
+
+    std::vector<ovmVertexH> common;
+
+    for (ovmVertexH const &v0 : tet0)
+    {
+      for (ovmCellVertexI v_it = cv_iter(cH2); v_it.valid(); ++v_it)
+      {
+        if (v0 == *v_it)
+        {
+          common.push_back(v0);
+          break;
+        }
+      }
+    }
+
+    //
+    // Two tetrahedra sharing three vertices share one face.
+    //
+    if (common.size() == 3)
+    {
+      neighbour = cH2;
+      shared = common;
+      break;
+    }
+  }
+
+  if (!neighbour.is_valid())
+    return false;
+
+  //
+  // Get vertices of the neighbouring tetrahedron.
+  //
+  std::vector<ovmVertexH> tet1;
+
+  for (ovmCellVertexI v_it = cv_iter(neighbour); v_it.valid(); ++v_it)
+  {
+    tet1.push_back(*v_it);
+  }
+
+  if (tet1.size() != 4)
+    return false;
+
+  //
+  // Find the two vertices which are not part of the common face.
+  //
+  ovmVertexH d;
+  ovmVertexH e;
+
+  for (ovmVertexH const &vH : tet0)
+  {
+    bool isShared = false;
+
+    for (ovmVertexH const &sH : shared)
+    {
+      if (vH == sH)
+      {
+        isShared = true;
+        break;
+      }
+    }
+
+    if (!isShared)
+    {
+      d = vH;
+      break;
+    }
+  }
+
+  for (ovmVertexH const &vH : tet1)
+  {
+    bool isShared = false;
+
+    for (ovmVertexH const &sH : shared)
+    {
+      if (vH == sH)
+      {
+        isShared = true;
+        break;
+      }
+    }
+
+    if (!isShared)
+    {
+      e = vH;
+      break;
+    }
+  }
+
+  if (!d.is_valid() || !e.is_valid())
+    return false;
+
+  //
+  // The two tetrahedra form a triangular bipyramid.
+  //
+  // The 2->3 flip replaces
+  //
+  //   (A,B,C,D)
+  //   (A,B,C,E)
+  //
+  // by
+  //
+  //   (A,B,D,E)
+  //   (B,C,D,E)
+  //   (C,A,D,E)
+  //
+  ovmVertexH const a = shared[0];
+  ovmVertexH const b = shared[1];
+  ovmVertexH const c = shared[2];
+
+  //
+  // Store the original tetrahedra for rollback.
+  //
+  std::vector<ovmVertexH> oldTet0 = tet0;
+  std::vector<ovmVertexH> oldTet1 = tet1;
+
+  //
+  // Remove the two original tetrahedra.
+  //
+  if (!removeTet(cH))
+    return false;
+
+  if (!removeTet(neighbour))
+  {
+    //
+    // Restore first tetrahedron.
+    //
+    addTet(oldTet0[0], oldTet0[1], oldTet0[2], oldTet0[3]);
+
+    return false;
+  }
+
+  //
+  // Create the three new tetrahedra.
+  //
+  ovmCellH const c0 = addTet(a, b, d, e);
+  ovmCellH const c1 = addTet(b, c, d, e);
+  ovmCellH const c2 = addTet(c, a, d, e);
+
+  if (!c0.is_valid() || !c1.is_valid() || !c2.is_valid())
+  {
+    //
+    // This should normally not happen. Restore the original
+    // configuration.
+    //
+    if (c0.is_valid())
+      removeTet(c0);
+
+    if (c1.is_valid())
+      removeTet(c1);
+
+    if (c2.is_valid())
+      removeTet(c2);
+
+    addTet(oldTet0[0], oldTet0[1], oldTet0[2], oldTet0[3]);
+
+    addTet(oldTet1[0], oldTet1[1], oldTet1[2], oldTet1[3]);
+
+    return false;
+  }
+
+  //
+  // Vertices affected by the operation.
+  //
+  std::vector<ovmVertexH> affectedVertices;
+
+  affectedVertices.push_back(a);
+  affectedVertices.push_back(b);
+  affectedVertices.push_back(c);
+  affectedVertices.push_back(d);
+  affectedVertices.push_back(e);
+
+  //
+  // Let the optimizer evaluate the new configuration.
+  //
+  if (accept(affectedVertices))
+    return true;
+
+  //
+  // ----------------------------------------------------------
+  // Rollback
+  // ----------------------------------------------------------
+  //
+
+  removeTet(c0);
+  removeTet(c1);
+  removeTet(c2);
+
+  addTet(oldTet0[0], oldTet0[1], oldTet0[2], oldTet0[3]);
+
+  addTet(oldTet1[0], oldTet1[1], oldTet1[2], oldTet1[3]);
 
   return false;
 }

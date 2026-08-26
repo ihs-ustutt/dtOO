@@ -66,6 +66,7 @@ void dtHybridOptMeshGRegion::operator()(dtGmshRegion *dtgr)
   dt__forFromToIndex(0, dtgr->getNumMeshElements(), ii)
   {
     ::MElement *aMe = dtgr->getMeshElement(ii);
+    dt__warnIf(aMe->setVolumePositive() == false, operator());
     ovmCellH cH = ovm.addCell(aMe);
   }
 
@@ -96,6 +97,7 @@ void dtHybridOptMeshGRegion::operator()(dtGmshRegion *dtgr)
 
   this->optimizeTetrahedra(ovm, nTetIter);
   ovm.applyTo(dtgr);
+
   if (debugTrue())
   {
     std::string fname = ::boost::str(
@@ -164,7 +166,6 @@ dtHybridOptMeshGRegion::localQuality(ovmVertexH const &vH, dtOVMMesh &ovm) const
       continue;
 
     dtReal const quality = me->minSICNShapeMeasure();
-
     q.minimum = std::min(q.minimum, quality);
     q.average += quality;
 
@@ -238,6 +239,21 @@ dtHybridOptMeshGRegion::localQuality(ovmVertexH const &vH, dtOVMMesh &ovm) const
       q.minimumRelativeVolume = 0.0;
   }
 
+  Msg::Debug(
+    "Quality:\n"
+    "  minimum = %e\n"
+    "  average = %e\n"
+    "  minimumVolume = %e\n"
+    "  minimumRelativeVolume = %e\n"
+    "  nInvalid = %d\n"
+    "  nReversed = %d",
+    q.minimum,
+    q.average,
+    q.minimumVolume,
+    q.minimumRelativeVolume,
+    q.nInvalid,
+    q.nReversed
+  );
   return q;
 }
 
@@ -246,22 +262,21 @@ bool dtHybridOptMeshGRegion::better(
 ) const
 {
   dtReal const eps = 1.e-8;
+  // Invalid/reversed tetrahedra have highest priority.
+  if (candidate.nInvalid < current.nInvalid)
+    return true;
 
   // Never accept a candidate that introduces invalid tetrahedra.
   if (candidate.nInvalid > current.nInvalid)
     return false;
 
-  // Prefer candidates that remove invalid tetrahedra.
-  if (candidate.nInvalid < current.nInvalid)
+  // Prefer candidates that remove reversed tetrahedra.
+  if (candidate.nReversed < current.nReversed)
     return true;
 
   // Never accept a candidate that reverses additional tetrahedra.
   if (candidate.nReversed > current.nReversed)
     return false;
-
-  // Prefer candidates that remove reversed tetrahedra.
-  if (candidate.nReversed < current.nReversed)
-    return true;
 
   // Prefer a larger minimum SICN quality.
   if (candidate.minimum > current.minimum + eps)
@@ -732,7 +747,8 @@ bool dtHybridOptMeshGRegion::optimizeTetrahedra(dtOVMMesh &ovm, int nIter) const
   for (int iter = 0; iter < nIter; ++iter)
   {
 
-    bool nChanged = 0;
+    int nSplits = 0;
+    int nRemoves = 0;
 
     std::vector<ovmCellH> cells;
 
@@ -757,6 +773,8 @@ bool dtHybridOptMeshGRegion::optimizeTetrahedra(dtOVMMesh &ovm, int nIter) const
         continue;
 
       ::MElement *me = ovm[cH];
+      if (me == NULL)
+        continue;
 
       if (!dynamic_cast<::MTetrahedron *>(me))
         continue;
@@ -777,7 +795,7 @@ bool dtHybridOptMeshGRegion::optimizeTetrahedra(dtOVMMesh &ovm, int nIter) const
 
       if (this->splitTetEdge(cH, ovm))
       {
-        nChanged = nChanged + 1;
+        nSplits = nSplits + 1;
 
         Msg::Info(
           "dtHybridOptMeshGRegion::optimizeTetrahedra() : "
@@ -785,19 +803,310 @@ bool dtHybridOptMeshGRegion::optimizeTetrahedra(dtOVMMesh &ovm, int nIter) const
           quality
         );
 
-        break;
+        // break;
+      }
+      else
+      {
+        if (this->removeTet(cH, ovm))
+        {
+          Msg::Info(
+            "dtHybridOptMeshGRegion::optimizeTetrahedra() : "
+            "remove tetrahedron with quality %g",
+            quality
+          );
+          nRemoves = nRemoves + 1;
+          // break;
+        }
+        else
+        {
+          Msg::Info(
+            "dtHybridOptMeshGRegion::optimizeTetrahedra() : "
+            "Either split nor remove of tetrahedron with quality %g was "
+            "possible.",
+            quality
+          );
+        }
       }
     }
-    
+
     Msg::Info(
-      "dtHybridOptMeshGRegion::optimizeTetrahedra() : iteration %d / nChanged = %d ",
-      iter, nChanged
+      "dtHybridOptMeshGRegion::optimizeTetrahedra() : iteration %d / nSplits "
+      "= %d / nRemoves = %d",
+      iter,
+      nSplits,
+      nRemoves
     );
 
-    if (nChanged==0)
+    // end optimizeTetrahedra if nothing was performed in this iteration
+    if ((nSplits == 0) && (nRemoves == 0))
       break;
   }
 
   return true;
+}
+
+bool dtHybridOptMeshGRegion::removeTet(ovmCellH const &cH, dtOVMMesh &ovm) const
+{
+  ::MElement *me = ovm[cH];
+
+  if (!dynamic_cast<::MTetrahedron *>(me))
+    return false;
+
+  //
+  // Store the local vertices of the tetrahedron.
+  //
+  std::vector<ovmVertexH> tetVertices;
+
+  for (ovmCellVertexI v_it = ovm.cv_iter(cH); v_it.valid(); ++v_it)
+  {
+    tetVertices.push_back(*v_it);
+  }
+
+  if (tetVertices.size() != 4)
+    return false;
+
+  //
+  // The quality before the operation is evaluated around
+  // all vertices of the two-tet configuration.
+  //
+  std::vector<ovmVertexH> qualityVertices = tetVertices;
+
+  //
+  // Find the neighbouring tetrahedron sharing a face.
+  //
+  ovmCellH neighbour;
+  std::vector<ovmVertexH> shared;
+
+  for (ovmCellI c_it = ovm.c_iter(); c_it.valid(); ++c_it)
+  {
+    ovmCellH const cH2 = *c_it;
+
+    if (cH2 == cH)
+      continue;
+
+    ::MElement *me2 = ovm[cH2];
+
+    if (!dynamic_cast<::MTetrahedron *>(me2))
+      continue;
+
+    std::vector<ovmVertexH> common;
+
+    for (ovmVertexH const &vH : tetVertices)
+    {
+      for (ovmCellVertexI v_it = ovm.cv_iter(cH2); v_it.valid(); ++v_it)
+      {
+        if (vH == *v_it)
+        {
+          common.push_back(vH);
+          break;
+        }
+      }
+    }
+
+    if (common.size() == 3)
+    {
+      neighbour = cH2;
+      shared = common;
+      break;
+    }
+  }
+
+  if (!neighbour.is_valid())
+    return false;
+
+  //
+  // Add the opposite vertex of the neighbouring tetrahedron.
+  //
+  for (ovmCellVertexI v_it = ovm.cv_iter(neighbour); v_it.valid(); ++v_it)
+  {
+    bool found = false;
+
+    for (ovmVertexH const &vH : shared)
+    {
+      if (*v_it == vH)
+      {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found)
+    {
+      qualityVertices.push_back(*v_it);
+      break;
+    }
+  }
+
+  //
+  // Remove duplicate vertices.
+  //
+  std::sort(
+    qualityVertices.begin(),
+    qualityVertices.end(),
+    [](ovmVertexH const &a, ovmVertexH const &b) { return a.idx() < b.idx(); }
+  );
+
+  qualityVertices.erase(
+    std::unique(qualityVertices.begin(), qualityVertices.end()),
+    qualityVertices.end()
+  );
+
+  //
+  // Calculate the current quality.
+  //
+  LocalQuality oldQuality;
+
+  oldQuality.minimum = std::numeric_limits<dtReal>::max();
+
+  oldQuality.average = 0.0;
+
+  oldQuality.minimumVolume = std::numeric_limits<dtReal>::max();
+
+  oldQuality.minimumRelativeVolume = std::numeric_limits<dtReal>::max();
+
+  oldQuality.nInvalid = 0;
+  oldQuality.nReversed = 0;
+
+  int n = 0;
+
+  for (ovmVertexH const &vH : qualityVertices)
+  {
+    LocalQuality const q = this->localQuality(vH, ovm);
+
+    oldQuality.minimum = std::min(oldQuality.minimum, q.minimum);
+
+    oldQuality.average += q.average;
+
+    oldQuality.minimumVolume =
+      std::min(oldQuality.minimumVolume, q.minimumVolume);
+
+    oldQuality.minimumRelativeVolume =
+      std::min(oldQuality.minimumRelativeVolume, q.minimumRelativeVolume);
+
+    oldQuality.nInvalid += q.nInvalid;
+    oldQuality.nReversed += q.nReversed;
+
+    ++n;
+  }
+
+  if (n > 0)
+    oldQuality.average /= static_cast<dtReal>(n);
+
+  //
+  // Try the local 2->3 retriangulation.
+  //
+  return ovm.tryRemoveTet(
+    cH,
+    [&](std::vector<ovmVertexH> const &affectedVertices) -> bool {
+      LocalQuality newQuality;
+
+      newQuality.minimum = std::numeric_limits<dtReal>::max();
+
+      newQuality.average = 0.0;
+
+      newQuality.minimumVolume = std::numeric_limits<dtReal>::max();
+
+      newQuality.minimumRelativeVolume = std::numeric_limits<dtReal>::max();
+
+      newQuality.nInvalid = 0;
+      newQuality.nReversed = 0;
+
+      int nNew = 0;
+
+      for (ovmVertexH const &vH : affectedVertices)
+      {
+        LocalQuality const q = this->localQuality(vH, ovm);
+
+        newQuality.minimum = std::min(newQuality.minimum, q.minimum);
+
+        newQuality.average += q.average;
+
+        newQuality.minimumVolume =
+          std::min(newQuality.minimumVolume, q.minimumVolume);
+
+        newQuality.minimumRelativeVolume =
+          std::min(newQuality.minimumRelativeVolume, q.minimumRelativeVolume);
+
+        newQuality.nInvalid += q.nInvalid;
+        newQuality.nReversed += q.nReversed;
+
+        ++nNew;
+      }
+
+      if (nNew > 0)
+        newQuality.average /= static_cast<dtReal>(nNew);
+
+      //
+      // The new configuration must not contain invalid
+      // or reversed tetrahedra.
+      //
+      if (newQuality.nInvalid > 0 || newQuality.nReversed > 0)
+      {
+        Msg::Info(
+          "dtHybridOptMeshGRegion::removeTet() : "
+          "2->3 retriangulation rejected: "
+          "invalid=%d reversed=%d",
+          newQuality.nInvalid,
+          newQuality.nReversed
+        );
+
+        return false;
+      }
+
+      //
+      // The resulting tetrahedra must have positive volume.
+      //
+      if (newQuality.minimumVolume <= 0.0 ||
+          newQuality.minimumRelativeVolume <= 0.0)
+      {
+        return false;
+      }
+
+      //
+      // Finally compare the complete LocalQuality.
+      //
+      if (!this->better(newQuality, oldQuality))
+      {
+        Msg::Info(
+          "dtHybridOptMeshGRegion::removeTet() : "
+          "2->3 retriangulation rejected: "
+          "quality did not improve "
+          "(min=%g -> %g, "
+          "average=%g -> %g, "
+          "minVolume=%g -> %g, "
+          "minRelativeVolume=%g -> %g)",
+          oldQuality.minimum,
+          newQuality.minimum,
+          oldQuality.average,
+          newQuality.average,
+          oldQuality.minimumVolume,
+          newQuality.minimumVolume,
+          oldQuality.minimumRelativeVolume,
+          newQuality.minimumRelativeVolume
+        );
+
+        return false;
+      }
+
+      Msg::Info(
+        "dtHybridOptMeshGRegion::removeTet() : "
+        "2->3 retriangulation accepted "
+        "(min=%g -> %g, "
+        "average=%g -> %g, "
+        "minVolume=%g -> %g, "
+        "minRelativeVolume=%g -> %g)",
+        oldQuality.minimum,
+        newQuality.minimum,
+        oldQuality.average,
+        newQuality.average,
+        oldQuality.minimumVolume,
+        newQuality.minimumVolume,
+        oldQuality.minimumRelativeVolume,
+        newQuality.minimumRelativeVolume
+      );
+
+      return true;
+    }
+  );
 }
 } // namespace dtOO

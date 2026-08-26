@@ -79,6 +79,7 @@ private:
   bool relocateVertex(ovmVertexH const &vH, dtOVMMesh &ovm) const;
   std::vector<ovmVertexH> extractMovableVertices(dtOVMMesh &ovm) const;
   void relocateVertices(dtOVMMesh &ovm, int nIter) const;
+  bool removeTet(ovmCellH const &cH, dtOVMMesh &ovm) const;
 
 private:
   static bool _registrated;

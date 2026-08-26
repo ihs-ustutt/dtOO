@@ -21,8 +21,8 @@ License
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <functional>
+#include <logMe/dtMacros.h>
 
 class MVertex;
 class MElement;
@@ -67,8 +67,12 @@ public:
     ovmVertexH const &v2,
     ovmVertexH const &v3
   );
+  bool tryRemoveTet(
+    ovmCellH const &cH,
+    std::function<bool(std::vector<ovmVertexH> const &)> const &accept
+  );
   bool removeTet(ovmCellH const &cH);
-    bool trySplitEdge(
+  bool trySplitEdge(
     ovmVertexH const &v0,
     ovmVertexH const &v1,
     std::function<bool(ovmVertexH const &)> const &accept
