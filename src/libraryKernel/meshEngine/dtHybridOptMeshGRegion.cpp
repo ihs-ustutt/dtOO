@@ -91,6 +91,20 @@ void dtHybridOptMeshGRegion::operator()(dtGmshRegion *dtgr)
 
     dtgr->model()->writeMSH(fname, 4.0, false, true);
   }
+
+  int const nTetIter = config().lookupDef<int>("_numTetIter", 3);
+
+  this->optimizeTetrahedra(ovm, nTetIter);
+  ovm.applyTo(dtgr);
+  if (debugTrue())
+  {
+    std::string fname = ::boost::str(
+      ::boost::format("%s_%s_%f_2.msh") % dtgr->getPhysicalString() %
+      getLabel() % logTime
+    );
+
+    dtgr->model()->writeMSH(fname, 4.0, false, true);
+  }
 }
 
 bool dtHybridOptMeshGRegion::isMovableVertex(
@@ -541,4 +555,249 @@ void dtHybridOptMeshGRegion::relocateVertices(dtOVMMesh &ovm, int nIter) const
   }
 }
 
+bool dtHybridOptMeshGRegion::splitTetEdge(ovmCellH const &cH, dtOVMMesh &ovm)
+  const
+{
+  ::MElement *me = ovm[cH];
+
+  if (!dynamic_cast<::MTetrahedron *>(me))
+    return false;
+
+  //
+  // Extract the four vertices of the tetrahedron.
+  //
+  std::vector<ovmVertexH> vertices;
+
+  for (ovmCellVertexI v_it = ovm.cv_iter(cH); v_it.valid(); ++v_it)
+  {
+    vertices.push_back(*v_it);
+  }
+
+  if (vertices.size() != 4)
+    return false;
+
+  //
+  // Find the longest edge.
+  //
+  dtReal maxLengthSquared = -1.0;
+
+  ovmVertexH v0;
+  ovmVertexH v1;
+
+  for (int i = 0; i < 4; ++i)
+  {
+    for (int j = i + 1; j < 4; ++j)
+    {
+      dtPoint3 const p0 = this->extractVertexPosition(vertices[i], ovm);
+
+      dtPoint3 const p1 = this->extractVertexPosition(vertices[j], ovm);
+
+      dtVector3 const d = p1 - p0;
+
+      dtReal const lengthSquared = dtLinearAlgebra::dotProduct(d, d);
+
+      if (lengthSquared > maxLengthSquared)
+      {
+        maxLengthSquared = lengthSquared;
+        v0 = vertices[i];
+        v1 = vertices[j];
+      }
+    }
+  }
+
+  if (!v0.is_valid() || !v1.is_valid())
+    return false;
+
+  //
+  // Make sure that the complete edge neighbourhood consists
+  // only of tetrahedra.
+  //
+  for (ovmVertexCellI c_it = ovm.vc_iter(v0); c_it.valid(); ++c_it)
+  {
+    ovmCellH const aCH = *c_it;
+
+    bool containsV1 = false;
+
+    for (ovmCellVertexI v_it = ovm.cv_iter(aCH); v_it.valid(); ++v_it)
+    {
+      if (*v_it == v1)
+      {
+        containsV1 = true;
+        break;
+      }
+    }
+
+    if (!containsV1)
+      continue;
+
+    if (!dynamic_cast<::MTetrahedron *>(ovm[aCH]))
+      return false;
+  }
+
+  //
+  // Store the quality before the split.
+  //
+  LocalQuality const oldQuality = this->localQuality(v0, ovm);
+
+  //
+  // Do not perform a split if the current neighbourhood already
+  // contains invalid tetrahedra.
+  //
+  if (oldQuality.nInvalid > 0 || oldQuality.nReversed > 0)
+    return false;
+
+  //
+  // Try the split. The lambda is executed while the split is
+  // present in the mesh. If it returns false, dtOVMMesh rolls
+  // the operation back.
+  //
+  return ovm.trySplitEdge(v0, v1, [&](ovmVertexH const &vNew) -> bool {
+    LocalQuality const newQuality = this->localQuality(vNew, ovm);
+
+    // Never accept a split which creates invalid tetrahedra.
+    if (newQuality.nInvalid > 0 || newQuality.nReversed > 0)
+    {
+      Msg::Info(
+        "dtHybridOptMeshGRegion::splitTetEdge() : "
+        "split rejected: invalid tetrahedra "
+        "(invalid=%d, reversed=%d)",
+        newQuality.nInvalid,
+        newQuality.nReversed
+      );
+      return false;
+    }
+    // Never accept a non-positive minimum volume.
+    if (newQuality.minimumVolume <= 0.0)
+    {
+      Msg::Info(
+        "dtHybridOptMeshGRegion::splitTetEdge() : "
+        "split rejected: minimum volume=%g",
+        newQuality.minimumVolume
+      );
+      return false;
+    }
+    // Never accept a non-positive relative volume.
+    if (newQuality.minimumRelativeVolume <= 0.0)
+    {
+      Msg::Info(
+        "dtHybridOptMeshGRegion::splitTetEdge() : "
+        "split rejected: minimum relative volume=%g",
+        newQuality.minimumRelativeVolume
+      );
+      return false;
+    }
+    // Compare the complete LocalQuality.
+    if (!this->better(newQuality, oldQuality))
+    {
+      Msg::Info(
+        "dtHybridOptMeshGRegion::splitTetEdge() : "
+        "split rejected: no quality improvement "
+        "(min=%g -> %g, average=%g -> %g, "
+        "minVolume=%g -> %g, "
+        "minRelativeVolume=%g -> %g)",
+        oldQuality.minimum,
+        newQuality.minimum,
+        oldQuality.average,
+        newQuality.average,
+        oldQuality.minimumVolume,
+        newQuality.minimumVolume,
+        oldQuality.minimumRelativeVolume,
+        newQuality.minimumRelativeVolume
+      );
+      return false;
+    }
+
+    Msg::Info(
+      "dtHybridOptMeshGRegion::splitTetEdge() : "
+      "split accepted "
+      "(min=%g -> %g, average=%g -> %g, "
+      "minVolume=%g -> %g, "
+      "minRelativeVolume=%g -> %g)",
+      oldQuality.minimum,
+      newQuality.minimum,
+      oldQuality.average,
+      newQuality.average,
+      oldQuality.minimumVolume,
+      newQuality.minimumVolume,
+      oldQuality.minimumRelativeVolume,
+      newQuality.minimumRelativeVolume
+    );
+
+    return true;
+  });
+}
+
+bool dtHybridOptMeshGRegion::optimizeTetrahedra(dtOVMMesh &ovm, int nIter) const
+{
+  for (int iter = 0; iter < nIter; ++iter)
+  {
+
+    bool nChanged = 0;
+
+    std::vector<ovmCellH> cells;
+
+    for (ovmCellI c_it = ovm.c_iter(); c_it.valid(); ++c_it)
+    {
+      ovmCellH const cH = *c_it;
+
+      ::MElement *me = ovm[cH];
+
+      if (!dynamic_cast<::MTetrahedron *>(me))
+        continue;
+
+      cells.push_back(cH);
+    }
+
+    for (ovmCellH const &cH : cells)
+    {
+      //
+      // The cell may have disappeared due to a previous split.
+      //
+      if (!cH.is_valid())
+        continue;
+
+      ::MElement *me = ovm[cH];
+
+      if (!dynamic_cast<::MTetrahedron *>(me))
+        continue;
+
+      //
+      // Check the current quality of the tet.
+      //
+      dtReal const quality = me->minSICNShapeMeasure();
+
+      //
+      // Only split very poor tetrahedra.
+      //
+      dtReal const splitThreshold =
+        config().lookupDef<dtReal>("_tetSplitThreshold", 0.10);
+
+      if (quality >= splitThreshold)
+        continue;
+
+      if (this->splitTetEdge(cH, ovm))
+      {
+        nChanged = nChanged + 1;
+
+        Msg::Info(
+          "dtHybridOptMeshGRegion::optimizeTetrahedra() : "
+          "split tetrahedron with quality %g",
+          quality
+        );
+
+        break;
+      }
+    }
+    
+    Msg::Info(
+      "dtHybridOptMeshGRegion::optimizeTetrahedra() : iteration %d / nChanged = %d ",
+      iter, nChanged
+    );
+
+    if (nChanged==0)
+      break;
+  }
+
+  return true;
+}
 } // namespace dtOO

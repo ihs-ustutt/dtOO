@@ -62,22 +62,21 @@ private:
   };
   bool isMovableVertex(ovmVertexH const &vH, dtOVMMesh &ovm) const;
   bool hasOptimizableElement(ovmVertexH const &vH, dtOVMMesh &ovm) const;
-
   LocalQuality localQuality(ovmVertexH const &vH, dtOVMMesh &ovm) const;
   bool better(LocalQuality const &candidate, LocalQuality const &current) const;
-
+  //
+  // tetrahedral topology optimization
+  //
+  bool splitTetEdge(ovmCellH const &cH, dtOVMMesh &ovm) const;
+  bool optimizeTetrahedra(dtOVMMesh &ovm, int nIter) const;
   dtPoint3 extractVertexPosition(ovmVertexH const &vH, dtOVMMesh &ovm) const;
-
   dtPoint3 calculateTetGoalPosition(ovmVertexH const &vH, dtOVMMesh &ovm) const;
   dtPoint3
   calculatePyramidGoalPosition(ovmVertexH const &vH, dtOVMMesh &ovm) const;
   dtPoint3 calculateGoalPosition(ovmVertexH const &vH, dtOVMMesh &ovm) const;
-
   std::vector<dtPoint3>
   extractCandidatePositions(ovmVertexH const &vH, dtOVMMesh &ovm) const;
-
   bool relocateVertex(ovmVertexH const &vH, dtOVMMesh &ovm) const;
-
   std::vector<ovmVertexH> extractMovableVertices(dtOVMMesh &ovm) const;
   void relocateVertices(dtOVMMesh &ovm, int nIter) const;
 

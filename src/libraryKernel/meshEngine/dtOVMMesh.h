@@ -22,6 +22,7 @@ License
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
+#include <functional>
 
 class MVertex;
 class MElement;
@@ -29,6 +30,8 @@ class MElement;
 #include "dtOVMTypedef.h"
 
 namespace dtOO {
+class dtGmshRegion;
+
 class dtOVMMesh : public ovmMesh {
 public:
   dt__classOnlyName(dtOVMMesh);
@@ -55,6 +58,26 @@ public:
   //
   void makePartition(dtInt const &num) const;
   std::vector<dtPoint3> adjacentVertices(ovmVertexH const &vH) const;
+  //
+  // tetrahedral mesh editing
+  //
+  ovmCellH addTet(
+    ovmVertexH const &v0,
+    ovmVertexH const &v1,
+    ovmVertexH const &v2,
+    ovmVertexH const &v3
+  );
+  bool removeTet(ovmCellH const &cH);
+    bool trySplitEdge(
+    ovmVertexH const &v0,
+    ovmVertexH const &v1,
+    std::function<bool(ovmVertexH const &)> const &accept
+  );
+  ovmVertexH splitEdge(ovmVertexH const &v0, ovmVertexH const &v1);
+  //
+  // apply mesh changes
+  //
+  bool applyTo(dtGmshRegion *dtgr);
 
 private:
   ovmVertexH addVertex(::MVertex *mv);
