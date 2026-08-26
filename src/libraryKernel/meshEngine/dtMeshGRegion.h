@@ -56,7 +56,7 @@ private:
   // static dtReal pyramidHeight(::MPyramid *pyr);
   static dtPoint3
   extractPyramidGoalPosition(ovmVertexH const &vH, dtOVMMesh &ovm);
-  static bool validShift(ovmVertexH const vH, dtOVMMesh & ovm);
+  static bool validShift(ovmVertexH const vH, dtOVMMesh &ovm);
 
 private:
   static bool _registrated;
