@@ -21,6 +21,7 @@ License
 #include "dtGmshModel.h"
 #include "dtGmshRegion.h"
 #include "dtMeshOperatorFactory.h"
+#include <boost/format.hpp>
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/MTriangle.h>
 #include <gmsh/MVertex.h>
@@ -47,6 +48,17 @@ dtOptimizeMeshGRegion::dtOptimizeMeshGRegion(const dtOptimizeMeshGRegion &orig)
 
 void dtOptimizeMeshGRegion::operator()(dtGmshRegion *dtgr)
 {
+  float const logTime = FILELog::LogTime();
+  if (debugTrue())
+  {
+    std::string fname = ::boost::str(
+      ::boost::format("%s_%s_%f_0_init.msh") % dtgr->getPhysicalString() %
+      getLabel() % logTime
+    );
+
+    dtgr->model()->writeMSH(fname, 4.0, false, true);
+  }
+
   Msg::Info("dtOptimizeMeshGRegion()() volume %d", dtgr->tag());
   if (config().lookupDef<bool>("_relocateVertices", false))
   {
@@ -54,6 +66,15 @@ void dtOptimizeMeshGRegion::operator()(dtGmshRegion *dtgr)
       "dtOptimizeMeshGRegion()() volume %d : RelocateVertices", dtgr->tag()
     );
     RelocateVertices(dtgr, config().lookup<int>("_relocateVerticesNumIter"));
+    if (debugTrue())
+    {
+      std::string fname = ::boost::str(
+        ::boost::format("%s_%s_%f_1_relocate.msh") % dtgr->getPhysicalString() %
+        getLabel() % logTime
+      );
+
+      dtgr->model()->writeMSH(fname, 4.0, false, true);
+    }
   }
 
   if (config().lookupDef<bool>("_relocateVerticesOfPyramids", false))
@@ -65,6 +86,15 @@ void dtOptimizeMeshGRegion::operator()(dtGmshRegion *dtgr)
     RelocateVerticesOfPyramids(
       dtgr, config().lookup<int>("_relocateVerticesOfPyramidsNumIter")
     );
+    if (debugTrue())
+    {
+      std::string fname = ::boost::str(
+        ::boost::format("%s_%s_%f_2_relocateOfPyramids.msh") %
+        dtgr->getPhysicalString() % getLabel() % logTime
+      );
+
+      dtgr->model()->writeMSH(fname, 4.0, false, true);
+    }
   }
   if (config().lookupDef<bool>("_gmsh", true))
   {
@@ -72,6 +102,15 @@ void dtOptimizeMeshGRegion::operator()(dtGmshRegion *dtgr)
       "dtOptimizeMeshGRegion()() volume %d : Optimize gmsh", dtgr->tag()
     );
     ::optimizeMeshGRegion()(dtgr);
+    if (debugTrue())
+    {
+      std::string fname = ::boost::str(
+        ::boost::format("%s_%s_%f_3_gmsh.msh") % dtgr->getPhysicalString() %
+        getLabel() % logTime
+      );
+
+      dtgr->model()->writeMSH(fname, 4.0, false, true);
+    }
   }
 
   if (config().lookupDef<bool>("_netgen", true))
@@ -80,6 +119,15 @@ void dtOptimizeMeshGRegion::operator()(dtGmshRegion *dtgr)
       "dtOptimizeMeshGRegion()() volume %d : Optimize netgen", dtgr->tag()
     );
     this->optimizeNetgen(dtgr);
+    if (debugTrue())
+    {
+      std::string fname = ::boost::str(
+        ::boost::format("%s_%s_%f_4_netgen.msh") % dtgr->getPhysicalString() %
+        getLabel() % logTime
+      );
+
+      dtgr->model()->writeMSH(fname, 4.0, false, true);
+    }
   }
 }
 

@@ -23,7 +23,6 @@ License
 #include "dtMesh3DOperator.h"
 #include "dtOMDynamicFaceField.h"
 #include "dtOMDynamicVertexField.h"
-#include "dtOMEdgeField.h"
 #include "dtOMMesh.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>

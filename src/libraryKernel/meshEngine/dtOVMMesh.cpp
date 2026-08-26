@@ -120,7 +120,7 @@ ovmHalffaceH dtOVMMesh::addFace(std::vector<::MVertex *> const &mv)
   }
   else
   {
-    hfH = halfface(handle);
+    hfH = find_halfface(handle);
 
     if (!hfH.is_valid())
     {
@@ -190,7 +190,7 @@ std::vector<dtPoint3> dtOVMMesh::adjacentVertices(ovmVertexH const &vH) const
   std::vector<dtPoint3> pp;
   for (ovmVertexOHalfedgeI heIt = voh_iter(vH); heIt.valid(); heIt++)
   {
-    dt__throwIf(halfedge(*heIt).to_vertex() == vH, createPyramids());
+    dt__throwIf(halfedge(*heIt).to_vertex() == vH, adjacentVertices());
     pp.push_back(dtGmshModel::extractPosition(at(halfedge(*heIt).to_vertex())));
   }
 
