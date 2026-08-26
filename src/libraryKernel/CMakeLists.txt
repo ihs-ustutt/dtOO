@@ -114,7 +114,6 @@ SET(HEADERS
   geometryEngine/geoBuilder/u_geomCurveClosestPoint.h
   geometryEngine/geoBuilder/geomShape_readOCC.h
   geometryEngine/geoBuilder/bSplineSurface_bSplineSurfaceSplitConstructOCC.h
-  meshEngine/qShapeMetric.h
   meshEngine/dtGmshVertex.h
   meshEngine/dtGmshEdge.h
   meshEngine/dtGmshFace.h
@@ -261,7 +260,6 @@ SET(SOURCES
   geometryEngine/geoBuilder/u_geomCurveClosestPoint.cpp
   geometryEngine/geoBuilder/geomShape_readOCC.cpp
   geometryEngine/geoBuilder/bSplineSurface_bSplineSurfaceSplitConstructOCC.cpp
-  meshEngine/qShapeMetric.cpp
   meshEngine/dtGmshVertex.cpp
   meshEngine/dtGmshEdge.cpp
   meshEngine/dtGmshFace.cpp
