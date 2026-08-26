@@ -47,8 +47,19 @@ private:
   struct LocalQuality {
     dtReal minimum;
     dtReal average;
-  };
 
+    // Minimum signed volume of incident tetrahedra.
+    dtReal minimumVolume;
+
+    // Minimum volume normalized iby the cube of the longest edge.
+    dtReal minimumRelativeVolume;
+
+    // Number of invalid/inverted/degenerate tetrahedra.
+    int nInvalid;
+
+    // Number of tetrahedra with reversed orientation.
+    int nReversed;
+  };
   bool isMovableVertex(ovmVertexH const &vH, dtOVMMesh &ovm) const;
   bool hasOptimizableElement(ovmVertexH const &vH, dtOVMMesh &ovm) const;
 

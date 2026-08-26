@@ -135,6 +135,10 @@ dtHybridOptMeshGRegion::localQuality(ovmVertexH const &vH, dtOVMMesh &ovm) const
   LocalQuality q;
   q.minimum = std::numeric_limits<dtReal>::max();
   q.average = 0.0;
+  q.minimumVolume = std::numeric_limits<dtReal>::max();
+  q.minimumRelativeVolume = std::numeric_limits<dtReal>::max();
+  q.nInvalid = 0;
+  q.nReversed = 0;
 
   int n = 0;
 
@@ -149,6 +153,55 @@ dtHybridOptMeshGRegion::localQuality(ovmVertexH const &vH, dtOVMMesh &ovm) const
 
     q.minimum = std::min(q.minimum, quality);
     q.average += quality;
+
+    if (dynamic_cast<::MTetrahedron *>(me))
+    {
+      int const volumeSign = me->getVolumeSign();
+
+      if (volumeSign <= 0)
+        ++q.nInvalid;
+
+      if (volumeSign < 0)
+        ++q.nReversed;
+
+      dtReal const volume = std::abs(static_cast<dtReal>(me->getVolume()));
+
+      q.minimumVolume = std::min(q.minimumVolume, volume);
+
+      // Determine the longest edge of the tetrahedron.
+      dtReal maxEdgeLengthSquared = 0.0;
+
+      for (int i = 0; i < 4; ++i)
+      {
+        for (int j = i + 1; j < 4; ++j)
+        {
+          dtPoint3 const pi = dtGmshModel::extractPosition(me->getVertex(i));
+
+          dtPoint3 const pj = dtGmshModel::extractPosition(me->getVertex(j));
+
+          dtVector3 const d = pj - pi;
+
+          dtReal const edgeLengthSquared = dtLinearAlgebra::dotProduct(d, d);
+
+          maxEdgeLengthSquared =
+            std::max(maxEdgeLengthSquared, edgeLengthSquared);
+        }
+      }
+      if (maxEdgeLengthSquared > 0.0)
+      {
+        dtReal const maxEdgeLength = std::sqrt(maxEdgeLengthSquared);
+
+        dtReal const relativeVolume =
+          volume / (maxEdgeLength * maxEdgeLength * maxEdgeLength);
+
+        q.minimumRelativeVolume =
+          std::min(q.minimumRelativeVolume, relativeVolume);
+      }
+      else
+      {
+        q.minimumRelativeVolume = 0.0;
+      }
+    }
     ++n;
   }
 
@@ -156,10 +209,19 @@ dtHybridOptMeshGRegion::localQuality(ovmVertexH const &vH, dtOVMMesh &ovm) const
   {
     q.minimum = 0.0;
     q.average = 0.0;
+    q.minimumVolume = 0.0;
+    q.minimumRelativeVolume = 0.0;
+    q.nInvalid = 0;
+    q.nReversed = 0;
   }
   else
   {
     q.average /= static_cast<dtReal>(n);
+    if (q.minimumVolume == std::numeric_limits<dtReal>::max())
+      q.minimumVolume = 0.0;
+
+    if (q.minimumRelativeVolume == std::numeric_limits<dtReal>::max())
+      q.minimumRelativeVolume = 0.0;
   }
 
   return q;
@@ -171,11 +233,46 @@ bool dtHybridOptMeshGRegion::better(
 {
   dtReal const eps = 1.e-8;
 
+  // Never accept a candidate that introduces invalid tetrahedra.
+  if (candidate.nInvalid > current.nInvalid)
+    return false;
+
+  // Prefer candidates that remove invalid tetrahedra.
+  if (candidate.nInvalid < current.nInvalid)
+    return true;
+
+  // Never accept a candidate that reverses additional tetrahedra.
+  if (candidate.nReversed > current.nReversed)
+    return false;
+
+  // Prefer candidates that remove reversed tetrahedra.
+  if (candidate.nReversed < current.nReversed)
+    return true;
+
+  // Prefer a larger minimum SICN quality.
   if (candidate.minimum > current.minimum + eps)
     return true;
 
+  // If the minimum SICN quality is essentially equal, prefer
+  // a larger average SICN quality.
   if (std::abs(candidate.minimum - current.minimum) < eps &&
       candidate.average > current.average + eps)
+    return true;
+
+  // If the SICN qualities are essentially equal, prefer a larger
+  // minimum relative tetrahedron volume.
+  if (std::abs(candidate.minimum - current.minimum) < eps &&
+      std::abs(candidate.average - current.average) < eps &&
+      candidate.minimumRelativeVolume > current.minimumRelativeVolume + eps)
+    return true;
+
+  // Finally use the absolute volume as a tie breaker.
+  if (std::abs(candidate.minimum - current.minimum) < eps &&
+      std::abs(candidate.average - current.average) < eps &&
+      std::abs(
+        candidate.minimumRelativeVolume - current.minimumRelativeVolume
+      ) < eps &&
+      candidate.minimumVolume > current.minimumVolume + eps)
     return true;
 
   return false;
