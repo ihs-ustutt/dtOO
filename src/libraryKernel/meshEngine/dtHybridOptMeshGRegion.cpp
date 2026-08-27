@@ -681,91 +681,81 @@ bool dtHybridOptMeshGRegion::removeTet(ovmCellH const &cH, dtOVMMesh &ovm) const
   if (!dynamic_cast<::MTetrahedron *>(me))
     return false;
 
-  // get vertices of tetrahedra
-  std::vector<ovmVertexH> vertices;
-  for (ovmCellVertexI v_it = ovm.cv_iter(cH); v_it.valid(); ++v_it)
-  {
-    vertices.push_back(*v_it);
-  }
-
-  // find the neighbouring tetrahedron.
-  ovmCellH neighbour;
-  for (ovmCellI c_it = ovm.c_iter(); c_it.valid(); ++c_it)
+  // find all neighbouring tetrahedra.
+  std::vector<ovmCellH> neighbours;
+  for (ovmCellCellI c_it = ovm.cc_iter(cH); c_it.valid(); ++c_it)
   {
     ovmCellH const cH2 = *c_it;
-    if (cH2 == cH)
-      continue;
     ::MElement *me2 = ovm[cH2];
     if (!dynamic_cast<::MTetrahedron *>(me2))
       continue;
-    int nCommon = 0;
-    for (ovmVertexH const &vH : vertices)
+    neighbours.push_back(cH2);
+  }
+
+  if (neighbours.empty())
+    return false;
+
+  // try all neighbouring tetrahedra
+  dt__forAllRefAuto(neighbours, neighbour)
+  {
+    // build the local five-vertex neighbourhood.
+    std::vector<ovmVertexH> affected;
+    for (ovmCellVertexI v_it = ovm.cv_iter(cH); v_it.valid(); ++v_it)
     {
-      for (ovmCellVertexI v_it = ovm.cv_iter(cH2); v_it.valid(); ++v_it)
+      affected.push_back(*v_it);
+    }
+    for (ovmCellVertexI v_it = ovm.cv_iter(neighbour); v_it.valid(); ++v_it)
+    {
+      bool found = false;
+      dt__forAllRefAuto(affected, vH)
       {
-        if (vH == *v_it)
+        if (*v_it == vH)
         {
-          ++nCommon;
+          found = true;
           break;
         }
       }
+      if (!found)
+        affected.push_back(*v_it);
     }
-    if (nCommon == 3)
-    {
-      neighbour = cH2;
-      break;
-    }
-  }
 
-  if (!neighbour.is_valid())
-    return false;
+    // a 2 -> 3 flip must have exactly five vertices.
+    if (affected.size() != 5)
+      continue;
 
-  //
-  // build the five affected vertices.
-  //
-  std::vector<ovmVertexH> affected;
-  for (ovmCellVertexI v_it = ovm.cv_iter(cH); v_it.valid(); ++v_it)
-  {
-    affected.push_back(*v_it);
-  }
-  for (ovmCellVertexI v_it = ovm.cv_iter(neighbour); v_it.valid(); ++v_it)
-  {
-    bool found = false;
-    for (ovmVertexH const &vH : affected)
-    {
-      if (*v_it == vH)
-      {
-        found = true;
-        break;
+    // store quality before the operation.
+    LocalQuality const oldQuality = this->localQuality(affected, ovm);
+
+    // do not operate on an already invalid local configuration.
+    if (oldQuality.nInvalid > 0 || oldQuality.nReversed > 0)
+      continue;
+
+    // try the 2 -> 3 operation.
+    bool const removed = ovm.tryRemoveTet(
+      cH,
+      neighbour,
+      [&](std::vector<ovmVertexH> const &affectedVertices) {
+        LocalQuality const newQuality =
+          this->localQuality(affectedVertices, ovm);
+
+        // never accept invalid or reversed tetrahedra.
+        if (newQuality.nInvalid > 0 || newQuality.nReversed > 0)
+          return false;
+
+        // never accept zero-volume tetrahedra.
+        if (newQuality.minimumVolume <= 0.0 ||
+            newQuality.minimumRelativeVolume <= 0.0)
+          return false;
+
+        // accept only if the local quality improves.
+        return this->better(newQuality, oldQuality);
       }
-    }
-    if (!found)
-      affected.push_back(*v_it);
+    );
+    if (removed)
+      return true;
   }
 
-  if (affected.size() != 5)
-    return false;
-
-  LocalQuality const oldQuality = this->localQuality(affected, ovm);
-
-  if (oldQuality.nInvalid > 0 || oldQuality.nReversed > 0)
-    return false;
-
-  return ovm.tryRemoveTet(
-    cH,
-    [&](std::vector<ovmVertexH> const &affectedVertices) {
-      LocalQuality const newQuality = this->localQuality(affectedVertices, ovm);
-
-      if (newQuality.nInvalid > 0 || newQuality.nReversed > 0)
-        return false;
-
-      if (newQuality.minimumVolume <= 0.0 ||
-          newQuality.minimumRelativeVolume <= 0.0)
-        return false;
-
-      return this->better(newQuality, oldQuality);
-    }
-  );
+  return false;
 }
 
 void dtHybridOptMeshGRegion::optimizeTetrahedra(dtOVMMesh &ovm, int nIter) const
@@ -807,28 +797,33 @@ void dtHybridOptMeshGRegion::optimizeTetrahedra(dtOVMMesh &ovm, int nIter) const
 
       // check if split improves quality
       if (this->splitTetEdge(cH, ovm))
+      {
         ++nSplits;
-
-      // if (this->removeTet(cH, ovm))
-      //{
-      //   ++nRemoves;
-
-      //  Msg::Info(
-      //    "dtHybridOptMeshGRegion::optimizeTetrahedra() : "
-      //    "remove tetrahedron with quality %g",
-      //    quality
-      //  );
-      //}
+        Msg::Info(
+          "dtHybridOptMeshGRegion::optimizeTetrahedra() : "
+          "split tetrahedron with quality %g",
+          quality
+        );
+      }
+      else if (this->removeTet(cH, ovm))
+      {
+        ++nRemoves;
+        Msg::Info(
+          "dtHybridOptMeshGRegion::optimizeTetrahedra() : "
+          "remove tetrahedron with quality %g",
+          quality
+        );
+      }
       // else
       //{
-      //  Msg::Info(
-      //    "dtHybridOptMeshGRegion::optimizeTetrahedra() : "
-      //    "neither split nor remove of tetrahedron with quality %g "
-      //    "was possible",
-      //    quality
-      //  );
-      //}
-      // if (nSplits == 1) break;
+      //   Msg::Info(
+      //     "dtHybridOptMeshGRegion::optimizeTetrahedra() : "
+      //     "neither split nor remove of tetrahedron with quality %g "
+      //     "was possible",
+      //     quality
+      //   );
+      // }
+      //  if (nSplits == 1) break;
     }
 
     // output

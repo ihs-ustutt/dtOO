@@ -65,13 +65,14 @@ public:
   );
   bool tryRemoveTet(
     ovmCellH const &cH,
+    ovmCellH const &neighbour,
     std::function<bool(std::vector<ovmVertexH> const &)> const &accept
   );
   //
   // apply mesh changes
   //
   bool applyTo(dtGmshRegion *dtgr);
- 
+
 private:
   //
   // tetrahedral mesh editing
@@ -81,13 +82,14 @@ private:
     ovmVertexH const &v1,
     ovmVertexH const &v2,
     ovmVertexH const &v3,
-    bool const & correctOrientation = false
+    bool const &correctOrientation = false
   );
   bool removeTet(ovmCellH const &cH);
   ovmVertexH splitEdge(ovmVertexH const &v0, ovmVertexH const &v1);
   ovmVertexH addVertex(::MVertex *mv);
   ovmHalffaceH addFace(::MVertex *mv0, ::MVertex *mv1, ::MVertex *mv2);
   ovmHalffaceH addFace(std::vector<::MVertex *> const &mv);
+
 private:
   std::vector<MElement *> _me;
   std::vector<MVertex *> _mv;

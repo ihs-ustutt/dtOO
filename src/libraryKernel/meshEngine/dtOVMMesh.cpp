@@ -409,96 +409,60 @@ bool dtOVMMesh::trySplitEdge(
 
 bool dtOVMMesh::tryRemoveTet(
   ovmCellH const &cH,
+  ovmCellH const &neighbour,
   std::function<bool(std::vector<ovmVertexH> const &)> const &accept
 )
 {
-  if (!cH.is_valid())
+  if (!cH.is_valid() || !neighbour.is_valid())
     return false;
 
   ::MElement *me0 = (*this)[cH];
+  ::MElement *me1 = (*this)[neighbour];
 
-  if (!dynamic_cast<::MTetrahedron *>(me0))
+  if (!dynamic_cast<::MTetrahedron *>(me0) ||
+      !dynamic_cast<::MTetrahedron *>(me1))
     return false;
 
-  //
   // Vertices of first tetrahedron.
-  //
   std::vector<ovmVertexH> tet0;
-
   for (ovmCellVertexI v_it = cv_iter(cH); v_it.valid(); ++v_it)
   {
     tet0.push_back(*v_it);
   }
-
   if (tet0.size() != 4)
     return false;
 
-  //
-  // Find neighbouring tetrahedron.
-  //
-  ovmCellH neighbour;
-  std::vector<ovmVertexH> shared;
-
-  for (ovmCellI c_it = c_iter(); c_it.valid(); ++c_it)
-  {
-    ovmCellH const cH2 = *c_it;
-
-    if (cH2 == cH)
-      continue;
-
-    ::MElement *me2 = (*this)[cH2];
-
-    if (!dynamic_cast<::MTetrahedron *>(me2))
-      continue;
-
-    std::vector<ovmVertexH> common;
-
-    for (ovmVertexH const &vH : tet0)
-    {
-      for (ovmCellVertexI v_it = cv_iter(cH2); v_it.valid(); ++v_it)
-      {
-        if (vH == *v_it)
-        {
-          common.push_back(vH);
-          break;
-        }
-      }
-    }
-
-    if (common.size() == 3)
-    {
-      neighbour = cH2;
-      shared = common;
-      break;
-    }
-  }
-
-  if (!neighbour.is_valid())
-    return false;
-
-  //
   // Vertices of neighbouring tetrahedron.
-  //
   std::vector<ovmVertexH> tet1;
-
   for (ovmCellVertexI v_it = cv_iter(neighbour); v_it.valid(); ++v_it)
   {
     tet1.push_back(*v_it);
   }
-
   if (tet1.size() != 4)
     return false;
 
-  //
-  // Find opposite vertices.
-  //
-  ovmVertexH d;
-  ovmVertexH e;
+  // Find the three shared vertices.
+  std::vector<ovmVertexH> shared;
+  for (ovmVertexH const &vH : tet0)
+  {
+    for (ovmVertexH const &vH2 : tet1)
+    {
+      if (vH == vH2)
+      {
+        shared.push_back(vH);
+        break;
+      }
+    }
+  }
 
+  if (shared.size() != 3)
+    return false;
+
+  // Find opposite vertex of first tetrahedron.
+  ovmVertexH d;
   for (ovmVertexH const &vH : tet0)
   {
     bool isShared = false;
-
     for (ovmVertexH const &sH : shared)
     {
       if (vH == sH)
@@ -507,7 +471,6 @@ bool dtOVMMesh::tryRemoveTet(
         break;
       }
     }
-
     if (!isShared)
     {
       d = vH;
@@ -515,10 +478,11 @@ bool dtOVMMesh::tryRemoveTet(
     }
   }
 
+  // Find opposite vertex of second tetrahedron.
+  ovmVertexH e;
   for (ovmVertexH const &vH : tet1)
   {
     bool isShared = false;
-
     for (ovmVertexH const &sH : shared)
     {
       if (vH == sH)
@@ -527,7 +491,6 @@ bool dtOVMMesh::tryRemoveTet(
         break;
       }
     }
-
     if (!isShared)
     {
       e = vH;
@@ -538,78 +501,58 @@ bool dtOVMMesh::tryRemoveTet(
   if (!d.is_valid() || !e.is_valid())
     return false;
 
-  ovmVertexH const a = shared[0];
-  ovmVertexH const b = shared[1];
-  ovmVertexH const c = shared[2];
-
-  //
   // Store original topology.
-  //
   std::vector<ovmVertexH> oldTet0 = tet0;
   std::vector<ovmVertexH> oldTet1 = tet1;
 
-  //
-  // Remove original configuration.
-  //
+  // Remove original tetrahedra.
   if (!removeTet(cH))
     return false;
 
   if (!removeTet(neighbour))
   {
     addTet(oldTet0[0], oldTet0[1], oldTet0[2], oldTet0[3]);
-
     return false;
   }
 
-  //
-  // Create 2->3 configuration.
-  //
-  ovmCellH const c0 = addTet(a, b, d, e, true);
+  // Create 2 -> 3 configuration.
+  ovmCellH const c0 = addTet(shared[0], shared[1], d, e, true);
+  ovmCellH const c1 = addTet(shared[1], shared[2], d, e, true);
+  ovmCellH const c2 = addTet(shared[2], shared[0], d, e, true);
 
-  ovmCellH const c1 = addTet(b, c, d, e, true);
-
-  ovmCellH const c2 = addTet(c, a, d, e, true);
-
+  // Check creation.
   if (!c0.is_valid() || !c1.is_valid() || !c2.is_valid())
   {
     if (c0.is_valid())
       removeTet(c0);
-
     if (c1.is_valid())
       removeTet(c1);
-
     if (c2.is_valid())
       removeTet(c2);
-
     addTet(oldTet0[0], oldTet0[1], oldTet0[2], oldTet0[3]);
-
     addTet(oldTet1[0], oldTet1[1], oldTet1[2], oldTet1[3]);
-
     return false;
   }
 
+  // Five vertices affected by the 2 -> 3 flip.
   std::vector<ovmVertexH> affectedVertices;
 
-  affectedVertices.push_back(a);
-  affectedVertices.push_back(b);
-  affectedVertices.push_back(c);
+  affectedVertices.push_back(shared[0]);
+  affectedVertices.push_back(shared[1]);
+  affectedVertices.push_back(shared[2]);
   affectedVertices.push_back(d);
   affectedVertices.push_back(e);
 
+  // Test the new configuration.
   if (accept(affectedVertices))
     return true;
 
-  //
   // Rollback.
-  //
   removeTet(c0);
   removeTet(c1);
   removeTet(c2);
-
   addTet(oldTet0[0], oldTet0[1], oldTet0[2], oldTet0[3]);
-
   addTet(oldTet1[0], oldTet1[1], oldTet1[2], oldTet1[3]);
-
   return false;
 }
 
