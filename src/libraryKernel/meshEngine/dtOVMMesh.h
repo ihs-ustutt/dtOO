@@ -30,6 +30,7 @@ class MElement;
 #include "dtOVMTypedef.h"
 
 namespace dtOO {
+
 class dtGmshRegion;
 
 class dtOVMMesh : public ovmMesh {
@@ -56,8 +57,22 @@ public:
   //
   // misc
   //
-  void makePartition(dtInt const &num) const;
   std::vector<dtPoint3> adjacentVertices(ovmVertexH const &vH) const;
+  bool trySplitEdge(
+    ovmVertexH const &v0,
+    ovmVertexH const &v1,
+    std::function<bool(ovmVertexH const &)> const &accept
+  );
+  bool tryRemoveTet(
+    ovmCellH const &cH,
+    std::function<bool(std::vector<ovmVertexH> const &)> const &accept
+  );
+  //
+  // apply mesh changes
+  //
+  bool applyTo(dtGmshRegion *dtgr);
+ 
+private:
   //
   // tetrahedral mesh editing
   //
@@ -65,34 +80,21 @@ public:
     ovmVertexH const &v0,
     ovmVertexH const &v1,
     ovmVertexH const &v2,
-    ovmVertexH const &v3
-  );
-  bool tryRemoveTet(
-    ovmCellH const &cH,
-    std::function<bool(std::vector<ovmVertexH> const &)> const &accept
+    ovmVertexH const &v3,
+    bool const & correctOrientation = false
   );
   bool removeTet(ovmCellH const &cH);
-  bool trySplitEdge(
-    ovmVertexH const &v0,
-    ovmVertexH const &v1,
-    std::function<bool(ovmVertexH const &)> const &accept
-  );
   ovmVertexH splitEdge(ovmVertexH const &v0, ovmVertexH const &v1);
-  //
-  // apply mesh changes
-  //
-  bool applyTo(dtGmshRegion *dtgr);
-
-private:
   ovmVertexH addVertex(::MVertex *mv);
   ovmHalffaceH addFace(::MVertex *mv0, ::MVertex *mv1, ::MVertex *mv2);
   ovmHalffaceH addFace(std::vector<::MVertex *> const &mv);
-
 private:
   std::vector<MElement *> _me;
   std::vector<MVertex *> _mv;
   std::map<::MVertex const *, ovmVertexH> _ovm_gmsh;
   std::map<::MElement const *, ovmCellH> _ovm_gmshElement;
 };
+
 } // namespace dtOO
+
 #endif /* dtOVMMesh_H */
