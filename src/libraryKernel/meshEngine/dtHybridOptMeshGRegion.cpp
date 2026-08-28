@@ -118,7 +118,7 @@ bool dtHybridOptMeshGRegion::isMovableVertex(
   if (ovm.at(vH)->onWhat()->dim() != 3)
     return false;
 
-  // Vertices belonging to a prism or hexahedron are fixed.
+  // Vertices belonging to a prism or hexahedron are fixed
   for (ovmVertexCellI c_it = ovm.vc_iter(vH); c_it.valid(); ++c_it)
   {
     ::MElement *me = ovm[*c_it];

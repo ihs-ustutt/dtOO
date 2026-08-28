@@ -20,14 +20,13 @@ License
 
 #include <dtOOTypeDef.h>
 
+#include "dtOVMTypedef.h"
 #include <dtLinearAlgebra.h>
 #include <functional>
 #include <logMe/dtMacros.h>
 
 class MVertex;
 class MElement;
-
-#include "dtOVMTypedef.h"
 
 namespace dtOO {
 
@@ -72,7 +71,7 @@ public:
   // apply mesh changes
   //
   bool applyTo(dtGmshRegion *dtgr);
-
+  bool isTetrahedron( ovmCellH const & cH) const;
 private:
   //
   // tetrahedral mesh editing
@@ -85,10 +84,11 @@ private:
     bool const &correctOrientation = false
   );
   bool removeTet(ovmCellH const &cH);
+  void removeVertex(ovmVertexH const &vH);
   ovmVertexH splitEdge(ovmVertexH const &v0, ovmVertexH const &v1);
   ovmVertexH addVertex(::MVertex *mv);
   ovmHalffaceH addFace(::MVertex *mv0, ::MVertex *mv1, ::MVertex *mv2);
-  ovmHalffaceH addFace(std::vector<::MVertex *> const &mv);
+  ovmHalffaceH addFace(std::vector<::MVertex *> const &mvs);
 
 private:
   std::vector<MElement *> _me;
