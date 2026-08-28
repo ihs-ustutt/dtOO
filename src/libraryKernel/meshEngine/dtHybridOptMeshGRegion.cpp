@@ -121,8 +121,7 @@ bool dtHybridOptMeshGRegion::isMovableVertex(
   // Vertices belonging to a prism or hexahedron are fixed
   for (ovmVertexCellI c_it = ovm.vc_iter(vH); c_it.valid(); ++c_it)
   {
-    ::MElement *me = ovm[*c_it];
-    if (dynamic_cast<::MPrism *>(me) || dynamic_cast<::MHexahedron *>(me))
+    if (ovm.isPrism(*c_it) || ovm.isHexahedron(*c_it))
       return false;
   }
 
@@ -135,8 +134,7 @@ bool dtHybridOptMeshGRegion::hasOptimizableElement(
 {
   for (ovmVertexCellI c_it = ovm.vc_iter(vH); c_it.valid(); ++c_it)
   {
-    ::MElement *me = ovm[*c_it];
-    if (dynamic_cast<::MTetrahedron *>(me) || dynamic_cast<::MPyramid *>(me))
+    if (ovm.isTetrahedron(*c_it) || ovm.isPyramid(*c_it))
       return true;
   }
 
@@ -353,10 +351,10 @@ dtPoint3 dtHybridOptMeshGRegion::calculateTetGoalPosition(
   // calculate a volume weight of neighbouring tetrahedra
   for (ovmVertexCellI c_it = ovm.vc_iter(vH); c_it.valid(); ++c_it)
   {
-    ::MElement *me = ovm[*c_it];
-    if (!dynamic_cast<::MTetrahedron *>(me))
+    if (!ovm.isTetrahedron(*c_it))
       continue;
 
+    ::MElement *me = ovm[*c_it];
     ::SPoint3 const bary = me->barycenter();
     dtVector3 const p(bary.x(), bary.y(), bary.z());
     dtReal const weight = std::abs(static_cast<dtReal>(me->getVolume()));
@@ -396,13 +394,13 @@ dtPoint3 dtHybridOptMeshGRegion::calculatePyramidGoalPosition(
   for (ovmVertexCellI c_it = ovm.vc_iter(vH); c_it.valid(); ++c_it)
   {
     ::MElement *me = ovm[*c_it];
-    if (dynamic_cast<::MTetrahedron *>(me))
+    if (ovm.isTetrahedron(*c_it))
     {
       ++nTets;
       ::SPoint3 const bary = me->barycenter();
       pp.push_back(dtPoint3(bary.x(), bary.y(), bary.z()));
     }
-    else if (dynamic_cast<::MPyramid *>(me))
+    else if (ovm.isPyramid(*c_it))
     {
       ++nPyrs;
       dtPoint3 const v0 = dtGmshModel::extractPosition(me->getVertex(0));
@@ -470,7 +468,7 @@ dtPoint3 dtHybridOptMeshGRegion::calculateGoalPosition(
   // preferred, otherwise define goal positon by tetrahedra
   for (ovmVertexCellI c_it = ovm.vc_iter(vH); c_it.valid(); ++c_it)
   {
-    if (dynamic_cast<::MPyramid *>(ovm[*c_it]))
+    if (ovm.isPyramid(*c_it))
       return this->calculatePyramidGoalPosition(vH, ovm);
   }
   return this->calculateTetGoalPosition(vH, ovm);
@@ -588,8 +586,8 @@ void dtHybridOptMeshGRegion::relocateVertices(dtOVMMesh &ovm, int nIter) const
 bool dtHybridOptMeshGRegion::splitTetEdge(ovmCellH const &cH, dtOVMMesh &ovm)
   const
 {
-  ::MElement *me = ovm[cH];
-  if (!dynamic_cast<::MTetrahedron *>(me))
+  //::MElement *me = ovm[cH];
+  if (!ovm.isTetrahedron(cH))
     return false;
 
   std::vector<ovmVertexH> vertices;
@@ -646,7 +644,7 @@ bool dtHybridOptMeshGRegion::splitTetEdge(ovmCellH const &cH, dtOVMMesh &ovm)
     }
     if (!containsV1)
       continue;
-    if (!dynamic_cast<::MTetrahedron *>(ovm[aCH]))
+    if (!ovm.isTetrahedron(aCH))
       return false;
   }
 
@@ -677,8 +675,7 @@ bool dtHybridOptMeshGRegion::splitTetEdge(ovmCellH const &cH, dtOVMMesh &ovm)
 
 bool dtHybridOptMeshGRegion::removeTet(ovmCellH const &cH, dtOVMMesh &ovm) const
 {
-  ::MElement *me = ovm[cH];
-  if (!dynamic_cast<::MTetrahedron *>(me))
+  if (!ovm.isTetrahedron(cH))
     return false;
 
   // find all neighbouring tetrahedra.
@@ -686,8 +683,7 @@ bool dtHybridOptMeshGRegion::removeTet(ovmCellH const &cH, dtOVMMesh &ovm) const
   for (ovmCellCellI c_it = ovm.cc_iter(cH); c_it.valid(); ++c_it)
   {
     ovmCellH const cH2 = *c_it;
-    ::MElement *me2 = ovm[cH2];
-    if (!dynamic_cast<::MTetrahedron *>(me2))
+    if (!ovm.isTetrahedron(cH2))
       continue;
     neighbours.push_back(cH2);
   }
@@ -775,7 +771,7 @@ void dtHybridOptMeshGRegion::optimizeTetrahedra(dtOVMMesh &ovm, int nIter) const
     for (ovmCellI c_it = ovm.c_iter(); c_it.valid(); ++c_it)
     {
       ovmCellH const cH = *c_it;
-      if (dynamic_cast<::MTetrahedron *>(ovm[cH]))
+      if (ovm.isTetrahedron(cH))
         cells.push_back(cH);
     }
 

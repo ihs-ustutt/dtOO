@@ -21,12 +21,14 @@ License
 #include "dtGmshRegion.h"
 #include "dtLinearAlgebra.h"
 #include "dtOMMesh.h"
-#include "meshEngine/dtOVMTypedef.h"
 #include <OpenVolumeMesh/FileManager/FileManager.hh>
 #include <algorithm>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <gmsh/GEntity.h>
 #include <gmsh/MElement.h>
+#include <gmsh/MHexahedron.h>
+#include <gmsh/MPrism.h>
+#include <gmsh/MPyramid.h>
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/MVertex.h>
 #include <logMe/dtMacros.h>
@@ -261,8 +263,7 @@ ovmVertexH dtOVMMesh::splitEdge(ovmVertexH const &v0, ovmVertexH const &v1)
   for (ovmEdgeCellI ec_it = ec_iter(eH); ec_it.valid(); ++ec_it)
   {
     ovmCellH const cH = *ec_it;
-    ::MElement *me = (*this)[cH];
-    if (!dynamic_cast<::MTetrahedron *>(me))
+    if (!isTetrahedron(cH))
       continue;
     cells.push_back(cH);
   }
@@ -346,8 +347,7 @@ bool dtOVMMesh::trySplitEdge(
   for (ovmEdgeCellI ec_it = ec_iter(eH); ec_it.valid(); ++ec_it)
   {
     ovmCellH const cH = *ec_it;
-    ::MElement *me = (*this)[cH];
-    if (!dynamic_cast<::MTetrahedron *>(me))
+    if (!isTetrahedron(cH))
       return false;
     std::vector<ovmVertexH> vertices;
     for (ovmCellVertexI v_it = cv_iter(cH); v_it.valid(); ++v_it)
@@ -380,7 +380,7 @@ bool dtOVMMesh::trySplitEdge(
   for (ovmVertexCellI c_it = vc_iter(vNew); c_it.valid(); ++c_it)
   {
     ovmCellH const cH = *c_it;
-    if (dynamic_cast<::MTetrahedron *>((*this)[cH]))
+    if (isTetrahedron(cH))
       newCells.push_back(cH);
   }
   // remove cells
@@ -430,6 +430,33 @@ void dtOVMMesh::removeVertex(ovmVertexH const &vH)
 bool dtOVMMesh::isTetrahedron(ovmCellH const &cH) const
 {
   if (dynamic_cast<::MTetrahedron const *>(this->at(cH)))
+  {
+    return true;
+  }
+  return false;
+}
+
+bool dtOVMMesh::isPyramid(ovmCellH const &cH) const
+{
+  if (dynamic_cast<::MPyramid const *>(this->at(cH)))
+  {
+    return true;
+  }
+  return false;
+}
+
+bool dtOVMMesh::isPrism(ovmCellH const &cH) const
+{
+  if (dynamic_cast<::MPrism const *>(this->at(cH)))
+  {
+    return true;
+  }
+  return false;
+}
+
+bool dtOVMMesh::isHexahedron(ovmCellH const &cH) const
+{
+  if (dynamic_cast<::MHexahedron const *>(this->at(cH)))
   {
     return true;
   }

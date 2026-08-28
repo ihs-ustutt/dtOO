@@ -72,6 +72,9 @@ public:
   //
   bool applyTo(dtGmshRegion *dtgr);
   bool isTetrahedron(ovmCellH const &cH) const;
+  bool isPyramid(ovmCellH const &cH) const;
+  bool isPrism(ovmCellH const &cH) const;
+  bool isHexahedron(ovmCellH const &cH) const;
 
 private:
   //
