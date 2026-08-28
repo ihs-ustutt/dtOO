@@ -45,6 +45,7 @@ typedef ::OpenVolumeMesh::VertexOHalfEdgeIter ovmVertexOHalfedgeI;
 typedef ::OpenVolumeMesh::VertexCellIter ovmVertexCellI;
 typedef ::OpenVolumeMesh::CellVertexIter ovmCellVertexI;
 typedef ::OpenVolumeMesh::CellCellIter ovmCellCellI;
+typedef ::OpenVolumeMesh::EdgeCellIter ovmEdgeCellI;
 //
 // misc
 //
