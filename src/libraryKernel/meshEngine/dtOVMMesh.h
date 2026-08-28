@@ -71,7 +71,8 @@ public:
   // apply mesh changes
   //
   bool applyTo(dtGmshRegion *dtgr);
-  bool isTetrahedron( ovmCellH const & cH) const;
+  bool isTetrahedron(ovmCellH const &cH) const;
+
 private:
   //
   // tetrahedral mesh editing

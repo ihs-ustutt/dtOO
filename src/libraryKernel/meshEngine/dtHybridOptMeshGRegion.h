@@ -39,6 +39,7 @@ public:
   virtual ~dtHybridOptMeshGRegion();
   virtual bool isStatusIndependent(void);
   void operator()(dtGmshRegion *dtgr);
+
 private:
   struct LocalQuality {
     dtReal minimum;
@@ -67,6 +68,7 @@ private:
   bool relocateVertex(ovmVertexH const &vH, dtOVMMesh &ovm) const;
   std::vector<ovmVertexH> extractMovableVertices(dtOVMMesh &ovm) const;
   void relocateVertices(dtOVMMesh &ovm, int nIter) const;
+
 private:
   static bool _registrated;
 };
