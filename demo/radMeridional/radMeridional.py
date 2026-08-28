@@ -2226,20 +2226,22 @@ class radMeridional:
             firstElementSizeNormalBlade = 0.001,
             bladeHubElementSize = scaOneD_scaCurve2dOneDPointConstruct(
                 [
-                   dtOO.dtPoint2(0.00, 0.004),
-                   dtOO.dtPoint2(0.05, 0.005),
+                   dtOO.dtPoint2(0.00, 0.002),
+                   dtOO.dtPoint2(0.01, 0.003),
+                   dtOO.dtPoint2(0.05, 0.014),
                    dtOO.dtPoint2(0.10, 0.015),
-                   dtOO.dtPoint2(0.45, 0.005),
-                   dtOO.dtPoint2(0.50, 0.004),
-                   dtOO.dtPoint2(0.55, 0.005),
+                   dtOO.dtPoint2(0.45, 0.003),
+                   dtOO.dtPoint2(0.50, 0.002),
+                   dtOO.dtPoint2(0.55, 0.003),
                    dtOO.dtPoint2(0.90, 0.015),
-                   dtOO.dtPoint2(0.95, 0.005),
-                   dtOO.dtPoint2(1.00, 0.004),
+                   dtOO.dtPoint2(0.95, 0.014),
+                   dtOO.dtPoint2(0.99, 0.003),
+                   dtOO.dtPoint2(1.00, 0.002),
                 ], 1
             )(),
             bladeHubElementScale = 0.3,
-            charLengthMax=0.015,
-            charLengthMin=0.001,
+            charLengthMax=0.03,
+            charLengthMin=0.015,
             meshTEBlocks = not(tERounded),
         ).enableDebug().buildExtract( self.container )
          
