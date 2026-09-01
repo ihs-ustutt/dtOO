@@ -397,7 +397,9 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         bladeShroudElementScale: float = None,
         charLengthMin: float = 0.05,
         charLengthMax: float = 0.10,
-        meshTEBlocks: bool = False
+        meshTEBlocks: bool = False,
+        bladeHubShroudDirection: int = None,
+        boundaryLayerDirection: int = None
     ) -> None:
 
         """
@@ -464,6 +466,9 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         self.bladeShroudElementSize_ = bladeShroudElementSize
         self.bladeShroudElementScale_ = bladeShroudElementScale
         
+        self.bladeHubShroudDirection = bladeHubShroudDirection
+        self.boundaryLayerDir = boundaryLayerDirection
+
         self.meshTEBlocks_ = meshTEBlocks
 
         self.map3dTo3dGmshJson_ = jsonPrimitive(
@@ -1131,16 +1136,17 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
           m3dGmsh,
           self.firstElementSizeNormalBlade_
         )
-        
-        # getting blade direction for grading along the blade
-        bladeHubShroudDirection = self.boundaryEdgeDirection(
-          m3dGmsh.getModel(),
-          [
-            [self.blade_, bladeHubLines],
-            [self.blade_, bladeShroudLines],
-          ]
-        )
-        logging.info("bladeHubShroudDirection = %d" % bladeHubShroudDirection)
+         
+        if self.bladeHubShroudDirection == None:
+            # getting blade direction for grading along the blade
+            self.bladeHubShroudDirection = self.boundaryEdgeDirection(
+              m3dGmsh.getModel(),
+              [
+                [self.blade_, bladeHubLines],
+                [self.blade_, bladeShroudLines],
+              ]
+            )
+            logging.info("bladeHubShroudDirection = %d" % self.bladeHubShroudDirection)
 
         #
         # mesh settings
@@ -1159,7 +1165,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             [self.bladeShroudElementScale_, self.bladeHubElementScale_,],
             ["BladeShroud", "BladeHub",],
         ):
-            direction = bladeHubShroudDirection
+            direction = self.bladeHubShroudDirection
             for line in lines:
                 theEdge = m3dGmsh.getModel().getDtGmshEdgeByTag( line )
                 if elementSize!=None:
@@ -1289,12 +1295,13 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         )
         m3dGmsh.attachBVObserver(ob)
         
-        # getting boundary layer direction for unstructured faces
-        #  with transfinite layers
-        boundaryLayerDir = self.detectBoundaryLayerDirection(
-          m3dGmsh.getModel(),
-          unstrFacesAndh2sLines
-        )
+        if self.boundaryLayerDir == None:
+            # getting boundary layer direction for unstructured faces
+            #  with transfinite layers
+            self.boundaryLayerDir = self.detectBoundaryLayerDirection(
+              m3dGmsh.getModel(),
+              unstrFacesAndh2sLines
+            )
         #
         # setting mesh rules
         #
@@ -1391,7 +1398,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
                       ]
                     )
                   )\
-                  .appendInt("_direction", boundaryLayerDir)\
+                  .appendInt("_direction", self.boundaryLayerDir)\
                   .appendInt("_nSmooth", 3)\
                   .toStdString()+
               ']'
@@ -1448,7 +1455,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         m3dGmsh.thisown = False
 
         self.appendBoundedVolume(m3dGmsh)
-
+        
         return
     @staticmethod
     def detectFirstAndSecond(
@@ -1655,6 +1662,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             p1_uv = faceLines[0].reparamPercentOnFace(
               theEdge.getMap1dTo3d().getPointPercent(1.0)
             )
+
             boundaryLayerDirT = 0
             #
             # Check the tolerance of the start and end points in u and v direction

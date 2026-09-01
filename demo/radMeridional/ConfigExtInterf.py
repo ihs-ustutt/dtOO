@@ -4,7 +4,7 @@ import importlib
 import radMeridional
 import dtOOPythonSWIG as dtOO
 
-class ConfigHubZero():
+class ConfigExtInterf():
 
     def __init__(self):
 
@@ -13,7 +13,7 @@ class ConfigHubZero():
         d_inlet = 2.58
         l_inExt = 0.27
         d_outHub = 0.4
-        d_outShroud = 1.865
+        d_outShroud = 1.885
 
         l_hub0 = 0.38
         angle_hub0 = 0 * np.pi/180
@@ -52,22 +52,15 @@ class ConfigHubZero():
                 2
               ).result()
             ),
-            dtOO.analyticCurve(
-              dtOO.bSplineCurve_pointConstructOCC(
-                dtOO.vectorDtPoint3()
-                  << dtOO.dtPoint3(+d_outHub/2, +0.00, -h_hub+h_inlet)
-                  << dtOO.dtPoint3(+0.00, +0.00, -h_hub+h_inlet),
-                1
-              ).result()
-            ),
-            dtOO.analyticCurve(
-              dtOO.bSplineCurve_pointConstructOCC(
-                dtOO.vectorDtPoint3()
-                  << dtOO.dtPoint3(+0.00, +0.00, -h_hub+h_inlet)
-                  << dtOO.dtPoint3(+0.00, +0.00, -2.55),
-                1
-              ).result()
-            )
+            #dtOO.analyticCurve(
+            #  dtOO.bSplineCurve_pointConstructOCC(
+            #    dtOO.vectorDtPoint3()
+            #      << dtOO.dtPoint3(+d_outHub/2, +0.00, -h_hub+h_inlet)
+            #      << dtOO.dtPoint3(+d_outHub/2, +0.00, -2.55),
+            #    1
+            #  ).result()
+            #)
+
           ]
 
         self.shroudCurves = [
@@ -97,25 +90,25 @@ class ConfigHubZero():
                 1
               ).result()
             ),
-            dtOO.analyticCurve(
-              dtOO.bSplineCurve_pointConstructOCC(
-                dtOO.vectorDtPoint3()
-                  << dtOO.dtPoint3(+d_outShroud/2, +0.00, -0.54)
-                  << dtOO.dtPoint3(+1.15, +0.00, -2.55),
-                1
-              ).result()
-            )
+            #dtOO.analyticCurve(
+            #  dtOO.bSplineCurve_pointConstructOCC(
+            #    dtOO.vectorDtPoint3()
+            #      << dtOO.dtPoint3(+d_outShroud/2, +0.00, -0.54)
+            #      << dtOO.dtPoint3(+1.15, +0.00, -2.55),
+            #    1
+            #  ).result()
+            #)
           ]
 
         self.configMeridional = {
             "label" : "radMeridionalContour",
             
             "interface_hub" : [[1, 0.00],
-                               [1, 0.7],],                # [curve, percent]
+                               [1, 1.0],],                # [curve, percent]
             "interface_shroud" : [[1, 0.00],
                                   [2, 0.5],],
             "interface_curvature" : [[0.0, 0.5, 1],
-                                     [0.35, 0.5, -1],],
+                                     [0.0, 0.5, -1],],
         }
         ## Curved Guide Vane Configuration
         #self.configGuideVane = {
@@ -152,20 +145,20 @@ class ConfigHubZero():
             "offRad" : 1.4125,
             "offAng" : np.pi/180 * -10,
             "alpha" : np.pi/180 * 68,
-            "l_tot" : 0.4275,
-            "ratioL" : 0.4675,
+            "l_tot" : 0.41,
+            "ratioL" : 0.485,
 
             "spanwiseCuts_td" : [0.00, 1.00,],
             "t_le" : [0.0115],
             "u_le" : [0.00],
             "t_mid" : [0.0365],
             "u_mid" : [0.20],
-            "t_te" : [0.0195],
-            #"u_te" : [1.0],
-            "u_te" : [0.70],
+            "t_te" : [0.008],
+            "u_te" : [1.00],
 
             "orientation" : -1,
         }
+        # Case - Fitted to blade
         self.configRunner = {
             "label" : "ru",
             "regChannel" : 1,
@@ -179,45 +172,99 @@ class ConfigHubZero():
                  ],
             "alpha_2" : [
                      round((np.pi/180.) * 45., 4),
-                     round((np.pi/180.) * 31., 4),
-                     round((np.pi/180.) * 32., 4),
+                     round((np.pi/180.) * 27., 4),
+                     round((np.pi/180.) * 25., 4),
                      round((np.pi/180.) * 10., 4)
                  ],
             "ratioX" : [
                      0.65,
-                     0.70,
-                     0.35,
-                     0.22
+                     0.65,
+                     0.15,
+                     0.24
                  ],
             "deltaY" : [
                      0.80,
-                     0.55,
-                     0.90,
-                     0.55
+                     0.75,
+                     0.75,
+                     0.53
                  ],
             "offX" : [
                      0.125,
-                     0.125,
-                     0.0
+                     0.11,
+                     0.11,
+                     0.005
                  ],
             "offY" : [
                      0.065,
-                     0.085,
+                     0.07,
                      0.035
                  ],
 
             "spanwiseCuts_td" : [0.00, 1.00,],
-            "t_le" : [0.020,0.018],
+            "t_le" : [0.020,0.02],
             "u_le" : [0.00],
             "t_mid" : [0.04,0.03],
             "u_mid" : [0.50],
-            "t_te" : [0.02],
+            "t_te" : [0.01],
             "u_te" : [1.00],
 
             "adjustRadius" : True,
             "orientation" : 1,
 
         }
+        ## Case: of_ExtInterf_0
+        #self.configRunner = {
+        #    "label" : "ru",
+        #    "regChannel" : 1,
+        #    "nBlades" : 15,
+        #    
+        #    "spanwiseCuts_mp" : [0.00, 0.33,  0.66, 1.00,],
+        #    "alpha_1" : [
+        #             round((np.pi/180.) * 90., 4),
+        #             round((np.pi/180.) * 75., 4),
+        #             round((np.pi/180.) * 52., 4)
+        #         ],
+        #    "alpha_2" : [
+        #             round((np.pi/180.) * 45., 4),
+        #             round((np.pi/180.) * 31., 4),
+        #             round((np.pi/180.) * 32., 4),
+        #             round((np.pi/180.) * 10., 4)
+        #         ],
+        #    "ratioX" : [
+        #             0.65,
+        #             0.70,
+        #             0.35,
+        #             0.22
+        #         ],
+        #    "deltaY" : [
+        #             0.80,
+        #             0.55,
+        #             0.90,
+        #             0.55
+        #         ],
+        #    "offX" : [
+        #             0.125,
+        #             0.125,
+        #             0.0
+        #         ],
+        #    "offY" : [
+        #             0.065,
+        #             0.085,
+        #             0.035
+        #         ],
+
+        #    "spanwiseCuts_td" : [0.00, 1.00,],
+        #    "t_le" : [0.020,0.018],
+        #    "u_le" : [0.00],
+        #    "t_mid" : [0.04,0.03],
+        #    "u_mid" : [0.50],
+        #    "t_te" : [0.01],
+        #    "u_te" : [1.00],
+
+        #    "adjustRadius" : True,
+        #    "orientation" : 1,
+
+        #}
         self.configLayer = {
             "label" : "radMeridionalContour",
             "nSlices" : 15,
@@ -234,16 +281,61 @@ class ConfigHubZero():
     def getCurves(self):
         return self.hubCurves, self.shroudCurves
 
-def createOFCase(container, stateLbl, indiv):
+def createOFCase(container, stateLbl, indiv, h_inlet):
 
+    
     bV = container.cptr_bV()
     dC = container.cptr_dC()
 
     dtOO.lVHOstateHandler().makeState(stateLbl+"_"+str(indiv))
+    
+    #
+    # draft tube
+    #
 
-    #
-    # of case setup
-    #
+    rmsh = dtOO.readMOABMesh()
+    rmsh.jInit(dtOO.jsonPrimitive('{"label" : "dt_mesh", "_fileName" : "saugrohr.cgns"}'), None, None, None, None, None)
+    rmsh.makeGrid()
+    
+    bV.push_back( rmsh )
+
+    ob = dtOO.bVOFaceToPatchRule()
+    ob.thisown = False
+    ob.jInit(
+      dtOO.jsonPrimitive(
+        '{'
+          '"_patchRule" : ['
+            '":meshSet_2d_0::dt_mesh_wall:",'
+            '":meshSet_2d_1::dt_mesh_central:",'
+            '":meshSet_2d_2::dt_mesh_vent:",'
+            '":meshSet_2d_3::dt_mesh_outlet:",'
+            '":meshSet_2d_4::dt_mesh_inlet:"'
+          '],'
+          '"_regRule" : ['
+            '":meshSet_3d_0::dt_mesh:"'
+          ']'
+        '}'
+      ),
+      rmsh
+    )
+    ob.postUpdate()
+    
+    ob = dtOO.bVOOrientCellVolumes()
+    ob.thisown = False
+    ob.jInit(
+        dtOO.jsonPrimitive('{"_positive" : true}'), rmsh
+    )
+    ob.postUpdate()
+
+    #ob = dtOO.bVOWriteMSH()
+    #ob.thisown = False
+    #ob.jInit(
+    #        dtOO.jsonPrimitive('{"_filename" : "dt_mesh.msh", "_saveAll" : true}'),
+    #  None, None, None, None, None, rmsh
+    #)
+    #ob.postUpdate()
+    
+     
     from dtOOPythonApp.builder import (
       ofOpenFOAMCase_turboMachine,
       ofOpenFOAMCase_setupWrapper
@@ -252,28 +344,30 @@ def createOFCase(container, stateLbl, indiv):
     container = ofOpenFOAMCase_turboMachine(
       label = "of",
       bVs = [
-        bV["gv_mesh"], bV["ru_mesh"], bV["meshLayers"],
+        bV["gv_mesh"], 
+        bV["ru_mesh"], 
+        bV["dt_mesh"],
       ],
       dictRule = \
           ofOpenFOAMCase_setupWrapper.controlDict(
             application = "simpleFoam",
             endTime = 2000,
             # Patches where Q and PT is tracked
-            QPatches = ['gv_mesh_inlet', 'gv_mesh_outlet',
+            QPatches = ['gv_mesh_inlet', 'gv_mesh_outlet', 
                         'ru_mesh_inlet', 'ru_mesh_outlet',
-                        'meshLayers_inlet', 'meshLayers_outlet',
+                        'dt_mesh_inlet', 'dt_mesh_outlet',
                         'gv_mesh_suction', 'gv_mesh_pressure',
-                        'ru_mesh_suction', 'ru_mesh_pressure',
-                        'meshLayers_periodic0', 'meshLayers_periodic1'],
+                        'ru_mesh_suction', 'ru_mesh_pressure'],
             PTPatches = ['gv_mesh_inlet', 'gv_mesh_outlet',
                         'ru_mesh_inlet', 'ru_mesh_outlet',
-                        'meshLayers_inlet', 'meshLayers_outlet',
+                         'dt_mesh_inlet', 'dt_mesh_outlet',
                         'gv_mesh_suction', 'gv_mesh_pressure',
-                        'ru_mesh_suction', 'ru_mesh_pressure',
-                        'meshLayers_periodic0', 'meshLayers_periodic1'],
+                        'ru_mesh_suction', 'ru_mesh_pressure'],
             FPatches = ['gv_mesh_blade', 'ru_mesh_blade'],
             libs = [
               "libsimpleFunctionObjects.so",
+              #"libsimpleSwakFunctionObjects.so",
+              #"libmappedFieldFixedValue.so",
               "libmixingPlane.so",
             ]
           )
@@ -303,7 +397,7 @@ def createOFCase(container, stateLbl, indiv):
         ],
         setupRules = [
           ofOpenFOAMCase_setupWrapper.emptyRuleString(),
-          # meshInlet
+          ## meshInlet
           ofOpenFOAMCase_setupWrapper.cylindricalInletRuleString(
             "gv_mesh_inlet",
             ["U"],
@@ -312,7 +406,7 @@ def createOFCase(container, stateLbl, indiv):
           ofOpenFOAMCase_setupWrapper.inletRuleString(
             "gv_mesh_inlet",
             ["p", "k", "omega",],
-            [ [0], [0.0, 0.10], [0.032*0.36, 0.1] ]
+            [ [0], [0.1, 0.10], [0.032*h_inlet, 0.1] ]
           ),
           ofOpenFOAMCase_setupWrapper.wallRuleString(
             "gv_mesh_shroud",
@@ -342,10 +436,11 @@ def createOFCase(container, stateLbl, indiv):
             origin = dtOO.dtPoint3(0,0,0),
             stackAxis = "Z",
             discretization = "userDefined",
-            planes = 30,
-            planesBl = 7,
+            planes = 40,
+            planesBl = 15,
             gradingIf = "false"
           ),
+
           # runner
           ofOpenFOAMCase_setupWrapper.wallRuleString(
             "ru_mesh_hub",
@@ -362,47 +457,44 @@ def createOFCase(container, stateLbl, indiv):
           ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
             "ru_mesh_suction", "ru_mesh_pressure"
           ),
-          #ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
-          #  "meshChannel_outlet", "meshLayers_inlet",
-          #  rotAxis = None,
-          #  rotCentre = None
-          #),
           ofOpenFOAMCase_setupWrapper.mixingPlaneRuleString(
-            "ru_mesh_outlet", "meshLayers_inlet",
+            "ru_mesh_outlet", "dt_mesh_inlet",
             ["U", "p", "k", "omega",],
             axis = dtOO.dtVector3(0,0,1),
             origin = dtOO.dtPoint3(0,0,0),
             stackAxis = "R",
             discretization = "userDefined",
-            planes = 30,
-            planesBl = 7,
+            planes = 40,
+            planesBl = 15,
             gradingIf = "false"
           ),
+          
+          # draft tube
           ofOpenFOAMCase_setupWrapper.wallRuleString(
-            "meshLayers_hub",
+            "dt_mesh_vent",
             ["omega", "U", "p", "k", "nut"]
           ),
           ofOpenFOAMCase_setupWrapper.wallRuleString(
-            "meshLayers_shroud",
+            "dt_mesh_central",
             ["omega", "U", "p", "k", "nut"]
           ),
-          ofOpenFOAMCase_setupWrapper.cyclicAmiRuleString(
-            "meshLayers_periodic0", "meshLayers_periodic1"
+          ofOpenFOAMCase_setupWrapper.wallRuleString(
+            "dt_mesh_wall",
+            ["omega", "U", "p", "k", "nut"]
           ),
           ofOpenFOAMCase_setupWrapper.outletRuleString(
-            "meshLayers_outlet",
+            "dt_mesh_outlet",  
             ["U", "p", "k", "omega",]
           ),
         ]
-
     ).buildExtract( container )
-
+    
     dC["of"].runCurrentState()
-
+    
 def run(*args, **kwargs):
     from dtOOPythonApp.vis import dtOOInParaVIEW
 
-    machine = ConfigHubZero()
+    machine = ConfigExtInterf()
     configM, configGV, configRu, configL = machine.getConfig()
     hubCurves, shroudCurves = machine.getCurves()
 
@@ -411,11 +503,9 @@ def run(*args, **kwargs):
     generate.createMeridional(configM, hubCurves, shroudCurves)
     #generate.createBlade(configGV)
     generate.createBlade(configRu)
-    #generate.createLayerRegion(configL)
 
     cc = generate.getContainer()
     
-
     rr = dtOOInParaVIEW( cc )
     
     #rr.Show( rr.Find( "xyz_gv_channel", True), "xyz_gv_channel" )
@@ -428,7 +518,6 @@ def run(*args, **kwargs):
     
     #bV = cc.cptr_bV()
     
-    #bV["meshLayers"].makeGrid()
     #bV["gv_mesh"].makeGrid()
     #bV["ru_mesh"].makeGrid()
             
@@ -440,200 +529,52 @@ def run(*args, **kwargs):
     return cc, rr
 
 if __name__ == "__main__":
-    machine = ConfigHubZero()
+    
+    machine = ConfigExtInterf()
     configM, configGV, configRu, configL = machine.getConfig()
     hubCurves, shroudCurves = machine.getCurves()
     
     generate = radMeridional.radMeridional()
-
+    
     generate.createMeridional(configM, hubCurves, shroudCurves)
-    #generate.createBlade(configGV)
-    generate.createBlade(configRu)
     #generate.createLayerRegion(configL)
+    generate.createBlade(configGV)
+    generate.createBlade(configRu)
     
     container = generate.getContainer()
-
-    from dtOOPythonApp.tools import dtOO2OCC
-    
-    lab = "ru"
-    
-    # lists for hub and shroud edges
-    hubEdges = []
-    shroudEdges = []
-    
-    # lists for inlet and outlet surfaces and periodic surfaces
-    inOutList = []
-    perList0 = []
-    perList1 = []
-    
-    #
-    # Get surfaces of the bladed channel segment as wel as the 
-    # hub and shroud edges
-    #
-    # blade
-    blade = dtOO2OCC.analyticSurface_analyticGeometry(
-        container.cptr_aG()["xyz_"+lab+"_blade"]
-      ).approx(uInts=np.linspace(0.0, 1.0, 501))
-    bladeHub = blade.segmentConstUPercent(0)
-    bladeShroud = blade.segmentConstUPercent(1)
-    
-    # inlet
-    inlet = dtOO2OCC.analyticSurface_analyticGeometry(
-        container.cptr_aG()["debug_gridChannelFace_"+lab+"_inlet"]
-      ).approx(uInts=np.linspace(0.0, 1.0, 501))
-    inOutList.append(inlet)
-    hubEdges.append(inlet.segmentConstUPercent(0))
-    shroudEdges.append(inlet.segmentConstUPercent(1))
-    
-    # outlet
-    outlet = dtOO2OCC.analyticSurface_analyticGeometry(
-        container.cptr_aG()["debug_gridChannelFace_"+lab+"_outlet"]
-      ).approx(uInts=np.linspace(0.0, 1.0, 501))
-    inOutList.append(outlet)
-    hubEdges.append(outlet.segmentConstUPercent(0))
-    shroudEdges.append(outlet.segmentConstUPercent(1))
-    
-    # bounding surface of the hub-mbs
-    hub = dtOO2OCC.TopoDS([
-      dtOO2OCC.analyticSurface_analyticGeometry(
-        dtOO.multipleBoundedSurface.MustDownCast(
-          container.cptr_aG()["debug_gridChannelFace_"+lab+"_hub"]
-        ).surfaceConstPtr()
-      ).approx(uInts=np.linspace(0.0, 1.0, 501))
-      ])
-    
-    # bounding surface of the shroud-mbs
-    shroud = dtOO2OCC.TopoDS([
-      dtOO2OCC.analyticSurface_analyticGeometry(
-        dtOO.multipleBoundedSurface.MustDownCast(
-          container.cptr_aG()["debug_gridChannelFace_"+lab+"_shroud"]
-        ).surfaceConstPtr()
-      ).approx(uInts=np.linspace(0.0, 1.0, 501))
-      ])
-    
-    # mesh block faces forming the periodic menaplane
-    # -> periodic 0
-    for iNum in container.cptr_aG().getIndices("xyz_"+lab+"_meanplaneFaceOnBlock_*"):
-        ii = container.cptr_aG().getLabel( iNum )
-        
-        per = dtOO2OCC.analyticSurface_analyticGeometry(
-                container.cptr_aG()[ii]
-            ).approx(uInts=np.linspace(0.0, 1.0, 501))
-        hubEdges.append(per.segmentConstUPercent(0))
-        shroudEdges.append(per.segmentConstUPercent(1))
-        perList0.append(per)
-    
-    # fe-meanplane faces
-    # -> periodic 0
-    for iNum in container.cptr_aG().getIndices("xyz_"+lab+"_fe_meanplane_*"):
-        ii = container.cptr_aG().getLabel( iNum )
-
-        per = dtOO2OCC.analyticSurface_analyticGeometry(
-                container.cptr_aG()[ii]
-            ).approx(uInts=np.linspace(0.0, 1.0, 501))
-        hubEdges.append(per.segmentConstUPercent(0))
-        shroudEdges.append(per.segmentConstUPercent(1))
-        perList0.append(per)
-    
-    # -> periodic 1
-    for iNum in container.cptr_aG().getIndices("debug_gridChannelFace_"+lab+"_pressure_*"):
-        ii = container.cptr_aG().getLabel( iNum )
-
-        per = dtOO2OCC.analyticSurface_analyticGeometry(
-                container.cptr_aG()[ii]
-            ).approx(uInts=np.linspace(0.0, 1.0, 501))
-        hubEdges.append(per.segmentConstUPercent(0))
-        shroudEdges.append(per.segmentConstUPercent(1))
-        perList1.append(per)
-    
-    # order the edges on the bladed channels hub and shroud 
-    # by connectivity. Changing the directions if necessary
-    from dtOOPythonApp.builder import vectorHandlingAnalyticGeometry_sortCurves
-    sort = vectorHandlingAnalyticGeometry_sortCurves(
-            curvesUnsorted = hubEdges
-        ).enableDebug()
-    container = sort.buildExtract(container)
-    hubEdges = sort.getSortedCurves()
-    sort = vectorHandlingAnalyticGeometry_sortCurves(
-            curvesUnsorted = shroudEdges
-        ).enableDebug()
-    container = sort.buildExtract(container)
-    shroudEdges = sort.getSortedCurves()
-    
-    # transform the blade and channel hub and shroud edges into 
-    # occ-objects
-    bladeHub = dtOO2OCC.TopoDS([bladeHub])
-    bladeShroud = dtOO2OCC.TopoDS([bladeShroud])
-    hubEdges = dtOO2OCC.TopoDS(hubEdges)
-    shroudEdges = dtOO2OCC.TopoDS(shroudEdges)
-    
-    # trimm the bounding surfaces of the hub and shroud with the
-    # edge lists
-    hub = dtOO2OCC.makeTopoDS_FaceAndEdges(
-            face = hub[0], 
-            edgesTrim = hubEdges, 
-            edgesHole = bladeHub
-        )
-    shroud = dtOO2OCC.makeTopoDS_FaceAndEdges(
-            face = shroud[0], 
-            edgesTrim = shroudEdges, 
-            edgesHole = bladeShroud
-        )
-    
-    # split blade into two surfaces
-    blade0 = dtOO.analyticSurface(
-        dtOO.bSplineSurface_bSplineSurfaceSplitConstructOCC(
-            blade.ptrConstDtSurface(),
-            1,
-            blade.v_percent(0),
-            blade.v_percent(0.5),
-        ).result()
-    )
-    blade1 = dtOO.analyticSurface(
-        dtOO.bSplineSurface_bSplineSurfaceSplitConstructOCC(
-            blade.ptrConstDtSurface(),
-            1,
-            blade.v_percent(0.5),
-            blade.v_percent(1.0),
-        ).result()
-    )
+    #bV = container.cptr_bV()
      
-    # create a shell of all surfaces
-    omniShell = dtOO2OCC.createShell(
-        dtOO2OCC.TopoDS( 
-            perList0
-        ) + dtOO2OCC.TopoDS(
-            perList1
-        ) + dtOO2OCC.TopoDS(
-            inOutList 
-        ) + [ 
-            hub, 
-            shroud
-        ] + dtOO2OCC.TopoDS(
-            [ blade0, blade1 ]
-        )
-    )
+    #container = generate.getContainer()
+    #from dtOOPythonApp.tools import dtOO2OCC
+    #
+    #lab = "ru"
+    #
+    #curve = dtOO2OCC.analyticCurve_analyticGeometry(
+    #        container.cptr_aG()["debug_interface_1_radMeridionalContour"]
+    #    ).approx(uInts=np.linspace(0.0, 1.0, 501))
+
+    #surface = dtOO.analyticSurface(
+    #    dtOO.surfaceOfRevolution_curveRotateConstructOCC(
+    #        curve.ptrConstDtCurve(),
+    #        dtOO.dtPoint3(0.0, 0.0, 0.0),
+    #        dtOO.dtVector3(0.0, 0.0, 1.0)
+    #    ).result()
+    #)
+
+    #print(type(surface))
+    #
+    #dtOO2OCC.WriteSTEP(
+    #  dtOO2OCC.TopoDS([surface]),
+    #  "interface.stp"
+    #)
     
-    # create a solid body bounded by the shell
-    solid = dtOO2OCC.createSolid(omniShell)
-    
-
-    solid = dtOO2OCC.scale(solid, 1000) 
-
-    dtOO2OCC.WriteSTEP(
-      [solid],
-      #[walls, periodic0, periodic1]+inOutList,
-      #[hub, shroud] + inOutList,
-      #dtOO2OCC.TopoDS([blade0, blade1]), 
-      lab + ".stp"
-    )
-
-    bV = container.cptr_bV()
-
     #bV["ru_mesh"].makeGrid()
-    bV["gv_mesh"].makeGrid()
-    stateLbl = "hubZero"
+    #bV["gv_mesh"].makeGrid()
+    #bV["meshLayers"].makeGrid()
+
+    stateLbl = "fittedBlade"
     indiv = "0"
-    #createOFCase(container, stateLbl, indiv)
+    
+    createOFCase(container, stateLbl, indiv, 0.36)
 
     # ------------------- EOF ------------------- #

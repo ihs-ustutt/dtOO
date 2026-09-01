@@ -22,10 +22,11 @@ import sys
 #print(case_name)
 #
 #_case = './'+case_name+'/'
-_case = './of_MP_bladeAngle05_new_0/'
+_case = './of_fittedBlade_0/'
 _safe_case = re.sub(r'[\\/:\*\?"<>|]', '_', _case)
 
 fc = foamlib.FoamCase( _case )
+#if True:
 if False:
   fc.decompose_par_dict['method'] = 'metis'
   fc.decompose_par_dict['numberOfSubdomains'] = int(n_cores)
@@ -51,24 +52,25 @@ if False:
         "omega": 0.6
       }
   fc.fv_solution["SIMPLE"] = {
-        "nNonOrthogonalCorrectors": 20
+        "nNonOrthogonalCorrectors": 20,
+        #"consistent": "yes"
       }
  
   fc.control_dict['DebugSwitches'] = {
           'mixingInterfacePolyPatch': 2
         }
   fc.control_dict['writeInterval'] = 100
-  fc.control_dict['endTime'] = 1000
+  fc.control_dict['endTime'] = 500
   fc.run()
   
-  fc.control_dict['endTime'] = 2500
+  fc.control_dict['endTime'] = 2000
   fc.control_dict['writeInterval'] = 100
   #fc.control_dict['purgeWrite'] = 10
   fc.turbulence_properties["RAS"]["turbulence"] = True
   
   fc.run()
   
-fc.run(["reconstructPar", '-time', '1000,2500'])
+fc.run(["reconstructPar", '-time', '500,2000'])
 
 _omega = np.abs(
   foamlib.FoamFile(fc.path/'constant/MRFProperties')['MRF_ru_mesh']['omega']
@@ -79,26 +81,26 @@ for var in ["U", "U:Transformed", "p",]:
   for patch in [
           "gv_mesh_inlet", "gv_mesh_outlet", 
           "ru_mesh_inlet", "ru_mesh_outlet", 
-          "meshLayers_inlet", "meshLayers_outlet", 
+          #"meshLayers_inlet", "meshLayers_outlet", 
           "dt_mesh_inlet", "dt_mesh_outlet"
         ]:
     fc.run(["patchToCsv", var, patch])
 
 #_time = fc[-1].name
-_time = "2500"
+_time = "2000"
 
 #patchToCsv U ru_mesh_outlet
 UTrans_gv_in = dtAverageValueField(dtCylField(_case+"gv_mesh_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
 UTrans_gv_out = dtAverageValueField(dtCylField(_case+"gv_mesh_outlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
 UTrans_ru_in = dtAverageValueField(dtCylField(_case+"ru_mesh_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
 UTrans_ru_out = dtAverageValueField(dtCylField(_case+"ru_mesh_outlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
-UTrans_ml_in = dtAverageValueField(dtCylField(_case+"meshLayers_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
-UTrans_ml_out = dtAverageValueField(dtCylField(_case+"meshLayers_outlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
+#UTrans_ml_in = dtAverageValueField(dtCylField(_case+"meshLayers_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
+#UTrans_ml_out = dtAverageValueField(dtCylField(_case+"meshLayers_outlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
 UTrans_dt_in = dtAverageValueField(dtCylField(_case+"dt_mesh_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
 
 #UTrans_dt_out = dtValueField(dtField(_case+"dt_mesh_outlet_U:Transformed_"+_time+".csv").Read())
 
-fig, axes = plt.subplots(3, 1, figsize=(6.7, 8))
+fig, axes = plt.subplots(2, 1, figsize=(6.7, 8))
 
 ax = axes[0]
 ax.plot(UTrans_ru_in.CoordThree()[:,2], UTrans_ru_in.ValueAvAThree()[:,0], 'ks', label = r'RU Inlet $U_r$')
@@ -120,29 +122,29 @@ ax.grid(True)
 
 ax = axes[1]
 ax.plot(UTrans_ru_out.CoordOne()[:,0], UTrans_ru_out.ValueAvAOne()[:,2], 'ks', label = r'RU Outlet $U_z$')
-ax.plot(UTrans_ml_in.CoordOne()[:,0], UTrans_ml_in.ValueAvAOne()[:,2], 'k-', label = r'ML Inlet $U_z$')
-ax.plot(UTrans_ru_out.CoordOne()[:,0], UTrans_ru_out.ValueAvAOne()[:,1], 'rs', label = r'RU Outlet $U_φ$')
-ax.plot(UTrans_ml_in.CoordOne()[:,0], UTrans_ml_in.ValueAvAOne()[:,1], 'r-', label = r'ML Inlet $U_φ$')
-#ax.savefig("fig_ru_out.png")
-# Labels and title
-ax.set_xlabel('x position')
-ax.set_ylabel('Velocity Transformed')
-ax.set_title("Runner (RU) Outlet to Mesh Layer (ML) Inlet")
-ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-ax.grid(True)
-
-ax = axes[2]
-ax.plot(UTrans_ml_out.CoordOne()[:,0], UTrans_ml_out.ValueAvAOne()[:,2], 'ks', label = r'ML Outlet $U_z$')
 ax.plot(UTrans_dt_in.CoordOne()[:,0], UTrans_dt_in.ValueAvAOne()[:,2], 'k-', label = r'DT Inlet $U_z$')
-ax.plot(UTrans_ml_out.CoordOne()[:,0], UTrans_ml_out.ValueAvAOne()[:,1], 'rs', label = r'ML Outlet $U_φ$')
+ax.plot(UTrans_ru_out.CoordOne()[:,0], UTrans_ru_out.ValueAvAOne()[:,1], 'rs', label = r'RU Outlet $U_φ$')
 ax.plot(UTrans_dt_in.CoordOne()[:,0], UTrans_dt_in.ValueAvAOne()[:,1], 'r-', label = r'DT Inlet $U_φ$')
 #ax.savefig("fig_ru_out.png")
 # Labels and title
 ax.set_xlabel('x position')
 ax.set_ylabel('Velocity Transformed')
-ax.set_title("Mesh Layer (ML) Outlet to Draft Tube (DT) Inlet")
+ax.set_title("Runner (RU) Outlet to Draft Tube (DT) Inlet")
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 ax.grid(True)
+
+#ax = axes[2]
+#ax.plot(UTrans_ml_out.CoordOne()[:,0], UTrans_ml_out.ValueAvAOne()[:,2], 'ks', label = r'ML Outlet $U_z$')
+#ax.plot(UTrans_dt_in.CoordOne()[:,0], UTrans_dt_in.ValueAvAOne()[:,2], 'k-', label = r'DT Inlet $U_z$')
+#ax.plot(UTrans_ml_out.CoordOne()[:,0], UTrans_ml_out.ValueAvAOne()[:,1], 'rs', label = r'ML Outlet $U_φ$')
+#ax.plot(UTrans_dt_in.CoordOne()[:,0], UTrans_dt_in.ValueAvAOne()[:,1], 'r-', label = r'DT Inlet $U_φ$')
+##ax.savefig("fig_ru_out.png")
+## Labels and title
+#ax.set_xlabel('x position')
+#ax.set_ylabel('Velocity Transformed')
+#ax.set_title("Mesh Layer (ML) Outlet to Draft Tube (DT) Inlet")
+#ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+#ax.grid(True)
 
 #ax = axes[3]
 #ax.plot(UTrans_dt_out.CoordOne()[:,2], UTrans_dt_out.ValueAvAOne()[:,0], 'ks', label = r'DT Outlet $U_z$')
@@ -159,27 +161,27 @@ pT_gv_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_gv_mesh_inl
 pT_gv_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_gv_mesh_outlet").Read(pattern={"*.dat": ":,1:"}) )
 pT_ru_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_ru_mesh_inlet").Read(pattern={"*.dat": ":,1:"}) )
 pT_ru_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_ru_mesh_outlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_ml_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_meshLayers_inlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_ml_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_meshLayers_outlet").Read(pattern={"*.dat": ":,1:"}) )
+#pT_ml_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_meshLayers_inlet").Read(pattern={"*.dat": ":,1:"}) )
+#pT_ml_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_meshLayers_outlet").Read(pattern={"*.dat": ":,1:"}) )
 pT_dt_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_dt_mesh_inlet").Read(pattern={"*.dat": ":,1:"}) )
 pT_dt_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_dt_mesh_outlet").Read(pattern={"*.dat": ":,1:"}) )
 dh_gv0 = (pT_gv_out.MeanLast(10) - pT_gv_in.MeanLast(10))/_g
 dh_ru0 = (pT_ru_out.MeanLast(10) - pT_ru_in.MeanLast(10))/_g
-dh_ml0 = (pT_ml_out.MeanLast(10) - pT_ml_in.MeanLast(10))/_g
+#dh_ml0 = (pT_ml_out.MeanLast(10) - pT_ml_in.MeanLast(10))/_g
 dh_dt0 = (pT_dt_out.MeanLast(10) - pT_dt_in.MeanLast(10))/_g
-dh = dh_gv0 + dh_ru0 + dh_ml0 + dh_dt0
+dh = dh_gv0 + dh_ru0 + dh_dt0
 F = dtForceDeveloping( dtDeveloping(_case+"postProcessing/F_ru_mesh_blade").Read(pattern={'force.dat' : ':,4:10', 'moment.dat' : ':,4:10', '*.*' : ''}) )
 
 print("pT_ru_in = ", pT_ru_in.MeanLast(1))
 print("pT_ru_out = ", pT_ru_out.MeanLast(1))
 pt_globIn = pT_gv_in.MeanLast(10)
-pt_globOut = pT_ml_out.MeanLast(10)
+pt_globOut = pT_dt_out.MeanLast(10)
 F_z = F.MomentMeanLast(10)[2]
 print("p_gv_in = %f" % pT_gv_in.MeanLast(10))
-print("p_ml_out = %f" % pT_ml_out.MeanLast(10))
+#print("p_ml_out = %f" % pT_ml_out.MeanLast(10))
 print("dh_gv = %f" % dh_gv0)
 print("dh_ru = %f" % dh_ru0)
-print("dh_ml = %f" % dh_ml0)
+#print("dh_ml = %f" % dh_ml0)
 print("dh_dt = %f" % dh_dt0)
 print("Resulting height:")
 print("dh = %f" % dh)
