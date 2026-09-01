@@ -20,15 +20,18 @@ License
 
 #include <dtOOTypeDef.h>
 
+#include "dtOVMTypedef.h"
 #include <dtLinearAlgebra.h>
+#include <functional>
 #include <logMe/dtMacros.h>
 
 class MVertex;
 class MElement;
 
-#include "dtOVMTypedef.h"
-
 namespace dtOO {
+
+class dtGmshRegion;
+
 class dtOVMMesh : public ovmMesh {
 public:
   dt__classOnlyName(dtOVMMesh);
@@ -53,13 +56,43 @@ public:
   //
   // misc
   //
-  void makePartition(dtInt const &num) const;
   std::vector<dtPoint3> adjacentVertices(ovmVertexH const &vH) const;
+  bool trySplitEdge(
+    ovmVertexH const &v0,
+    ovmVertexH const &v1,
+    std::function<bool(ovmVertexH const &)> const &accept
+  );
+  bool tryRemoveTet(
+    ovmCellH const &cH,
+    ovmCellH const &neighbour,
+    std::function<bool(std::vector<ovmVertexH> const &)> const &accept
+  );
+  //
+  // apply mesh changes
+  //
+  bool applyTo(dtGmshRegion *dtgr);
+  bool isTetrahedron(ovmCellH const &cH) const;
+  bool isPyramid(ovmCellH const &cH) const;
+  bool isPrism(ovmCellH const &cH) const;
+  bool isHexahedron(ovmCellH const &cH) const;
 
 private:
+  //
+  // tetrahedral mesh editing
+  //
+  ovmCellH addTet(
+    ovmVertexH const &v0,
+    ovmVertexH const &v1,
+    ovmVertexH const &v2,
+    ovmVertexH const &v3,
+    bool const &correctOrientation = false
+  );
+  bool removeTet(ovmCellH const &cH);
+  void removeVertex(ovmVertexH const &vH);
+  ovmVertexH splitEdge(ovmVertexH const &v0, ovmVertexH const &v1);
   ovmVertexH addVertex(::MVertex *mv);
   ovmHalffaceH addFace(::MVertex *mv0, ::MVertex *mv1, ::MVertex *mv2);
-  ovmHalffaceH addFace(std::vector<::MVertex *> const &mv);
+  ovmHalffaceH addFace(std::vector<::MVertex *> const &mvs);
 
 private:
   std::vector<MElement *> _me;
@@ -67,5 +100,7 @@ private:
   std::map<::MVertex const *, ovmVertexH> _ovm_gmsh;
   std::map<::MElement const *, ovmCellH> _ovm_gmshElement;
 };
+
 } // namespace dtOO
+
 #endif /* dtOVMMesh_H */

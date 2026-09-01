@@ -507,25 +507,7 @@ dtMeshGRegion::extractPyramidGoalPosition(ovmVertexH const &vH, dtOVMMesh &ovm)
       dir = -1.0;
   }
 
-  dtPoint3 const cGoal = bary_pyr + l_pyr / 2.0 * dir * n_pyr;
-
-  Msg::Debug(
-    "vH = %d / nTets = %d / pp.size() = %d / %f %f %f -> %f %f %f / dir = %f / "
-    "l_pyr = %f",
-    vH,
-    nTets,
-    pp.size(),
-    ovm[vH]->x(),
-    ovm[vH]->y(),
-    ovm[vH]->z(),
-    cGoal.x(),
-    cGoal.y(),
-    cGoal.z(),
-    dir,
-    l_pyr
-  );
-
-  return cGoal;
+  return bary_pyr + l_pyr / 2.0 * dir * n_pyr;
 }
 
 bool dtMeshGRegion::validShift(ovmVertexH const vH, dtOVMMesh &ovm)

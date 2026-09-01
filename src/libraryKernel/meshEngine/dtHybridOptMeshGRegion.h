@@ -1,4 +1,4 @@
-/*---------------------------------------------------------------------------*\\
+/*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
 
     Copyright (C) 2024 A. Tismer.
@@ -13,7 +13,7 @@ License
 
     You should have received a copy of the License along with dtOO.
 
-\\*---------------------------------------------------------------------------*/
+\*---------------------------------------------------------------------------*/
 
 #ifndef DTHYBRIDOPTMESHGREGION_H
 #define DTHYBRIDOPTMESHGREGION_H
@@ -34,50 +34,38 @@ class dtHybridOptMeshGRegion : public dtMesh3DOperator {
 public:
   dt__classOnlyName(dtHybridOptMeshGRegion);
   dt__classSelfCreate(dtHybridOptMeshGRegion);
-
   dtHybridOptMeshGRegion();
   dtHybridOptMeshGRegion(const dtHybridOptMeshGRegion &orig);
   virtual ~dtHybridOptMeshGRegion();
-
   virtual bool isStatusIndependent(void);
-
   void operator()(dtGmshRegion *dtgr);
 
 private:
   struct LocalQuality {
     dtReal minimum;
     dtReal average;
-
-    // Minimum signed volume of incident tetrahedra.
     dtReal minimumVolume;
-
-    // Minimum volume normalized iby the cube of the longest edge.
     dtReal minimumRelativeVolume;
-
-    // Number of invalid/inverted/degenerate tetrahedra.
     int nInvalid;
-
-    // Number of tetrahedra with reversed orientation.
     int nReversed;
   };
   bool isMovableVertex(ovmVertexH const &vH, dtOVMMesh &ovm) const;
   bool hasOptimizableElement(ovmVertexH const &vH, dtOVMMesh &ovm) const;
-
   LocalQuality localQuality(ovmVertexH const &vH, dtOVMMesh &ovm) const;
+  LocalQuality
+  localQuality(std::vector<ovmVertexH> const &vertices, dtOVMMesh &ovm) const;
   bool better(LocalQuality const &candidate, LocalQuality const &current) const;
-
+  bool splitTetEdge(ovmCellH const &cH, dtOVMMesh &ovm) const;
+  bool removeTet(ovmCellH const &cH, dtOVMMesh &ovm) const;
+  void optimizeTetrahedra(dtOVMMesh &ovm, int nIter) const;
   dtPoint3 extractVertexPosition(ovmVertexH const &vH, dtOVMMesh &ovm) const;
-
   dtPoint3 calculateTetGoalPosition(ovmVertexH const &vH, dtOVMMesh &ovm) const;
   dtPoint3
   calculatePyramidGoalPosition(ovmVertexH const &vH, dtOVMMesh &ovm) const;
   dtPoint3 calculateGoalPosition(ovmVertexH const &vH, dtOVMMesh &ovm) const;
-
   std::vector<dtPoint3>
   extractCandidatePositions(ovmVertexH const &vH, dtOVMMesh &ovm) const;
-
   bool relocateVertex(ovmVertexH const &vH, dtOVMMesh &ovm) const;
-
   std::vector<ovmVertexH> extractMovableVertices(dtOVMMesh &ovm) const;
   void relocateVertices(dtOVMMesh &ovm, int nIter) const;
 
