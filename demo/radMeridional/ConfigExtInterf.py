@@ -52,14 +52,14 @@ class ConfigExtInterf():
                 2
               ).result()
             ),
-            dtOO.analyticCurve(
-              dtOO.bSplineCurve_pointConstructOCC(
-                dtOO.vectorDtPoint3()
-                  << dtOO.dtPoint3(+d_outHub/2, +0.00, -h_hub+h_inlet)
-                  << dtOO.dtPoint3(+d_outHub/2, +0.00, -2.55),
-                1
-              ).result()
-            )
+            #dtOO.analyticCurve(
+            #  dtOO.bSplineCurve_pointConstructOCC(
+            #    dtOO.vectorDtPoint3()
+            #      << dtOO.dtPoint3(+d_outHub/2, +0.00, -h_hub+h_inlet)
+            #      << dtOO.dtPoint3(+d_outHub/2, +0.00, -2.55),
+            #    1
+            #  ).result()
+            #)
 
           ]
 
@@ -90,14 +90,14 @@ class ConfigExtInterf():
                 1
               ).result()
             ),
-            dtOO.analyticCurve(
-              dtOO.bSplineCurve_pointConstructOCC(
-                dtOO.vectorDtPoint3()
-                  << dtOO.dtPoint3(+d_outShroud/2, +0.00, -0.54)
-                  << dtOO.dtPoint3(+1.15, +0.00, -2.55),
-                1
-              ).result()
-            )
+            #dtOO.analyticCurve(
+            #  dtOO.bSplineCurve_pointConstructOCC(
+            #    dtOO.vectorDtPoint3()
+            #      << dtOO.dtPoint3(+d_outShroud/2, +0.00, -0.54)
+            #      << dtOO.dtPoint3(+1.15, +0.00, -2.55),
+            #    1
+            #  ).result()
+            #)
           ]
 
         self.configMeridional = {
@@ -158,61 +158,7 @@ class ConfigExtInterf():
 
             "orientation" : -1,
         }
-        ## Case - Fitted to blade
-        #self.configRunner = {
-        #    "label" : "ru",
-        #    "regChannel" : 1,
-        #    "nBlades" : 15,
-        #    
-        #    "spanwiseCuts_mp" : [0.00, 0.33,  0.66, 1.00,],
-        #    "alpha_1" : [
-        #             round((np.pi/180.) * 90., 4),
-        #             round((np.pi/180.) * 75., 4),
-        #             round((np.pi/180.) * 52., 4)
-        #         ],
-        #    "alpha_2" : [
-        #             round((np.pi/180.) * 45., 4),
-        #             round((np.pi/180.) * 27., 4),
-        #             round((np.pi/180.) * 25., 4),
-        #             round((np.pi/180.) * 10., 4)
-        #         ],
-        #    "ratioX" : [
-        #             0.65,
-        #             0.65,
-        #             0.15,
-        #             0.24
-        #         ],
-        #    "deltaY" : [
-        #             0.80,
-        #             0.75,
-        #             0.75,
-        #             0.53
-        #         ],
-        #    "offX" : [
-        #             0.125,
-        #             0.11,
-        #             0.11,
-        #             0.005
-        #         ],
-        #    "offY" : [
-        #             0.065,
-        #             0.07,
-        #             0.035
-        #         ],
-
-        #    "spanwiseCuts_td" : [0.00, 1.00,],
-        #    "t_le" : [0.020,0.02],
-        #    "u_le" : [0.00],
-        #    "t_mid" : [0.04,0.03],
-        #    "u_mid" : [0.50],
-        #    "t_te" : [0.01],
-        #    "u_te" : [1.00],
-
-        #    "adjustRadius" : True,
-        #    "orientation" : 1,
-
-        #}
-        # Case: of_ExtInterf_0
+        # Case - Fitted to blade
         self.configRunner = {
             "label" : "ru",
             "regChannel" : 1,
@@ -226,35 +172,36 @@ class ConfigExtInterf():
                  ],
             "alpha_2" : [
                      round((np.pi/180.) * 45., 4),
-                     round((np.pi/180.) * 31., 4),
-                     round((np.pi/180.) * 32., 4),
+                     round((np.pi/180.) * 27., 4),
+                     round((np.pi/180.) * 25., 4),
                      round((np.pi/180.) * 10., 4)
                  ],
             "ratioX" : [
                      0.65,
-                     0.70,
-                     0.35,
-                     0.22
+                     0.65,
+                     0.15,
+                     0.24
                  ],
             "deltaY" : [
                      0.80,
-                     0.55,
-                     0.90,
-                     0.55
+                     0.75,
+                     0.75,
+                     0.53
                  ],
             "offX" : [
                      0.125,
-                     0.125,
-                     0.0
+                     0.11,
+                     0.11,
+                     0.005
                  ],
             "offY" : [
                      0.065,
-                     0.085,
+                     0.07,
                      0.035
                  ],
 
             "spanwiseCuts_td" : [0.00, 1.00,],
-            "t_le" : [0.020,0.018],
+            "t_le" : [0.020,0.02],
             "u_le" : [0.00],
             "t_mid" : [0.04,0.03],
             "u_mid" : [0.50],
@@ -265,6 +212,59 @@ class ConfigExtInterf():
             "orientation" : 1,
 
         }
+        ## Case: of_ExtInterf_0
+        #self.configRunner = {
+        #    "label" : "ru",
+        #    "regChannel" : 1,
+        #    "nBlades" : 15,
+        #    
+        #    "spanwiseCuts_mp" : [0.00, 0.33,  0.66, 1.00,],
+        #    "alpha_1" : [
+        #             round((np.pi/180.) * 90., 4),
+        #             round((np.pi/180.) * 75., 4),
+        #             round((np.pi/180.) * 52., 4)
+        #         ],
+        #    "alpha_2" : [
+        #             round((np.pi/180.) * 45., 4),
+        #             round((np.pi/180.) * 31., 4),
+        #             round((np.pi/180.) * 32., 4),
+        #             round((np.pi/180.) * 10., 4)
+        #         ],
+        #    "ratioX" : [
+        #             0.65,
+        #             0.70,
+        #             0.35,
+        #             0.22
+        #         ],
+        #    "deltaY" : [
+        #             0.80,
+        #             0.55,
+        #             0.90,
+        #             0.55
+        #         ],
+        #    "offX" : [
+        #             0.125,
+        #             0.125,
+        #             0.0
+        #         ],
+        #    "offY" : [
+        #             0.065,
+        #             0.085,
+        #             0.035
+        #         ],
+
+        #    "spanwiseCuts_td" : [0.00, 1.00,],
+        #    "t_le" : [0.020,0.018],
+        #    "u_le" : [0.00],
+        #    "t_mid" : [0.04,0.03],
+        #    "u_mid" : [0.50],
+        #    "t_te" : [0.01],
+        #    "u_te" : [1.00],
+
+        #    "adjustRadius" : True,
+        #    "orientation" : 1,
+
+        #}
         self.configLayer = {
             "label" : "radMeridionalContour",
             "nSlices" : 15,
@@ -537,12 +537,12 @@ if __name__ == "__main__":
     generate = radMeridional.radMeridional()
     
     generate.createMeridional(configM, hubCurves, shroudCurves)
-    generate.createLayerRegion(configL)
+    #generate.createLayerRegion(configL)
     generate.createBlade(configGV)
     generate.createBlade(configRu)
     
     container = generate.getContainer()
-    bV = container.cptr_bV()
+    #bV = container.cptr_bV()
      
     #container = generate.getContainer()
     #from dtOOPythonApp.tools import dtOO2OCC
@@ -568,13 +568,13 @@ if __name__ == "__main__":
     #  "interface.stp"
     #)
     
-    bV["ru_mesh"].makeGrid()
-    bV["gv_mesh"].makeGrid()
-    bV["meshLayers"].makeGrid()
+    #bV["ru_mesh"].makeGrid()
+    #bV["gv_mesh"].makeGrid()
+    #bV["meshLayers"].makeGrid()
 
-    #stateLbl = "ExtInterf"
-    #indiv = "1"
+    stateLbl = "fittedBlade"
+    indiv = "0"
     
-    #createOFCase(container, stateLbl, indiv, 0.36)
+    createOFCase(container, stateLbl, indiv, 0.36)
 
     # ------------------- EOF ------------------- #

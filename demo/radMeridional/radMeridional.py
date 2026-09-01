@@ -533,7 +533,7 @@ class radMeridional:
                 '{"name" : "map2dTo3d_deltaPer", "value" : "0.01"},'
                 '{"name" : "map3dTo3d_deltaPer", "value" : "0.01"},'
                 #'{"name" : "logLevel", "value" : "99"},'
-                '{"name" : "logLevel", "value" : "2"},'
+                '{"name" : "logLevel", "value" : "99"},'
                 '{"name" : "isEqualExtendCheck", "value" : "true"}'
               ']'
             '}'
