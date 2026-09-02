@@ -205,6 +205,8 @@ namespace dtOO {
 #include <analyticGeometryHeaven/vec3dOneDInMap3dTo3d.h>
 #include <analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h>
 #include <analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h>
+#include <analyticGeometryHeaven/rotatingMap1dTo3d.h>
+#include <analyticGeometryHeaven/partRotatingMap1dTo3d.h>
 #include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
 #include <analyticGeometryHeaven/partRotatingMap2dTo3d.h>
 #include <analyticGeometryHeaven/trans6SidedCube.h>
@@ -1205,6 +1207,8 @@ namespace dtOO {
 %feature("notabstract") vec3dOneDInMap3dTo3d;
 %feature("notabstract") vec3dTwoDInMap3dTo3d;
 %feature("notabstract") vec3dThreeDInMap3dTo3d;
+%feature("notabstract") rotatingMap1dTo3d;
+%feature("notabstract") partRotatingMap1dTo3d;
 %feature("notabstract") rotatingMap2dTo3d;
 %feature("notabstract") partRotatingMap2dTo3d;
 
@@ -1218,6 +1222,8 @@ namespace dtOO {
 %include analyticGeometryHeaven/vec3dOneDInMap3dTo3d.h
 %include analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h
 %include analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h
+%include analyticGeometryHeaven/rotatingMap1dTo3d.h
+%include analyticGeometryHeaven/partRotatingMap1dTo3d.h
 %include analyticGeometryHeaven/rotatingMap2dTo3d.h
 %include analyticGeometryHeaven/partRotatingMap2dTo3d.h
 %include analyticGeometryHeaven/trans6SidedCube.h
