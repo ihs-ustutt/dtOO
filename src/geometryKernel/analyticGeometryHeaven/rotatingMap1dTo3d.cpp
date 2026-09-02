@@ -169,6 +169,11 @@ map1dTo3d const &rotatingMap1dTo3d::constRefMap1dTo3d(void) const
   return *(_m1d.get());
 }
 
+map1dTo3d const * rotatingMap1dTo3d::constPtrMap1dTo3d(void) const
+{
+  return _m1d.get();
+}
+
 dtVector3 const &rotatingMap1dTo3d::rotationAxis(void) const { return _vv; }
 
 dtPoint3 const &rotatingMap1dTo3d::origin(void) const { return _pp; }

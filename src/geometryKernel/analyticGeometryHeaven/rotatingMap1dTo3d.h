@@ -46,6 +46,7 @@ public:
   virtual dtPoint3 getPoint(dtReal const &uu, dtReal const &vv) const;
   virtual std::string dumpToString(void) const;
   map1dTo3d const &constRefMap1dTo3d(void) const;
+  map1dTo3d const * constPtrMap1dTo3d(void) const;
   dtVector3 const &rotationAxis(void) const;
   dtPoint3 const &origin(void) const;
 
