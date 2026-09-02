@@ -110,7 +110,6 @@ map1dTo3d *partRotatingMap1dTo3d::segmentConstU(dtReal const &uu) const
     geomCurve_curveRotateConstructOCC cCtor(
       s3d->ptrConstDtCurve(), origin(), rotationAxis(), 2.0 * M_PI * _minB
     );
-    // dt__pH(dtCurve) cur(cCtor.result());
     return new analyticCurve((dt__pH(dtCurve)(cCtor.result())).get());
   }
   else
