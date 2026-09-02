@@ -630,7 +630,7 @@ if __name__ == "__main__":
     """
     #bV = container.cptr_bV()
     #bV["ru_mesh"].makeGrid()
-    bV["gv_mesh"].makeGrid()
+    #bV["gv_mesh"].makeGrid()
     stateLbl = "hubZero"
     indiv = "0"
     #createOFCase(container, stateLbl, indiv)
