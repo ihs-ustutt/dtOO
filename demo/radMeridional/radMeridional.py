@@ -2167,10 +2167,9 @@ class radMeridional:
             nBlades = nBlades,
             orientation = orientation,
             tERounded = tERounded
-        ).enableDebug()
-        
+        ).enableDebug() 
         self.container = gridChannel.buildExtract(self.container)
-        """
+        
         #
         # Return the multiple bounded volume of the grid channel as well
         # as the list with its boundary faces.
@@ -2247,7 +2246,7 @@ class radMeridional:
         #    charLengthMin=0.1,
         #    meshTEBlocks = True,
         #).enableDebug().buildExtract( self.container )
-        """ 
+         
     #
     # returns a list with dtPoint2 types and spline orders
     #  with spanwise cut percentage and blade input parameters

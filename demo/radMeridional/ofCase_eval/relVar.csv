@@ -1,0 +1,106 @@
+individual,alpha_1,alpha_2,ratioX,deltaY,t_le,t_mid,t_te,case created
+0,"[1.5708, 1.309, 0.9076]","[0.7854, 0.4712, 0.4363, 0.1745]","[0.65, 0.65, 0.15, 0.24]","[0.8, 0.75, 0.75, 0.53]","[0.02, 0.02]","[0.04, 0.03]",[0.01],success
+1,"[1.519, 1.266, 0.8779]","[0.7863, 0.4718, 0.4368, 0.1747]","[0.6177, 0.6177, 0.1425, 0.2281]","[0.8125, 0.7617, 0.7617, 0.5383]","[0.02028, 0.02028]","[0.03914, 0.02935]",[0.009551],"Traceback (most recent call last):
+  File ""/mnt/tscratch/lstauss-MA2/radMeridionalVar/ConfigRelVar.py"", line 653, in <module>
+    generate.createBlade(configRunner)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File ""/mnt/tscratch/lstauss-MA2/radMeridionalVar/radMeridional.py"", line 2247, in createBlade
+    ).enableDebug().buildExtract( self.container )
+                    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File ""/mnt/fs2/home/lstauss/sandbox/dtOO/scripts/python/dtOOPythonApp/tools/dtBundleTools.py"", line 93, in buildExtract
+    self.build()
+    ~~~~~~~~~~^^
+  File ""/mnt/fs2/home/lstauss/sandbox/dtOO/scripts/python/dtOOPythonApp/builder/map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.py"", line 1136, in build
+    bladeHubShroudDirection = self.boundaryEdgeDirection(
+      m3dGmsh.getModel(),
+    ...<3 lines>...
+      ]
+    )
+  File ""/mnt/fs2/home/lstauss/sandbox/dtOO/scripts/python/dtOOPythonApp/builder/map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks.py"", line 1651, in boundaryEdgeDirection
+    p0_uv = faceLines[0].reparamPercentOnFace(
+      theEdge.getMap1dTo3d().getPointPercent(0.0)
+    )
+  File ""/mnt/opt.net/src/dtOO/stable~of_v2512_16.0/tools/dtOOPythonSWIG.py"", line 33808, in reparamPercentOnFace
+    return _dtOOPythonSWIG.map2dTo3d_reparamPercentOnFace(self, ppXYZ)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+Exception: [ map2dTo3d::reparamOnFace() ]
+*-> file '/mnt/opt.net/src/dtOO/src/geometryKernel/analyticGeometryHeaven/map2dTo3d.cpp'
+*-> line '271'
+
+ppXYZ = 4.35e-01 8.36e-01 -3.80e-01
+ppXYZReparam = 4.32e-01 8.38e-01 -3.71e-01
+dist = 9.75e-03
+xyz_resolution = 1.00e-04
+virtualClassName() = vec3dTwoDInMap3dTo3d
+
+Backtrace
+[ 1   ]     0x7fc6f51d9db4 /mnt/opt.net/src/dtOO/install_stable~CoraE2.1-485-gc90df88a~opensuse-leap~16.0~of_v2512_16.0/lib/libdtOO.so.2(+0x2dbdb4) [0x7fc6f51d9db4]
+[ 2   ]     0x7fc6f52f28f2 dtOO::map2dTo3d::reparamPercentOnFace(CGAL::Point_3<CGAL::Epick> const&) const + 18
+[ 3   ]     0x7fc6f5e62bb3 /mnt/opt.net/src/dtOO/stable~of_v2512_16.0/tools/_dtOOPythonSWIG.so(+0x539bb3) [0x7fc6f5e62bb3]
+[ 4   ]     0x7fc749d695e2 /lib64/glibc-hwcaps/x86-64-v3/libpython3.13.so.1.0(+0x1695e2) [0x7fc749d695e2]
+[ 5   ]     0x7fc749d0d181 _PyObject_MakeTpCall + 145
+[ 6   ]     0x7fc749c9328d _PyEval_EvalFrameDefault + 56109
+[ 7   ]     0x7fc749f5654a PyEval_EvalCode + 170
+[ 8   ]     0x7fc749f5ca8e /lib64/glibc-hwcaps/x86-64-v3/libpython3.13.so.1.0(+0x35ca8e) [0x7fc749f5ca8e]
+[ 9   ]     0x7fc749f5cd18 /lib64/glibc-hwcaps/x86-64-v3/libpython3.13.so.1.0(+0x35cd18) [0x7fc749f5cd18]
+[ 10  ]     0x7fc749f5e319 /lib64/glibc-hwcaps/x86-64-v3/libpython3.13.so.1.0(+0x35e319) [0x7fc749f5e319]
+[ 11  ]     0x7fc749f5ec03 /lib64/glibc-hwcaps/x86-64-v3/libpython3.13.so.1.0(+0x35ec03) [0x7fc749f5ec03]
+[ 12  ]     0x7fc749f5f4a1 /lib64/glibc-hwcaps/x86-64-v3/libpython3.13.so.1.0(+0x35f4a1) [0x7fc749f5f4a1]
+[ 13  ]     0x7fc749f604fc Py_RunMain + 2892
+[ 14  ]     0x7fc749a31340 /lib64/libc.so.6(+0x2a340) [0x7fc749a31340]
+[ 15  ]     0x7fc749a31409 __libc_start_main + 139
+[ 16  ]     0x5567059ed085 _start + 37
+
+
+Honor thy error as a hidden intention. (Brian Eno)
+"
+2,"[1.561, 1.301, 0.9021]","[0.7632, 0.4579, 0.424, 0.1696]","[0.639, 0.639, 0.1475, 0.2359]","[0.7997, 0.7497, 0.7497, 0.5298]","[0.01992, 0.01992]","[0.03888, 0.02916]",[0.00991],success
+3,"[1.633, 1.36, 0.9433]","[0.7707, 0.4624, 0.4282, 0.1712]","[0.6359, 0.6359, 0.1468, 0.2348]","[0.7717, 0.7234, 0.7234, 0.5112]","[0.01983, 0.01983]","[0.042, 0.0315]",[0.00966],"Traceback (most recent call last):
+  File ""/mnt/tscratch/lstauss-MA2/radMeridionalVar/ConfigRelVar.py"", line 657, in <module>
+    createOFCase(container, stateLbl, individual, configMeas[""h_inlet""], configMeas[""h_shroud""])
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/mnt/tscratch/lstauss-MA2/radMeridionalVar/ConfigRelVar.py"", line 589, in createOFCase
+    dC[""of""].runCurrentState()
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File ""/mnt/opt.net/src/dtOO/stable~of_v2512_16.0/tools/dtOOPythonSWIG.py"", line 10045, in runCurrentState
+    return _dtOOPythonSWIG.dtCase_runCurrentState(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+Exception: [ analyticSurface::reparamOnFace() ]
+*-> file '/mnt/opt.net/src/dtOO/src/geometryKernel/analyticGeometryHeaven/analyticSurface.cpp'
+*-> line '232'
+
+ppXYZ = 4.35e-01 8.36e-01 -3.84e-01
+ppXYZReparam = 4.35e-01 8.36e-01 -3.84e-01
+dist = 1.83e-04
+xyz_resolution = 1.00e-04
+
+Backtrace
+[ 1   ]     0x7fc6f51d9154 /mnt/opt.net/src/dtOO/install_stable~CoraE2.1-485-gc90df88a~opensuse-leap~16.0~of_v2512_16.0/lib/libdtOO.so.2(+0x2db154) [0x7fc6f51d9154]
+[ 2   ]     0x7fc6f55b70f9 dtOO::dtGmshFace::reparamOnFace(CGAL::Point_3<CGAL::Epick>) const + 25
+[ 3   ]     0x7fc6f55b714b dtOO::dtGmshFace::parFromPoint(SPoint3 const&, bool, bool) const + 43
+[ 4   ]     0x7fc6f3f2014d GEdge::reparamOnFace(GFace const*, double, int) const + 125
+[ 5   ]     0x7fc6f40ea187 reparamMeshVertexOnFace(MVertex const*, GFace const*, SPoint2&, bool, bool, int) + 599
+[ 6   ]     0x7fc6f417130b /mnt/opt.net/src/dtOO/ThirdParty~opensuse-leap~16.0/lib64/libgmsh.so.4.15(+0x7e830b) [0x7fc6f417130b]
+[ 7   ]     0x7fc6f417f843 meshGFace::operator()(GFace*, bool) + 755
+[ 8   ]     0x7fc6f55e8268 dtOO::dtMeshGFace::operator()(dtOO::dtGmshFace*) + 24
+[ 9   ]     0x7fc6f561066b dtOO::dtMeshTransfiniteGFace::operator()(dtOO::dtGmshFace*) + 75
+[ 10  ]     0x7fc6f5685547 dtOO::bVOMeshRule::preUpdate() + 6999
+[ 11  ]     0x7fc6f566c89d dtOO::bVOSubject::preNotify() + 61
+[ 12  ]     0x7fc6f56d8a1e dtOO::gmshBoundedVolume::makePreGrid() + 6350
+[ 13  ]     0x7fc6f56fc3b7 dtOO::ofOpenFOAMCase::runCurrentState() + 791
+[ 14  ]     0x7fc6f5cd43bb /mnt/opt.net/src/dtOO/stable~of_v2512_16.0/tools/_dtOOPythonSWIG.so(+0x3ab3bb) [0x7fc6f5cd43bb]
+[ 15  ]     0x7fc749c9259b _PyEval_EvalFrameDefault + 52795
+[ 16  ]     0x7fc749f5654a PyEval_EvalCode + 170
+[ 17  ]     0x7fc749f5ca8e /lib64/glibc-hwcaps/x86-64-v3/libpython3.13.so.1.0(+0x35ca8e) [0x7fc749f5ca8e]
+[ 18  ]     0x7fc749f5cd18 /lib64/glibc-hwcaps/x86-64-v3/libpython3.13.so.1.0(+0x35cd18) [0x7fc749f5cd18]
+[ 19  ]     0x7fc749f5e319 /lib64/glibc-hwcaps/x86-64-v3/libpython3.13.so.1.0(+0x35e319) [0x7fc749f5e319]
+[ 20  ]     0x7fc749f5ec03 /lib64/glibc-hwcaps/x86-64-v3/libpython3.13.so.1.0(+0x35ec03) [0x7fc749f5ec03]
+[ 21  ]     0x7fc749f5f4a1 /lib64/glibc-hwcaps/x86-64-v3/libpython3.13.so.1.0(+0x35f4a1) [0x7fc749f5f4a1]
+[ 22  ]     0x7fc749f604fc Py_RunMain + 2892
+[ 23  ]     0x7fc749a31340 /lib64/libc.so.6(+0x2a340) [0x7fc749a31340]
+[ 24  ]     0x7fc749a31409 __libc_start_main + 139
+[ 25  ]     0x5567059ed085 _start + 37
+
+
+Honor thy error as a hidden intention. (Brian Eno)
+"

@@ -4,6 +4,8 @@ from dtOOPythonSWIG import (
     analyticGeometry,
     analyticSurface,
     rectangularTrimmedSurface_curveRotateConstructOCC,
+    rotatingMap1dTo3d,
+    partRotatingMap1dTo3d,
     dtPoint3,
     analyticCurve,
     map2dTo3d,
@@ -604,7 +606,6 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         #        "TEST_m2d_shr_"+self.label_
         #    )
         
-        
         # initialize a rotation dtTransformer
         cfg = jsonPrimitive()
         cfg.appendDtPoint3("_origin", self.origin_)
@@ -642,35 +643,25 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
                 # boundary label
                 let = "outlet" if i == 0 else "inlet"
                 
-                # create a volume by rotating the surface
-                vol = partRotatingMap2dTo3d(
+                # rotate the interface edge to create the interface surface
+                rM = rotatingMap1dTo3d(
                         self.rotVector_,
-                        map2dTo3d.MustDownCast( face ),
-                        0.00,
-                        (1/self.nBlades_),
+                        face.segmentConstUPercent(1)
                     )
-                
-                inOut = vol.segmentConstVPercent(1)
-                self.boundSurf_.push_back(inOut << let)
-                
-                # boundary curves for multiple bounded surfaces at hub and shroud
-                letHub = vol.segmentConstVPercent(1).segmentConstVPercent(0)
-                hubCurves.push_back(letHub)
-                letShr = vol.segmentConstVPercent(1).segmentConstVPercent(1)
-                shroudCurves.push_back(letShr)
-                
-                #inOut = face.segmentConstUPercent(1)
-                
-                #self.appendAnalyticGeometry(
-                #        inOut,
-                #        "debug_"+self.label_+"_"+let
-                #    )
-                #print(type(inOut))
-                #print(inOut.virtualClassName())
-                
-                # rotatingMap1dTo3d
+                inOut = partRotatingMap1dTo3d(
+                        self.rotVector_,
+                        face.segmentConstUPercent(1),
+                        rM.getMin(0), 
+                        rM.getMin(0) + 1/self.nBlades_ * (rM.getMax(0) - rM.getMin(0))
+                    )
 
-                #self.boundSurf_.push_back(inOut << let)
+                # boundary curves for multiple bounded surfaces at hub and shroud
+                letHub = inOut.segmentConstVPercent(0)
+                hubCurves.push_back(letHub)
+                letShr = inOut.segmentConstVPercent(1)
+                shroudCurves.push_back(letShr)
+
+                self.boundSurf_.push_back(inOut << let)
             
             #
             # Periodic meanplane faces
@@ -728,7 +719,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
 
         # create grid channel as multi bounded volume
         self.gridChannel_ = multipleBoundedVolume(infinityMap3dTo3d(), self.boundSurf_)
-        
+         
         # append boundaries if debug is enabeled
         if self.debug():
             for face in self.boundSurf_:
