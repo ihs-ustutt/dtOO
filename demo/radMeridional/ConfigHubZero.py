@@ -452,7 +452,7 @@ if __name__ == "__main__":
     #generate.createLayerRegion(configL)
     
     container = generate.getContainer()
-
+    """
     from dtOOPythonApp.tools import dtOO2OCC
     
     lab = "ru"
@@ -627,9 +627,8 @@ if __name__ == "__main__":
       #dtOO2OCC.TopoDS([blade0, blade1]), 
       lab + ".stp"
     )
-
-    bV = container.cptr_bV()
-
+    """
+    #bV = container.cptr_bV()
     #bV["ru_mesh"].makeGrid()
     bV["gv_mesh"].makeGrid()
     stateLbl = "hubZero"
