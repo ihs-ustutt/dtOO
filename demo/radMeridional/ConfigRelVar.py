@@ -252,7 +252,7 @@ class Config():
         # returns varList
         return self.varList
 
-def createOFCase(container, stateLbl, indiv, h_inlet, h_shroud):
+def createOFCase(container, stateLbl, indiv, h_inlet):
    
         
     bV = container.cptr_bV()
@@ -533,7 +533,7 @@ def run(*args, **kwargs):
     bV = cc.cptr_bV()
     bV["ru_mesh"].makeGrid()
 
-    #createOFCase(cc, stateLbl, target_individual, configMeas["h_inlet"], configMeas["h_shroud"])
+    #createOFCase(cc, stateLbl, target_individual, configMeas["h_inlet"])
 
     rr = dtOOInParaVIEW( cc )
     return cc, rr
@@ -544,11 +544,19 @@ def round_sig(x, sig=4):
         return 0
     return round(x, sig - int(np.floor(np.log10(abs(x)))) - 1)
 
-def varConfig(config, paramStr, var):
+def varConfig(config, param):
     
     #
     # varies the config dict 
     #
+
+    # extracting values
+    paramStr = param[0]
+    variation = param[1]
+    
+    ## uniform variation for lists
+    ## variation is +- of the specified value
+    #var = random.uniform(-variation, variation)
 
     # checks if the varied parameter is in the dict
     if paramStr in config:
@@ -557,11 +565,15 @@ def varConfig(config, paramStr, var):
         #  with the same variation
         if isinstance(config[paramStr], list):
             for i in range(len(config[paramStr])):
+
+                # variation is +- of the specified value
+                var = random.uniform(-variation, variation)
                 config[paramStr][i] = round_sig(config[paramStr][i] + config[paramStr][i]*var)
             
 
         # non list items are varied like this
         else:
+            var = random.uniform(-variation, variation)
             config[paramStr] = round_sig(config[paramStr] + config[paramStr]*var)
     
     return config
@@ -592,10 +604,10 @@ if __name__ == "__main__":
     config = Config()
     varList = config.getVarList()
     
-    stateLbl = "relVar"
+    stateLbl = "relVar_new"
      
     # number of iterations
-    nIt = 4
+    nIt = 5
 
     # activates optimization
     optiOn = True 
@@ -621,16 +633,16 @@ if __name__ == "__main__":
                 # iterating over the parameters which are changed
                 for param in varList:
                     
-                    # extracting values
-                    paramStr = param[0]
-                    variation = param[1]
+                    ## extracting values
+                    #paramStr = param[0]
+                    #variation = param[1]
 
-                    # variation is +- of the specified value
-                    var = random.uniform(-variation, variation)
+                    ## variation is +- of the specified value
+                    #var = random.uniform(-variation, variation)
                     
                     # apply the variation to the configs
-                    configMeas = varConfig(configMeas, paramStr, var)
-                    configRunner = varConfig(configRunner, paramStr, var)
+                    configMeas = varConfig(configMeas, param)
+                    configRunner = varConfig(configRunner, param)
             
             # saving parameters of the individual in row
             row = [individual]
@@ -651,7 +663,7 @@ if __name__ == "__main__":
                 generate.createBlade(configRunner)
 
                 container = generate.getContainer()
-                
+                createOFCase(container, stateLbl, individual, configMeas["h_inlet"])
 
                 print("Sucess")
                 row.append("success")

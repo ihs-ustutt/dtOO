@@ -552,6 +552,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         hubCurves = vectorHandlingAnalyticGeometry()
         shroudCurves = vectorHandlingAnalyticGeometry()
         
+        """
         # get the hub and shroud points from the meanplane at the inlet or outlet 
         if self.orientation_ > 0: 
             # at the inlet
@@ -595,6 +596,10 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
                         angle
                     ).result()
                 )
+        """
+
+        m2d_hub = self.channel_.segmentConstWPercent(0)
+        m2d_shr = self.channel_.segmentConstWPercent(1)
         
         ## Debug statement to plot the hub and shroud faces
         #self.appendAnalyticGeometry(

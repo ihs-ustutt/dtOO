@@ -5,11 +5,8 @@ from dtOOPythonSWIG import (
   map1dTo3d,
   dtPoint3 ,
   bSplineCurve_pointConstructOCC,
-  bSplineCurve_bSplineCurveSplitConstructOCC,
-  geomCurve_curveReverseConstructOCC,
   vectorDtPoint3,
   labeledVectorHandlingAnalyticGeometry,
-  analyticCurve,
   vec3dCurveOneD,
   vec3dOneDInMap3dTo3d,
   analyticGeometry,
@@ -400,8 +397,6 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
                     self.aG_[self.prefix_+"_"+self.label_+"_meshBlockCurve_"+mpCurveList[oc][0]+"1"]
                 )
             
-            print(type(offC))
-            print(offC.virtualClassName())
             # v coordinate at outlet or inlet
             vChannel = self.channel_.v_percent(mpCurveList[oc][1])
             
@@ -419,51 +414,14 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
             for uu in [1, 0]:
                 logging.info( "Meanplane extention curve at: %slet , v = %d" %(mpCurveList[oc][0], uu)  )
                  
-                ## get the point on the offset curve and reparamtrize it in the channel
-                ## returns the uvw coordinates of the point in the channel
+                # get the point on the offset curve and reparamtrize it in the channel
+                # returns the uvw coordinates of the point in the channel
                 pCurve_uvw = self.channel_.reparamInVolume(offC.getPointPercent(uu)) 
-                #
-                ## shift the point on the offset curve to the current interface
-                pChannel_uvw = dtPoint3(pCurve_uvw.x(), vChannel, self.channel_.w_percent(uu))
                 
+                # shift the point on the offset curve to the current interface
+                pChannel_uvw = dtPoint3(pCurve_uvw.x(), vChannel, self.channel_.w_percent(uu))
                 interfPoints.append( pChannel_uvw )
                 
-                print(type(self.channel_.segmentConstU(pCurve_uvw.x()).segmentConstV(uu)))
-                print(self.channel_.segmentConstU(pCurve_uvw.x()).segmentConstV(uu).virtualClassName())
-                
-                hsdt = analyticCurve.MustConstDownCast(
-                    self.channel_.segmentConstU(
-                        pCurve_uvw.x()
-                    ).segmentConstV(
-                        uu
-                    )
-                ).ptrConstDtCurve()
-
-                
-                hsdt_split = bSplineCurve_bSplineCurveSplitConstructOCC(
-                        hsdt,
-                        pCurve_uvw.y(),
-                        vChannel
-                    ).result()
-                
-                print(type(hsdt_split))
-
-                if uu == 0:
-                    hsdt_split = geomCurve_curveReverseConstructOCC(
-                            hsdt_split,
-                            True
-                        ).result()
-
-                hsCurveInChannel = analyticCurve(hsdt_split)
-
-                #print(type(hsCurve))
-                #print(hsCurve.virtualClassName())
-
-                #self.appendAnalyticGeometry(
-                #        hsCurve,
-                #        "test_hsCurve_"+str(uu)+str(mpCurveList[oc][1])
-                #    )
-                """
                 #
                 # create hub and shroud curves
                 # directions have to be reversed at hub and shroud
@@ -493,7 +451,7 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
                         ), 
                         self.channel_
                     )
-                """
+
                 # push it into aG_
                 # naming convention hsCurve_u0_in
                 # hs -> hub or shroud
@@ -584,6 +542,6 @@ class analyticSurface_inOutFeMeanplane(dtBundleBuilder):
                         self.aG_[ii],
                         "debug_"+ii
                     )
-        
+
         return
 

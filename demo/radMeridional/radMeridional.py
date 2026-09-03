@@ -517,7 +517,7 @@ class radMeridional:
                 '{"name" : "reparamOnFace_precision", "value" : "1.e-05"},'
                 '{"name" : "reparamInVolume_precision","value" : "1.e-05"},'
                 '{"name" : "invY_precision", "value" : "1.e-04"},'
-                '{"name" : "xyz_resolution", "value" : "1.e-05"},'
+                '{"name" : "xyz_resolution", "value" : "1.e-04"},'
                 '{"name" : "XYZ_resolution", "value" : "1.e-04"},'
                 '{"name" : "uvw_resolution", "value" : "1.e-03"},'
                 '{"name" : "point_render_diameter", "value" : "0.005"},'
@@ -532,7 +532,7 @@ class radMeridional:
                 '{"name" : "map1dTo3d_deltaPer", "value" : "0.01"},'
                 '{"name" : "map2dTo3d_deltaPer", "value" : "0.01"},'
                 '{"name" : "map3dTo3d_deltaPer", "value" : "0.01"},'
-                #'{"name" : "logLevel", "value" : "99"},'
+                #'{"name" : "logLevel", "value" : "2"},'
                 '{"name" : "logLevel", "value" : "99"},'
                 '{"name" : "isEqualExtendCheck", "value" : "true"}'
               ']'
@@ -1859,11 +1859,6 @@ class radMeridional:
                 [0.90, 0.98],
                 [0.98, 1.00],
               ],
-              #tEMeshBlockThickness = meshBlock_thickness,
-              #meanplaneFromBlocks = True,
-              #meanplaneExtOut = 0.02,
-              #meanplaneExtIn = 0.03,
-              #nMeanplaneBlocks = nMeanplaneBlocks
             ).buildExtract(self.container) 
             
 
@@ -1888,7 +1883,7 @@ class radMeridional:
                   self.aF[label+"_meshBlock_3"]
                 ).constPtrVec3dTwoD( 3 )
               ),
-              thickness = 0.03,
+              thickness = 0.02,
               splitDim = 1,
               segPercent = 1,
             ).buildExtract(self.container) 
@@ -2178,7 +2173,7 @@ class radMeridional:
         self.aG.push_back(
             gc << "xyz_"+label+"_gridChannel"
         )
-         
+                  
         #
         # Apply the mesh settings to the grid channel.
         #
@@ -2218,7 +2213,7 @@ class radMeridional:
             charLengthMin=0.015,
             meshTEBlocks = not(tERounded),
         ).enableDebug().buildExtract( self.container )
-        
+         
         # Mesh topology setting for sharp trailing edge
         #self.container = map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(
         #    label = label+"_mesh",
