@@ -17,10 +17,10 @@ License
 
 #include "analyticGeometry.h"
 
+#include <interfaceHeaven/calculationTypeHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <logMe/logMe.h>
 #include <progHelper.h>
-#include <interfaceHeaven/calculationTypeHandling.h>
 
 namespace dtOO {
 analyticGeometry::analyticGeometry() : labelHandling()
@@ -481,7 +481,8 @@ bool analyticGeometry::equal(analyticGeometry const *const other) const
   return this->equal(*other);
 }
 
-dtReal analyticGeometry::val_percent(dtReal const &per, int const & dir) const {
+dtReal analyticGeometry::val_percent(dtReal const &per, int const &dir) const
+{
   if (isClosed(dir))
     return (getMin(dir) + (getMax(dir) - getMin(dir)) * per);
 
@@ -490,7 +491,8 @@ dtReal analyticGeometry::val_percent(dtReal const &per, int const & dir) const {
   );
 }
 
-dtReal analyticGeometry::percent_val(dtReal const &val, int const & dir) const {
+dtReal analyticGeometry::percent_val(dtReal const &val, int const &dir) const
+{
   if (isClosed(dir))
     return (val - getMin(dir)) / (getMax(dir) - getMin(dir));
 
