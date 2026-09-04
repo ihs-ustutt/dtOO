@@ -67,32 +67,46 @@ bool dtSurface::closedU(void) const { return closed(0); }
 
 bool dtSurface::closedV(void) const { return closed(1); }
 
+dtReal dtSurface::val_percent(dtReal const &per, int const &dir) const
+{
+  if (closed(dir))
+    return (minPara(dir) + (maxPara(dir) - minPara(dir)) * per);
+
+  return floatHandling::boundToRange(
+    minPara(dir) + (maxPara(dir) - minPara(dir)) * per,
+    minPara(dir),
+    maxPara(dir)
+  );
+}
+
+dtReal dtSurface::percent_val(dtReal const &val, int const &dir) const
+{
+  if (closed(dir))
+    return (val - minPara(dir)) / (maxPara(dir) - minPara(dir));
+
+  return floatHandling::boundToRange(
+    (val - minPara(dir)) / (maxPara(dir) - minPara(dir)), 0.0, 1.0
+  );
+}
+
 dtReal dtSurface::u_uPercent(dtReal const percent) const
 {
-  return floatHandling::boundToRange(
-    minPara(0) + percent * (maxPara(0) - minPara(0)), minPara(0), maxPara(0)
-  );
+  return val_percent(percent, 0);
 }
 
 dtReal dtSurface::uPercent_u(dtReal const uu) const
 {
-  return floatHandling::boundToRange(
-    (uu - minPara(0)) / (maxPara(0) - minPara(0)), 0, 1
-  );
+  return percent_val(uu, 0);
 }
 
 dtReal dtSurface::v_vPercent(dtReal const percent) const
 {
-  return floatHandling::boundToRange(
-    minPara(1) + percent * (maxPara(1) - minPara(1)), minPara(1), maxPara(1)
-  );
+  return val_percent(percent, 1);
 }
 
 dtReal dtSurface::vPercent_v(dtReal const vv) const
 {
-  return floatHandling::boundToRange(
-    (vv - minPara(1)) / (maxPara(1) - minPara(1)), 0, 1
-  );
+  return percent_val(vv, 1);
 }
 
 dtPoint3 dtSurface::point(dtPoint2 const &pp) const

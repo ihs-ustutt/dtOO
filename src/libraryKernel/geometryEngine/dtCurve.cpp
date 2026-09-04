@@ -19,6 +19,7 @@ License
 
 #include "geoBuilder/u_geomCurveClosestPoint.h"
 #include <logMe/logMe.h>
+#include <interfaceHeaven/calculationTypeHandling.h>
 
 namespace dtOO {
 dtCurve::dtCurve() {}
@@ -39,15 +40,24 @@ dtReal dtCurve::getUMax(void) const { return maxPara(0); }
 
 dtReal dtCurve::u_uPercent(dtReal const percent) const
 {
-  return minPara(0) + percent * (maxPara(0) - minPara(0));
+  if (closed())
+    return (minPara(0) + (maxPara(0) - minPara(0)) * percent);
+
+  return floatHandling::boundToRange(
+    minPara(0) + (maxPara(0) - minPara(0)) * percent,
+    minPara(0),
+    maxPara(0)
+  );
 }
 
 dtReal dtCurve::uPercent_u(dtReal const uu) const
 {
-  dtReal uMin = minPara(0);
-  dtReal uMax = maxPara(0);
+  if (closed())
+    return (uu - minPara(0)) / (maxPara(0) - minPara(0));
 
-  return (uu - uMin) / (uMax - uMin);
+  return floatHandling::boundToRange(
+    (uu - minPara(0)) / (maxPara(0) - minPara(0)), 0.0, 1.0
+  );
 }
 
 dtPoint3 dtCurve::pointPercent(dtReal const percent) const

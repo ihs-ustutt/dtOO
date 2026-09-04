@@ -99,6 +99,7 @@ SVector3 dtGmshEdge::firstDer(double par) const
 
 void dtGmshEdge::setMap1dTo3d(map1dTo3d const *const base)
 {
+  _geomType = ::GEntity::GeomType::ParametricCurve;
   _mm.reset(base->clone());
 }
 
@@ -283,4 +284,6 @@ std::string dtGmshEdge::getPhysicalString(void) const
   );
   return gm->getPhysicalString(this);
 }
+
+::GEntity::GeomType dtGmshEdge::geomType(void) const { return _geomType; }
 } // namespace dtOO

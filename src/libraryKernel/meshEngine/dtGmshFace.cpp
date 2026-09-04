@@ -128,8 +128,6 @@ dtGmshModel const &dtGmshFace::refDtGmshModel(void) const
 
 ::GEntity::GeomType dtGmshFace::geomType(void) const { return _geomType; }
 
-void dtGmshFace::setGeomType(::GEntity::GeomType const &gT) { _geomType = gT; }
-
 dtGmshModel &dtGmshFace::refDtGmshModel(void)
 {
   dt__ptrAss(dtGmshModel * gm, dtGmshModel::DownCast(model()));
@@ -143,7 +141,7 @@ Range<double> dtGmshFace::parBounds(int i) const
   {
     return Range<double>(_mm->getUMin(), _mm->getUMax());
   }
-  if (i == 1)
+  else if (i == 1)
   {
     return Range<double>(_mm->getVMin(), _mm->getVMax());
   }
@@ -159,6 +157,22 @@ Range<double> dtGmshFace::parBounds(int i) const
 
 std::pair<SVector3, SVector3> dtGmshFace::firstDer(const SPoint2 &param) const
 {
+  if (!_mm->inRange(dtPoint2(param.x(), param.y())))
+  {
+    dt__ddebug(
+      firstDer(),
+      << logMe::dtFormat("Accessing derivative out of range at point (%e, %e). "
+                         "Bounds U = [%e, %e] / V = [%e, %e]") %
+             param.x() % param.y() % _mm->getUMin() % _mm->getUMax() %
+             _mm->getVMin() % _mm->getVMax()
+      << std::endl
+      << "Return zero."
+    );
+    return std::pair<SVector3, SVector3>(
+      SVector3(0.0, 0.0, 0.0), SVector3(0.0, 0.0, 0.0)
+    );
+  }
+
   dtVector3 ddU = _mm->firstDerU((dtReal)param.x(), (dtReal)param.y());
   dtVector3 ddV = _mm->firstDerV((dtReal)param.x(), (dtReal)param.y());
 
@@ -353,6 +367,7 @@ GPoint dtGmshFace::closestPoint(
 ) const
 {
   SPoint2 p = GFace::parFromPoint(queryPoint, false);
+
   return point(p.x(), p.y());
 }
 

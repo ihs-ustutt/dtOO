@@ -254,20 +254,20 @@ dtPoint2 map2dTo3d::reparamOnFace(dtPoint3 const &ppXYZ) const
     dtPoint3 ppXYZReparam = getPoint(ppUV);
     dtReal dist = dtLinearAlgebra::distance(ppXYZ, ppXYZReparam);
 
-    if (logMe::isDebug())
-    {
-      std::string const fname(this->getLabel() + "_reparam");
+    //
+    // write files for debug
+    //
+    std::string const fname(this->getLabel() + "_map2dTo3d_reparam");
+    // write gmsh geo file
+    std::fstream of;
+    of.open(fname + ".geo", std::ios::out | std::ios::trunc);
+    of << logMe::dtFormat("Point(1001) = { %16.8e, %16.8e, %16.8e };\n") %
+            ppXYZ.x() % ppXYZ.y() % ppXYZ.z();
+    of << logMe::dtFormat("Point(1002) = { %16.8e, %16.8e, %16.8e };\n") %
+            ppXYZReparam.x() % ppXYZReparam.y() % ppXYZReparam.z();
+    of << logMe::dtFormat("Line(1000) = { 1001, 1002 };\n");
+    of.close();
 
-      // write gmsh geo file
-      std::fstream of;
-      of.open(fname + ".geo", std::ios::out | std::ios::trunc);
-      of << logMe::dtFormat("Point(1001) = { %16.8e, %16.8e, %16.8e };\n") %
-              ppXYZ.x() % ppXYZ.y() % ppXYZ.z();
-      of << logMe::dtFormat("Point(1002) = { %16.8e, %16.8e, %16.8e };\n") %
-              ppXYZReparam.x() % ppXYZReparam.y() % ppXYZReparam.z();
-      of << logMe::dtFormat("Line(1000) = { 1001, 1002 };\n");
-      of.close();
-    }
     dt__throw(
       reparamOnFace(),
       << logMe::dtFormat("ppXYZ = %5.2e %5.2e %5.2e\n"
@@ -312,16 +312,16 @@ map2dTo3d::firstDer(dtReal const &uu, dtReal const &vv) const
     dd[0] = (getPointPercent(_deltaPer, vP) - getPointPercent(0., vP)) /
             (u_percent(_deltaPer) - u_percent(0.));
   }
-  else if ((uP >= _deltaPer) && (uP <= deltaPerInv))
+  else if (uP > deltaPerInv)
+  {
+    dd[0] = (getPointPercent(1., vP) - getPointPercent(deltaPerInv, vP)) /
+            (u_percent(1.) - u_percent(deltaPerInv));
+  }
+  else // if ((uP >= _deltaPer) && (uP <= deltaPerInv))
   {
     dd[0] = (getPointPercent(uP + _deltaPer, vP) -
              getPointPercent(uP - _deltaPer, vP)) /
             (u_percent(uP + _deltaPer) - u_percent(uP - _deltaPer));
-  }
-  else if (uP > deltaPerInv)
-  {
-    dd[0] = (getPointPercent(1., vP) - getPointPercent(1. - _deltaPer, vP)) /
-            (u_percent(1.) - u_percent(deltaPerInv));
   }
 
   //
@@ -332,16 +332,16 @@ map2dTo3d::firstDer(dtReal const &uu, dtReal const &vv) const
     dd[1] = (getPointPercent(uP, _deltaPer) - getPointPercent(uP, 0.)) /
             (v_percent(_deltaPer) - v_percent(0.));
   }
-  else if ((vP >= _deltaPer) && (vP <= deltaPerInv))
+  else if (vP > deltaPerInv)
+  {
+    dd[1] = (getPointPercent(uP, 1.) - getPointPercent(uP, deltaPerInv)) /
+            (v_percent(1.) - v_percent(deltaPerInv));
+  }
+  else // if ((vP >= _deltaPer) && (vP <= deltaPerInv))
   {
     dd[1] = (getPointPercent(uP, vP + _deltaPer) -
              getPointPercent(uP, vP - _deltaPer)) /
             (v_percent(vP + _deltaPer) - v_percent(vP - _deltaPer));
-  }
-  else if (vP > deltaPerInv)
-  {
-    dd[1] = (getPointPercent(uP, 1.) - getPointPercent(uP, 1. - _deltaPer)) /
-            (v_percent(1.) - v_percent(deltaPerInv));
   }
 
   return dd;
@@ -481,16 +481,12 @@ dtPoint2 map2dTo3d::uv_percent(dtReal const &uu, dtReal const &vv) const
 
 dtReal map2dTo3d::u_percent(dtReal const &uu) const
 {
-  return floatHandling::boundToRange(
-    getUMin() + (getUMax() - getUMin()) * uu, getUMin(), getUMax()
-  );
+  return val_percent(uu, 0);
 }
 
 dtReal map2dTo3d::v_percent(dtReal const &vv) const
 {
-  return floatHandling::boundToRange(
-    getVMin() + (getVMax() - getVMin()) * vv, getVMin(), getVMax()
-  );
+  return val_percent(vv, 1);
 }
 
 dtPoint2 map2dTo3d::percent_uv(dtPoint2 const &pUV) const
@@ -500,16 +496,12 @@ dtPoint2 map2dTo3d::percent_uv(dtPoint2 const &pUV) const
 
 dtReal map2dTo3d::percent_u(dtReal const &uu) const
 {
-  return floatHandling::boundToRange(
-    (uu - getUMin()) / (getUMax() - getUMin()), 0., 1.
-  );
+  return percent_val(uu, 0);
 }
 
 dtReal map2dTo3d::percent_v(dtReal const &vv) const
 {
-  return floatHandling::boundToRange(
-    (vv - getVMin()) / (getVMax() - getVMin()), 0., 1.
-  );
+  return percent_val(vv, 1);
 }
 
 map1dTo3d *map2dTo3d::segment(dtPoint2 const &p0, dtPoint2 const &p1) const

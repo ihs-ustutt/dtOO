@@ -66,16 +66,12 @@ map1dTo3d *map1dTo3d::segmentPercent(dtReal const &u0, dtReal const &u1) const
 
 dtReal map1dTo3d::u_percent(dtReal const &uu) const
 {
-  return floatHandling::boundToRange(
-    getUMin() + (getUMax() - getUMin()) * uu, getUMin(), getUMax()
-  );
+  return val_percent(uu, 0);
 }
 
 dtReal map1dTo3d::percent_u(dtReal const &uu) const
 {
-  return floatHandling::boundToRange(
-    (uu - getUMin()) / (getUMax() - getUMin()), 0., 1.
-  );
+  return percent_val(uu, 0);
 }
 
 dtReal map1dTo3d::u_lPercent(dtReal const &lP) const

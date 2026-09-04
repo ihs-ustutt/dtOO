@@ -91,7 +91,8 @@ public:
   void dump(void) const;
   void setRenderResolution(int const &dir, dtInt const &value) const;
   dtInt getRenderResolution(int const &dir) const;
-
+  dtReal val_percent(dtReal const &per, int const & dir) const;
+  dtReal percent_val(dtReal const &val, int const & dir) const;
 private:
   mutable dtInt _resU;
   mutable dtInt _resV;

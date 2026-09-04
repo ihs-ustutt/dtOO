@@ -21,6 +21,7 @@ License
 #include <dtOOTypeDef.h>
 
 #include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 #include <vector>
 
 #include <limits>
@@ -78,16 +79,40 @@ public:
       return prev(a);
     }
   }
-  //    static dtReal boundToRange(dtReal const value, dtReal const a, dtReal
-  //    const b);
   static R boundToRange(R const value, R const a, R const b)
   {
     if (value > b)
     {
+      R const diffPer = fabs((value - a) / (b - a)) - 1.0;
+      if (diffPer > 0.01)
+      {
+        dt__warning(
+          boundToRange(),
+          << logMe::dtFormat(
+               "Value %e above upper bound. / [%e, %e] / diffPer = %e"
+             ) % value %
+                 a % b % diffPer
+          << std::endl
+          << logMe::Backtrace()
+        );
+      }
       return b;
     }
     else if (value < a)
     {
+      R const diffPer = fabs((value - a) / (b - a));
+      if (diffPer > 0.01)
+      {
+        dt__warning(
+          boundToRange(),
+          << logMe::dtFormat(
+               "Value %e below lower bound. / [%e, %e] / diffPer = %e"
+             ) % value %
+                 a % b % diffPer
+          << std::endl
+          << logMe::Backtrace()
+        );
+      }
       return a;
     }
 

@@ -41,6 +41,7 @@ License
 #include <STEPControl_Writer.hxx>
 #include <StepData_StepModel.hxx>
 #include <TopoDS_Face.hxx>
+#include <opencascade/Standard_TypeDef.hxx>
 
 namespace dtOO {
 dtOCCSurface::dtOCCSurface() : dtSurface() {}
@@ -129,19 +130,20 @@ bool dtOCCSurface::closed(dtInt const dim) const
 
 dtPoint3 dtOCCSurface::point(dtReal const uu, dtReal const vv) const
 {
-  //  	Standard_Real uR = static_cast<Standard_Real>(uu);
-  //		Standard_Real vR = static_cast<Standard_Real>(vv);
-
   Standard_Real U1;
   Standard_Real U2;
   Standard_Real V1;
   Standard_Real V2;
   _ptr->Bounds(U1, U2, V1, V2);
 
-  Standard_Real uR =
-    calculationTypeHandling<Standard_Real, dtReal>::boundToRange(uu, U1, U2);
-  Standard_Real vR =
-    calculationTypeHandling<Standard_Real, dtReal>::boundToRange(vv, V1, V2);
+  Standard_Real uR = static_cast<Standard_Real>(uu);
+  Standard_Real vR = static_cast<Standard_Real>(vv);
+  if (!this->closed(0))
+    uR =
+      calculationTypeHandling<Standard_Real, dtReal>::boundToRange(uu, U1, U2);
+  if (!this->closed(1))
+    vR =
+      calculationTypeHandling<Standard_Real, dtReal>::boundToRange(vv, V1, V2);
 
   gp_Pnt pp;
   dt__tryOcc(pp = _ptr->Value(uR, vR);,

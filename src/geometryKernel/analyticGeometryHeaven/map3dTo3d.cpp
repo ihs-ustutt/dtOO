@@ -41,6 +41,7 @@ License
 #include <attributionHeaven/pointGeometryDist.h>
 #include <boost/assign/list_of.hpp>
 #include <gslMinFloatAttr.h>
+#include <interfaceHeaven/calculationTypeHandling.h>
 
 namespace dtOO {
 dtReal map3dTo3d::_deltaPer =
@@ -430,32 +431,32 @@ dtPoint3 map3dTo3d::getPointPercent(dtPoint3 const &ppUVW) const
 
 dtReal map3dTo3d::u_percent(dtReal const &uu) const
 {
-  return (getUMin() + (getUMax() - getUMin()) * uu);
+  return val_percent(uu, 0);
 }
 
 dtReal map3dTo3d::v_percent(dtReal const &vv) const
 {
-  return (getVMin() + (getVMax() - getVMin()) * vv);
+  return val_percent(vv, 1);
 }
 
 dtReal map3dTo3d::w_percent(dtReal const &ww) const
 {
-  return (getWMin() + (getWMax() - getWMin()) * ww);
+  return val_percent(ww, 2);
 }
 
 dtReal map3dTo3d::percent_u(dtReal const &uu) const
 {
-  return ((uu - getUMin()) / (getUMax() - getUMin()));
+  return percent_val(uu, 0);
 }
 
 dtReal map3dTo3d::percent_v(dtReal const &vv) const
 {
-  return ((vv - getVMin()) / (getVMax() - getVMin()));
+  return percent_val(vv, 1);
 }
 
 dtReal map3dTo3d::percent_w(dtReal const &ww) const
 {
-  return ((ww - getWMin()) / (getWMax() - getWMin()));
+  return percent_val(ww, 2);
 }
 
 dtPoint3 map3dTo3d::percent_uvw(dtPoint3 const &pUVW) const
