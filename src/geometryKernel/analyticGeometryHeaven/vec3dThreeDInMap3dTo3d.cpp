@@ -69,7 +69,10 @@ dtPoint3 vec3dThreeDInMap3dTo3d::getPoint(
   }
 }
 
-bool vec3dThreeDInMap3dTo3d::isClosed(dtInt const &dir) const { return false; }
+bool vec3dThreeDInMap3dTo3d::isClosed(dtInt const &dir) const
+{
+  return _v3d->closed(dir);
+}
 
 dtReal vec3dThreeDInMap3dTo3d::getMin(dtInt const &dir) const
 {
