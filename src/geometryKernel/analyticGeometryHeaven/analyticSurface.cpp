@@ -207,27 +207,26 @@ dtPoint2 analyticSurface::reparamOnFace(dtPoint3 const &ppXYZ) const
 
   if (!analyticGeometry::inXYZTolerance(dist))
   {
-    if (logMe::isDebug())
+    //
+    // write debug output
+    //
+    std::string const fname(this->getLabel() + "_analyticSurface_reparam");
+    // write gmsh geo file
+    std::fstream of;
+    of.open(fname + ".geo", std::ios::out | std::ios::trunc);
+    of << logMe::dtFormat("Point(1001) = { %16.8e, %16.8e, %16.8e };\n") %
+            ppXYZ.x() % ppXYZ.y() % ppXYZ.z();
+    of << logMe::dtFormat("Point(1002) = { %16.8e, %16.8e, %16.8e };\n") %
+            ppXYZReparam.x() % ppXYZReparam.y() % ppXYZReparam.z();
+    of << logMe::dtFormat("Line(1000) = { 1001, 1002 };\n");
+    of.close();
+
+    // write STEP file if possible
+    if (dtOCCSurface::Is(this->ptrConstDtSurface()))
     {
-      std::string const fname(this->getLabel() + "_reparam");
-
-      // write gmsh geo file
-      std::fstream of;
-      of.open(fname + ".geo", std::ios::out | std::ios::trunc);
-      of << logMe::dtFormat("Point(1001) = { %16.8e, %16.8e, %16.8e };\n") %
-              ppXYZ.x() % ppXYZ.y() % ppXYZ.z();
-      of << logMe::dtFormat("Point(1002) = { %16.8e, %16.8e, %16.8e };\n") %
-              ppXYZReparam.x() % ppXYZReparam.y() % ppXYZReparam.z();
-      of << logMe::dtFormat("Line(1000) = { 1001, 1002 };\n");
-      of.close();
-
-      // write STEP file if possible
       dtOCCSurface const *const dtOccS =
-        dtOCCSurface::ConstDownCast(this->ptrConstDtSurface());
-      if (dtOccS)
-      {
-        dtOccS->toSTEP(fname + ".stp");
-      }
+        dtOCCSurface::ConstSecureCast(this->ptrConstDtSurface());
+      dtOccS->toSTEP(fname + ".stp");
     }
     dt__throw(
       reparamOnFace(),
