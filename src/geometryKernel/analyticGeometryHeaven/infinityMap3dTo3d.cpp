@@ -109,4 +109,35 @@ dtPoint3 infinityMap3dTo3d::getPoint(
 {
   return dtPoint3(uu, vv, ww);
 }
+
+dtReal infinityMap3dTo3d::u_percent(dtReal const &uu) const
+{
+  dt__throwUnexpected(u_percent());
+}
+
+dtReal infinityMap3dTo3d::v_percent(dtReal const &vv) const
+{
+  dt__throwUnexpected(v_percent());
+}
+
+dtReal infinityMap3dTo3d::w_percent(dtReal const &ww) const
+{
+  dt__throwUnexpected(w_percent());
+}
+
+dtReal infinityMap3dTo3d::percent_u(dtReal const &per) const
+{
+  dt__throwUnexpected(percent_u());
+}
+
+dtReal infinityMap3dTo3d::percent_v(dtReal const &per) const
+{
+  dt__throwUnexpected(percent_v());
+}
+
+dtReal infinityMap3dTo3d::percent_w(dtReal const &per) const
+{
+  dt__throwUnexpected(percent_w());
+}
+
 } // namespace dtOO
