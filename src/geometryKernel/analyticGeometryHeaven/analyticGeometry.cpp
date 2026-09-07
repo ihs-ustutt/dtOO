@@ -17,6 +17,7 @@ License
 
 #include "analyticGeometry.h"
 
+#include <interfaceHeaven/calculationTypeHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <logMe/logMe.h>
 #include <progHelper.h>
@@ -478,6 +479,26 @@ bool analyticGeometry::equal(const analyticGeometry &other) const
 bool analyticGeometry::equal(analyticGeometry const *const other) const
 {
   return this->equal(*other);
+}
+
+dtReal analyticGeometry::val_percent(dtReal const &per, int const &dir) const
+{
+  if (isClosed(dir))
+    return (getMin(dir) + (getMax(dir) - getMin(dir)) * per);
+
+  return floatHandling::boundToRange(
+    getMin(dir) + (getMax(dir) - getMin(dir)) * per, getMin(dir), getMax(dir)
+  );
+}
+
+dtReal analyticGeometry::percent_val(dtReal const &val, int const &dir) const
+{
+  if (isClosed(dir))
+    return (val - getMin(dir)) / (getMax(dir) - getMin(dir));
+
+  return floatHandling::boundToRange(
+    (val - getMin(dir)) / (getMax(dir) - getMin(dir)), 0.0, 1.0
+  );
 }
 
 dt__C_addCloneForpVH(analyticGeometry);

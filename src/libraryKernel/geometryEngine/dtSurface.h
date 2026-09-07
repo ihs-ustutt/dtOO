@@ -121,6 +121,8 @@ public:
   static dtReal XYZTolerance(void);
   static bool inXYZTolerance(dtPoint3 const &p0, dtPoint3 const &p1);
   static bool inXYZTolerance(dtReal const &dist);
+  dtReal val_percent(dtReal const &per, int const &dir) const;
+  dtReal percent_val(dtReal const &val, int const &dir) const;
 };
 dt__H_addCloneForpVH(dtSurface);
 } // namespace dtOO
