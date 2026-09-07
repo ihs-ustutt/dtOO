@@ -86,7 +86,7 @@ public:
       R const diffPer = fabs((value - a) / (b - a)) - 1.0;
       if (diffPer > 0.01)
       {
-        dt__warning(
+        dt__ddebug(
           boundToRange(),
           << logMe::dtFormat(
                "Value %e above upper bound. / [%e, %e] / diffPer = %e"
@@ -103,7 +103,7 @@ public:
       R const diffPer = fabs((value - a) / (b - a));
       if (diffPer > 0.01)
       {
-        dt__warning(
+        dt__ddebug(
           boundToRange(),
           << logMe::dtFormat(
                "Value %e below lower bound. / [%e, %e] / diffPer = %e"
