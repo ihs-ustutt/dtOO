@@ -32,6 +32,7 @@ License
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MTriangle.h>
 #include <gmsh/MVertex.h>
+#include <gmsh/SPoint3.h>
 #include <interfaceHeaven/intHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
@@ -224,7 +225,19 @@ GPoint dtGmshFace::point(double par1, double par2) const
 
 SPoint2 dtGmshFace::reparamOnFace(dtPoint3 const ppXYZ) const
 {
-  dtPoint2 ppUV = _mm->reparamOnFace(ppXYZ);
+  dtPoint2 ppUV;
+  try
+  {
+    ppUV = _mm->reparamOnFace(ppXYZ);
+  } catch (eGeneral &ee)
+  {
+    dt__warning(
+      reparamOnFace(),
+      << "Unable to reparametrize point on surface.\n"
+      << ee.what()
+    );
+    ppUV = _mm->approxOnFace(ppXYZ);
+  }
 
   return SPoint2(ppUV.x(), ppUV.y());
 }
@@ -366,9 +379,12 @@ GPoint dtGmshFace::closestPoint(
   const SPoint3 &queryPoint, const double initialGuess[2]
 ) const
 {
-  SPoint2 p = GFace::parFromPoint(queryPoint, false);
+  // SPoint2 p = GFace::parFromPoint(queryPoint, false);
+  double U = 0.0;
+  double V = 0.0;
+  this->copy_XYZtoUV(queryPoint.x(), queryPoint.y(), queryPoint.z(), U, V, 1.0);
 
-  return point(p.x(), p.y());
+  return point(U, V);
 }
 
 bool dtGmshFace::isClosed(dtInt const dim) const
@@ -791,4 +807,107 @@ bool dtGmshFace::isOnFace(::GEdge const *const ge) const
     return false;
   }
 }
+
+void dtGmshFace::copy_XYZtoUV(
+  double X,
+  double Y,
+  double Z,
+  double &U,
+  double &V,
+  double relax //,
+  // bool onSurface,
+  // bool convTestXYZ
+) const
+{
+  double const ctx_lc = 1.0;
+  // if(geomType() == BoundaryLayerSurface) return;
+
+  const double Precision = 1.e-3;
+  const int MaxIter = 10;
+  const int NumInitGuess = 9;
+  bool testXYZ = false;
+  //(convTestXYZ); // || CTX::instance()->mesh.NewtonConvergenceTestXYZ);
+
+  double Unew = 0., Vnew = 0., err, err2;
+  int iter;
+  double mat[3][3], jac[3][3];
+  double umin, umax, vmin, vmax;
+  // don't use 0.9, 0.1 it fails with ruled surfaces
+  double initu[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 1.0, 0.0};
+  double initv[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 1.0, 0.0};
+
+  Range<double> ru = parBounds(0);
+  Range<double> rv = parBounds(1);
+  umin = ru.low();
+  umax = ru.high();
+  vmin = rv.low();
+  vmax = rv.high();
+
+  const double tol =
+    Precision * (std::pow(umax - umin, 2) + std::pow(vmax - vmin, 2));
+  const double tol_lc = 1.e-8 * ctx_lc;
+  for (int i = 0; i < NumInitGuess; i++)
+  {
+    initu[i] = umin + initu[i] * (umax - umin);
+    initv[i] = vmin + initv[i] * (vmax - vmin);
+  }
+
+  for (int i = 0; i < NumInitGuess; i++)
+  {
+    for (int j = 0; j < NumInitGuess; j++)
+    {
+      U = initu[i];
+      V = initv[j];
+      err = 1.0;
+      iter = 1;
+
+      GPoint P = point(U, V);
+      double err2 = std::sqrt(
+        std::pow(X - P.x(), 2) + std::pow(Y - P.y(), 2) + std::pow(Z - P.z(), 2)
+      );
+      if (err2 < tol_lc)
+        return;
+
+      while (err > tol && iter < MaxIter)
+      {
+        P = point(U, V);
+        std::pair<SVector3, SVector3> der = firstDer(SPoint2(U, V));
+        mat[0][0] = der.first.x();
+        mat[0][1] = der.first.y();
+        mat[0][2] = der.first.z();
+        mat[1][0] = der.second.x();
+        mat[1][1] = der.second.y();
+        mat[1][2] = der.second.z();
+        mat[2][0] = 0.;
+        mat[2][1] = 0.;
+        mat[2][2] = 0.;
+        invert_singular_matrix3x3(mat, jac);
+        Unew = U + relax * (jac[0][0] * (X - P.x()) + jac[1][0] * (Y - P.y()) +
+                            jac[2][0] * (Z - P.z()));
+        Vnew = V + relax * (jac[0][1] * (X - P.x()) + jac[1][1] * (Y - P.y()) +
+                            jac[2][1] * (Z - P.z()));
+
+        // don't remove this test: it is important
+        if (Unew > umax || Unew < umin || Vnew > vmax || Vnew < vmin)
+          break;
+
+        err = std::pow(Unew - U, 2) + std::pow(Vnew - V, 2);
+        err2 = std::sqrt(
+          std::pow(X - P.x(), 2) + std::pow(Y - P.y(), 2) +
+          std::pow(Z - P.z(), 2)
+        );
+        iter++;
+        U = Unew;
+        V = Vnew;
+      }
+
+      // converged
+      if (iter < MaxIter && err <= tol || err2 < tol_lc)
+      {
+        return;
+      }
+    }
+  }
+}
+
 } // namespace dtOO
