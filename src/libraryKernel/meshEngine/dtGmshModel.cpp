@@ -440,7 +440,7 @@ void dtGmshModel::addIfFaceToGmshModel(
   std::vector<dtInt> ori;
   dtInt tmpEId = 0;
   addIfEdgeToGmshModel(
-    dt__tmpPtr(map1dTo3d, face->segmentConstVPercent(0)), &(tmpEId)
+    dt__tmpPtr(map1dTo3d, face->segmentConstVPercent(0.0)), &(tmpEId)
   );
   if (tmpEId != 0)
   {
@@ -448,7 +448,7 @@ void dtGmshModel::addIfFaceToGmshModel(
     ori.push_back(1);
   }
   addIfEdgeToGmshModel(
-    dt__tmpPtr(map1dTo3d, face->segmentConstUPercent(1)), &(tmpEId)
+    dt__tmpPtr(map1dTo3d, face->segmentConstUPercent(1.0)), &(tmpEId)
   );
   if (tmpEId != 0)
   {
@@ -456,7 +456,7 @@ void dtGmshModel::addIfFaceToGmshModel(
     ori.push_back(1);
   }
   addIfEdgeToGmshModel(
-    dt__tmpPtr(map1dTo3d, face->segmentConstVPercent(1)), &(tmpEId)
+    dt__tmpPtr(map1dTo3d, face->segmentConstVPercent(1.0)), &(tmpEId)
   );
   if (tmpEId != 0)
   {
@@ -464,7 +464,7 @@ void dtGmshModel::addIfFaceToGmshModel(
     ori.push_back(-1);
   }
   addIfEdgeToGmshModel(
-    dt__tmpPtr(map1dTo3d, face->segmentConstUPercent(0)), &(tmpEId)
+    dt__tmpPtr(map1dTo3d, face->segmentConstUPercent(0.0)), &(tmpEId)
   );
   if (tmpEId != 0)
   {
@@ -555,7 +555,7 @@ void dtGmshModel::addIfRegionToGmshModel(
   std::vector<dtInt> ori;
   dtInt tmpFId = 0;
   addIfFaceToGmshModel(
-    dt__tmpPtr(map2dTo3d, region->segmentConstWPercent(0)), &(tmpFId)
+    dt__tmpPtr(map2dTo3d, region->segmentConstWPercent(0.0)), &(tmpFId)
   );
   if (tmpFId != 0)
   {
@@ -563,7 +563,7 @@ void dtGmshModel::addIfRegionToGmshModel(
     ori.push_back(1);
   }
   addIfFaceToGmshModel(
-    dt__tmpPtr(map2dTo3d, region->segmentConstWPercent(1)), &(tmpFId)
+    dt__tmpPtr(map2dTo3d, region->segmentConstWPercent(1.0)), &(tmpFId)
   );
   if (tmpFId != 0)
   {
@@ -571,7 +571,7 @@ void dtGmshModel::addIfRegionToGmshModel(
     ori.push_back(1);
   }
   addIfFaceToGmshModel(
-    dt__tmpPtr(map2dTo3d, region->segmentConstVPercent(0)), &(tmpFId)
+    dt__tmpPtr(map2dTo3d, region->segmentConstVPercent(0.0)), &(tmpFId)
   );
   if (tmpFId != 0)
   {
@@ -579,7 +579,7 @@ void dtGmshModel::addIfRegionToGmshModel(
     ori.push_back(1);
   }
   addIfFaceToGmshModel(
-    dt__tmpPtr(map2dTo3d, region->segmentConstVPercent(1)), &(tmpFId)
+    dt__tmpPtr(map2dTo3d, region->segmentConstVPercent(1.0)), &(tmpFId)
   );
   if (tmpFId != 0)
   {
@@ -587,7 +587,7 @@ void dtGmshModel::addIfRegionToGmshModel(
     ori.push_back(1);
   }
   addIfFaceToGmshModel(
-    dt__tmpPtr(map2dTo3d, region->segmentConstUPercent(0)), &(tmpFId)
+    dt__tmpPtr(map2dTo3d, region->segmentConstUPercent(0.0)), &(tmpFId)
   );
   if (tmpFId != 0)
   {
@@ -595,7 +595,7 @@ void dtGmshModel::addIfRegionToGmshModel(
     ori.push_back(1);
   }
   addIfFaceToGmshModel(
-    dt__tmpPtr(map2dTo3d, region->segmentConstUPercent(1)), &(tmpFId)
+    dt__tmpPtr(map2dTo3d, region->segmentConstUPercent(1.0)), &(tmpFId)
   );
   if (tmpFId != 0)
   {
