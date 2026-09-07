@@ -63,10 +63,12 @@ public:
   void setGrading(dtReal const &grading, dtReal const &type);
   std::string getPhysicalString(void) const;
   void setNElements(dtInt const nE);
+  virtual ::GEntity::GeomType geomType(void) const;
 
 private:
   ptrHandling<map1dTo3d> _mm;
   std::list<::GVertex *> l_vertices;
+  ::GEntity::GeomType _geomType;
 };
 } // namespace dtOO
 #endif /* DTGMSHEDGE_H */
