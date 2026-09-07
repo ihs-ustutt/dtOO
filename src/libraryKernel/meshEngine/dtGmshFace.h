@@ -112,8 +112,9 @@ public:
 
 private:
   static bool sortPredicate(::MVertex const *d1, ::MVertex const *d2);
-  void copy_XYZtoUV(double X, double Y, double Z, double &U, double &V,
-                    double relax) const;
+  void copy_XYZtoUV(
+    double X, double Y, double Z, double &U, double &V, double relax
+  ) const;
 
 private:
   dt__pH(map2dTo3d) _mm;
