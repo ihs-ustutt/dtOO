@@ -41,6 +41,13 @@ public:
   virtual bool isClosed(dtInt const &dir) const;
   virtual dtReal getMin(dtInt const &dir) const;
   virtual dtReal getMax(dtInt const &dir) const;
+  virtual dtReal u_percent(dtReal const &uu) const;
+  virtual dtReal v_percent(dtReal const &vv) const;
+  virtual dtReal w_percent(dtReal const &ww) const;
+  virtual dtReal percent_u(dtReal const &per) const;
+  virtual dtReal percent_v(dtReal const &per) const;
+  virtual dtReal percent_w(dtReal const &per) const;
+
   virtual dtPoint3
   getPoint(dtReal const &uu, dtReal const &vv, dtReal const &ww) const;
 };
