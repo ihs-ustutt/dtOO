@@ -39,6 +39,7 @@ License
 #include <attributionHeaven/pointGeometryDist.h>
 #include <boost/assign/list_of.hpp>
 #include <gslMinFloatAttr.h>
+#include <vector>
 
 namespace dtOO {
 dtReal map2dTo3d::_deltaPer =
@@ -226,30 +227,11 @@ dtVector3 map2dTo3d::normal(dtPoint2 const &pp) const
 
 dtPoint2 map2dTo3d::reparamOnFace(dtPoint3 const &ppXYZ) const
 {
-  gslMinFloatAttr md(
-    dt__pH(pointGeometryDist)(new pointGeometryDist(ppXYZ, this)),
-    // clang-format off
-    std::vector<dtPoint2>(
-      ::boost::assign::list_of
-        (dtPoint2(0.50, 0.50))
-        (dtPoint2(0.75, 0.50))
-        (dtPoint2(0.25, 0.50))
-        (dtPoint2(0.50, 0.75))
-        (dtPoint2(0.75, 0.75))
-        (dtPoint2(0.25, 0.75))
-        (dtPoint2(0.50, 0.25))
-        (dtPoint2(0.75, 0.25))
-        (dtPoint2(0.25, 0.25))
-    ),
-    // clang-format on
-    dtPoint2(0.001, 0.001),
-    staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
-    1000
-  );
-  md.perform();
-  dtPoint2 const ppUV = uv_percent(dtPoint2(md.result()[0], md.result()[1]));
+  std::vector<dtReal> uvw(0);
+  bool const converged = analyticGeometry::reparam(ppXYZ, uvw);
+  dtPoint2 const ppUV = dtPoint2(uvw[0], uvw[1]);
 
-  if (!md.converged())
+  if (!converged)
   {
     dtPoint3 ppXYZReparam = getPoint(ppUV);
     dtReal dist = dtLinearAlgebra::distance(ppXYZ, ppXYZReparam);
@@ -288,29 +270,9 @@ dtPoint2 map2dTo3d::reparamOnFace(dtPoint3 const &ppXYZ) const
 
 dtPoint2 map2dTo3d::approxOnFace(dtPoint3 const &ppXYZ) const
 {
-  gslMinFloatAttr md(
-    dt__pH(pointGeometryDist)(new pointGeometryDist(ppXYZ, this)),
-    // clang-format off
-    std::vector<dtPoint2>(
-      ::boost::assign::list_of
-        (dtPoint2(0.50, 0.50))
-        (dtPoint2(0.75, 0.50))
-        (dtPoint2(0.25, 0.50))
-        (dtPoint2(0.50, 0.75))
-        (dtPoint2(0.75, 0.75))
-        (dtPoint2(0.25, 0.75))
-        (dtPoint2(0.50, 0.25))
-        (dtPoint2(0.75, 0.25))
-        (dtPoint2(0.25, 0.25))
-    ),
-    // clang-format on
-    dtPoint2(0.001, 0.001),
-    staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
-    1000
-  );
-  md.perform();
-  dtPoint2 const ppUV = uv_percent(dtPoint2(md.result()[0], md.result()[1]));
-
+  std::vector<dtReal> uvw(0);
+  bool const converged = analyticGeometry::reparam(ppXYZ, uvw);
+  dtPoint2 const ppUV = dtPoint2(uvw[0], uvw[1]);
   return ppUV;
 }
 

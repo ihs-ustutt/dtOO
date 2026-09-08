@@ -128,10 +128,6 @@ public:
     dtPoint3 const &p3
   ) const;
 
-protected:
-  dtPoint3
-  reparamInVolume(dtPoint3 const &ppXYZ, dtVector3 const &uvwExtPercent) const;
-
 private:
   static dtReal _deltaPer;
 };

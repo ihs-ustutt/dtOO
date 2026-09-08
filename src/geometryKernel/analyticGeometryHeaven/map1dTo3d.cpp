@@ -141,16 +141,10 @@ vectorHandling<renderInterface *> map1dTo3d::getRender(void) const
 
 dtReal map1dTo3d::reparamOnEdge(dtPoint3 const &ppXYZ) const
 {
-  gslMinFloatAttr md(
-    dt__pH(pointGeometryDist)(new pointGeometryDist(ppXYZ, this)),
-    0.50,
-    0.001,
-    staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
-    1000
-  );
-  md.perform();
-  dt__throwIf(!md.converged(), reparamOnEdge());
-  return u_percent(md.result()[0]);
+  std::vector<dtReal> uvw(0);
+  bool const converged = analyticGeometry::reparam(ppXYZ, uvw);
+  dt__throwIf(!converged, reparamOnEdge());
+  return uvw[0];
 }
 
 dtReal map1dTo3d::reparamPercentOnEdge(dtPoint3 const &ppXYZ) const
