@@ -53,6 +53,23 @@ convertDtPoint3(std::vector<dtPoint3> const &guess)
 
 minFloatAttr::minFloatAttr(
   dt__pH(floatAtt) const &attribute,
+  std::vector<std::vector<dtReal>> const &guess,
+  std::vector<dtReal> const &step,
+  dtReal const &precision,
+  dtInt const &maxIterations
+)
+  : _attribute(attribute), _dimension(guess[0].size()), _guess(guess),
+    _step(step), _precision(precision), _maxIterations(maxIterations),
+    _result(
+      std::vector(guess[0].size(), std::numeric_limits<dtReal>::infinity())
+    ),
+    _extraInfo("")
+{
+  _converged = false;
+}
+
+minFloatAttr::minFloatAttr(
+  dt__pH(floatAtt) const &attribute,
   std::vector<dtReal> const &guess,
   std::vector<dtReal> const &step,
   dtReal const &precision,
