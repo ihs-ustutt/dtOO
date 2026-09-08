@@ -163,10 +163,12 @@ std::pair<SVector3, SVector3> dtGmshFace::firstDer(const SPoint2 &param) const
   {
     dt__ddebug(
       firstDer(),
-      << logMe::dtFormat("Accessing derivative out of range at point (%e, %e). "
-                         "Bounds U = [%e, %e] / V = [%e, %e]") %
-             param.x() % param.y() % _mm->getUMin() % _mm->getUMax() %
-             _mm->getVMin() % _mm->getVMax()
+      << logMe::dtFormat(
+           "Accessing derivative out of range at point (%e, %e). "
+           "Bounds U = [%e, %e] / V = [%e, %e]"
+         ) % param.x() %
+             param.y() % _mm->getUMin() % _mm->getUMax() % _mm->getVMin() %
+             _mm->getVMax()
       << std::endl
       << "Return zero."
     );
@@ -226,20 +228,23 @@ GPoint dtGmshFace::point(double par1, double par2) const
 
 SPoint2 dtGmshFace::reparamOnFace(dtPoint3 const ppXYZ) const
 {
-  dtPoint2 ppUV = _mm->approxOnFace(ppXYZ);
+  std::vector<dtReal> uvw(0);
+  bool const converged = _mm->reparam(ppXYZ, uvw);
 
   // convergence check and warn if distance is bigger than tolerance
-  dtReal const dist = dtLinearAlgebra::distance(ppXYZ, _mm->getPoint(ppUV));
-  dt__warnIfWithMessage(
-    !analyticGeometry::inXYZTolerance(dist),
-    reparamOnFace(),
-    << logMe::dtFormat(
-         "Reparameterization of Point (%e, %e, %e) fails with distance = %e."
-       ) % ppXYZ.x() %
-           ppXYZ.y() % ppXYZ.z() % dist
-  );
-
-  return SPoint2(ppUV.x(), ppUV.y());
+  if (!converged)
+  {
+    dtReal const dist =
+      dtLinearAlgebra::distance(ppXYZ, _mm->getPoint(uvw[0], uvw[1]));
+    dt__warning(
+      reparamOnFace(),
+      << logMe::dtFormat(
+           "Reparameterization of Point (%e, %e, %e) fails with distance = %e."
+         ) % ppXYZ.x() %
+             ppXYZ.y() % ppXYZ.z() % dist
+    );
+  }
+  return SPoint2(uvw[0], uvw[1]);
 }
 
 SPoint2 dtGmshFace::reparamOnFace(::GVertex const *gv) const
@@ -257,8 +262,9 @@ void dtGmshFace::setMap2dTo3d(map2dTo3d const *const base)
 
   dt__forAllRefAuto(this->vertices(), vertex)
   {
-    vertices_uv.push_back(_mm->reparamOnFace(dtGmshModel::extractPosition(vertex
-    )));
+    vertices_uv.push_back(
+      _mm->reparamOnFace(dtGmshModel::extractPosition(vertex))
+    );
   }
   if (edgeLoops.size() > 0)
   {
@@ -594,7 +600,8 @@ bool dtGmshFace::isEqual(::GFace const *const gf0, ::GFace const *const gf1)
 
   if (VL0.size() == counter)
   {
-    if (staticPropertiesHandler::getInstance()->optionTrue("isEqualExtendCheck"
+    if (staticPropertiesHandler::getInstance()->optionTrue(
+          "isEqualExtendCheck"
         ))
     {
       ::GPoint p0 = gf0->point(
@@ -608,9 +615,9 @@ bool dtGmshFace::isEqual(::GFace const *const gf0, ::GFace const *const gf1)
         dtPoint3(p0.x(), p0.y(), p0.z()), dtPoint3(p1.x(), p1.y(), p1.z())
       );
       bool differentPoint =
-        dist >
-        staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"
-        );
+        dist > staticPropertiesHandler::getInstance()->getOptionFloat(
+                 "xyz_resolution"
+               );
       dt__debug(
         isEqual(),
         << logMe::dtFormat("p0 = (%6.2f, %6.2f, %6.2f)") % p0.x() % p0.y() %
