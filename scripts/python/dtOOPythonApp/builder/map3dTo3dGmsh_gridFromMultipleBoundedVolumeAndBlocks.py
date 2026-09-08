@@ -28,6 +28,7 @@ from dtOOPythonSWIG import bVOReadMSH
 from dtOOPythonSWIG import bVONameRegions
 from dtOOPythonSWIG import bVOOrientCellVolumes
 from dtOOPythonSWIG import bool_map1dTo3dInMap2dTo3d
+from dtOOPythonSWIG import dtPoint2
 from dtOOPythonSWIG import dtPoint3
 from dtOOPythonSWIG import dtVector3
 from dtOOPythonSWIG import bVOAnalyticGeometryToFace
@@ -1174,6 +1175,14 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
                     v1 = theEdge.getMap1dTo3d().getPointPercent(1.0)
                     p_0_uv = self.blade_.reparamPercentOnFace( v0 )
                     p_1_uv = self.blade_.reparamPercentOnFace( v1 )
+                    #
+                    # a closed blade and, therefore, a periodic surface can 
+                    # have points that lie outside of the range [0, 1]; this 
+                    # is ok, but the elementSize function is only defined in 
+                    # the range [0, 1]; so a correction is necesary
+                    # 
+                    p_0_uv = dtPoint2(p_0_uv[0] % 1.0, p_0_uv[1] % 1.0)
+                    p_1_uv = dtPoint2(p_1_uv[0] % 1.0, p_1_uv[1] % 1.0)
                     ms_0 = elementSize( p_0_uv[direction] )[0]
                     ms_1 = elementSize( p_1_uv[direction] )[0]
                     nE_0 = math.ceil(eL/ms_0)
