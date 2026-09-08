@@ -69,8 +69,8 @@ bool dtSurface::closedV(void) const { return closed(1); }
 
 dtReal dtSurface::val_percent(dtReal const &per, int const &dir) const
 {
-  // if (closed(dir))
-  //   return (minPara(dir) + (maxPara(dir) - minPara(dir)) * per);
+  if (closed(dir))
+    return (minPara(dir) + (maxPara(dir) - minPara(dir)) * per);
 
   return floatHandling::boundToRange(
     minPara(dir) + (maxPara(dir) - minPara(dir)) * per,
@@ -81,8 +81,8 @@ dtReal dtSurface::val_percent(dtReal const &per, int const &dir) const
 
 dtReal dtSurface::percent_val(dtReal const &val, int const &dir) const
 {
-  // if (closed(dir))
-  //   return (val - minPara(dir)) / (maxPara(dir) - minPara(dir));
+  if (closed(dir))
+    return (val - minPara(dir)) / (maxPara(dir) - minPara(dir));
 
   return floatHandling::boundToRange(
     (val - minPara(dir)) / (maxPara(dir) - minPara(dir)), 0.0, 1.0
