@@ -59,10 +59,7 @@ dtPoint3 analyticGeometry::getPoint(dtReal const *const uvw) const
 dtPoint3 analyticGeometry::getPointPercent(dtReal const *const uvw) const
 {
   dtReal uvwP[dim()];
-  dt__forFromToIndex(0, dim(), ii)
-  {
-    uvwP[ii] = val_percent(uvw[ii], ii);
-  }
+  dt__forFromToIndex(0, dim(), ii) { uvwP[ii] = val_percent(uvw[ii], ii); }
 
   return getPoint(uvwP);
 }
@@ -71,10 +68,7 @@ dtPoint3 analyticGeometry::getPointPercent(dtReal const *const uvw) const
 analyticGeometry::firstDerPercent(dtReal const *const uvw) const
 {
   dtReal uvwP[dim()];
-  dt__forFromToIndex(0, dim(), ii)
-  {
-    uvwP[ii] = val_percent(uvw[ii], ii);
-  }
+  dt__forFromToIndex(0, dim(), ii) { uvwP[ii] = val_percent(uvw[ii], ii); }
   return firstDer(uvwP);
 }
 
