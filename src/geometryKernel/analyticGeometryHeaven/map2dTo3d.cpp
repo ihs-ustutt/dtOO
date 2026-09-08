@@ -504,16 +504,12 @@ dtPoint2 map2dTo3d::uv_percent(dtReal const &uu, dtReal const &vv) const
 
 dtReal map2dTo3d::u_percent(dtReal const &uu) const
 {
-  return floatHandling::boundToRange(
-    getUMin() + (getUMax() - getUMin()) * uu, getUMin(), getUMax()
-  );
+  return val_percent(uu, 0);
 }
 
 dtReal map2dTo3d::v_percent(dtReal const &vv) const
 {
-  return floatHandling::boundToRange(
-    getVMin() + (getVMax() - getVMin()) * vv, getVMin(), getVMax()
-  );
+  return val_percent(vv, 1);
 }
 
 dtPoint2 map2dTo3d::percent_uv(dtPoint2 const &pUV) const
@@ -523,16 +519,12 @@ dtPoint2 map2dTo3d::percent_uv(dtPoint2 const &pUV) const
 
 dtReal map2dTo3d::percent_u(dtReal const &uu) const
 {
-  return floatHandling::boundToRange(
-    (uu - getUMin()) / (getUMax() - getUMin()), 0., 1.
-  );
+  return percent_val(uu, 0);
 }
 
 dtReal map2dTo3d::percent_v(dtReal const &vv) const
 {
-  return floatHandling::boundToRange(
-    (vv - getVMin()) / (getVMax() - getVMin()), 0., 1.
-  );
+  return percent_val(vv, 1);
 }
 
 map1dTo3d *map2dTo3d::segment(dtPoint2 const &p0, dtPoint2 const &p1) const
