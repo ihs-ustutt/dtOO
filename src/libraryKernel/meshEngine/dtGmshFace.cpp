@@ -21,6 +21,7 @@ License
 #include "dtGmshModel.h"
 #include "dtGmshRegion.h"
 #include "dtGmshVertex.h"
+#include "dtLinearAlgebra.h"
 #include "dtOMMesh.h"
 #include <analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
@@ -227,9 +228,15 @@ SPoint2 dtGmshFace::reparamOnFace(dtPoint3 const ppXYZ) const
 {
   dtPoint2 ppUV = _mm->approxOnFace(ppXYZ);
 
-  dt__warnIf(
-    !analyticGeometry::inXYZTolerance(ppXYZ, _mm->getPoint(ppUV)),
-    reparamOnFace()
+  // convergence check and warn if distance is bigger than tolerance
+  dtReal const dist = dtLinearAlgebra::distance(ppXYZ, _mm->getPoint(ppUV));
+  dt__warnIfWithMessage(
+    !analyticGeometry::inXYZTolerance(dist),
+    reparamOnFace(),
+    << logMe::dtFormat(
+         "Reparameterization of Point (%e, %e, %e) fails with distance = %e."
+       ) % ppXYZ.x() %
+           ppXYZ.y() % ppXYZ.z() % dist
   );
 
   return SPoint2(ppUV.x(), ppUV.y());
