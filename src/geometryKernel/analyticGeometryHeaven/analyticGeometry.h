@@ -62,6 +62,7 @@ public:
   void updateBoundingBox(void) const;
   dtReal characteristicLength(void) const;
   std::vector<dtPoint3> cornerPoints(void) const;
+  virtual bool reparam(dtPoint3 const &xyz, std::vector<dtReal> &uvw) const;
   //
   //
   //
