@@ -76,9 +76,8 @@ analyticGeometry::firstDerPercent(dtReal const *const uvw) const
   return firstDer(uvwP);
 }
 
-void analyticGeometry::setRenderResolution(
-  dtInt const &dir, dtInt const &value
-) const
+void analyticGeometry::setRenderResolution(dtInt const &dir, dtInt const &value)
+  const
 {
   switch (dir)
   {
@@ -142,8 +141,8 @@ bool analyticGeometry::isTransformed(void) const { return false; }
 
 bool analyticGeometry::isCompound(void) const { return false; }
 
-vectorHandling<analyticGeometry const *>
-analyticGeometry::compoundInternal(void) const
+vectorHandling<analyticGeometry const *> analyticGeometry::compoundInternal(void
+) const
 {
   return vectorHandling<analyticGeometry const *>();
 }
@@ -347,9 +346,8 @@ std::vector<dtPoint3> analyticGeometry::cornerPoints(void) const
     dt__throwUnexpected(updateBoundingBox());
 }
 
-bool analyticGeometry::reparam(
-  dtPoint3 const &xyz, std::vector<dtReal> &uvw
-) const
+bool analyticGeometry::reparam(dtPoint3 const &xyz, std::vector<dtReal> &uvw)
+  const
 {
   // convert initial guess to percent
   dt__forAllIndex(uvw, ii) { uvw[ii] = val_percent(uvw[ii], ii); }
@@ -474,8 +472,7 @@ dtPoint3 analyticGeometry::getPoint(std::vector<dtReal> const &uvw) const
 
 dtReal analyticGeometry::XYZTolerance(void)
 {
-  return staticPropertiesHandler::getInstance()->getOptionFloat(
-    "xyz_resolution"
+  return staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"
   );
 }
 

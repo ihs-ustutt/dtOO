@@ -163,12 +163,10 @@ std::pair<SVector3, SVector3> dtGmshFace::firstDer(const SPoint2 &param) const
   {
     dt__ddebug(
       firstDer(),
-      << logMe::dtFormat(
-           "Accessing derivative out of range at point (%e, %e). "
-           "Bounds U = [%e, %e] / V = [%e, %e]"
-         ) % param.x() %
-             param.y() % _mm->getUMin() % _mm->getUMax() % _mm->getVMin() %
-             _mm->getVMax()
+      << logMe::dtFormat("Accessing derivative out of range at point (%e, %e). "
+                         "Bounds U = [%e, %e] / V = [%e, %e]") %
+             param.x() % param.y() % _mm->getUMin() % _mm->getUMax() %
+             _mm->getVMin() % _mm->getVMax()
       << std::endl
       << "Return zero."
     );
@@ -262,9 +260,8 @@ void dtGmshFace::setMap2dTo3d(map2dTo3d const *const base)
 
   dt__forAllRefAuto(this->vertices(), vertex)
   {
-    vertices_uv.push_back(
-      _mm->reparamOnFace(dtGmshModel::extractPosition(vertex))
-    );
+    vertices_uv.push_back(_mm->reparamOnFace(dtGmshModel::extractPosition(vertex
+    )));
   }
   if (edgeLoops.size() > 0)
   {
@@ -600,8 +597,7 @@ bool dtGmshFace::isEqual(::GFace const *const gf0, ::GFace const *const gf1)
 
   if (VL0.size() == counter)
   {
-    if (staticPropertiesHandler::getInstance()->optionTrue(
-          "isEqualExtendCheck"
+    if (staticPropertiesHandler::getInstance()->optionTrue("isEqualExtendCheck"
         ))
     {
       ::GPoint p0 = gf0->point(
@@ -615,9 +611,9 @@ bool dtGmshFace::isEqual(::GFace const *const gf0, ::GFace const *const gf1)
         dtPoint3(p0.x(), p0.y(), p0.z()), dtPoint3(p1.x(), p1.y(), p1.z())
       );
       bool differentPoint =
-        dist > staticPropertiesHandler::getInstance()->getOptionFloat(
-                 "xyz_resolution"
-               );
+        dist >
+        staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"
+        );
       dt__debug(
         isEqual(),
         << logMe::dtFormat("p0 = (%6.2f, %6.2f, %6.2f)") % p0.x() % p0.y() %
