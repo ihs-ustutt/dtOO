@@ -52,3 +52,4 @@ autodoc_mock_imports = [
   ]
 
 add_module_names = False
+toc_object_entries_show_parents = 'hide'
