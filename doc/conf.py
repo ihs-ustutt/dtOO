@@ -46,5 +46,7 @@ autodoc_mock_imports = [
   'sklearn',
   'scipy',
   'numpy',
-  'os'
+  'os',
+  'meshio',
+  'OCC'
   ]
