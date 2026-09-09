@@ -50,3 +50,5 @@ autodoc_mock_imports = [
   'meshio',
   'OCC'
   ]
+
+add_module_names = False
