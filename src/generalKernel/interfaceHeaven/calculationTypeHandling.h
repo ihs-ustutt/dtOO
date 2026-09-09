@@ -34,6 +34,7 @@ template <typename R, typename I> class calculationTypeHandling {
 public:
   dt__classOnlyName(calculationTypeHandling);
   virtual ~calculationTypeHandling() {}
+
   static R next(I a)
   {
     R b = a;
@@ -44,6 +45,7 @@ public:
     R ret = std::nextafterf(b, std::numeric_limits<R>::infinity());
     return ret;
   }
+
   static R nextIfSmaller(I a)
   {
     R b = a;
@@ -56,6 +58,7 @@ public:
       return next(a);
     }
   }
+
   static R prev(I a)
   {
     R b = a;
@@ -67,6 +70,7 @@ public:
     R ret = nexttowardf(b, -std::numeric_limits<R>::infinity());
     return ret;
   }
+
   static R prevIfBigger(I a)
   {
     R b = a;
@@ -79,7 +83,8 @@ public:
       return prev(a);
     }
   }
-  static R boundToRange(R const value, R const a, R const b)
+
+  static R boundToRange(R const value, I const a, I const b)
   {
     if (value > b)
     {
@@ -118,18 +123,8 @@ public:
 
     return value;
   }
-  static bool isAscending(std::vector<R> const &check)
-  {
-    for (int ii = 1; ii < check.size(); ii++)
-    {
-      if (check[ii - 1] > check[ii])
-      {
-        return false;
-      }
-    }
-    return true;
-  }
-  static bool isSmall(R const &val)
+
+  static bool isSmall(I const &val)
   {
     if (fabs(val) < dt__SMALL)
     {
@@ -138,9 +133,24 @@ public:
     return false;
   }
 
+  static R wrapToRange(I const &val, I const &min, I const &max)
+  {
+    R corrected = std::fmod(val - min, max - min);
+
+    if (corrected < 0.0)
+      corrected += max - min;
+    corrected += min;
+
+    return corrected;
+  }
+
 private:
   calculationTypeHandling() {}
 };
 typedef calculationTypeHandling<dtReal, double> floatHandling;
+typedef calculationTypeHandling<dtReal, dtReal> innerHand;
+typedef calculationTypeHandling<double, dtReal> toOCCHand;
+typedef calculationTypeHandling<dtReal, double> fromOCCHand;
+typedef calculationTypeHandling<double, double> innerOCCHand;
 } // namespace dtOO
 #endif /* calculationTypeHandling_H */
