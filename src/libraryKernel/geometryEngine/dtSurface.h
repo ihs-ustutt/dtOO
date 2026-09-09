@@ -123,6 +123,7 @@ public:
   static bool inXYZTolerance(dtReal const &dist);
   dtReal val_percent(dtReal const &per, int const &dir) const;
   dtReal percent_val(dtReal const &val, int const &dir) const;
+  bool inRange(dtReal const &val, int const &dir) const;
 };
 dt__H_addCloneForpVH(dtSurface);
 } // namespace dtOO

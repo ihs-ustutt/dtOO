@@ -377,5 +377,10 @@ dtCurve *dtSurface::segmentConstPercent(
     dt__throwUnexpected(segmentConstPercent());
 }
 
+bool dtSurface::inRange(dtReal const &val, int const &dir) const
+{
+  return (val <= this->maxPara(dir)) && (val >= this->minPara(dir));
+}
+
 dt__C_addCloneForpVH(dtSurface);
 } // namespace dtOO
