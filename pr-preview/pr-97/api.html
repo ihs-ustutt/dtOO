@@ -20,7 +20,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="constValue" href="constValue.html" />
+    <link rel="next" title="Abstract" href="analyticGeometry.html" />
     <link rel="prev" title="Test" href="test.html" /> 
 </head>
 
@@ -51,12 +51,28 @@
 <li class="toctree-l1"><a class="reference internal" href="test.html">Test</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#c-core-classes">C++ core classes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="constValue.html">constValue</a></li>
-<li class="toctree-l3"><a class="reference internal" href="analyticFunction.html">analyticFunction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="analyticGeometry.html">Geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="boundedVolume.html">boundedVolume</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dtCase.html">dtCase</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dtPlugin.html">dtPlugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geometry">Geometry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analyticGeometry.html">Abstract</a></li>
+<li class="toctree-l4"><a class="reference internal" href="analyticGeometry.html#concrete">Concrete</a></li>
+<li class="toctree-l4"><a class="reference internal" href="analyticGeometryBuilders.html">Builders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#function">Function</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analyticFunction.html">Abstract</a></li>
+<li class="toctree-l4"><a class="reference internal" href="analyticFunction.html#concrete">Concrete</a></li>
+<li class="toctree-l4"><a class="reference internal" href="analyticFunctionBuilders.html">Builders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#other-core-classes">Other core classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="constValue.html">constValue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boundedVolume.html">boundedVolume</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#execution-and-extension">Execution and extension</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dtCase.html">dtCase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dtPlugin.html">dtPlugin</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#python-pydtoo-classes">Python pyDtOO classes</a><ul>
@@ -275,16 +291,190 @@
 <p>The documentation of the C++ code.</p>
 <section id="c-core-classes">
 <h2>C++ core classes<a class="headerlink" href="#c-core-classes" title="Link to this heading"></a></h2>
+<p>The C++ core provides the building blocks used to define and process a dtOO
+model. <code class="docutils literal notranslate"><span class="pre">constValue</span></code> stores named parameters, while <code class="docutils literal notranslate"><span class="pre">analyticFunction</span></code>
+describes mappings between parameter and result vectors. <code class="docutils literal notranslate"><span class="pre">analyticGeometry</span></code>
+is the common base for parameterized curves, surfaces, and volumes embedded in
+three-dimensional space; its <code class="docutils literal notranslate"><span class="pre">map1dTo3d</span></code>, <code class="docutils literal notranslate"><span class="pre">map2dTo3d</span></code>, and <code class="docutils literal notranslate"><span class="pre">map3dTo3d</span></code>
+specializations provide the corresponding one-, two-, and three-dimensional
+mapping interfaces.</p>
+<p><code class="docutils literal notranslate"><span class="pre">boundedVolume</span></code> combines geometries into meshable regions, <code class="docutils literal notranslate"><span class="pre">dtCase</span></code> holds
+the simulation setup, and <code class="docutils literal notranslate"><span class="pre">dtPlugin</span></code> provides extension points for
+model-processing operations.</p>
+<p>The following classes define named parameters, analytic functions and
+geometries, and the bounded regions built from those geometries.</p>
+<section id="geometry">
+<h3>Geometry<a class="headerlink" href="#geometry" title="Link to this heading"></a></h3>
+<p>Analytic geometries map a parameter domain into three-dimensional Cartesian
+space. <code class="docutils literal notranslate"><span class="pre">analyticGeometry</span></code> defines the common geometry contract. Its map
+superclasses specialize that contract by parameter-space dimension:
+<code class="docutils literal notranslate"><span class="pre">map1dTo3d</span></code> represents curves parameterized by <code class="docutils literal notranslate"><span class="pre">u</span></code>, <code class="docutils literal notranslate"><span class="pre">map2dTo3d</span></code>
+represents surfaces parameterized by <code class="docutils literal notranslate"><span class="pre">u</span></code> and <code class="docutils literal notranslate"><span class="pre">v</span></code>, and <code class="docutils literal notranslate"><span class="pre">map3dTo3d</span></code>
+represents volumes parameterized by <code class="docutils literal notranslate"><span class="pre">u</span></code>, <code class="docutils literal notranslate"><span class="pre">v</span></code>, and <code class="docutils literal notranslate"><span class="pre">w</span></code>.</p>
+<p>All maps evaluate to three-dimensional points, irrespective of the dimension
+of their parameter domain. Concrete and adapting geometries below use these
+superclasses to provide specific representations and operations.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="analyticGeometry.html">Abstract</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO16analyticGeometryE"><code class="docutils literal notranslate"><span class="pre">dtOO::analyticGeometry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4I0EN4dtOO24analyticGeometryCompoundE"><code class="docutils literal notranslate"><span class="pre">dtOO::analyticGeometryCompound</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO21analyticGeometryGroupE"><code class="docutils literal notranslate"><span class="pre">dtOO::analyticGeometryGroup</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO9map1dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::map1dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO9map2dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::map2dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO9map3dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::map3dTo3d</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analyticGeometry.html#concrete">Concrete</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO13analyticCurveE"><code class="docutils literal notranslate"><span class="pre">dtOO::analyticCurve</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO25analyticRotatingMap1dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::analyticRotatingMap1dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO15analyticSurfaceE"><code class="docutils literal notranslate"><span class="pre">dtOO::analyticSurface</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO17infinityMap3dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::infinityMap3dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4I0EN4dtOO20map1dTo3dTransformedE"><code class="docutils literal notranslate"><span class="pre">dtOO::map1dTo3dTransformed</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4I0EN4dtOO20map2dTo3dTransformedE"><code class="docutils literal notranslate"><span class="pre">dtOO::map2dTo3dTransformed</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4I0EN4dtOO20map3dTo3dTransformedE"><code class="docutils literal notranslate"><span class="pre">dtOO::map3dTo3dTransformed</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO22multipleBoundedSurfaceE"><code class="docutils literal notranslate"><span class="pre">dtOO::multipleBoundedSurface</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO21multipleBoundedVolumeE"><code class="docutils literal notranslate"><span class="pre">dtOO::multipleBoundedVolume</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO21partRotatingMap1dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::partRotatingMap1dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO21partRotatingMap2dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::partRotatingMap2dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO26radialTranslatingMap2dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::radialTranslatingMap2dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO17rotatingMap1dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::rotatingMap1dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO17rotatingMap2dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::rotatingMap2dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO18scaOneDInMap1dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaOneDInMap1dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO15trans4SidedFaceE"><code class="docutils literal notranslate"><span class="pre">dtOO::trans4SidedFace</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO15trans6SidedCubeE"><code class="docutils literal notranslate"><span class="pre">dtOO::trans6SidedCube</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO20translatingMap2dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::translatingMap2dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO20vec2dOneDInMap2dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec2dOneDInMap2dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO20vec2dTwoDInMap2dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec2dTwoDInMap2dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO20vec3dOneDInMap3dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dOneDInMap3dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO22vec3dThreeDInMap3dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dThreeDInMap3dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometry.html#_CPPv4N4dtOO20vec3dTwoDInMap3dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dTwoDInMap3dTo3d</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="analyticGeometryBuilders.html">Builders</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO25bool_map1dTo3dInMap2dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::bool_map1dTo3dInMap2dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO34dtPoint3_map1dTo3dEquidistantPointE"><code class="docutils literal notranslate"><span class="pre">dtOO::dtPoint3_map1dTo3dEquidistantPoint</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO23dtPoint3_map1dTo3dPointE"><code class="docutils literal notranslate"><span class="pre">dtOO::dtPoint3_map1dTo3dPoint</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO34float_map1dTo3dPointConstCartesianE"><code class="docutils literal notranslate"><span class="pre">dtOO::float_map1dTo3dPointConstCartesian</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO29map1dTo3d_closeGapsArithmeticE"><code class="docutils literal notranslate"><span class="pre">dtOO::map1dTo3d_closeGapsArithmetic</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO18map1dTo3d_findLoopE"><code class="docutils literal notranslate"><span class="pre">dtOO::map1dTo3d_findLoop</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO42map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO19map1dTo3d_orderLoopE"><code class="docutils literal notranslate"><span class="pre">dtOO::map1dTo3d_orderLoop</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO23dtPoint3_map2dTo3dPointE"><code class="docutils literal notranslate"><span class="pre">dtOO::dtPoint3_map2dTo3dPoint</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO41map2dTo3d_approximateMap2dTo3dInMap3dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::map2dTo3d_approximateMap2dTo3dInMap3dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO30map2dTo3d_constructMarginFacesE"><code class="docutils literal notranslate"><span class="pre">dtOO::map2dTo3d_constructMarginFaces</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO31map2dTo3d_fullExtentInMap3dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::map2dTo3d_fullExtentInMap3dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO40pairUUV_map1dTo3dClosestPointToMap2dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::pairUUV_map1dTo3dClosestPointToMap2dTo3d</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO31uv_map2dTo3dClosestPointToPointE"><code class="docutils literal notranslate"><span class="pre">dtOO::uv_map2dTo3dClosestPointToPoint</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticGeometryBuilders.html#_CPPv4N4dtOO36trans6SidedCube_splitTrans6SidedCubeE"><code class="docutils literal notranslate"><span class="pre">dtOO::trans6SidedCube_splitTrans6SidedCube</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="function">
+<h3>Function<a class="headerlink" href="#function" title="Link to this heading"></a></h3>
+<p>Analytic functions map an input vector <code class="docutils literal notranslate"><span class="pre">aFX</span></code> to an output vector <code class="docutils literal notranslate"><span class="pre">aFY</span></code>.
+The function family name specifies the output type: <code class="docutils literal notranslate"><span class="pre">scaFunction</span></code> has one
+scalar output, while <code class="docutils literal notranslate"><span class="pre">vec2dFunction</span></code> and <code class="docutils literal notranslate"><span class="pre">vec3dFunction</span></code> have two- and
+three-component vector outputs. The <code class="docutils literal notranslate"><span class="pre">OneD</span></code>, <code class="docutils literal notranslate"><span class="pre">TwoD</span></code>, and <code class="docutils literal notranslate"><span class="pre">ThreeD</span></code> suffixes
+specify the dimension of the input parameter space, not the output dimension.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">scaThreeD</span></code> maps three input coordinates to one scalar, whereas
+<code class="docutils literal notranslate"><span class="pre">vec3dOneD</span></code> maps one input coordinate to a three-component vector. Concrete
+and adapting functions below use the shared superclasses to provide specific
+representations and operations.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="analyticFunction.html">Abstract</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO16analyticFunctionE"><code class="docutils literal notranslate"><span class="pre">dtOO::analyticFunction</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO3aFXE"><code class="docutils literal notranslate"><span class="pre">dtOO::aFX</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO3aFYE"><code class="docutils literal notranslate"><span class="pre">dtOO::aFY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4I00EN4dtOO27analyticFunctionCombinationE"><code class="docutils literal notranslate"><span class="pre">dtOO::analyticFunctionCombination</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4I0EN4dtOO24analyticFunctionCompoundE"><code class="docutils literal notranslate"><span class="pre">dtOO::analyticFunctionCompound</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4I0EN4dtOO35analyticFunctionCompoundTrojanHorseE"><code class="docutils literal notranslate"><span class="pre">dtOO::analyticFunctionCompoundTrojanHorse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4I0EN4dtOO27analyticFunctionTransformedE"><code class="docutils literal notranslate"><span class="pre">dtOO::analyticFunctionTransformed</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO11scaFunctionE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaFunction</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO7scaOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO20scaOneDPolyInterfaceE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaOneDPolyInterface</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO7scaTwoDE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaTwoD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO9scaThreeDE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaThreeD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO13vec2dFunctionE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec2dFunction</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO9vec2dOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec2dOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO9vec2dTwoDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec2dTwoD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO13vec3dFunctionE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dFunction</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO9vec3dOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO9vec3dTwoDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dTwoD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO11vec3dThreeDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dThreeD</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analyticFunction.html#concrete">Concrete</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO22sca3PPointsBSplineOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::sca3PPointsBSplineOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO14scaCurve2dOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaCurve2dOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO13scaLinearOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaLinearOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO15scaMuParserOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaMuParserOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO17scaMuParserThreeDE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaMuParserThreeD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO15scaMuParserTwoDE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaMuParserTwoD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4I0EN4dtOO12scaMultiOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaMultiOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO18scaTanhGradingOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaTanhGradingOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO22scaTanhUnitGradingOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::scaTanhUnitGradingOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO12transIntCubeE"><code class="docutils literal notranslate"><span class="pre">dtOO::transIntCube</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO17vec2dBiLinearTwoDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec2dBiLinearTwoD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO16vec2dCurve2dOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec2dCurve2dOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO17vec2dMuParserTwoDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec2dMuParserTwoD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO22vec2dMultiBiLinearTwoDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec2dMultiBiLinearTwoD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO18vec2dSurface2dTwoDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec2dSurface2dTwoD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO17vec3dBiLinearTwoDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dBiLinearTwoD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO14vec3dBoxThreeDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dBoxThreeD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO25vec3dCurve2dInSurfaceOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dCurve2dInSurfaceOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO14vec3dCurveOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dCurveOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO17vec3dMuParserOneDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dMuParserOneD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO19vec3dMuParserThreeDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dMuParserThreeD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO17vec3dMuParserTwoDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dMuParserTwoD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4I0EN4dtOO16vec3dMultiThreeDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dMultiThreeD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO16vec3dSurfaceTwoDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dSurfaceTwoD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO16vec3dThickedTwoDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dThickedTwoD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO19vec3dTransVolThreeDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dTransVolThreeD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunction.html#_CPPv4N4dtOO20vec3dTriLinearThreeDE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dTriLinearThreeD</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="analyticFunctionBuilders.html">Builders</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunctionBuilders.html#_CPPv4N4dtOO18float_scaOneDPointE"><code class="docutils literal notranslate"><span class="pre">dtOO::float_scaOneDPoint</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunctionBuilders.html#_CPPv4N4dtOO18dtPoint3_vec3dTwoDE"><code class="docutils literal notranslate"><span class="pre">dtOO::dtPoint3_vec3dTwoD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunctionBuilders.html#_CPPv4N4dtOO39vec3dTransVolThreeD_skinBSplineSurfacesE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dTransVolThreeD_skinBSplineSurfaces</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunctionBuilders.html#_CPPv4N4dtOO25vec3dTwoD_closeArithmeticE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dTwoD_closeArithmetic</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyticFunctionBuilders.html#_CPPv4N4dtOO22vec3dTwoD_normalOffsetE"><code class="docutils literal notranslate"><span class="pre">dtOO::vec3dTwoD_normalOffset</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="other-core-classes">
+<h3>Other core classes<a class="headerlink" href="#other-core-classes" title="Link to this heading"></a></h3>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="constValue.html">constValue</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analyticFunction.html">analyticFunction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analyticGeometry.html">Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="boundedVolume.html">boundedVolume</a></li>
+</ul>
+</div>
+</section>
+<section id="execution-and-extension">
+<h3>Execution and extension<a class="headerlink" href="#execution-and-extension" title="Link to this heading"></a></h3>
+<p>These classes represent simulation cases and extensions that process a model.</p>
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="dtCase.html">dtCase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dtPlugin.html">dtPlugin</a></li>
 </ul>
 </div>
+</section>
 </section>
 <section id="python-pydtoo-classes">
 <h2>Python pyDtOO classes<a class="headerlink" href="#python-pydtoo-classes" title="Link to this heading"></a></h2>
@@ -6534,7 +6724,7 @@ regions is added as an outlet face.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="test.html" class="btn btn-neutral float-left" title="Test" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="constValue.html" class="btn btn-neutral float-right" title="constValue" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="analyticGeometry.html" class="btn btn-neutral float-right" title="Abstract" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
