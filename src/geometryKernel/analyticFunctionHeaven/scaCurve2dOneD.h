@@ -28,6 +28,7 @@ License
 namespace dtOO {
 class dtCurve2d;
 
+//! Scalar function obtained from the ordinate of a two-dimensional curve.
 class scaCurve2dOneD : public scaOneD {
 public:
   dt__class(scaCurve2dOneD, analyticFunction);
@@ -39,9 +40,13 @@ public:
   scaCurve2dOneD *create(void) const;
   virtual ~scaCurve2dOneD();
   virtual dtReal YFloat(dtReal const &xx) const;
+  //! Return the underlying curve as a const pointer.
   dtCurve2d const *constPtrDtCurve2d(void) const;
+  //! Return the underlying curve for modification.
   dtCurve2d *ptrDtCurve2d(void);
+  //! Translate the underlying curve by a vector.
   void translate(dtVector2 const vector);
+  //! Return the control points of the underlying curve.
   std::vector<dtPoint2> getControlPoints(void) const;
   vectorHandling<renderInterface *> getRender(void) const;
 

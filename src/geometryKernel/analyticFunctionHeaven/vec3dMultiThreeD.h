@@ -33,6 +33,7 @@ License
 namespace dtOO {
 class dtTransformer;
 
+//! Joins three-dimensional volume mappings over their respective input boxes.
 template <typename funT> class vec3dMultiThreeD : public funT {
 public:
   dt__class(vec3dMultiThreeD, analyticFunction);
@@ -42,8 +43,14 @@ public:
   virtual vec3dMultiThreeD *clone(void) const;
   virtual vec3dMultiThreeD *create(void) const;
   virtual aFY Y(aFX const &xx) const;
+  /*!
+   * Register an owned function for its native three-dimensional input box.
+   *
+   * @param aFun Function whose ownership is transferred to this collection.
+   */
   virtual void add(funT *aFun);
   virtual void dump(void) const;
+  //! Append an R-tree search result to the callback context vector.
   static bool rTreeCallback(funT *aFun, void *ctx);
 
 private:

@@ -27,6 +27,8 @@ License
 namespace dtOO {
 class dtTransformer;
 
+//! Non-parametric aggregate of cloned analytic geometries for combined
+//! rendering.
 class analyticGeometryGroup : public analyticGeometry {
 public:
   dt__class(analyticGeometryGroup, analyticGeometry);
@@ -45,6 +47,7 @@ public:
   virtual dtReal getMax(dtInt const &dir) const;
   virtual dtPoint3 getPoint(dtReal const *const uvw) const;
   virtual ::std::vector<dtVector3> firstDer(dtReal const *const uvw) const;
+  //! Aggregate render objects from all grouped geometries.
   virtual vectorHandling<renderInterface *> getRender(void) const;
   virtual vectorHandling<renderInterface *> getExtRender(void) const;
 

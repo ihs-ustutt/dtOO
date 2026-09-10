@@ -23,6 +23,7 @@ License
 #include <interfaceHeaven/vectorHandling.h>
 
 namespace dtOO {
+//! Non-owning mutator for the components of a compound analytic function.
 template <typename funT> class analyticFunctionCompoundTrojanHorse {
 public:
   dt__classOnlyName(analyticFunctionCompoundTrojanHorse);
@@ -33,10 +34,14 @@ public:
     std::map<int, dtInt> const &pos_tag
   );
   ~analyticFunctionCompoundTrojanHorse();
+  //! Return the component at a positional index.
   funT *component(dtInt const &pos) const;
+  //! Clone and append a component using the next available tag.
   funT *addComponent(funT const *const toAdd);
+  //! Clone and append a component with an explicit, unique tag.
   funT *addComponent(funT const *const toAdd, dtInt const &tag);
   dtInt nComponents(void) const;
+  //! Return the component associated with a tag.
   funT *componentFromTag(dtInt const &tag) const;
   bool hasTag(dtInt const &tag) const;
   funT const *constRefPtr(void) const;

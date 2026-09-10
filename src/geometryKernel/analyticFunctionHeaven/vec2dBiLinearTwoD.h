@@ -28,17 +28,20 @@ License
 namespace dtOO {
 class dtTransformer;
 
+//! Bilinear mapping of a quadrilateral into two-dimensional space.
 class vec2dBiLinearTwoD : public vec2dTwoD {
 public:
   dt__class(vec2dBiLinearTwoD, analyticFunction);
   vec2dBiLinearTwoD();
   vec2dBiLinearTwoD(vec2dBiLinearTwoD const &orig);
+  //! Construct from the four corners of the parameter-space quadrilateral.
   vec2dBiLinearTwoD(
     dtPoint2 const &p0,
     dtPoint2 const &p1,
     dtPoint2 const &p2,
     dtPoint2 const &p3
   );
+  //! Construct an axis-aligned quadrilateral from opposite corners.
   vec2dBiLinearTwoD(dtPoint2 const &p0, dtPoint2 const &p2);
   vec2dBiLinearTwoD *clone(void) const;
   virtual vec2dBiLinearTwoD *cloneTransformed(dtTransformer const *const dtT
@@ -47,7 +50,9 @@ public:
   virtual ~vec2dBiLinearTwoD();
   virtual aFY Y(aFX const &xx) const;
   virtual bool closed(dtInt const &dir) const;
+  //! Invert a point in the mapped quadrilateral to its parameters.
   aFX invY(aFY const &yy) const;
+  //! Return whether a point lies inside the mapped quadrilateral.
   bool insideY(aFY const &yy) const;
 
 private:

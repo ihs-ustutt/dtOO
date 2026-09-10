@@ -29,11 +29,17 @@ namespace dtOO {
 class dtTransformer;
 class dtMuParser;
 
+//! Two-dimensional vector expression of two variables evaluated by muParser.
 class vec2dMuParserTwoD : public vec2dTwoD {
 public:
   dt__class(vec2dMuParserTwoD, analyticFunction);
   vec2dMuParserTwoD();
   vec2dMuParserTwoD(vec2dMuParserTwoD const &orig);
+  /*!
+   * @param expression muParser expression that evaluates to two components.
+   * @param argOne Name of the first expression variable.
+   * @param argTwo Name of the second expression variable.
+   */
   vec2dMuParserTwoD(
     std::string const expression,
     std::string const argOne,

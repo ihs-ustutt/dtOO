@@ -25,6 +25,8 @@ License
 namespace dtOO {
 class dtTransformer;
 
+//! Interface for scalar one-dimensional functions parameterized by degrees of
+//! freedom.
 class scaOneDPolyInterface : public scaOneD {
 public:
   dt__class(scaOneDPolyInterface, analyticFunction);
@@ -32,7 +34,9 @@ public:
   scaOneDPolyInterface(scaOneDPolyInterface const &orig);
   virtual scaOneDPolyInterface *clone(void) const = 0;
   virtual ~scaOneDPolyInterface();
+  //! Return the number of adjustable degrees of freedom.
   virtual dtInt nDOF(void) const = 0;
+  //! Set all adjustable degrees of freedom.
   virtual void setDOF(std::vector<dtReal> const value) = 0;
 };
 dt__H_addCloneForpVH(scaOneDPolyInterface);

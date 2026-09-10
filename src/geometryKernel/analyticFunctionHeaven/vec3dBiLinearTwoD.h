@@ -28,11 +28,13 @@ License
 namespace dtOO {
 class dtTransformer;
 
+//! Bilinear mapping of a quadrilateral into three-dimensional space.
 class vec3dBiLinearTwoD : public vec3dTwoD {
 public:
   dt__class(vec3dBiLinearTwoD, analyticFunction);
   vec3dBiLinearTwoD();
   vec3dBiLinearTwoD(vec3dBiLinearTwoD const &orig);
+  //! Construct from the four corners of the parameter-space quadrilateral.
   vec3dBiLinearTwoD(
     dtPoint3 const &p0,
     dtPoint3 const &p1,

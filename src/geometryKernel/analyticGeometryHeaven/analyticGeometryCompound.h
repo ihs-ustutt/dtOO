@@ -25,6 +25,13 @@ License
 #include <interfaceHeaven/vectorHandling.h>
 
 namespace dtOO {
+/*!
+ * \brief Template compound that owns several geometry components of type \p
+ * funT.
+ *
+ * Rendering is aggregated from the components, which receive this compound's
+ * render resolution before being rendered.
+ */
 template <typename funT> class analyticGeometryCompound : public funT {
 public:
   dt__class(analyticGeometryCompound, analyticGeometry);
@@ -33,11 +40,16 @@ public:
   virtual ~analyticGeometryCompound();
   virtual analyticGeometryCompound *clone(void) const;
   virtual analyticGeometryCompound *create(void) const;
+  //! Return the component at \p pos.
   funT const &component(dtInt const &pos) const;
+  //! Clone, append, and return a new component.
   funT &addComponent(funT const &toAdd);
+  //! Return the number of owned components.
   dtInt nComponents(void) const;
+  //! Aggregate render objects from all components.
   virtual vectorHandling<renderInterface *> getRender(void) const;
   virtual bool isCompound(void) const;
+  //! Return non-owning base-class pointers to the components.
   vectorHandling<analyticGeometry const *> compoundInternal(void) const;
 
 private:

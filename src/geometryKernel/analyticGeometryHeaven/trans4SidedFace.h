@@ -28,6 +28,7 @@ namespace dtOO {
 class map1dTo3d;
 class dtTransformer;
 
+//! Transfinite surface interpolated from four ordered boundary curves.
 class trans4SidedFace : public map2dTo3d {
 public:
   dt__class(trans4SidedFace, analyticGeometry);

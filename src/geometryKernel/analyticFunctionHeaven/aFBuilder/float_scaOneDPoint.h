@@ -27,10 +27,16 @@ License
 namespace dtOO {
 class scaOneD;
 
+//! Samples a scalar function uniformly over its normalized unit interval.
 class float_scaOneDPoint {
 public:
+  /*!
+   * @param s1d Scalar function to sample.
+   * @param nPoints Number of uniformly spaced samples from zero through one.
+   */
   float_scaOneDPoint(scaOneD const *const s1d, dtInt const &nPoints);
   virtual ~float_scaOneDPoint();
+  //! Return the sampled scalar values.
   std::vector<dtReal> result(void);
 
 private:

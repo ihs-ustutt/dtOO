@@ -30,11 +30,17 @@ class vec3dOneD;
 class map3dTo3d;
 class renderInterface;
 
+//! Curve obtained by evaluating a one-dimensional UVW function in a volume map.
 class vec3dOneDInMap3dTo3d : public map1dTo3d {
 public:
   dt__class(vec3dOneDInMap3dTo3d, analyticGeometry);
   vec3dOneDInMap3dTo3d();
   vec3dOneDInMap3dTo3d(const vec3dOneDInMap3dTo3d &orig);
+  /*!
+   * Construct a composition of \p v1d and \p m3d.
+   *
+   * @param percentF Interpret generated UVW coordinates as normalized.
+   */
   vec3dOneDInMap3dTo3d(
     vec3dOneD const *const v1d,
     map3dTo3d const *const m3d,
@@ -49,7 +55,9 @@ public:
   virtual bool isClosed(dtInt const &dir) const;
   virtual dtReal getMin(dtInt const &dir) const;
   virtual dtReal getMax(dtInt const &dir) const;
+  //! Return the composed UVW function.
   vec3dOneD const *refToVec3dOneD(void) const;
+  //! Return the composed volume map.
   map3dTo3d const *refToMap3dTo3d(void) const;
   vectorHandling<renderInterface *> getExtRender(void) const;
 

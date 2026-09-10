@@ -27,6 +27,7 @@ License
 namespace dtOO {
 class map2dTo3d;
 
+//! Samples a surface on an \p nU by \p nV parameter grid.
 class dtPoint3_map2dTo3dPoint {
 public:
   dt__classOnlyName(dtPoint3_map2dTo3dPoint);
@@ -34,6 +35,7 @@ public:
     map2dTo3d const *const m2d, dtInt const &nU, dtInt const &nV
   );
   virtual ~dtPoint3_map2dTo3dPoint();
+  //! Return the sampled point grid.
   twoDArrayHandling<dtPoint3> result(void);
 
 private:

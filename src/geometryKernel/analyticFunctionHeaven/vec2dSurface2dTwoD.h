@@ -29,6 +29,7 @@ namespace dtOO {
 class dtSurface2d;
 class dtTransformer;
 
+//! Two-parameter mapping backed by a planar surface geometry object.
 class vec2dSurface2dTwoD : public vec2dTwoD {
 public:
   dt__class(vec2dSurface2dTwoD, analyticFunction);
@@ -41,6 +42,7 @@ public:
   virtual vec2dSurface2dTwoD *create(void) const;
   virtual ~vec2dSurface2dTwoD();
   virtual aFY Y(aFX const &xx) const;
+  //! Return the underlying surface geometry.
   dtSurface2d const *ptrDtSurface2d(void) const;
   virtual bool closed(dtInt const &dir) const;
 

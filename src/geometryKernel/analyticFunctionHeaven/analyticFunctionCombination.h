@@ -29,6 +29,7 @@ License
 namespace dtOO {
 class dtTransformer;
 
+//! Combines a forward function with a separate function used for inversion.
 template <typename funT, typename invFunT>
 class analyticFunctionCombination : public funT {
 public:
@@ -43,7 +44,9 @@ public:
   cloneTransformed(dtTransformer const *const dtT) const;
   analyticFunctionCombination *create(void) const;
   virtual ~analyticFunctionCombination();
+  //! Evaluate the owned forward function.
   virtual aFY Y(aFX const &xx) const;
+  //! Invert through the owned inverse function.
   virtual aFX invY(aFY const &yy) const;
   virtual bool closed(dtInt const &dir) const;
 

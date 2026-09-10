@@ -31,6 +31,7 @@ namespace dtOO {
 class vec3dTwoD;
 class dtTransformer;
 
+//! Trilinear mapping of an axis-aligned box defined by opposite corners.
 class vec3dBoxThreeD : public vec3dThreeD {
 public:
   dt__class(vec3dBoxThreeD, analyticFunction);
@@ -49,6 +50,7 @@ private:
   dtPoint3 _p0;
   dtPoint3 _p1;
 };
+//! Compound collection of box mappings.
 typedef analyticFunctionCompound<vec3dBoxThreeD> vec3dBoxThreeDCompound;
 } // namespace dtOO
 #endif /* VEC3DBOXTHREED_H */

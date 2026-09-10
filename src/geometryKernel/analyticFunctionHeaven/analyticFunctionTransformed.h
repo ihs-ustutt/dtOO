@@ -25,6 +25,8 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+//! Decorates a function by applying a transformer to two- or three-dimensional
+//! outputs.
 template <typename funT> class analyticFunctionTransformed : public funT {
 public:
   dt__class(analyticFunctionTransformed, analyticFunction);
@@ -37,8 +39,11 @@ public:
   virtual analyticFunctionTransformed *
   cloneTransformed(dtTransformer const *const dtT) const;
   virtual analyticFunctionTransformed *create(void) const;
+  //! Evaluate the wrapped function and transform its output.
   virtual aFY Y(aFX const &xx) const;
+  //! Retract an output through the transformer before inversion.
   virtual aFX invY(aFY const &yy) const;
+  //! Clone and replace the transformer used by this decorator.
   void setTransformer(dtTransformer const *const dtT);
   virtual bool isTransformed(void) const;
 

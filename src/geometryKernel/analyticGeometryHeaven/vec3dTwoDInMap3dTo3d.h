@@ -32,11 +32,18 @@ class map3dTo3d;
 class renderInterface;
 class dtTransformer;
 
+//! Surface obtained by evaluating a two-dimensional UVW function in a volume
+//! map.
 class vec3dTwoDInMap3dTo3d : public map2dTo3d {
 public:
   dt__class(vec3dTwoDInMap3dTo3d, analyticGeometry);
   vec3dTwoDInMap3dTo3d();
   vec3dTwoDInMap3dTo3d(const vec3dTwoDInMap3dTo3d &orig);
+  /*!
+   * Construct a composition of \p v2d and \p m3d.
+   *
+   * @param percentF Interpret generated UVW coordinates as normalized.
+   */
   vec3dTwoDInMap3dTo3d(
     vec3dTwoD const *const v2d,
     map3dTo3d const *const m3d,
@@ -51,7 +58,9 @@ public:
   virtual bool isClosed(dtInt const &dir) const;
   virtual dtReal getMin(dtInt const &dir) const;
   virtual dtReal getMax(dtInt const &dir) const;
+  //! Return the composed UVW map.
   vec3dTwoD const *refToVec3dTwoD(void) const;
+  //! Return the composed volume map.
   map3dTo3d const *refToMap3dTo3d(void) const;
   virtual vectorHandling<renderInterface *> getExtRender(void) const;
   virtual std::string dumpToString(void) const;

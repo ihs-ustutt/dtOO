@@ -26,6 +26,7 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+//! Volume wrapper that retains multiple bounding surfaces for a region.
 class multipleBoundedVolume : public analyticGeometry {
 public:
   dt__class(multipleBoundedVolume, analyticGeometry);
@@ -46,7 +47,9 @@ public:
   virtual dtPoint3 getPoint(dtReal const *const uvw) const;
   virtual ::std::vector<dtVector3> firstDer(dtReal const *const uvw) const;
   vectorHandling<renderInterface *> getRender(void) const;
+  //! Return the owned bounding surfaces.
   ptrVectorHandling<analyticGeometry> const &boundsVectorConstRef(void) const;
+  //! Return the supporting volume region.
   analyticGeometry const *const regionConstPtr(void) const;
 
 private:

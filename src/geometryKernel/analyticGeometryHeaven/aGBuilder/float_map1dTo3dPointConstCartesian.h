@@ -26,6 +26,7 @@ License
 namespace dtOO {
 class map1dTo3d;
 
+//! Finds a curve parameter whose selected Cartesian coordinate equals a value.
 class float_map1dTo3dPointConstCartesian {
 public:
   dt__classOnlyName(float_map1dTo3dPointConstCartesian);
@@ -39,6 +40,7 @@ public:
     map1dTo3d const *const m1d, dtInt const &dir, dtReal const &value
   );
   virtual ~float_map1dTo3dPointConstCartesian();
+  //! Return the curve parameter satisfying the Cartesian-coordinate constraint.
   dtReal result(void);
 
 private:

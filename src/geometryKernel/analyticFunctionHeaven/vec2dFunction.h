@@ -25,6 +25,7 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+//! Base class for analytic functions that return two-dimensional points.
 class vec2dFunction : public analyticFunction {
 public:
   dt__class(vec2dFunction, analyticFunction);
@@ -33,6 +34,7 @@ public:
   virtual vec2dFunction *clone(void) const = 0;
   virtual ~vec2dFunction();
   virtual dtInt yDim(void) const;
+  //! Evaluate and convert the result to a two-dimensional point.
   dtPoint2 YdtPoint2(aFX const &xx) const;
   virtual bool closed(dtInt const &dir) const = 0;
 };

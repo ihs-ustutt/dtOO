@@ -31,11 +31,22 @@ namespace dtOO {
 class vec3dTwoD;
 class dtTransformer;
 
+//! Transfinite volume mapping constructed from six boundary-surface mappings.
 class vec3dTransVolThreeD : public vec3dThreeD {
 public:
   dt__class(vec3dTransVolThreeD, analyticFunction);
   vec3dTransVolThreeD();
   vec3dTransVolThreeD(const vec3dTransVolThreeD &orig);
+  /*!
+   * Construct the volume from its normalized-coordinate boundary surfaces.
+   *
+   * @param v3d2d0 Surface at z = 1.
+   * @param v3d2d1 Surface at x = 0.
+   * @param v3d2d2 Surface at z = 0.
+   * @param v3d2d3 Surface at x = 1.
+   * @param v3d2d4 Surface at y = 0.
+   * @param v3d2d5 Surface at y = 1.
+   */
   vec3dTransVolThreeD(
     vec3dTwoD const *const v3d2d0,
     vec3dTwoD const *const v3d2d1,
@@ -51,7 +62,9 @@ public:
   virtual ~vec3dTransVolThreeD();
   virtual aFY Y(aFX const &xx) const;
   virtual bool closed(dtInt const &dir) const;
+  //! Return the owned boundary-surface mappings.
   ptrVectorHandling<vec3dTwoD> const &refVec3dTwoD(void) const;
+  //! Return boundary surface ii as a const pointer.
   vec3dTwoD const *const constPtrVec3dTwoD(dtInt const ii) const;
 
 private:
@@ -65,6 +78,7 @@ private:
   dtVector3 _v3dTwoD_3_1_0;
   dtVector3 _v3dTwoD_3_1_1;
 };
+//! Compound collection of transfinite volume mappings.
 typedef analyticFunctionCompound<vec3dTransVolThreeD>
   vec3dTransVolThreeDCompound;
 } // namespace dtOO

@@ -28,6 +28,7 @@ License
 namespace dtOO {
 class dtTransformer;
 
+//! Scalar affine interpolation between two input/output point pairs.
 class scaLinearOneD : public scaOneD {
 public:
   dt__class(scaLinearOneD, analyticFunction);

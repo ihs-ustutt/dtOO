@@ -28,6 +28,8 @@ namespace dtOO {
 class map1dTo3d;
 class map2dTo3d;
 
+//! Determines whether a curve lies inside a surface and records its UV
+//! endpoints.
 class bool_map1dTo3dInMap2dTo3d {
 public:
   dt__classOnlyName(bool_map1dTo3dInMap2dTo3d);
@@ -35,7 +37,9 @@ public:
     map1dTo3d const *const m1d, map2dTo3d const *const m2d
   );
   virtual ~bool_map1dTo3dInMap2dTo3d();
+  //! Return whether the curve is contained by the surface.
   bool result(void);
+  //! Return UV coordinates of the curve endpoints on the surface.
   std::pair<dtPoint2, dtPoint2> points(void) const;
 
 private:

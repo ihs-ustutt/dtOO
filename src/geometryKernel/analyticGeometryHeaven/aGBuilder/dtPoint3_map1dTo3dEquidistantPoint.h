@@ -27,6 +27,7 @@ License
 namespace dtOO {
 class map1dTo3d;
 
+//! Samples a curve into points equally spaced by arc length.
 class dtPoint3_map1dTo3dEquidistantPoint {
 public:
   dt__classOnlyName(dtPoint3_map1dTo3dEquidistantPoint);
@@ -34,6 +35,7 @@ public:
     map1dTo3d const *const m1d, dtInt const &nPoints
   );
   virtual ~dtPoint3_map1dTo3dEquidistantPoint();
+  //! Return the arc-length-equidistant samples.
   std::vector<dtPoint3> result(void);
 
 private:

@@ -28,13 +28,18 @@ template <typename T> class vectorHandling;
 class analyticFunction;
 class vec3dTransVolThreeD;
 
+//! Builds a transfinite volume by skinning the boundaries of B-spline surfaces.
 class vec3dTransVolThreeD_skinBSplineSurfaces {
 public:
   dt__classOnlyName(vec3dTransVolThreeD_skinBSplineSurfaces);
+  /*!
+   * @param aF Surface functions defining the sequence of B-spline sections.
+   */
   vec3dTransVolThreeD_skinBSplineSurfaces(
     vectorHandling<analyticFunction const *> const *const aF
   );
   virtual ~vec3dTransVolThreeD_skinBSplineSurfaces();
+  //! Return a cloned transfinite volume built from the supplied surfaces.
   vec3dTransVolThreeD *result(void) const;
 
 private:

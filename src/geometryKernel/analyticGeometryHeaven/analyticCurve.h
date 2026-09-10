@@ -30,6 +30,7 @@ License
 namespace dtOO {
 class dtCurve;
 
+//! Curve wrapper around a CAD dtCurve with analytic-map operations.
 class analyticCurve : public map1dTo3d {
 public:
   dt__class(analyticCurve, analyticGeometry);
@@ -52,11 +53,14 @@ public:
   // optional overload
   //
   virtual dtVector3 firstDerU(dtReal const uu) const;
+  //! Create a CAD-backed curve segment between native parameters.
   virtual map1dTo3d *segment(dtReal const &u0, dtReal const &u1) const;
   virtual dtReal l_u(dtReal const &uu) const;
   virtual dtReal u_l(dtReal const &ll) const;
   virtual vectorHandling<renderInterface *> getExtRender(void) const;
+  //! Return the mutable underlying CAD curve.
   dtCurve *ptrDtCurve(void) const;
+  //! Return the underlying CAD curve.
   dtCurve const *const ptrConstDtCurve(void) const;
   std::string dumpToString(void) const;
 

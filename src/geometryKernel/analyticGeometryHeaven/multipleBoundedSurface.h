@@ -29,6 +29,7 @@ namespace dtOO {
 class map1dTo3d;
 class map2dTo3d;
 
+//! Surface wrapper that retains multiple boundary curves and their UV polygons.
 class multipleBoundedSurface : public analyticGeometry {
 public:
   dt__class(multipleBoundedSurface, analyticGeometry);
@@ -48,9 +49,12 @@ public:
   virtual dtPoint3 getPoint(dtReal const *const uvw) const;
   virtual ::std::vector<dtVector3> firstDer(dtReal const *const uvw) const;
   vectorHandling<renderInterface *> getRender(void) const;
+  //! Return clones of the boundary curves.
   ptrVectorHandling<analyticGeometry> const boundsPointerVectorConst(void
   ) const;
+  //! Return the supporting surface.
   analyticGeometry const *const surfaceConstPtr(void) const;
+  //! Return whether native UV coordinates lie in the boundary polygon.
   bool insideInternalPolygon(dtPoint2 const &ppUV) const;
 
 private:

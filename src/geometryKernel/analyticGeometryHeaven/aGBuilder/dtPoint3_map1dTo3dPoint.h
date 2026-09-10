@@ -27,11 +27,13 @@ License
 namespace dtOO {
 class map1dTo3d;
 
+//! Samples a curve at uniformly spaced parameter values.
 class dtPoint3_map1dTo3dPoint {
 public:
   dt__classOnlyName(dtPoint3_map1dTo3dPoint);
   dtPoint3_map1dTo3dPoint(map1dTo3d const *const m1d, dtInt const &nPoints);
   virtual ~dtPoint3_map1dTo3dPoint();
+  //! Return the uniformly parameter-spaced samples.
   std::vector<dtPoint3> result(void);
 
 private:

@@ -21,6 +21,7 @@ License
 #include "rotatingMap2dTo3d.h"
 
 namespace dtOO {
+//! Revolution volume restricted to a supplied normalized angular interval.
 class partRotatingMap2dTo3d : public rotatingMap2dTo3d {
 public:
   dt__class(partRotatingMap2dTo3d, analyticGeometry);

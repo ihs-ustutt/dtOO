@@ -28,6 +28,7 @@ namespace dtOO {
 class trans6SidedCube;
 class analyticGeometry;
 
+//! Splits a transfinite six-sided cube at a native parameter-space point.
 class trans6SidedCube_splitTrans6SidedCube {
 public:
   dt__classOnlyName(trans6SidedCube_splitTrans6SidedCube);
@@ -35,7 +36,9 @@ public:
     trans6SidedCube const *const t6, dtPoint3 const &splitPoint
   );
   virtual ~trans6SidedCube_splitTrans6SidedCube();
+  //! Return the split cube volumes; ownership is transferred.
   vectorHandling<trans6SidedCube *> result(void);
+  //! Return all geometries produced while splitting; ownership is transferred.
   vectorHandling<analyticGeometry *> resultGeometries(void);
 
 private:

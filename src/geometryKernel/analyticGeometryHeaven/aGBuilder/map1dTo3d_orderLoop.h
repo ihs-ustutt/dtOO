@@ -25,11 +25,13 @@ License
 namespace dtOO {
 class map1dTo3d;
 
+//! Reorders and reorients curves into a connected closed loop.
 class map1dTo3d_orderLoop {
 public:
   dt__classOnlyName(map1dTo3d_orderLoop);
   map1dTo3d_orderLoop(dt__pVH(map1dTo3d) const &m1ds);
   virtual ~map1dTo3d_orderLoop();
+  //! Return owned curve copies ordered and oriented as a closed loop.
   dt__pVH(map1dTo3d) result(void);
 
 private:

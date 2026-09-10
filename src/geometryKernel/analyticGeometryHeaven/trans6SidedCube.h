@@ -29,6 +29,7 @@ class map2dTo3d;
 class transIntCube;
 class dtTransformer;
 
+//! Transfinite volume interpolated from six bounding surfaces.
 class trans6SidedCube : public map3dTo3d {
 public:
   dt__class(trans6SidedCube, analyticGeometry);
@@ -55,12 +56,19 @@ public:
   virtual map2dTo3d *segmentConstU(dtReal const &uu) const;
   virtual map2dTo3d *segmentConstV(dtReal const &vv) const;
   virtual map2dTo3d *segmentConstW(dtReal const &ww) const;
+  //! Return the six bounding surfaces in transfinite-cube order.
   vectorHandling<map2dTo3d const *> const &constRefMap2dTo3d(void) const;
+  //! Reverse the native u parameter direction.
   void reverseU(void);
+  //! Reverse the native v parameter direction.
   void reverseV(void);
+  //! Reverse the native w parameter direction.
   void reverseW(void);
+  //! Exchange the native u and v parameter directions.
   void exchangeUV(void);
+  //! Exchange the native u and w parameter directions.
   void exchangeUW(void);
+  //! Exchange the native v and w parameter directions.
   void exchangeVW(void);
 
 private:

@@ -29,6 +29,7 @@ namespace dtOO {
 class vec2dOneD;
 class map2dTo3d;
 
+//! Curve obtained by evaluating a one-dimensional UV function on a surface.
 class vec2dOneDInMap2dTo3d : public map1dTo3d {
 public:
   dt__class(vec2dOneDInMap2dTo3d, analyticGeometry);
@@ -37,6 +38,11 @@ public:
   vec2dOneDInMap2dTo3d(
     vec2dOneD const *const v2d1d, map2dTo3d const *const m2d
   );
+  /*!
+   * Construct a composition of \p v2d1d and \p m2d.
+   *
+   * @param percentF Interpret the generated UV coordinates as normalized.
+   */
   vec2dOneDInMap2dTo3d(
     vec2dOneD const *const v2d1d,
     map2dTo3d const *const m2d,
@@ -57,8 +63,11 @@ public:
   //
   //
   //
+  //! Return the composed UV function.
   vec2dOneD const *ptrToVec2dOneD(void) const;
+  //! Return the composed surface map.
   map2dTo3d const *ptrToMap2dTo3d(void) const;
+  //! Return whether generated UV coordinates are normalized.
   bool isPercent(void) const;
 
 private:

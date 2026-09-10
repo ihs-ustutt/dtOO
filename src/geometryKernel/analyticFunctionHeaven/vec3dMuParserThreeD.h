@@ -29,11 +29,19 @@ namespace dtOO {
 class dtTransformer;
 class dtMuParser;
 
+//! Three-dimensional vector expression of three variables evaluated by
+//! muParser.
 class vec3dMuParserThreeD : public vec3dThreeD {
 public:
   dt__class(vec3dMuParserThreeD, analyticFunction);
   vec3dMuParserThreeD();
   vec3dMuParserThreeD(vec3dMuParserThreeD const &orig);
+  /*!
+   * @param expression muParser expression that evaluates to three components.
+   * @param argOne Name of the first expression variable.
+   * @param argTwo Name of the second expression variable.
+   * @param argThree Name of the third expression variable.
+   */
   vec3dMuParserThreeD(
     std::string const expression,
     std::string const argOne,

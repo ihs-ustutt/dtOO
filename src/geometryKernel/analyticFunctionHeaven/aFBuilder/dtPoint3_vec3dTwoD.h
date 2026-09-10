@@ -27,13 +27,20 @@ License
 namespace dtOO {
 class vec3dTwoD;
 
+//! Samples a surface mapping on a regular normalized parameter grid.
 class dtPoint3_vec3dTwoD {
 public:
   dt__classOnlyName(dtPoint3_vec3dTwoD);
+  /*!
+   * @param v3d Surface mapping to sample.
+   * @param nU Number of samples in the first parameter direction.
+   * @param nV Number of samples in the second parameter direction.
+   */
   dtPoint3_vec3dTwoD(
     vec3dTwoD const *const v3d, dtInt const &nU, dtInt const &nV
   );
   virtual ~dtPoint3_vec3dTwoD();
+  //! Return the sampled three-dimensional point grid.
   twoDArrayHandling<dtPoint3> result(void);
 
 private:

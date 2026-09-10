@@ -32,6 +32,7 @@ class dtSurface;
 class renderInterface;
 class dtTransformer;
 
+//! Three-dimensional curve obtained by embedding a 2D curve in a surface.
 class vec3dCurve2dInSurfaceOneD : public vec3dOneD {
 public:
   dt__class(vec3dCurve2dInSurfaceOneD, analyticFunction);

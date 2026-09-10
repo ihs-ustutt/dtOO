@@ -53,6 +53,7 @@ public:
   scaMuParserOneD *create(void) const;
   virtual ~scaMuParserOneD();
   virtual dtReal YFloat(dtReal const &xx) const;
+  //! Set the native input interval accepted by the parsed expression.
   void setArgumentRange(dtReal xMin, dtReal xMax);
 
 private:
