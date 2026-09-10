@@ -595,7 +595,7 @@
                 <span class="s1">'{"name" : "reparamOnFace_precision", "value" : "1.e-05"},'</span>
                 <span class="s1">'{"name" : "reparamInVolume_precision","value" : "1.e-05"},'</span>
                 <span class="s1">'{"name" : "invY_precision", "value" : "1.e-04"},'</span>
-                <span class="s1">'{"name" : "xyz_resolution", "value" : "1.e-05"},'</span>
+                <span class="s1">'{"name" : "xyz_resolution", "value" : "1.e-04"},'</span>
                 <span class="s1">'{"name" : "XYZ_resolution", "value" : "1.e-04"},'</span>
                 <span class="s1">'{"name" : "uvw_resolution", "value" : "1.e-03"},'</span>
                 <span class="s1">'{"name" : "point_render_diameter", "value" : "0.005"},'</span>
@@ -610,7 +610,7 @@
                 <span class="s1">'{"name" : "map1dTo3d_deltaPer", "value" : "0.01"},'</span>
                 <span class="s1">'{"name" : "map2dTo3d_deltaPer", "value" : "0.01"},'</span>
                 <span class="s1">'{"name" : "map3dTo3d_deltaPer", "value" : "0.01"},'</span>
-                <span class="c1">#'{"name" : "logLevel", "value" : "99"},'</span>
+                <span class="c1">#'{"name" : "logLevel", "value" : "2"},'</span>
                 <span class="s1">'{"name" : "logLevel", "value" : "99"},'</span>
                 <span class="s1">'{"name" : "isEqualExtendCheck", "value" : "true"}'</span>
               <span class="s1">']'</span>
@@ -1945,11 +1945,6 @@
                 <span class="p">[</span><span class="mf">0.90</span><span class="p">,</span> <span class="mf">0.98</span><span class="p">],</span>
                 <span class="p">[</span><span class="mf">0.98</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">],</span>
               <span class="p">],</span>
-              <span class="c1">#tEMeshBlockThickness = meshBlock_thickness,</span>
-              <span class="c1">#meanplaneFromBlocks = True,</span>
-              <span class="c1">#meanplaneExtOut = 0.02,</span>
-              <span class="c1">#meanplaneExtIn = 0.03,</span>
-              <span class="c1">#nMeanplaneBlocks = nMeanplaneBlocks</span>
             <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span> 
             
 
@@ -1974,7 +1969,7 @@
                   <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">label</span><span class="o">+</span><span class="s2">"_meshBlock_3"</span><span class="p">]</span>
                 <span class="p">)</span><span class="o">.</span><span class="n">constPtrVec3dTwoD</span><span class="p">(</span> <span class="mi">3</span> <span class="p">)</span>
               <span class="p">),</span>
-              <span class="n">thickness</span> <span class="o">=</span> <span class="mf">0.03</span><span class="p">,</span>
+              <span class="n">thickness</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">,</span>
               <span class="n">splitDim</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
               <span class="n">segPercent</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
             <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span> 
@@ -2253,8 +2248,7 @@
             <span class="n">nBlades</span> <span class="o">=</span> <span class="n">nBlades</span><span class="p">,</span>
             <span class="n">orientation</span> <span class="o">=</span> <span class="n">orientation</span><span class="p">,</span>
             <span class="n">tERounded</span> <span class="o">=</span> <span class="n">tERounded</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">enableDebug</span><span class="p">()</span>
-        
+        <span class="p">)</span><span class="o">.</span><span class="n">enableDebug</span><span class="p">()</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">gridChannel</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">)</span>
         
         <span class="c1">#</span>
@@ -2265,39 +2259,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span>
             <span class="n">gc</span> <span class="o">&lt;&lt;</span> <span class="s2">"xyz_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">"_gridChannel"</span>
         <span class="p">)</span>
-         
+                  
         <span class="c1">#</span>
         <span class="c1"># Apply the mesh settings to the grid channel.</span>
         <span class="c1">#</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.builder</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
           <span class="n">map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks</span>
         <span class="p">)</span>
-        <span class="c1">#self.container = map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(</span>
-        <span class="c1">#    label = label+"_mesh",</span>
-        <span class="c1">#    channel = self.aG["xyz_"+label+"_gridChannel"],</span>
-        <span class="c1">#    channelFaces = gcFaces,</span>
-        <span class="c1">#    blocks = blocks,</span>
-        <span class="c1">#    nMeanplaneBlocks = nMeanplaneBlocks,</span>
-        <span class="c1">#    blade = self.aG["xyz_"+label+"_blade"],</span>
-        <span class="c1">#    nBoundaryLayers = 15,</span>
-        <span class="c1">#    nElementsSpanwise = 50,</span>
-        <span class="c1">#    nElementsNormal = 6,</span>
-        <span class="c1">#    firstElementSizeHubToShroud = 0.001,</span>
-        <span class="c1">#    firstElementSizeNormalBlade = 0.001,</span>
-        <span class="c1">#    bladeHubElementSize = scaOneD_scaCurve2dOneDPointConstruct(</span>
-        <span class="c1">#        [</span>
-        <span class="c1">#           dtOO.dtPoint2(0.00, 0.015),</span>
-        <span class="c1">#           dtOO.dtPoint2(0.45, 0.005),</span>
-        <span class="c1">#           dtOO.dtPoint2(0.50, 0.004),</span>
-        <span class="c1">#           dtOO.dtPoint2(0.55, 0.005),</span>
-        <span class="c1">#           dtOO.dtPoint2(1.00, 0.015),</span>
-        <span class="c1">#        ], 1</span>
-        <span class="c1">#    )(),</span>
-        <span class="c1">#    bladeHubElementScale = 0.3,</span>
-        <span class="c1">#    charLengthMax=0.015,</span>
-        <span class="c1">#    charLengthMin=0.001,</span>
-        <span class="c1">#    meshTEBlocks = True,</span>
-        <span class="c1">#).enableDebug().buildExtract( self.container )</span>
+        <span class="c1"># Mesh topology settings for round trailing edge</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks</span><span class="p">(</span>
             <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="o">+</span><span class="s2">"_mesh"</span><span class="p">,</span>
             <span class="n">channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="p">[</span><span class="s2">"xyz_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">"_gridChannel"</span><span class="p">],</span>
@@ -2331,6 +2300,34 @@
             <span class="n">meshTEBlocks</span> <span class="o">=</span> <span class="ow">not</span><span class="p">(</span><span class="n">tERounded</span><span class="p">),</span>
         <span class="p">)</span><span class="o">.</span><span class="n">enableDebug</span><span class="p">()</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="p">)</span></div>
 
+         
+        <span class="c1"># Mesh topology setting for sharp trailing edge</span>
+        <span class="c1">#self.container = map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(</span>
+        <span class="c1">#    label = label+"_mesh",</span>
+        <span class="c1">#    channel = self.aG["xyz_"+label+"_gridChannel"],</span>
+        <span class="c1">#    channelFaces = gcFaces,</span>
+        <span class="c1">#    blocks = blocks,</span>
+        <span class="c1">#    nMeanplaneBlocks = nMeanplaneBlocks,</span>
+        <span class="c1">#    blade = self.aG["xyz_"+label+"_blade"],</span>
+        <span class="c1">#    nBoundaryLayers = 15,</span>
+        <span class="c1">#    nElementsSpanwise = 30,</span>
+        <span class="c1">#    nElementsNormal = 7,</span>
+        <span class="c1">#    firstElementSizeHubToShroud = 0.001,</span>
+        <span class="c1">#    firstElementSizeNormalBlade = 0.001,</span>
+        <span class="c1">#    bladeHubElementSize = scaOneD_scaCurve2dOneDPointConstruct(</span>
+        <span class="c1">#        [</span>
+        <span class="c1">#           dtOO.dtPoint2(0.00, 0.04),</span>
+        <span class="c1">#           dtOO.dtPoint2(0.45, 0.007),</span>
+        <span class="c1">#           dtOO.dtPoint2(0.50, 0.007),</span>
+        <span class="c1">#           dtOO.dtPoint2(0.55, 0.007),</span>
+        <span class="c1">#           dtOO.dtPoint2(1.00, 0.04),</span>
+        <span class="c1">#        ], 1</span>
+        <span class="c1">#    )(),</span>
+        <span class="c1">#    bladeHubElementScale = 0.3,</span>
+        <span class="c1">#    charLengthMax=0.2,</span>
+        <span class="c1">#    charLengthMin=0.1,</span>
+        <span class="c1">#    meshTEBlocks = True,</span>
+        <span class="c1">#).enableDebug().buildExtract( self.container )</span>
          
     <span class="c1">#</span>
     <span class="c1"># returns a list with dtPoint2 types and spline orders</span>
