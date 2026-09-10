@@ -572,7 +572,7 @@ if __name__ == "__main__":
     #bV["gv_mesh"].makeGrid()
     #bV["meshLayers"].makeGrid()
 
-    stateLbl = "fittedBlade"
+    stateLbl = "testCase"
     indiv = "0"
     
     createOFCase(container, stateLbl, indiv, 0.36)
