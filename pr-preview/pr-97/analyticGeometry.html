@@ -1,0 +1,1042 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geometry &mdash; dtOO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="boundedVolume" href="boundedVolume.html" />
+    <link rel="prev" title="analyticFunction" href="analyticFunction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/dtoo-logo-inv-nbg.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demonstration.html">Demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test.html">Test</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="api.html#c-core-classes">C++ core classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="constValue.html">constValue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyticFunction.html">analyticFunction</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Geometry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4dtOO16analyticGeometryE"><code class="docutils literal notranslate"><span class="pre">dtOO::analyticGeometry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4dtOO9map1dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::map1dTo3d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::map2dTo3d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4dtOO9map3dTo3dE"><code class="docutils literal notranslate"><span class="pre">dtOO::map3dTo3d</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="boundedVolume.html">boundedVolume</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dtCase.html">dtCase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dtPlugin.html">dtPlugin</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#python-pydtoo-classes">Python pyDtOO classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#python-dtoopythonapp-classes">Python dtOOPythonApp classes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/ihs-ustutt/dtOO">Back to GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">dtOO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">API documentation</a></li>
+      <li class="breadcrumb-item active">Geometry</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/analyticGeometry.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="geometry">
+<h1>Geometry<a class="headerlink" href="#geometry" title="Link to this heading"></a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticGeometryE">
+<span id="_CPPv3N4dtOO16analyticGeometryE"></span><span id="_CPPv2N4dtOO16analyticGeometryE"></span><span id="dtOO::analyticGeometry"></span><span class="target" id="classdtOO_1_1analyticGeometry"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">analyticGeometry</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">dtOO</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">labelHandling</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">dtOO</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">renderInterface</span></span><a class="headerlink" href="#_CPPv4N4dtOO16analyticGeometryE" title="Link to this definition"></a><br /></dt>
+<dd><p>Abstract base class for parameterized analytic geometries. </p>
+<p>Derived classes represent curves, surfaces, or volumes embedded in three-dimensional space. They define the parameter-space dimension and bounds and evaluate points and first derivatives in native coordinates.</p>
+<p>Percent-coordinate helpers map each parameter from [0, 1] to its native range. Bounding boxes and their length, area, or volume measures are calculated lazily from a regular parameter-space sample grid. </p>
+<p>Subclassed by dtOO::analyticGeometryGroup, <a class="reference internal" href="#classdtOO_1_1map1dTo3d"><span class="std std-ref">dtOO::map1dTo3d</span></a>, <a class="reference internal" href="#classdtOO_1_1map2dTo3d"><span class="std std-ref">dtOO::map2dTo3d</span></a>, <a class="reference internal" href="#classdtOO_1_1map3dTo3d"><span class="std std-ref">dtOO::map3dTo3d</span></a>, dtOO::multipleBoundedSurface, dtOO::multipleBoundedVolume</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry15getPointPercentEPCK6dtReal">
+<span id="_CPPv3NK4dtOO16analyticGeometry15getPointPercentEPCK6dtReal"></span><span id="_CPPv2NK4dtOO16analyticGeometry15getPointPercentEPCK6dtReal"></span><span id="dtOO::analyticGeometry::getPointPercent__dtRealCPCC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1ad50491eb232af81a6d402acc070492e3"></span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPointPercent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvw</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry15getPointPercentEPCK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate a point using percent coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uvw</strong> – One normalized coordinate per parameter direction, in [0, 1]. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Point on the geometry. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry15firstDerPercentEPCK6dtReal">
+<span id="_CPPv3NK4dtOO16analyticGeometry15firstDerPercentEPCK6dtReal"></span><span id="_CPPv2NK4dtOO16analyticGeometry15firstDerPercentEPCK6dtReal"></span><span id="dtOO::analyticGeometry::firstDerPercent__dtRealCPCC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1ab76fc5f1563555e7a4cd3a04dfe56308"></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtVector3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">firstDerPercent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvw</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry15firstDerPercentEPCK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate first derivatives using percent coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uvw</strong> – One normalized coordinate per parameter direction, in [0, 1]. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>First derivative vector for every parameter direction. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry5cloneEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry5cloneEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry5cloneEv"></span><span id="dtOO::analyticGeometry::clone__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1ae0f294967cac22fe1f41b80d4e544b7f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO16analyticGeometryE" title="dtOO::analyticGeometry"><span class="n"><span class="pre">analyticGeometry</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry5cloneEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a copy of this geometry. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry6createEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry6createEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry6createEv"></span><span id="dtOO::analyticGeometry::create__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a515388a17fae6561e0b6ac22b2e5f6ef"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO16analyticGeometryE" title="dtOO::analyticGeometry"><span class="n"><span class="pre">analyticGeometry</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry6createEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a default instance of the concrete geometry type. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry3dimEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry3dimEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry3dimEv"></span><span id="dtOO::analyticGeometry::dim__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a2f7bd2b6e60d5adec8db1eb24fb1892c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtInt</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dim</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry3dimEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the parameter-space dimension (one, two, or three). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry8isClosedERK5dtInt">
+<span id="_CPPv3NK4dtOO16analyticGeometry8isClosedERK5dtInt"></span><span id="_CPPv2NK4dtOO16analyticGeometry8isClosedERK5dtInt"></span><span id="dtOO::analyticGeometry::isClosed__dtIntCRC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1ac7a95572e7c1671bd259fcd16ace35b3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isClosed</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtInt</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dir</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry8isClosedERK5dtInt" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether the parameter direction is periodic or closed. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry6getMinERK5dtInt">
+<span id="_CPPv3NK4dtOO16analyticGeometry6getMinERK5dtInt"></span><span id="_CPPv2NK4dtOO16analyticGeometry6getMinERK5dtInt"></span><span id="dtOO::analyticGeometry::getMin__dtIntCRC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a373f5fd655461e095bd4b74ee4c8746f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getMin</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtInt</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dir</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry6getMinERK5dtInt" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the lower bound of a parameter direction. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry6getMaxERK5dtInt">
+<span id="_CPPv3NK4dtOO16analyticGeometry6getMaxERK5dtInt"></span><span id="_CPPv2NK4dtOO16analyticGeometry6getMaxERK5dtInt"></span><span id="dtOO::analyticGeometry::getMax__dtIntCRC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a6bd275c6e6665409a1d6905f042aac50"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getMax</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtInt</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dir</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry6getMaxERK5dtInt" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the upper bound of a parameter direction. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry8getPointEPCK6dtReal">
+<span id="_CPPv3NK4dtOO16analyticGeometry8getPointEPCK6dtReal"></span><span id="_CPPv2NK4dtOO16analyticGeometry8getPointEPCK6dtReal"></span><span id="dtOO::analyticGeometry::getPoint__dtRealCPCC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1aee65d301c8de782e020a393990291e3f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPoint</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvw</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry8getPointEPCK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate a point using native parameter coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uvw</strong> – One coordinate per parameter direction. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Point on the geometry. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry8firstDerEPCK6dtReal">
+<span id="_CPPv3NK4dtOO16analyticGeometry8firstDerEPCK6dtReal"></span><span id="_CPPv2NK4dtOO16analyticGeometry8firstDerEPCK6dtReal"></span><span id="dtOO::analyticGeometry::firstDer__dtRealCPCC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1ad978818be0e761063a82a5804d2cf1f0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtVector3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">firstDer</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvw</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry8firstDerEPCK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate first derivatives using native parameter coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uvw</strong> – One coordinate per parameter direction. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>First derivative vector for every parameter direction. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry12dumpToStringEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry12dumpToStringEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry12dumpToStringEv"></span><span id="dtOO::analyticGeometry::dumpToString__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a122dcfb649a48c12aaf96cee90509790"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dumpToString</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry12dumpToStringEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return a textual representation of this geometry. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry13isTransformedEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry13isTransformedEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry13isTransformedEv"></span><span id="dtOO::analyticGeometry::isTransformed__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a2566aa9c43d7810286bb56030dbc9dda"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isTransformed</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry13isTransformedEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether this geometry represents a transformed object. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry10isCompoundEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry10isCompoundEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry10isCompoundEv"></span><span id="dtOO::analyticGeometry::isCompound__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1add6b5906399c6f110c801466cbfdf865"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isCompound</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry10isCompoundEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether this geometry consists of multiple sub-geometries. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry16compoundInternalEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry16compoundInternalEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry16compoundInternalEv"></span><span id="dtOO::analyticGeometry::compoundInternal__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a3ac85262cd3924865dad20ca33c8a97c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">vectorHandling</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N4dtOO16analyticGeometryE" title="dtOO::analyticGeometry"><span class="n"><span class="pre">analyticGeometry</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">compoundInternal</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry16compoundInternalEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the constituent geometries of a compound geometry. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry11boundingBoxEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry11boundingBoxEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry11boundingBoxEv"></span><span id="dtOO::analyticGeometry::boundingBox__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a806a95284a1e8304d34133a01722f397"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtPoint3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">dtPoint3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">boundingBox</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry11boundingBoxEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the lazily computed axis-aligned bounding box. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry16boundingBoxValueEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry16boundingBoxValueEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry16boundingBoxValueEv"></span><span id="dtOO::analyticGeometry::boundingBoxValue__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1ab96242e5f0c6914fe316230f294deece"></span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">boundingBoxValue</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry16boundingBoxValueEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the sampled geometric measure of the bounding-box grid.</p>
+<p>The measure is length for curves, area for surfaces, and volume for volumes. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry17updateBoundingBoxEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry17updateBoundingBoxEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry17updateBoundingBoxEv"></span><span id="dtOO::analyticGeometry::updateBoundingBox__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a74965eb464dfa5fd66ec099c56a766ee"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">updateBoundingBox</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry17updateBoundingBoxEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Recompute the cached bounding box and its sampled geometric measure. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry20characteristicLengthEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry20characteristicLengthEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry20characteristicLengthEv"></span><span id="dtOO::analyticGeometry::characteristicLength__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a7d157b7ebb293886fd13395ea5c7c915"></span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">characteristicLength</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry20characteristicLengthEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the diagonal length of the lazily computed bounding box. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry12cornerPointsEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry12cornerPointsEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry12cornerPointsEv"></span><span id="dtOO::analyticGeometry::cornerPoints__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1ad65f991ab559231c33ceb5e3270ebc21"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtPoint3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cornerPoints</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry12cornerPointsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the points at all corners of the normalized parameter domain. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry7reparamERK8dtPoint3RNSt6vectorI6dtRealEE">
+<span id="_CPPv3NK4dtOO16analyticGeometry7reparamERK8dtPoint3RNSt6vectorI6dtRealEE"></span><span id="_CPPv2NK4dtOO16analyticGeometry7reparamERK8dtPoint3RNSt6vectorI6dtRealEE"></span><span id="dtOO::analyticGeometry::reparam__dtPoint3CR.std::vector:dtReal:RC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1ae21f776ce051eefb1230ff510bd20f5e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reparam</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xyz</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtReal</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uvw</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry7reparamERK8dtPoint3RNSt6vectorI6dtRealEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Find native parameter coordinates for a point on the geometry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xyz</strong> – Point to reparameterize. </p></li>
+<li><p><strong>uvw</strong> – Receives one native coordinate per parameter direction. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True when reparameterization succeeds. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry8getPointERKNSt6vectorI6dtRealEE">
+<span id="_CPPv3NK4dtOO16analyticGeometry8getPointERKNSt6vectorI6dtRealEE"></span><span id="_CPPv2NK4dtOO16analyticGeometry8getPointERKNSt6vectorI6dtRealEE"></span><span id="dtOO::analyticGeometry::getPoint__std::vector:dtReal:CRC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a3480a294711ea1f912981d47ea3ce44e"></span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPoint</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtReal</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uvw</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry8getPointERKNSt6vectorI6dtRealEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate a point using native coordinates supplied as a vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry11degeneratedEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry11degeneratedEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry11degeneratedEv"></span><span id="dtOO::analyticGeometry::degenerated__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1affc10d88278a2b2086dd14c36775086b"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">degenerated</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry11degeneratedEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether the sampled geometric measure is within XYZ tolerance. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry5equalERK16analyticGeometry">
+<span id="_CPPv3NK4dtOO16analyticGeometry5equalERK16analyticGeometry"></span><span id="_CPPv2NK4dtOO16analyticGeometry5equalERK16analyticGeometry"></span><span id="dtOO::analyticGeometry::equal__analyticGeometryCRC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a1019467ed1505ab0690685a6bd8ed91f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">equal</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO16analyticGeometryE" title="dtOO::analyticGeometry"><span class="n"><span class="pre">analyticGeometry</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry5equalERK16analyticGeometry" title="Link to this definition"></a><br /></dt>
+<dd><p>Compare geometries by matching their normalized parameter-domain corners.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if both geometries have the same dimension and equivalent corner points within XYZ tolerance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry5equalEPCK16analyticGeometry">
+<span id="_CPPv3NK4dtOO16analyticGeometry5equalEPCK16analyticGeometry"></span><span id="_CPPv2NK4dtOO16analyticGeometry5equalEPCK16analyticGeometry"></span><span id="dtOO::analyticGeometry::equal__analyticGeometryCPCC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a228bcecb98726d26ccc124ebd8efcdf9"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">equal</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4dtOO16analyticGeometryE" title="dtOO::analyticGeometry"><span class="n"><span class="pre">analyticGeometry</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry5equalEPCK16analyticGeometry" title="Link to this definition"></a><br /></dt>
+<dd><p>Pointer overload of equal(analyticGeometry const &amp;). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry4dumpEv">
+<span id="_CPPv3NK4dtOO16analyticGeometry4dumpEv"></span><span id="_CPPv2NK4dtOO16analyticGeometry4dumpEv"></span><span id="dtOO::analyticGeometry::dump__voidC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a0f4f9390145eb0e5c7e5ac15ff1e1ffc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dump</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry4dumpEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Write the label, dynamic class name, and textual representation to the log. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry19setRenderResolutionERKiRK5dtInt">
+<span id="_CPPv3NK4dtOO16analyticGeometry19setRenderResolutionERKiRK5dtInt"></span><span id="_CPPv2NK4dtOO16analyticGeometry19setRenderResolutionERKiRK5dtInt"></span><span id="dtOO::analyticGeometry::setRenderResolution__iCR.dtIntCRC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a5f5c413ae0cf9e791f61acb0e40cb591"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setRenderResolution</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dir</span></span>, <span class="n"><span class="pre">dtInt</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry19setRenderResolutionERKiRK5dtInt" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the rendering resolution for a parameter direction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dir</strong> – Parameter direction: 0 (u), 1 (v), or 2 (w). </p></li>
+<li><p><strong>value</strong> – Number of rendering samples in that direction. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry19getRenderResolutionERKi">
+<span id="_CPPv3NK4dtOO16analyticGeometry19getRenderResolutionERKi"></span><span id="_CPPv2NK4dtOO16analyticGeometry19getRenderResolutionERKi"></span><span id="dtOO::analyticGeometry::getRenderResolution__iCRC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1ae58cb80eabbc0b8d51bfc867b0d69e46"></span><span class="n"><span class="pre">dtInt</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getRenderResolution</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dir</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry19getRenderResolutionERKi" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the rendering resolution for a parameter direction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dir</strong> – Parameter direction: 0 (u), 1 (v), or 2 (w). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry11val_percentERK6dtRealRKi">
+<span id="_CPPv3NK4dtOO16analyticGeometry11val_percentERK6dtRealRKi"></span><span id="_CPPv2NK4dtOO16analyticGeometry11val_percentERK6dtRealRKi"></span><span id="dtOO::analyticGeometry::val_percent__dtRealCR.iCRC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a83216224758b4fd75dcc15b25786d430"></span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">val_percent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">per</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dir</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry11val_percentERK6dtRealRKi" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert a normalized parameter coordinate to its native value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>per</strong> – Normalized coordinate in [0, 1]. </p></li>
+<li><p><strong>dir</strong> – Parameter direction: 0 (u), 1 (v), or 2 (w). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticGeometry11percent_valERK6dtRealRKi">
+<span id="_CPPv3NK4dtOO16analyticGeometry11percent_valERK6dtRealRKi"></span><span id="_CPPv2NK4dtOO16analyticGeometry11percent_valERK6dtRealRKi"></span><span id="dtOO::analyticGeometry::percent_val__dtRealCR.iCRC"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a9ed6fc2bd92eaa89e91e76a9925e068c"></span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">percent_val</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">val</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dir</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticGeometry11percent_valERK6dtRealRKi" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert a native parameter coordinate to its normalized value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>val</strong> – Native parameter coordinate. </p></li>
+<li><p><strong>dir</strong> – Parameter direction: 0 (u), 1 (v), or 2 (w). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticGeometry14inXYZToleranceERK8dtPoint3RK8dtPoint3PC6dtRealb6dtReal">
+<span id="_CPPv3N4dtOO16analyticGeometry14inXYZToleranceERK8dtPoint3RK8dtPoint3PC6dtRealb6dtReal"></span><span id="_CPPv2N4dtOO16analyticGeometry14inXYZToleranceERK8dtPoint3RK8dtPoint3PC6dtRealb6dtReal"></span><span id="dtOO::analyticGeometry::inXYZTolerance__dtPoint3CR.dtPoint3CR.dtRealPC.b.dtReal"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a002f72fb3f08314443511496cd8b9dae"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inXYZTolerance</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dist</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">inc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticGeometry14inXYZToleranceERK8dtPoint3RK8dtPoint3PC6dtRealb6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Compare two points using the configured XYZ tolerance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p0</strong> – First point. </p></li>
+<li><p><strong>p1</strong> – Second point. </p></li>
+<li><p><strong>dist</strong> – Receives the Euclidean distance between the points. </p></li>
+<li><p><strong>output</strong> – Emit a warning when the points are outside the tolerance. </p></li>
+<li><p><strong>inc</strong> – Multiplier applied to the configured tolerance. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the points are within tolerance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticGeometry12XYZToleranceEv">
+<span id="_CPPv3N4dtOO16analyticGeometry12XYZToleranceEv"></span><span id="_CPPv2N4dtOO16analyticGeometry12XYZToleranceEv"></span><span id="dtOO::analyticGeometry::XYZTolerance__void"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a26e0efab3b39b964036032e4ce5c6d16"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">XYZTolerance</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticGeometry12XYZToleranceEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the configured XYZ tolerance. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticGeometry14inXYZToleranceERK8dtPoint3RK8dtPoint3">
+<span id="_CPPv3N4dtOO16analyticGeometry14inXYZToleranceERK8dtPoint3RK8dtPoint3"></span><span id="_CPPv2N4dtOO16analyticGeometry14inXYZToleranceERK8dtPoint3RK8dtPoint3"></span><span id="dtOO::analyticGeometry::inXYZTolerance__dtPoint3CR.dtPoint3CR"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a12035cb1395bc7a55fd894818c4c5e51"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inXYZTolerance</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticGeometry14inXYZToleranceERK8dtPoint3RK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether two points are within the configured XYZ tolerance. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticGeometry14inXYZToleranceEK6dtReal6dtReal">
+<span id="_CPPv3N4dtOO16analyticGeometry14inXYZToleranceEK6dtReal6dtReal"></span><span id="_CPPv2N4dtOO16analyticGeometry14inXYZToleranceEK6dtReal6dtReal"></span><span id="dtOO::analyticGeometry::inXYZTolerance__dtRealC.dtReal"></span><span class="target" id="classdtOO_1_1analyticGeometry_1aa3a03fb81f32d2af21512690a965c765"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inXYZTolerance</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dist</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">inc</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticGeometry14inXYZToleranceEK6dtReal6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether a distance is within the configured XYZ tolerance. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticGeometry14inUVWToleranceERK8dtPoint3RK8dtPoint3">
+<span id="_CPPv3N4dtOO16analyticGeometry14inUVWToleranceERK8dtPoint3RK8dtPoint3"></span><span id="_CPPv2N4dtOO16analyticGeometry14inUVWToleranceERK8dtPoint3RK8dtPoint3"></span><span id="dtOO::analyticGeometry::inUVWTolerance__dtPoint3CR.dtPoint3CR"></span><span class="target" id="classdtOO_1_1analyticGeometry_1aae9dc35e1dbe4984a924ce990640c11d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inUVWTolerance</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticGeometry14inUVWToleranceERK8dtPoint3RK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether two 3D parameter coordinates are within UVW tolerance. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticGeometry14inUVWToleranceERK8dtPoint2RK8dtPoint2">
+<span id="_CPPv3N4dtOO16analyticGeometry14inUVWToleranceERK8dtPoint2RK8dtPoint2"></span><span id="_CPPv2N4dtOO16analyticGeometry14inUVWToleranceERK8dtPoint2RK8dtPoint2"></span><span id="dtOO::analyticGeometry::inUVWTolerance__dtPoint2CR.dtPoint2CR"></span><span class="target" id="classdtOO_1_1analyticGeometry_1a5573e91c89cbacf25abc2c0d5227e801"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inUVWTolerance</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticGeometry14inUVWToleranceERK8dtPoint2RK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether two 2D parameter coordinates are within UVW tolerance. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticGeometry14inUVWToleranceERK6dtRealRK6dtReal">
+<span id="_CPPv3N4dtOO16analyticGeometry14inUVWToleranceERK6dtRealRK6dtReal"></span><span id="_CPPv2N4dtOO16analyticGeometry14inUVWToleranceERK6dtRealRK6dtReal"></span><span id="dtOO::analyticGeometry::inUVWTolerance__dtRealCR.dtRealCR"></span><span class="target" id="classdtOO_1_1analyticGeometry_1aa5e58f0866f6fe3d5ce2d2629109cf5d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inUVWTolerance</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticGeometry14inUVWToleranceERK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether two scalar parameter coordinates are within UVW tolerance. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO9map1dTo3dE">
+<span id="_CPPv3N4dtOO9map1dTo3dE"></span><span id="_CPPv2N4dtOO9map1dTo3dE"></span><span id="dtOO::map1dTo3d"></span><span class="target" id="classdtOO_1_1map1dTo3d"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">map1dTo3d</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">dtOO</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N4dtOO16analyticGeometryE" title="dtOO::analyticGeometry"><span class="n"><span class="pre">analyticGeometry</span></span></a><a class="headerlink" href="#_CPPv4N4dtOO9map1dTo3dE" title="Link to this definition"></a><br /></dt>
+<dd><p>Abstract one-dimensional map embedded in three-dimensional space. </p>
+<p>This class represents a parameterized curve p(u). Concrete implementations provide point evaluation, creation, cloning, and transformation. Native parameter values lie in [getUMin(), getUMax()], while percent variants use the normalized interval [0, 1].</p>
+<p>The optional operations provide numerical derivatives, curve segments, arc-length conversions, rendering, and closest-point reparameterization. </p>
+<p>Subclassed by dtOO::analyticCurve, dtOO::scaOneDInMap1dTo3d, dtOO::vec2dOneDInMap2dTo3d, dtOO::vec3dOneDInMap3dTo3d</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d3dimEv">
+<span id="_CPPv3NK4dtOO9map1dTo3d3dimEv"></span><span id="_CPPv2NK4dtOO9map1dTo3d3dimEv"></span><span id="dtOO::map1dTo3d::dim__voidC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a63b4ec88d5c10177af6cdcd2ced70aa6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtInt</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dim</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d3dimEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the one-dimensional parameter-space dimension. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d8getPointEPCK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d8getPointEPCK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d8getPointEPCK6dtReal"></span><span id="dtOO::map1dTo3d::getPoint__dtRealCPCC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a844946233ac43eb1e03994fbe2d185c4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPoint</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvw</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d8getPointEPCK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the curve from a one-element parameter array. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d8firstDerEPCK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d8firstDerEPCK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d8firstDerEPCK6dtReal"></span><span id="dtOO::map1dTo3d::firstDer__dtRealCPCC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1aaa467be8169b9dc5e669ba532d5d3296"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtVector3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">firstDer</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvw</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d8firstDerEPCK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the first derivative from a one-element parameter array. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d6createEv">
+<span id="_CPPv3NK4dtOO9map1dTo3d6createEv"></span><span id="_CPPv2NK4dtOO9map1dTo3d6createEv"></span><span id="dtOO::map1dTo3d::create__voidC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1aa5977ed5b8d85ba16d5f5a43a52f2a24"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map1dTo3dE" title="dtOO::map1dTo3d"><span class="n"><span class="pre">map1dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d6createEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a default instance of the concrete curve type. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d5cloneEv">
+<span id="_CPPv3NK4dtOO9map1dTo3d5cloneEv"></span><span id="_CPPv2NK4dtOO9map1dTo3d5cloneEv"></span><span id="dtOO::map1dTo3d::clone__voidC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a005b83c800970ffadc6ece4b8eadf710"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map1dTo3dE" title="dtOO::map1dTo3d"><span class="n"><span class="pre">map1dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d5cloneEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a copy of this curve. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d16cloneTransformedEPCK13dtTransformer">
+<span id="_CPPv3NK4dtOO9map1dTo3d16cloneTransformedEPCK13dtTransformer"></span><span id="_CPPv2NK4dtOO9map1dTo3d16cloneTransformedEPCK13dtTransformer"></span><span id="dtOO::map1dTo3d::cloneTransformed__dtTransformerCPCC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a518f064701436c4d0ca931d5e767e36e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map1dTo3dE" title="dtOO::map1dTo3d"><span class="n"><span class="pre">map1dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">cloneTransformed</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtTransformer</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dtT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d16cloneTransformedEPCK13dtTransformer" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a copy transformed by the supplied transformer. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d8getPointERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d8getPointERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d8getPointERK6dtReal"></span><span id="dtOO::map1dTo3d::getPoint__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1aaa18aa9b7993f64664e9d18a7e6129b7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPoint</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d8getPointERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the curve at a native u coordinate. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d9firstDerUERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d9firstDerUERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d9firstDerUERK6dtReal"></span><span id="dtOO::map1dTo3d::firstDerU__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1adaaceece3d8010d4cd7afefd87a972aa"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtVector3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">firstDerU</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d9firstDerUERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the first derivative with respect to u. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d7segmentERK6dtRealRK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d7segmentERK6dtRealRK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d7segmentERK6dtRealRK6dtReal"></span><span id="dtOO::map1dTo3d::segment__dtRealCR.dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a7e2678e5c9ccceb0cda12da756a16f93"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map1dTo3dE" title="dtOO::map1dTo3d"><span class="n"><span class="pre">map1dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segment</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">u0</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">u1</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d7segmentERK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Create the curve segment between two native u coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d3l_uERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d3l_uERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d3l_uERK6dtReal"></span><span id="dtOO::map1dTo3d::l_u__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a802a8ae9fd65a5bc7c1274de52ab8733"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">l_u</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d3l_uERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return arc length from getUMin() to a native u coordinate. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d3u_lERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d3u_lERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d3u_lERK6dtReal"></span><span id="dtOO::map1dTo3d::u_l__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a892787b86b3abf3df2a135f1267de4d0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">u_l</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ll</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d3u_lERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the native u coordinate at an arc length from getUMin(). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d9getRenderEv">
+<span id="_CPPv3NK4dtOO9map1dTo3d9getRenderEv"></span><span id="_CPPv2NK4dtOO9map1dTo3d9getRenderEv"></span><span id="dtOO::map1dTo3d::getRender__voidC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a9438f33221d172e9d3c7cd1904cabf83"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">vectorHandling</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">renderInterface</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getRender</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d9getRenderEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return renderable representations of this curve. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d13reparamOnEdgeERK8dtPoint3">
+<span id="_CPPv3NK4dtOO9map1dTo3d13reparamOnEdgeERK8dtPoint3"></span><span id="_CPPv2NK4dtOO9map1dTo3d13reparamOnEdgeERK8dtPoint3"></span><span id="dtOO::map1dTo3d::reparamOnEdge__dtPoint3CRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a025943a59aef56d155684a645d23ec94"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reparamOnEdge</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ppXYZ</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d13reparamOnEdgeERK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the native u coordinate closest to a spatial point. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d15getPointPercentERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d15getPointPercentERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d15getPointPercentERK6dtReal"></span><span id="dtOO::map1dTo3d::getPointPercent__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a6e096848ca0a9183f049db15fff9941b"></span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPointPercent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d15getPointPercentERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the curve at a normalized u coordinate. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d16firstDerUPercentERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d16firstDerUPercentERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d16firstDerUPercentERK6dtReal"></span><span id="dtOO::map1dTo3d::firstDerUPercent__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a11565dfd19e6137ea5fc60459f8fbad3"></span><span class="n"><span class="pre">dtVector3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">firstDerUPercent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uP</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d16firstDerUPercentERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the first derivative at a normalized u coordinate. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d14segmentPercentERK6dtRealRK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d14segmentPercentERK6dtRealRK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d14segmentPercentERK6dtRealRK6dtReal"></span><span id="dtOO::map1dTo3d::segmentPercent__dtRealCR.dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a08d809eae4443d7eb9020466768910ed"></span><a class="reference internal" href="#_CPPv4N4dtOO9map1dTo3dE" title="dtOO::map1dTo3d"><span class="n"><span class="pre">map1dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segmentPercent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">u0</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">u1</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d14segmentPercentERK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Create the curve segment between two normalized u coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d9u_percentERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d9u_percentERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d9u_percentERK6dtReal"></span><span id="dtOO::map1dTo3d::u_percent__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a69c347bd2fc93f087f419f31a87cd37c"></span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">u_percent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d9u_percentERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert normalized u to its native parameter value. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d10u_lPercentERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d10u_lPercentERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d10u_lPercentERK6dtReal"></span><span id="dtOO::map1dTo3d::u_lPercent__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a4d65d039daa1e1bf987151781691a931"></span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">u_lPercent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lP</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d10u_lPercentERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return native u at a normalized arc length. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d9percent_uERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d9percent_uERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d9percent_uERK6dtReal"></span><span id="dtOO::map1dTo3d::percent_u__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a2cf901facf47e6f6878e0db8745110e5"></span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">percent_u</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d9percent_uERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert native u to a normalized parameter value. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d9percent_lERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d9percent_lERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d9percent_lERK6dtReal"></span><span id="dtOO::map1dTo3d::percent_l__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1af777bd5b08215ff1fe19f5f8ee509c68"></span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">percent_l</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ll</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d9percent_lERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert arc length to a fraction of total curve length. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d10lPercent_uERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3d10lPercent_uERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3d10lPercent_uERK6dtReal"></span><span id="dtOO::map1dTo3d::lPercent_u__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a04fbad814f7bef03e558cb9c5f371c73"></span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lPercent_u</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d10lPercent_uERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return normalized arc length at a native u coordinate. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3d6lengthEv">
+<span id="_CPPv3NK4dtOO9map1dTo3d6lengthEv"></span><span id="_CPPv2NK4dtOO9map1dTo3d6lengthEv"></span><span id="dtOO::map1dTo3d::length__voidC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1aca648d1bc04bb00e71b23601391ddcf6"></span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">length</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3d6lengthEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the total curve length. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3drmERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3drmERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3drmERK6dtReal"></span><span id="dtOO::map1dTo3d::mod-operator__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1aa7aacbcad01f77c69ea7a4f7e8b429f9"></span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">%</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">percent</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3drmERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return native u for a normalized u coordinate. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3dorERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3dorERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3dorERK6dtReal"></span><span id="dtOO::map1dTo3d::or-operator__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1a9c8b5f1cd6cb2de38e50cfbc98962923"></span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">|</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">length</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3dorERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return native u for an arc length. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map1dTo3danERK6dtReal">
+<span id="_CPPv3NK4dtOO9map1dTo3danERK6dtReal"></span><span id="_CPPv2NK4dtOO9map1dTo3danERK6dtReal"></span><span id="dtOO::map1dTo3d::and-operator__dtRealCRC"></span><span class="target" id="classdtOO_1_1map1dTo3d_1adb59d29bc3e2157a5019114312323c76"></span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&amp;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lengthPercent</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map1dTo3danERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return native u for a normalized arc length. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO9map2dTo3dE">
+<span id="_CPPv3N4dtOO9map2dTo3dE"></span><span id="_CPPv2N4dtOO9map2dTo3dE"></span><span id="dtOO::map2dTo3d"></span><span class="target" id="classdtOO_1_1map2dTo3d"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">map2dTo3d</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">dtOO</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N4dtOO16analyticGeometryE" title="dtOO::analyticGeometry"><span class="n"><span class="pre">analyticGeometry</span></span></a><a class="headerlink" href="#_CPPv4N4dtOO9map2dTo3dE" title="Link to this definition"></a><br /></dt>
+<dd><p>Abstract two-dimensional map embedded in three-dimensional space. </p>
+<p>This class represents a parameterized surface p(u, v). Concrete implementations provide native-coordinate point evaluation, creation, cloning, and transformation. Percent-coordinate variants use normalized u and v values in [0, 1].</p>
+<p>It provides common surface operations including derivatives, normals, Jacobians, closest-point reparameterization, boundary curves, and trimmed curve or surface segments. </p>
+<p>Subclassed by dtOO::analyticSurface, dtOO::rotatingMap1dTo3d, dtOO::trans4SidedFace, dtOO::vec2dTwoDInMap2dTo3d, dtOO::vec3dTwoDInMap3dTo3d</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d3dimEv">
+<span id="_CPPv3NK4dtOO9map2dTo3d3dimEv"></span><span id="_CPPv2NK4dtOO9map2dTo3d3dimEv"></span><span id="dtOO::map2dTo3d::dim__voidC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1aff5cb1ad3d640c3c3bcea7aba1dfef96"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtInt</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dim</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d3dimEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the two-dimensional parameter-space dimension. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d8getPointEPCK6dtReal">
+<span id="_CPPv3NK4dtOO9map2dTo3d8getPointEPCK6dtReal"></span><span id="_CPPv2NK4dtOO9map2dTo3d8getPointEPCK6dtReal"></span><span id="dtOO::map2dTo3d::getPoint__dtRealCPCC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a296e4ee466d9e2e8456b93f963f25dd4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPoint</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvw</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d8getPointEPCK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the surface from a two-element parameter array. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d8firstDerEPCK6dtReal">
+<span id="_CPPv3NK4dtOO9map2dTo3d8firstDerEPCK6dtReal"></span><span id="_CPPv2NK4dtOO9map2dTo3d8firstDerEPCK6dtReal"></span><span id="dtOO::map2dTo3d::firstDer__dtRealCPCC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a1d02b8dae536502344732176e9785b97"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtVector3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">firstDer</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvw</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d8firstDerEPCK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate first derivatives from a two-element parameter array. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d6createEv">
+<span id="_CPPv3NK4dtOO9map2dTo3d6createEv"></span><span id="_CPPv2NK4dtOO9map2dTo3d6createEv"></span><span id="dtOO::map2dTo3d::create__voidC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1ad984efe2090ec328f1344ccfe2943863"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d6createEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a default instance of the concrete surface type. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d5cloneEv">
+<span id="_CPPv3NK4dtOO9map2dTo3d5cloneEv"></span><span id="_CPPv2NK4dtOO9map2dTo3d5cloneEv"></span><span id="dtOO::map2dTo3d::clone__voidC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a7659abc77043d3065880757cb66dc5c4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d5cloneEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a copy of this surface. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d16cloneTransformedEPCK13dtTransformer">
+<span id="_CPPv3NK4dtOO9map2dTo3d16cloneTransformedEPCK13dtTransformer"></span><span id="_CPPv2NK4dtOO9map2dTo3d16cloneTransformedEPCK13dtTransformer"></span><span id="dtOO::map2dTo3d::cloneTransformed__dtTransformerCPCC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a5d921167c006182dfebc1be8e508ebbb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">cloneTransformed</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtTransformer</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dtT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d16cloneTransformedEPCK13dtTransformer" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a copy transformed by the supplied transformer. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d8getPointERK6dtRealRK6dtReal">
+<span id="_CPPv3NK4dtOO9map2dTo3d8getPointERK6dtRealRK6dtReal"></span><span id="_CPPv2NK4dtOO9map2dTo3d8getPointERK6dtRealRK6dtReal"></span><span id="dtOO::map2dTo3d::getPoint__dtRealCR.dtRealCRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a8bb7f9348e807e76b1517a5d12ae6a4a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPoint</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vv</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d8getPointERK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the surface at native u and v coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d9getRenderEv">
+<span id="_CPPv3NK4dtOO9map2dTo3d9getRenderEv"></span><span id="_CPPv2NK4dtOO9map2dTo3d9getRenderEv"></span><span id="dtOO::map2dTo3d::getRender__voidC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1ade42cf199a32386f299c5d63291acd21"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">vectorHandling</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">renderInterface</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getRender</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d9getRenderEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return renderable representations of this surface. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d12getExtRenderEv">
+<span id="_CPPv3NK4dtOO9map2dTo3d12getExtRenderEv"></span><span id="_CPPv2NK4dtOO9map2dTo3d12getExtRenderEv"></span><span id="dtOO::map2dTo3d::getExtRender__voidC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1ae7e0df67adc0d0dea15a037a25b7b5be"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">vectorHandling</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">renderInterface</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getExtRender</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d12getExtRenderEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return supplementary renderable representations of this surface. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d8firstDerERK8dtPoint2">
+<span id="_CPPv3NK4dtOO9map2dTo3d8firstDerERK8dtPoint2"></span><span id="_CPPv2NK4dtOO9map2dTo3d8firstDerERK8dtPoint2"></span><span id="dtOO::map2dTo3d::firstDer__dtPoint2CRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a8a094ec073619e2021c0911cc3164461"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtVector3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">firstDer</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pp</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d8firstDerERK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>Return first derivatives at native coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d9secondDerERK6dtRealRK6dtReal">
+<span id="_CPPv3NK4dtOO9map2dTo3d9secondDerERK6dtRealRK6dtReal"></span><span id="_CPPv2NK4dtOO9map2dTo3d9secondDerERK6dtRealRK6dtReal"></span><span id="dtOO::map2dTo3d::secondDer__dtRealCR.dtRealCRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a514943e332b60e50a4c7cd80daa291a2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtVector3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">secondDer</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vv</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d9secondDerERK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return second derivatives at native coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d6normalERK6dtRealRK6dtReal">
+<span id="_CPPv3NK4dtOO9map2dTo3d6normalERK6dtRealRK6dtReal"></span><span id="_CPPv2NK4dtOO9map2dTo3d6normalERK6dtRealRK6dtReal"></span><span id="dtOO::map2dTo3d::normal__dtRealCR.dtRealCRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1ac9c65cc66fa1f2aca0e38e5b3c431712"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtVector3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">normal</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vv</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d6normalERK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the unit normal at native coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d13reparamOnFaceERK8dtPoint3">
+<span id="_CPPv3NK4dtOO9map2dTo3d13reparamOnFaceERK8dtPoint3"></span><span id="_CPPv2NK4dtOO9map2dTo3d13reparamOnFaceERK8dtPoint3"></span><span id="dtOO::map2dTo3d::reparamOnFace__dtPoint3CRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1af494e48dbcfcb57d44c894e814cce32c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reparamOnFace</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ppXYZ</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d13reparamOnFaceERK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Return native surface coordinates closest to a spatial point. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d12approxOnFaceERK8dtPoint3">
+<span id="_CPPv3NK4dtOO9map2dTo3d12approxOnFaceERK8dtPoint3"></span><span id="_CPPv2NK4dtOO9map2dTo3d12approxOnFaceERK8dtPoint3"></span><span id="dtOO::map2dTo3d::approxOnFace__dtPoint3CRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1aeeba3497f0648df52468b18a76e534a4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">approxOnFace</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ppXYZ</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d12approxOnFaceERK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Return an approximate native surface coordinate for a spatial point. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d7segmentERK8dtPoint2RK8dtPoint2">
+<span id="_CPPv3NK4dtOO9map2dTo3d7segmentERK8dtPoint2RK8dtPoint2"></span><span id="_CPPv2NK4dtOO9map2dTo3d7segmentERK8dtPoint2RK8dtPoint2"></span><span id="dtOO::map2dTo3d::segment__dtPoint2CR.dtPoint2CRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a1ae5e248c88e385a5c3938fff0dfc77e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map1dTo3dE" title="dtOO::map1dTo3d"><span class="n"><span class="pre">map1dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segment</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d7segmentERK8dtPoint2RK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a curve segment between two native surface coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d7segmentERK8dtPoint2RK8dtPoint2RK8dtPoint2RK8dtPoint2">
+<span id="_CPPv3NK4dtOO9map2dTo3d7segmentERK8dtPoint2RK8dtPoint2RK8dtPoint2RK8dtPoint2"></span><span id="_CPPv2NK4dtOO9map2dTo3d7segmentERK8dtPoint2RK8dtPoint2RK8dtPoint2RK8dtPoint2"></span><span id="dtOO::map2dTo3d::segment__dtPoint2CR.dtPoint2CR.dtPoint2CR.dtPoint2CRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1ae922d1f561956397fa8c89b8df676463"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segment</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p2</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p3</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d7segmentERK8dtPoint2RK8dtPoint2RK8dtPoint2RK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a bilinearly parameterized surface segment from four native parameter-space corners.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span>   <span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="o">*</span>    <span class="o">^</span>
+<span class="o">*</span>
+<span class="o">*</span>   <span class="p">(</span><span class="mi">3</span><span class="p">)</span>      <span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">*</span>    <span class="o">+--------+</span>
+<span class="o">*</span>    <span class="o">|</span>        <span class="o">|</span>
+<span class="o">*</span>    <span class="o">|</span>        <span class="o">|</span>
+<span class="o">*</span>    <span class="o">+--------+</span> <span class="o">--&gt;</span> <span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="o">*</span>   <span class="p">(</span><span class="mi">0</span><span class="p">)</span>      <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">*</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d16segmentRectangleERK8dtPoint2RK8dtPoint2">
+<span id="_CPPv3NK4dtOO9map2dTo3d16segmentRectangleERK8dtPoint2RK8dtPoint2"></span><span id="_CPPv2NK4dtOO9map2dTo3d16segmentRectangleERK8dtPoint2RK8dtPoint2"></span><span id="dtOO::map2dTo3d::segmentRectangle__dtPoint2CR.dtPoint2CRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a9d6ca1417be002228dd718e3201ea41f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segmentRectangle</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d16segmentRectangleERK8dtPoint2RK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>Create an axis-aligned surface segment between two native parameter coordinates.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span>   <span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="o">*</span>    <span class="o">^</span>
+<span class="o">*</span>            <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">*</span>    <span class="o">+--------+</span>
+<span class="o">*</span>    <span class="o">|</span>        <span class="o">|</span>
+<span class="o">*</span>    <span class="o">|</span>        <span class="o">|</span>
+<span class="o">*</span>    <span class="o">+--------+</span> <span class="o">--&gt;</span> <span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="o">*</span>   <span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="o">*</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d15getPointPercentERK6dtRealRK6dtReal">
+<span id="_CPPv3NK4dtOO9map2dTo3d15getPointPercentERK6dtRealRK6dtReal"></span><span id="_CPPv2NK4dtOO9map2dTo3d15getPointPercentERK6dtRealRK6dtReal"></span><span id="dtOO::map2dTo3d::getPointPercent__dtRealCR.dtRealCRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1ac700448b678f0aac0f97a54430f5eba3"></span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPointPercent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vv</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d15getPointPercentERK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the surface at normalized u and v coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d6jacobiERK6dtRealRK6dtReal">
+<span id="_CPPv3NK4dtOO9map2dTo3d6jacobiERK6dtRealRK6dtReal"></span><span id="_CPPv2NK4dtOO9map2dTo3d6jacobiERK6dtRealRK6dtReal"></span><span id="dtOO::map2dTo3d::jacobi__dtRealCR.dtRealCRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a5796ebff3ef57a0da94224c3bfc2ccdf"></span><span class="n"><span class="pre">dtMatrix</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">jacobi</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vv</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d6jacobiERK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the Jacobian matrix at native u and v coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d7inRangeERK8dtPoint2">
+<span id="_CPPv3NK4dtOO9map2dTo3d7inRangeERK8dtPoint2"></span><span id="_CPPv2NK4dtOO9map2dTo3d7inRangeERK8dtPoint2"></span><span id="dtOO::map2dTo3d::inRange__dtPoint2CRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a2563096b7776fd2470075a37d206dd3f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inRange</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pUV</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d7inRangeERK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether native surface coordinates lie within the parameter bounds. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d20reparamPercentOnFaceERK8dtPoint3">
+<span id="_CPPv3NK4dtOO9map2dTo3d20reparamPercentOnFaceERK8dtPoint3"></span><span id="_CPPv2NK4dtOO9map2dTo3d20reparamPercentOnFaceERK8dtPoint3"></span><span id="dtOO::map2dTo3d::reparamPercentOnFace__dtPoint3CRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1ab8816aeffa5fd246a6c6f2cee8561bfe"></span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reparamPercentOnFace</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ppXYZ</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d20reparamPercentOnFaceERK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Return normalized surface coordinates closest to a spatial point. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d19approxPercentOnFaceERK8dtPoint3">
+<span id="_CPPv3NK4dtOO9map2dTo3d19approxPercentOnFaceERK8dtPoint3"></span><span id="_CPPv2NK4dtOO9map2dTo3d19approxPercentOnFaceERK8dtPoint3"></span><span id="dtOO::map2dTo3d::approxPercentOnFace__dtPoint3CRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a7839140b89f58dcf617dc8201069586d"></span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">approxPercentOnFace</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ppXYZ</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d19approxPercentOnFaceERK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Return approximate normalized surface coordinates for a spatial point. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d14segmentPercentERK8dtPoint2RK8dtPoint2RK8dtPoint2RK8dtPoint2">
+<span id="_CPPv3NK4dtOO9map2dTo3d14segmentPercentERK8dtPoint2RK8dtPoint2RK8dtPoint2RK8dtPoint2"></span><span id="_CPPv2NK4dtOO9map2dTo3d14segmentPercentERK8dtPoint2RK8dtPoint2RK8dtPoint2RK8dtPoint2"></span><span id="dtOO::map2dTo3d::segmentPercent__dtPoint2CR.dtPoint2CR.dtPoint2CR.dtPoint2CRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1ae9b9d0483446f4abad87b71a034a3247"></span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segmentPercent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p2</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p3</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d14segmentPercentERK8dtPoint2RK8dtPoint2RK8dtPoint2RK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a bilinearly parameterized surface segment from four normalized parameter-space corners.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span>   <span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="o">*</span>    <span class="o">^</span>
+<span class="o">*</span>
+<span class="o">*</span>   <span class="p">(</span><span class="mi">3</span><span class="p">)</span>      <span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">*</span>    <span class="o">+--------+</span>
+<span class="o">*</span>    <span class="o">|</span>        <span class="o">|</span>
+<span class="o">*</span>    <span class="o">|</span>        <span class="o">|</span>
+<span class="o">*</span>    <span class="o">+--------+</span> <span class="o">--&gt;</span> <span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="o">*</span>   <span class="p">(</span><span class="mi">0</span><span class="p">)</span>      <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">*</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3d23segmentRectanglePercentERK8dtPoint2RK8dtPoint2">
+<span id="_CPPv3NK4dtOO9map2dTo3d23segmentRectanglePercentERK8dtPoint2RK8dtPoint2"></span><span id="_CPPv2NK4dtOO9map2dTo3d23segmentRectanglePercentERK8dtPoint2RK8dtPoint2"></span><span id="dtOO::map2dTo3d::segmentRectanglePercent__dtPoint2CR.dtPoint2CRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a0ba9585cda6f46aa16b18ae41c9443bb"></span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segmentRectanglePercent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3d23segmentRectanglePercentERK8dtPoint2RK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>Create an axis-aligned surface segment between two normalized parameter coordinates.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span>   <span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="o">*</span>    <span class="o">^</span>
+<span class="o">*</span>            <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">*</span>    <span class="o">+--------+</span>
+<span class="o">*</span>    <span class="o">|</span>        <span class="o">|</span>
+<span class="o">*</span>    <span class="o">|</span>        <span class="o">|</span>
+<span class="o">*</span>    <span class="o">+--------+</span> <span class="o">--&gt;</span> <span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="o">*</span>   <span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="o">*</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map2dTo3drmERK8dtPoint2">
+<span id="_CPPv3NK4dtOO9map2dTo3drmERK8dtPoint2"></span><span id="_CPPv2NK4dtOO9map2dTo3drmERK8dtPoint2"></span><span id="dtOO::map2dTo3d::mod-operator__dtPoint2CRC"></span><span class="target" id="classdtOO_1_1map2dTo3d_1a461047501b3366acf5a10d8ee2d4e837"></span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">%</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">percent</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map2dTo3drmERK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert normalized u and v coordinates to native coordinates. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO9map3dTo3dE">
+<span id="_CPPv3N4dtOO9map3dTo3dE"></span><span id="_CPPv2N4dtOO9map3dTo3dE"></span><span id="dtOO::map3dTo3d"></span><span class="target" id="classdtOO_1_1map3dTo3d"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">map3dTo3d</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">dtOO</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N4dtOO16analyticGeometryE" title="dtOO::analyticGeometry"><span class="n"><span class="pre">analyticGeometry</span></span></a><a class="headerlink" href="#_CPPv4N4dtOO9map3dTo3dE" title="Link to this definition"></a><br /></dt>
+<dd><p>Abstract three-dimensional map embedded in three-dimensional space. </p>
+<p>This class represents a parameterized volume p(u, v, w). Concrete implementations provide native-coordinate point evaluation, creation, cloning, and transformation. Percent-coordinate variants use normalized coordinates in [0, 1] for every parameter direction.</p>
+<p>Common helpers expose first derivatives, volume reparameterization, boundary surfaces, curve and surface segments, parameter bounds, and rendering resolutions. </p>
+<p>Subclassed by dtOO::infinityMap3dTo3d, dtOO::radialTranslatingMap2dTo3d, dtOO::rotatingMap2dTo3d, dtOO::trans6SidedCube, dtOO::translatingMap2dTo3d, dtOO::vec3dThreeDInMap3dTo3d</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d3dimEv">
+<span id="_CPPv3NK4dtOO9map3dTo3d3dimEv"></span><span id="_CPPv2NK4dtOO9map3dTo3d3dimEv"></span><span id="dtOO::map3dTo3d::dim__voidC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a0274c82ae45988f5c4d1b45177fcb99c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtInt</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dim</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d3dimEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the three-dimensional parameter-space dimension. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d8getPointEPCK6dtReal">
+<span id="_CPPv3NK4dtOO9map3dTo3d8getPointEPCK6dtReal"></span><span id="_CPPv2NK4dtOO9map3dTo3d8getPointEPCK6dtReal"></span><span id="dtOO::map3dTo3d::getPoint__dtRealCPCC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a022220546128a173c1f00814cd14bd86"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPoint</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvw</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d8getPointEPCK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the volume from a three-element parameter array. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d8firstDerEPCK6dtReal">
+<span id="_CPPv3NK4dtOO9map3dTo3d8firstDerEPCK6dtReal"></span><span id="_CPPv2NK4dtOO9map3dTo3d8firstDerEPCK6dtReal"></span><span id="dtOO::map3dTo3d::firstDer__dtRealCPCC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1aee7536b02b1a92d9bc30ff78fc7cea97"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtVector3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">firstDer</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvw</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d8firstDerEPCK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate first derivatives from a three-element parameter array. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d9getRenderEv">
+<span id="_CPPv3NK4dtOO9map3dTo3d9getRenderEv"></span><span id="_CPPv2NK4dtOO9map3dTo3d9getRenderEv"></span><span id="dtOO::map3dTo3d::getRender__voidC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1abff8d6a99c1fd9ee516daf2eaff99758"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">vectorHandling</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">renderInterface</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getRender</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d9getRenderEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return renderable representations of this volume. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d6createEv">
+<span id="_CPPv3NK4dtOO9map3dTo3d6createEv"></span><span id="_CPPv2NK4dtOO9map3dTo3d6createEv"></span><span id="dtOO::map3dTo3d::create__voidC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a36a948d5e1a125dd099c8fc680b7d0ec"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map3dTo3dE" title="dtOO::map3dTo3d"><span class="n"><span class="pre">map3dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d6createEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a default instance of the concrete volume type. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d5cloneEv">
+<span id="_CPPv3NK4dtOO9map3dTo3d5cloneEv"></span><span id="_CPPv2NK4dtOO9map3dTo3d5cloneEv"></span><span id="dtOO::map3dTo3d::clone__voidC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1ab05b29f9ff155d7a6ac1daafc5b6e06d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map3dTo3dE" title="dtOO::map3dTo3d"><span class="n"><span class="pre">map3dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d5cloneEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a copy of this volume. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d16cloneTransformedEPCK13dtTransformer">
+<span id="_CPPv3NK4dtOO9map3dTo3d16cloneTransformedEPCK13dtTransformer"></span><span id="_CPPv2NK4dtOO9map3dTo3d16cloneTransformedEPCK13dtTransformer"></span><span id="dtOO::map3dTo3d::cloneTransformed__dtTransformerCPCC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a80ab5825c055109d719dd68ca6f403f6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map3dTo3dE" title="dtOO::map3dTo3d"><span class="n"><span class="pre">map3dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">cloneTransformed</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtTransformer</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dtT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d16cloneTransformedEPCK13dtTransformer" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a copy transformed by the supplied transformer. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d8getPointERK6dtRealRK6dtRealRK6dtReal">
+<span id="_CPPv3NK4dtOO9map3dTo3d8getPointERK6dtRealRK6dtRealRK6dtReal"></span><span id="_CPPv2NK4dtOO9map3dTo3d8getPointERK6dtRealRK6dtRealRK6dtReal"></span><span id="dtOO::map3dTo3d::getPoint__dtRealCR.dtRealCR.dtRealCRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a2a779742b022434d63686eab1f9188b6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPoint</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vv</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ww</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d8getPointERK6dtRealRK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the volume at native u, v, and w coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d15reparamInVolumeERK8dtPoint3">
+<span id="_CPPv3NK4dtOO9map3dTo3d15reparamInVolumeERK8dtPoint3"></span><span id="_CPPv2NK4dtOO9map3dTo3d15reparamInVolumeERK8dtPoint3"></span><span id="dtOO::map3dTo3d::reparamInVolume__dtPoint3CRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a0fe6cea7daeb9ea24b7cd4c13e940e6a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reparamInVolume</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ppXYZ</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d15reparamInVolumeERK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Return native volume coordinates closest to a spatial point. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d8firstDerERK6dtRealRK6dtRealRK6dtReal">
+<span id="_CPPv3NK4dtOO9map3dTo3d8firstDerERK6dtRealRK6dtRealRK6dtReal"></span><span id="_CPPv2NK4dtOO9map3dTo3d8firstDerERK6dtRealRK6dtRealRK6dtReal"></span><span id="dtOO::map3dTo3d::firstDer__dtRealCR.dtRealCR.dtRealCRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a380874d6b0bf36283a057dbac89832a8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtVector3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">firstDer</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vv</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ww</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d8firstDerERK6dtRealRK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return first derivatives at native u, v, and w coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d7segmentERK8dtPoint3RK8dtPoint3">
+<span id="_CPPv3NK4dtOO9map3dTo3d7segmentERK8dtPoint3RK8dtPoint3"></span><span id="_CPPv2NK4dtOO9map3dTo3d7segmentERK8dtPoint3RK8dtPoint3"></span><span id="dtOO::map3dTo3d::segment__dtPoint3CR.dtPoint3CRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a3698f1b35fe2ebf02f7cdd06c4f217d6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map1dTo3dE" title="dtOO::map1dTo3d"><span class="n"><span class="pre">map1dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segment</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d7segmentERK8dtPoint3RK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a curve segment between two native volume coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d7segmentERK17twoDArrayHandlingI8dtPoint3E">
+<span id="_CPPv3NK4dtOO9map3dTo3d7segmentERK17twoDArrayHandlingI8dtPoint3E"></span><span id="_CPPv2NK4dtOO9map3dTo3d7segmentERK17twoDArrayHandlingI8dtPoint3E"></span><span id="dtOO::map3dTo3d::segment__twoDArrayHandling:dtPoint3:CRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1ad75dc9628408fbd19a6d945bbd3dac56"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segment</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">twoDArrayHandling</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtPoint3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pp</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d7segmentERK17twoDArrayHandlingI8dtPoint3E" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a surface segment from a native-coordinate point array. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d13segmentConstUERK6dtReal">
+<span id="_CPPv3NK4dtOO9map3dTo3d13segmentConstUERK6dtReal"></span><span id="_CPPv2NK4dtOO9map3dTo3d13segmentConstUERK6dtReal"></span><span id="dtOO::map3dTo3d::segmentConstU__dtRealCRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a755db786108f01f54a64dcdb44d0c6cd"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segmentConstU</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d13segmentConstUERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the native constant-u boundary surface. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d13segmentConstVERK6dtReal">
+<span id="_CPPv3NK4dtOO9map3dTo3d13segmentConstVERK6dtReal"></span><span id="_CPPv2NK4dtOO9map3dTo3d13segmentConstVERK6dtReal"></span><span id="dtOO::map3dTo3d::segmentConstV__dtRealCRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a954af0e9163c1349c005762f1cd87bf3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segmentConstV</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vv</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d13segmentConstVERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the native constant-v boundary surface. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d13segmentConstWERK6dtReal">
+<span id="_CPPv3NK4dtOO9map3dTo3d13segmentConstWERK6dtReal"></span><span id="_CPPv2NK4dtOO9map3dTo3d13segmentConstWERK6dtReal"></span><span id="dtOO::map3dTo3d::segmentConstW__dtRealCRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a76a09774121fcd0af2371429648f4ecd"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segmentConstW</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ww</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d13segmentConstWERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the native constant-w boundary surface. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d13segmentConstUERK6dtRealRK8dtPoint2RK8dtPoint2">
+<span id="_CPPv3NK4dtOO9map3dTo3d13segmentConstUERK6dtRealRK8dtPoint2RK8dtPoint2"></span><span id="_CPPv2NK4dtOO9map3dTo3d13segmentConstUERK6dtRealRK8dtPoint2RK8dtPoint2"></span><span id="dtOO::map3dTo3d::segmentConstU__dtRealCR.dtPoint2CR.dtPoint2CRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1aedc33e364251883cb617ba35766315ee"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segmentConstU</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d13segmentConstUERK6dtRealRK8dtPoint2RK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>(w) A | (1) +—–&amp;#8212;+ <table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+</tr>
+</tbody>
+</table>
+
++—–&amp;#8212;+ –&gt; (v) (0) </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d13segmentConstVERK6dtRealRK8dtPoint2RK8dtPoint2">
+<span id="_CPPv3NK4dtOO9map3dTo3d13segmentConstVERK6dtRealRK8dtPoint2RK8dtPoint2"></span><span id="_CPPv2NK4dtOO9map3dTo3d13segmentConstVERK6dtRealRK8dtPoint2RK8dtPoint2"></span><span id="dtOO::map3dTo3d::segmentConstV__dtRealCR.dtPoint2CR.dtPoint2CRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a953c5bae9b7f66e529d25acce5607754"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segmentConstV</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vv</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d13segmentConstVERK6dtRealRK8dtPoint2RK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>(w) A | (1) +—–&amp;#8212;+ <table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+</tr>
+</tbody>
+</table>
+
++—–&amp;#8212;+ –&gt; (u) (0) </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d13segmentConstWERK6dtRealRK8dtPoint2RK8dtPoint2">
+<span id="_CPPv3NK4dtOO9map3dTo3d13segmentConstWERK6dtRealRK8dtPoint2RK8dtPoint2"></span><span id="_CPPv2NK4dtOO9map3dTo3d13segmentConstWERK6dtRealRK8dtPoint2RK8dtPoint2"></span><span id="dtOO::map3dTo3d::segmentConstW__dtRealCR.dtPoint2CR.dtPoint2CRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1aaca6e4144d11844ebf201b13baa05f0d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segmentConstW</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ww</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d13segmentConstWERK6dtRealRK8dtPoint2RK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>(v) A | (1) +—–&amp;#8212;+ <table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+</tr>
+</tbody>
+</table>
+
++—–&amp;#8212;+ –&gt; (u) (0) </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d22reparamPercentInVolumeERK8dtPoint3">
+<span id="_CPPv3NK4dtOO9map3dTo3d22reparamPercentInVolumeERK8dtPoint3"></span><span id="_CPPv2NK4dtOO9map3dTo3d22reparamPercentInVolumeERK8dtPoint3"></span><span id="dtOO::map3dTo3d::reparamPercentInVolume__dtPoint3CRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1ac253ea72bfaaa4bb82b0d11ee534355b"></span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reparamPercentInVolume</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ppXYZ</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d22reparamPercentInVolumeERK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Return normalized volume coordinates closest to a spatial point. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d21approxPercentInVolumeERK8dtPoint3">
+<span id="_CPPv3NK4dtOO9map3dTo3d21approxPercentInVolumeERK8dtPoint3"></span><span id="_CPPv2NK4dtOO9map3dTo3d21approxPercentInVolumeERK8dtPoint3"></span><span id="dtOO::map3dTo3d::approxPercentInVolume__dtPoint3CRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a1701ede438c2b20987376fa5807da0c5"></span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">approxPercentInVolume</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ppXYZ</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d21approxPercentInVolumeERK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Return approximate normalized volume coordinates for a spatial point. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d7inRangeERK8dtPoint3">
+<span id="_CPPv3NK4dtOO9map3dTo3d7inRangeERK8dtPoint3"></span><span id="_CPPv2NK4dtOO9map3dTo3d7inRangeERK8dtPoint3"></span><span id="dtOO::map3dTo3d::inRange__dtPoint3CRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1ab77daa0e7dad843d8e5ce1f9d9d2c5db"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inRange</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pUVW</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d7inRangeERK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether native volume coordinates lie within the parameter bounds. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d15getPointPercentERK6dtRealRK6dtRealRK6dtReal">
+<span id="_CPPv3NK4dtOO9map3dTo3d15getPointPercentERK6dtRealRK6dtRealRK6dtReal"></span><span id="_CPPv2NK4dtOO9map3dTo3d15getPointPercentERK6dtRealRK6dtRealRK6dtReal"></span><span id="dtOO::map3dTo3d::getPointPercent__dtRealCR.dtRealCR.dtRealCRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a216d44965e7e5475a8be4bdbf9d0b167"></span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPointPercent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uu</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vv</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ww</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d15getPointPercentERK6dtRealRK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the volume at normalized u, v, and w coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d11percent_uvwERK8dtPoint3">
+<span id="_CPPv3NK4dtOO9map3dTo3d11percent_uvwERK8dtPoint3"></span><span id="_CPPv2NK4dtOO9map3dTo3d11percent_uvwERK8dtPoint3"></span><span id="dtOO::map3dTo3d::percent_uvw__dtPoint3CRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a7c01a37ced1152ea46d9a60429669b7d"></span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">percent_uvw</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pUVW</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d11percent_uvwERK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert native u, v, and w coordinates to normalized coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d11uvw_percentERK8dtPoint3">
+<span id="_CPPv3NK4dtOO9map3dTo3d11uvw_percentERK8dtPoint3"></span><span id="_CPPv2NK4dtOO9map3dTo3d11uvw_percentERK8dtPoint3"></span><span id="dtOO::map3dTo3d::uvw_percent__dtPoint3CRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1a0e17ea11925f5e32555dc16234035a60"></span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uvw_percent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pp</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d11uvw_percentERK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert normalized u, v, and w coordinates to native coordinates. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO9map3dTo3d7segmentERK8dtPoint3RK8dtPoint3RK8dtPoint3RK8dtPoint3">
+<span id="_CPPv3NK4dtOO9map3dTo3d7segmentERK8dtPoint3RK8dtPoint3RK8dtPoint3RK8dtPoint3"></span><span id="_CPPv2NK4dtOO9map3dTo3d7segmentERK8dtPoint3RK8dtPoint3RK8dtPoint3RK8dtPoint3"></span><span id="dtOO::map3dTo3d::segment__dtPoint3CR.dtPoint3CR.dtPoint3CR.dtPoint3CRC"></span><span class="target" id="classdtOO_1_1map3dTo3d_1aeec55953ab8c0ba16d763e3dc5f10e11"></span><a class="reference internal" href="#_CPPv4N4dtOO9map2dTo3dE" title="dtOO::map2dTo3d"><span class="n"><span class="pre">map2dTo3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">segment</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span>, <span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p2</span></span>, <span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p3</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO9map3dTo3d7segmentERK8dtPoint3RK8dtPoint3RK8dtPoint3RK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>(v) A |</p>
+<p>(3) (2) +—–&amp;#8212;+ <table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+</tr>
+</tbody>
+</table>
+
++—–&amp;#8212;+ –&gt; (u) (0) (1) </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="analyticFunction.html" class="btn btn-neutral float-left" title="analyticFunction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="boundedVolume.html" class="btn btn-neutral float-right" title="boundedVolume" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Alexander Tismer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

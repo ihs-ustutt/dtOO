@@ -1,0 +1,430 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>analyticFunction &mdash; dtOO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Geometry" href="analyticGeometry.html" />
+    <link rel="prev" title="constValue" href="constValue.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/dtoo-logo-inv-nbg.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demonstration.html">Demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test.html">Test</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="api.html#c-core-classes">C++ core classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="constValue.html">constValue</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">analyticFunction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4dtOO16analyticFunctionE"><code class="docutils literal notranslate"><span class="pre">dtOO::analyticFunction</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="analyticGeometry.html">Geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="boundedVolume.html">boundedVolume</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dtCase.html">dtCase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dtPlugin.html">dtPlugin</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#python-pydtoo-classes">Python pyDtOO classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#python-dtoopythonapp-classes">Python dtOOPythonApp classes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/ihs-ustutt/dtOO">Back to GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">dtOO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">API documentation</a></li>
+      <li class="breadcrumb-item active">analyticFunction</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/analyticFunction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="analyticfunction">
+<h1>analyticFunction<a class="headerlink" href="#analyticfunction" title="Link to this heading"></a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunctionE">
+<span id="_CPPv3N4dtOO16analyticFunctionE"></span><span id="_CPPv2N4dtOO16analyticFunctionE"></span><span id="dtOO::analyticFunction"></span><span class="target" id="classdtOO_1_1analyticFunction"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">analyticFunction</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">dtOO</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">labelHandling</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">dtOO</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">renderInterface</span></span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunctionE" title="Link to this definition"></a><br /></dt>
+<dd><p>Abstract base class for analytic mappings between vector spaces. </p>
+<p>An analytic function maps an input vector of type aFX to an output vector of type aFY. Derived classes define the input and output dimensions, input bounds, evaluation, cloning, and transformation behavior.</p>
+<p>Input percent coordinates are normalized to [0, 1] in each direction. Convenience overloads evaluate one-, two-, and three-dimensional functions and return their output components as standard vectors. </p>
+<p>Subclassed by dtOO::scaFunction, dtOO::vec2dFunction, dtOO::vec3dFunction</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction5cloneEv">
+<span id="_CPPv3NK4dtOO16analyticFunction5cloneEv"></span><span id="_CPPv2NK4dtOO16analyticFunction5cloneEv"></span><span id="dtOO::analyticFunction::clone__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a5c5bc91e15c22c4b49ebac4fbf949d11"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO16analyticFunctionE" title="dtOO::analyticFunction"><span class="n"><span class="pre">analyticFunction</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction5cloneEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a deep copy of this function. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction9weakCloneEv">
+<span id="_CPPv3NK4dtOO16analyticFunction9weakCloneEv"></span><span id="_CPPv2NK4dtOO16analyticFunction9weakCloneEv"></span><span id="dtOO::analyticFunction::weakClone__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a6bd6df9556599c74189ace54d6bdba64"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO16analyticFunctionE" title="dtOO::analyticFunction"><span class="n"><span class="pre">analyticFunction</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">weakClone</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction9weakCloneEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a copy that may share immutable internal data with this function. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction16cloneTransformedEPCK13dtTransformer">
+<span id="_CPPv3NK4dtOO16analyticFunction16cloneTransformedEPCK13dtTransformer"></span><span id="_CPPv2NK4dtOO16analyticFunction16cloneTransformedEPCK13dtTransformer"></span><span id="dtOO::analyticFunction::cloneTransformed__dtTransformerCPCC"></span><span class="target" id="classdtOO_1_1analyticFunction_1af7ff6db51ad182bdaa0a4acd25b195fe"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO16analyticFunctionE" title="dtOO::analyticFunction"><span class="n"><span class="pre">analyticFunction</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">cloneTransformed</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtTransformer</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dtT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction16cloneTransformedEPCK13dtTransformer" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a copy transformed by the supplied transformer. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction6createEv">
+<span id="_CPPv3NK4dtOO16analyticFunction6createEv"></span><span id="_CPPv2NK4dtOO16analyticFunction6createEv"></span><span id="dtOO::analyticFunction::create__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1ae64f1d08eefd2f6c1fced41a6566e14c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4dtOO16analyticFunctionE" title="dtOO::analyticFunction"><span class="n"><span class="pre">analyticFunction</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction6createEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a default instance of the concrete function type. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction4dumpEv">
+<span id="_CPPv3NK4dtOO16analyticFunction4dumpEv"></span><span id="_CPPv2NK4dtOO16analyticFunction4dumpEv"></span><span id="dtOO::analyticFunction::dump__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a4f487a1622153af44ec6c34a04a6adba"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dump</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction4dumpEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Write the label, dynamic class name, and textual representation to the log. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction12dumpToStringEv">
+<span id="_CPPv3NK4dtOO16analyticFunction12dumpToStringEv"></span><span id="_CPPv2NK4dtOO16analyticFunction12dumpToStringEv"></span><span id="dtOO::analyticFunction::dumpToString__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1aab59f578fa88c9f9b28048fff4d64e22"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dumpToString</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction12dumpToStringEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return a textual representation of this function. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction1YERK3aFX">
+<span id="_CPPv3NK4dtOO16analyticFunction1YERK3aFX"></span><span id="_CPPv2NK4dtOO16analyticFunction1YERK3aFX"></span><span id="dtOO::analyticFunction::Y__aFXCRC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a96bbad083dac6a9360fdac3f119fe671"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">aFY</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Y</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xx</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction1YERK3aFX" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xx</strong> – Input vector in native coordinates. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Function value. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction4xDimEv">
+<span id="_CPPv3NK4dtOO16analyticFunction4xDimEv"></span><span id="_CPPv2NK4dtOO16analyticFunction4xDimEv"></span><span id="dtOO::analyticFunction::xDim__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a1fd44583c26376ec168747ec90bb8478"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtInt</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xDim</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction4xDimEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the input-space dimension. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction4yDimEv">
+<span id="_CPPv3NK4dtOO16analyticFunction4yDimEv"></span><span id="_CPPv2NK4dtOO16analyticFunction4yDimEv"></span><span id="dtOO::analyticFunction::yDim__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a461b560ee794042e036f0d17ce42994e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtInt</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">yDim</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction4yDimEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the output-space dimension. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction4xMinERK5dtInt">
+<span id="_CPPv3NK4dtOO16analyticFunction4xMinERK5dtInt"></span><span id="_CPPv2NK4dtOO16analyticFunction4xMinERK5dtInt"></span><span id="dtOO::analyticFunction::xMin__dtIntCRC"></span><span class="target" id="classdtOO_1_1analyticFunction_1ae198a4b493307cf749f4c56b027f2018"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xMin</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtInt</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dir</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction4xMinERK5dtInt" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the lower bound of an input direction. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction4xMaxERK5dtInt">
+<span id="_CPPv3NK4dtOO16analyticFunction4xMaxERK5dtInt"></span><span id="_CPPv2NK4dtOO16analyticFunction4xMaxERK5dtInt"></span><span id="dtOO::analyticFunction::xMax__dtIntCRC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a164544aebc4335cac38350879a898983"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xMax</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtInt</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dir</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction4xMaxERK5dtInt" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the upper bound of an input direction. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction4xMinEv">
+<span id="_CPPv3NK4dtOO16analyticFunction4xMinEv"></span><span id="_CPPv2NK4dtOO16analyticFunction4xMinEv"></span><span id="dtOO::analyticFunction::xMin__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1ae9ed3fa609744f48ea87a146a6be116f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xMin</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction4xMinEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the lower bounds of all input directions. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction4xMaxEv">
+<span id="_CPPv3NK4dtOO16analyticFunction4xMaxEv"></span><span id="_CPPv2NK4dtOO16analyticFunction4xMaxEv"></span><span id="dtOO::analyticFunction::xMax__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1aee6e7c0f12a4c2a25b76458ce70013df"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xMax</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction4xMaxEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the upper bounds of all input directions. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction9x_percentERK3aFX">
+<span id="_CPPv3NK4dtOO16analyticFunction9x_percentERK3aFX"></span><span id="_CPPv2NK4dtOO16analyticFunction9x_percentERK3aFX"></span><span id="dtOO::analyticFunction::x_percent__aFXCRC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a71dc345c28ac12551c7143da269ff5bc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">x_percent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xx</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction9x_percentERK3aFX" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert normalized input coordinates to native coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xx</strong> – One percent coordinate in [0, 1] per input direction. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Native input coordinates. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction9percent_xERK3aFX">
+<span id="_CPPv3NK4dtOO16analyticFunction9percent_xERK3aFX"></span><span id="_CPPv2NK4dtOO16analyticFunction9percent_xERK3aFX"></span><span id="dtOO::analyticFunction::percent_x__aFXCRC"></span><span class="target" id="classdtOO_1_1analyticFunction_1ad292f068a717b6a48f19c38771a6231b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">percent_x</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xx</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction9percent_xERK3aFX" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert native input coordinates to normalized coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xx</strong> – Native input coordinates. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>One percent coordinate in [0, 1] per input direction. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction4invYERK3aFY">
+<span id="_CPPv3NK4dtOO16analyticFunction4invYERK3aFY"></span><span id="_CPPv2NK4dtOO16analyticFunction4invYERK3aFY"></span><span id="dtOO::analyticFunction::invY__aFYCRC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a7d50a996ef3ac60e35467cff9ccafa87"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">invY</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">aFY</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">yy</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction4invYERK3aFY" title="Link to this definition"></a><br /></dt>
+<dd><p>Numerically invert the function for an output value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>yy</strong> – Target output vector. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">Exception</span></span></span> – if the numerical minimization does not converge. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Native input coordinates that produce the target output. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction10isCompoundEv">
+<span id="_CPPv3NK4dtOO16analyticFunction10isCompoundEv"></span><span id="_CPPv2NK4dtOO16analyticFunction10isCompoundEv"></span><span id="dtOO::analyticFunction::isCompound__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a5910470c863ee361db4896adf3d50abb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isCompound</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction10isCompoundEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether this function consists of multiple component functions. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction6vecRefEv">
+<span id="_CPPv3NK4dtOO16analyticFunction6vecRefEv"></span><span id="_CPPv2NK4dtOO16analyticFunction6vecRefEv"></span><span id="dtOO::analyticFunction::vecRef__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a49930d17bcddb7e42adf0484cf70c515"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">vectorHandling</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N4dtOO16analyticFunctionE" title="dtOO::analyticFunction"><span class="n"><span class="pre">analyticFunction</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">vecRef</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction6vecRefEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the component functions of a compound function. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction6mapRefEv">
+<span id="_CPPv3NK4dtOO16analyticFunction6mapRefEv"></span><span id="_CPPv2NK4dtOO16analyticFunction6mapRefEv"></span><span id="dtOO::analyticFunction::mapRef__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1af9c6bd77eb56aac025b1758d1b55a0d3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">dtInt</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">mapRef</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction6mapRefEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the mapping between compound-function and component indices. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction13isTransformedEv">
+<span id="_CPPv3NK4dtOO16analyticFunction13isTransformedEv"></span><span id="_CPPv2NK4dtOO16analyticFunction13isTransformedEv"></span><span id="dtOO::analyticFunction::isTransformed__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a374453c642f9b5680cd2332cdd0ddb4c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isTransformed</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction13isTransformedEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether this function represents a transformed function. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunction12yBoundingBoxEv">
+<span id="_CPPv3NK4dtOO16analyticFunction12yBoundingBoxEv"></span><span id="_CPPv2NK4dtOO16analyticFunction12yBoundingBoxEv"></span><span id="dtOO::analyticFunction::yBoundingBox__voidC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a580c71c9c69cc3a3f468781be79eda20"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">aFY</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">aFY</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">yBoundingBox</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunction12yBoundingBoxEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return lower and upper output bounds, if provided by the implementation. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunctionclERK6dtReal">
+<span id="_CPPv3NK4dtOO16analyticFunctionclERK6dtReal"></span><span id="_CPPv2NK4dtOO16analyticFunctionclERK6dtReal"></span><span id="dtOO::analyticFunction::call-operator__dtRealCRC"></span><span class="target" id="classdtOO_1_1analyticFunction_1aad5f15c305a9018135985b98117b3a2b"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtReal</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xx</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunctionclERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate a one-dimensional function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">Exception</span></span></span> – if <a class="reference internal" href="#classdtOO_1_1analyticFunction_1a1fd44583c26376ec168747ec90bb8478"><span class="std std-ref">xDim()</span></a> is not one. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunctionclERK6dtRealRK6dtReal">
+<span id="_CPPv3NK4dtOO16analyticFunctionclERK6dtRealRK6dtReal"></span><span id="_CPPv2NK4dtOO16analyticFunctionclERK6dtRealRK6dtReal"></span><span id="dtOO::analyticFunction::call-operator__dtRealCR.dtRealCRC"></span><span class="target" id="classdtOO_1_1analyticFunction_1a04099fb0163ce8fbcf41d7aa53ff975b"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtReal</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xx</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">yy</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunctionclERK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate a two-dimensional function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">Exception</span></span></span> – if <a class="reference internal" href="#classdtOO_1_1analyticFunction_1a1fd44583c26376ec168747ec90bb8478"><span class="std std-ref">xDim()</span></a> is not two. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4dtOO16analyticFunctionclERK6dtRealRK6dtRealRK6dtReal">
+<span id="_CPPv3NK4dtOO16analyticFunctionclERK6dtRealRK6dtRealRK6dtReal"></span><span id="_CPPv2NK4dtOO16analyticFunctionclERK6dtRealRK6dtRealRK6dtReal"></span><span id="dtOO::analyticFunction::call-operator__dtRealCR.dtRealCR.dtRealCRC"></span><span class="target" id="classdtOO_1_1analyticFunction_1acb39896bdf1267303e3eac8f28c17432"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">dtReal</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xx</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">yy</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">zz</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4dtOO16analyticFunctionclERK6dtRealRK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate a three-dimensional function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">Exception</span></span></span> – if <a class="reference internal" href="#classdtOO_1_1analyticFunction_1a1fd44583c26376ec168747ec90bb8478"><span class="std std-ref">xDim()</span></a> is not three. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction8aFXZeroDEv">
+<span id="_CPPv3N4dtOO16analyticFunction8aFXZeroDEv"></span><span id="_CPPv2N4dtOO16analyticFunction8aFXZeroDEv"></span><span id="dtOO::analyticFunction::aFXZeroD__void"></span><span class="target" id="classdtOO_1_1analyticFunction_1a4c219d6d4ddb04b1a8a957fee56afc12"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFXZeroD</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction8aFXZeroDEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create an empty input vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction7aFXOneDERK6dtReal">
+<span id="_CPPv3N4dtOO16analyticFunction7aFXOneDERK6dtReal"></span><span id="_CPPv2N4dtOO16analyticFunction7aFXOneDERK6dtReal"></span><span id="dtOO::analyticFunction::aFXOneD__dtRealCR"></span><span class="target" id="classdtOO_1_1analyticFunction_1acaca143dbfabb7287a5a5c3dbcb3058e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFXOneD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction7aFXOneDERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a one-dimensional input vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction7aFXTwoDERK6dtRealRK6dtReal">
+<span id="_CPPv3N4dtOO16analyticFunction7aFXTwoDERK6dtRealRK6dtReal"></span><span id="_CPPv2N4dtOO16analyticFunction7aFXTwoDERK6dtRealRK6dtReal"></span><span id="dtOO::analyticFunction::aFXTwoD__dtRealCR.dtRealCR"></span><span class="target" id="classdtOO_1_1analyticFunction_1ad2d2efbf12e38e08b0be6d651466df89"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFXTwoD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x0</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction7aFXTwoDERK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a two-dimensional input vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction9aFXThreeDERK6dtRealRK6dtRealRK6dtReal">
+<span id="_CPPv3N4dtOO16analyticFunction9aFXThreeDERK6dtRealRK6dtRealRK6dtReal"></span><span id="_CPPv2N4dtOO16analyticFunction9aFXThreeDERK6dtRealRK6dtRealRK6dtReal"></span><span id="dtOO::analyticFunction::aFXThreeD__dtRealCR.dtRealCR.dtRealCR"></span><span class="target" id="classdtOO_1_1analyticFunction_1afd93be75e510235668ad6059258ec90c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFXThreeD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x0</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x1</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction9aFXThreeDERK6dtRealRK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a three-dimensional input vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction7aFXTwoDERK8dtPoint2">
+<span id="_CPPv3N4dtOO16analyticFunction7aFXTwoDERK8dtPoint2"></span><span id="_CPPv2N4dtOO16analyticFunction7aFXTwoDERK8dtPoint2"></span><span id="dtOO::analyticFunction::aFXTwoD__dtPoint2CR"></span><span class="target" id="classdtOO_1_1analyticFunction_1a2c0084ad219d10a88f25df206c0bec5d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFXTwoD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction7aFXTwoDERK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert a 2D point to a two-dimensional input vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction9aFXThreeDERK8dtPoint3">
+<span id="_CPPv3N4dtOO16analyticFunction9aFXThreeDERK8dtPoint3"></span><span id="_CPPv2N4dtOO16analyticFunction9aFXThreeDERK8dtPoint3"></span><span id="dtOO::analyticFunction::aFXThreeD__dtPoint3CR"></span><span class="target" id="classdtOO_1_1analyticFunction_1aa4957fe0e7de00e02177460ff70d6395"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFXThreeD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction9aFXThreeDERK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert a 3D point to a three-dimensional input vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction8aFYZeroDEv">
+<span id="_CPPv3N4dtOO16analyticFunction8aFYZeroDEv"></span><span id="_CPPv2N4dtOO16analyticFunction8aFYZeroDEv"></span><span id="dtOO::analyticFunction::aFYZeroD__void"></span><span class="target" id="classdtOO_1_1analyticFunction_1ab0548526842585eea9b984350da2b198"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFY</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFYZeroD</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction8aFYZeroDEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create an empty output vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction7aFYOneDERK6dtReal">
+<span id="_CPPv3N4dtOO16analyticFunction7aFYOneDERK6dtReal"></span><span id="_CPPv2N4dtOO16analyticFunction7aFYOneDERK6dtReal"></span><span id="dtOO::analyticFunction::aFYOneD__dtRealCR"></span><span class="target" id="classdtOO_1_1analyticFunction_1a3843cdb2659253b4efa0e23f83bcfd41"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFY</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFYOneD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction7aFYOneDERK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a one-dimensional output vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction7aFYTwoDERK6dtRealRK6dtReal">
+<span id="_CPPv3N4dtOO16analyticFunction7aFYTwoDERK6dtRealRK6dtReal"></span><span id="_CPPv2N4dtOO16analyticFunction7aFYTwoDERK6dtRealRK6dtReal"></span><span id="dtOO::analyticFunction::aFYTwoD__dtRealCR.dtRealCR"></span><span class="target" id="classdtOO_1_1analyticFunction_1aeea544bf0d3fd615cb69a03b59cad739"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFY</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFYTwoD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x0</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction7aFYTwoDERK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a two-dimensional output vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction9aFYThreeDERK6dtRealRK6dtRealRK6dtReal">
+<span id="_CPPv3N4dtOO16analyticFunction9aFYThreeDERK6dtRealRK6dtRealRK6dtReal"></span><span id="_CPPv2N4dtOO16analyticFunction9aFYThreeDERK6dtRealRK6dtRealRK6dtReal"></span><span id="dtOO::analyticFunction::aFYThreeD__dtRealCR.dtRealCR.dtRealCR"></span><span class="target" id="classdtOO_1_1analyticFunction_1a04590351097b66e79df8eb87e8a9638b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFY</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFYThreeD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x0</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x1</span></span>, <span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction9aFYThreeDERK6dtRealRK6dtRealRK6dtReal" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a three-dimensional output vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction7aFYTwoDERK8dtPoint2">
+<span id="_CPPv3N4dtOO16analyticFunction7aFYTwoDERK8dtPoint2"></span><span id="_CPPv2N4dtOO16analyticFunction7aFYTwoDERK8dtPoint2"></span><span id="dtOO::analyticFunction::aFYTwoD__dtPoint2CR"></span><span class="target" id="classdtOO_1_1analyticFunction_1a158dfe501b72b4e6a610749f64a9c390"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFY</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFYTwoD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction7aFYTwoDERK8dtPoint2" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert a 2D point to a two-dimensional output vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction9aFYThreeDERK8dtPoint3">
+<span id="_CPPv3N4dtOO16analyticFunction9aFYThreeDERK8dtPoint3"></span><span id="_CPPv2N4dtOO16analyticFunction9aFYThreeDERK8dtPoint3"></span><span id="dtOO::analyticFunction::aFYThreeD__dtPoint3CR"></span><span class="target" id="classdtOO_1_1analyticFunction_1ab677c6a2580f79ff275b1579350c7b4c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFY</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFYThreeD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction9aFYThreeDERK8dtPoint3" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert a 3D point to a three-dimensional output vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction7aFY_aFXERK3aFX">
+<span id="_CPPv3N4dtOO16analyticFunction7aFY_aFXERK3aFX"></span><span id="_CPPv2N4dtOO16analyticFunction7aFY_aFXERK3aFX"></span><span id="dtOO::analyticFunction::aFY_aFX__aFXCR"></span><span class="target" id="classdtOO_1_1analyticFunction_1a451c9652ac7067790901b852edb1de94"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFY</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFY_aFX</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction7aFY_aFXERK3aFX" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert an input vector to an output vector with identical components. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction7aFX_aFYERK3aFY">
+<span id="_CPPv3N4dtOO16analyticFunction7aFX_aFYERK3aFY"></span><span id="_CPPv2N4dtOO16analyticFunction7aFX_aFYERK3aFY"></span><span id="dtOO::analyticFunction::aFX_aFY__aFYCR"></span><span class="target" id="classdtOO_1_1analyticFunction_1a39ca98e7f14fb8195eaa999e66bc5a92"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">aFX_aFY</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">aFY</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">yy</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction7aFX_aFYERK3aFY" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert an output vector to an input vector with identical components. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4dtOO16analyticFunction8distanceERK3aFXRK3aFX">
+<span id="_CPPv3N4dtOO16analyticFunction8distanceERK3aFXRK3aFX"></span><span id="_CPPv2N4dtOO16analyticFunction8distanceERK3aFXRK3aFX"></span><span id="dtOO::analyticFunction::distance__aFXCR.aFXCR"></span><span class="target" id="classdtOO_1_1analyticFunction_1a85a4d42b70f945dd86426cc6ddc7f100"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">dtReal</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">distance</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x0</span></span>, <span class="n"><span class="pre">aFX</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO16analyticFunction8distanceERK3aFXRK3aFX" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the Euclidean distance between equally sized input vectors. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="constValue.html" class="btn btn-neutral float-left" title="constValue" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="analyticGeometry.html" class="btn btn-neutral float-right" title="Geometry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Alexander Tismer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
