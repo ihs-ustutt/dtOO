@@ -342,11 +342,6 @@ map3dTo3d::firstDerW(dtReal const &uu, dtReal const &vv, dtReal const &ww) const
   return firstDer(uu, vv, ww)[2];
 }
 
-dtPoint3 map3dTo3d::reparamInVolume(dtPoint3 const &ppXYZ) const
-{
-  return reparamInVolume(ppXYZ, dtVector3(0, 0, 0));
-}
-
 dtPoint3 map3dTo3d::reparamPercentInVolume(dtPoint3 const &ppXYZ) const
 {
   dtPoint3 ppUVW = reparamInVolume(ppXYZ);
@@ -430,32 +425,32 @@ dtPoint3 map3dTo3d::getPointPercent(dtPoint3 const &ppUVW) const
 
 dtReal map3dTo3d::u_percent(dtReal const &uu) const
 {
-  return (getUMin() + (getUMax() - getUMin()) * uu);
+  return val_percent(uu, 0);
 }
 
 dtReal map3dTo3d::v_percent(dtReal const &vv) const
 {
-  return (getVMin() + (getVMax() - getVMin()) * vv);
+  return val_percent(vv, 1);
 }
 
 dtReal map3dTo3d::w_percent(dtReal const &ww) const
 {
-  return (getWMin() + (getWMax() - getWMin()) * ww);
+  return val_percent(ww, 2);
 }
 
 dtReal map3dTo3d::percent_u(dtReal const &uu) const
 {
-  return ((uu - getUMin()) / (getUMax() - getUMin()));
+  return percent_val(uu, 0);
 }
 
 dtReal map3dTo3d::percent_v(dtReal const &vv) const
 {
-  return ((vv - getVMin()) / (getVMax() - getVMin()));
+  return percent_val(vv, 1);
 }
 
 dtReal map3dTo3d::percent_w(dtReal const &ww) const
 {
-  return ((ww - getWMin()) / (getWMax() - getWMin()));
+  return percent_val(ww, 2);
 }
 
 dtPoint3 map3dTo3d::percent_uvw(dtPoint3 const &pUVW) const
@@ -692,52 +687,12 @@ map2dTo3d *map3dTo3d::segmentPercent(
   );
 }
 
-dtPoint3 map3dTo3d::reparamInVolume(
-  dtPoint3 const &ppXYZ, dtVector3 const &uvwExtPercent
-) const
+dtPoint3 map3dTo3d::reparamInVolume(dtPoint3 const &ppXYZ) const
 {
-  gslMinFloatAttr
-    md(
-      dt__pH(pointGeometryDist)(new pointGeometryDist(ppXYZ, this)),
-      // clang-format off
-      std::vector<dtPoint3>(
-        ::boost::assign::list_of
-          (dtPoint3(0.50, 0.50, 0.50))
-          (dtPoint3(0.75, 0.50, 0.50))
-          (dtPoint3(0.25, 0.50, 0.50))
-          (dtPoint3(0.50, 0.75, 0.50))
-          (dtPoint3(0.75, 0.75, 0.50))
-          (dtPoint3(0.25, 0.75, 0.50))
-          (dtPoint3(0.50, 0.25, 0.50))
-          (dtPoint3(0.75, 0.25, 0.50))
-          (dtPoint3(0.25, 0.25, 0.50))
-          (dtPoint3(0.50, 0.50, 0.75))
-          (dtPoint3(0.75, 0.50, 0.75))
-          (dtPoint3(0.25, 0.50, 0.75))
-          (dtPoint3(0.50, 0.75, 0.75))
-          (dtPoint3(0.75, 0.75, 0.75))
-          (dtPoint3(0.25, 0.75, 0.75))
-          (dtPoint3(0.50, 0.25, 0.75))
-          (dtPoint3(0.75, 0.25, 0.75))
-          (dtPoint3(0.25, 0.25, 0.75))
-          (dtPoint3(0.50, 0.50, 0.25))
-          (dtPoint3(0.75, 0.50, 0.25))
-          (dtPoint3(0.25, 0.50, 0.25))
-          (dtPoint3(0.50, 0.75, 0.25))
-          (dtPoint3(0.75, 0.75, 0.25))
-          (dtPoint3(0.25, 0.75, 0.25))
-          (dtPoint3(0.50, 0.25, 0.25))
-          (dtPoint3(0.75, 0.25, 0.25))
-          (dtPoint3(0.25, 0.25, 0.25))
-      ),
-      // clang-format on
-      dtPoint3(0.001, 0.001, 0.001),
-      staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
-      1000
-    );
-  md.perform();
-  dt__throwIf(!md.converged(), reparamInVolume());
-  return uvw_percent(dtPoint3(md.result()[0], md.result()[1], md.result()[2]));
+  std::vector<dtReal> uvw(0);
+  bool const converged = analyticGeometry::reparam(ppXYZ, uvw);
+  dt__throwIf(!converged, reparamInVolume());
+  return dtPoint3(uvw[0], uvw[1], uvw[2]);
 }
 
 dt__C_addCloneForpVH(map3dTo3d);

@@ -63,7 +63,7 @@ class robustCompare:
         self,
         meshA: str,
         meshB: str,
-        tolerance: float = 1.0e-12
+        tolerance: float = 1.0e-04
     ) -> None:
         """Constructor.
 
@@ -90,18 +90,15 @@ class robustCompare:
         self.meshAData_ = None
         self.meshBData_ = None
 
-        self.tolerance_ = tolerance
-
         self.meshesRead_ = False
 
         #
         # Public element type names follow the Gmsh terminology.
-        #
         # The values are the corresponding meshio cell types.
         #
         self.elementTypes_ = {
             "MTetrahedron": "tetra",
-            "MPrism": "prism",
+            "MPrism": "wedge",
             "MHexahedron": "hexahedron",
             "MPyramid": "pyramid",
             "MQuad": "quad",
@@ -110,6 +107,22 @@ class robustCompare:
             "MPoint": "vertex"
         }
         self.readMeshes()
+
+        characteristicLengthA = np.linalg.norm(
+            np.max(self.meshAData_.points, axis=0)
+            - np.min(self.meshAData_.points, axis=0)
+        )
+        characteristicLengthB = np.linalg.norm(
+            np.max(self.meshBData_.points, axis=0)
+            - np.min(self.meshBData_.points, axis=0)
+        )
+        characteristicLength = max(
+            characteristicLengthA,
+            characteristicLengthB
+        )
+        self.tolerance_ = tolerance * characteristicLength
+
+        logging.info("Tolerance is set to %e" % self.tolerance_)
 
     def readMeshes(self) -> None:
         """Read both meshes.
@@ -655,6 +668,10 @@ class robustCompare:
     ) -> np.ndarray:
         """Sort node coordinates lexicographically.
 
+        The coordinates are rounded according to the comparison tolerance
+        before sorting. This prevents small numerical differences from
+        changing the ordering of otherwise identical nodes.
+    
         Parameters
         ----------
         coordinates: numpy.ndarray
@@ -665,11 +682,15 @@ class robustCompare:
         numpy.ndarray
             Sorted node coordinates.
         """
+        sortCoordinates = np.round(
+            coordinates / self.tolerance_
+        )
+    
         indices = np.lexsort(
             (
-                coordinates[:, 2],
-                coordinates[:, 1],
-                coordinates[:, 0]
+                sortCoordinates[:, 2],
+                sortCoordinates[:, 1],
+                sortCoordinates[:, 0]
             )
         )
 

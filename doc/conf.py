@@ -46,5 +46,10 @@ autodoc_mock_imports = [
   'sklearn',
   'scipy',
   'numpy',
-  'os'
+  'os',
+  'meshio',
+  'OCC'
   ]
+
+add_module_names = False
+toc_object_entries_show_parents = 'hide'

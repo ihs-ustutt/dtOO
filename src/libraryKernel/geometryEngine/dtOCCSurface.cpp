@@ -129,19 +129,24 @@ bool dtOCCSurface::closed(dtInt const dim) const
 
 dtPoint3 dtOCCSurface::point(dtReal const uu, dtReal const vv) const
 {
-  //  	Standard_Real uR = static_cast<Standard_Real>(uu);
-  //		Standard_Real vR = static_cast<Standard_Real>(vv);
-
-  Standard_Real U1;
-  Standard_Real U2;
-  Standard_Real V1;
-  Standard_Real V2;
+  // get parameter bounds
+  Standard_Real U1, U2, V1, V2;
   _ptr->Bounds(U1, U2, V1, V2);
 
-  Standard_Real uR =
-    calculationTypeHandling<Standard_Real, dtReal>::boundToRange(uu, U1, U2);
-  Standard_Real vR =
-    calculationTypeHandling<Standard_Real, dtReal>::boundToRange(vv, V1, V2);
+  //
+  // bound a coordinate if direction is not closed and if it is out of bounds;
+  // if direction is closed, then coordinate is wraped to the range
+  //
+  // first coordinate
+  Standard_Real uR = static_cast<Standard_Real>(uu);
+  if (this->closed(0) && !this->inRange(uu, 0))
+    uR = innerOCCHand::wrapToRange(uR, U1, U2);
+  uR = innerOCCHand::boundToRange(uR, U1, U2);
+  // second coordinate
+  Standard_Real vR = static_cast<Standard_Real>(vv);
+  if (this->closed(1) && !this->inRange(vv, 1))
+    vR = innerOCCHand::wrapToRange(vv, V1, V2);
+  vR = innerOCCHand::boundToRange(vR, V1, V2);
 
   gp_Pnt pp;
   dt__tryOcc(pp = _ptr->Value(uR, vR);,

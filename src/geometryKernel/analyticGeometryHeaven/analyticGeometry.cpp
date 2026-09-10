@@ -17,7 +17,12 @@ License
 
 #include "analyticGeometry.h"
 
+#include <attributionHeaven/pointGeometryDist.h>
+#include <boost/assign/list_of.hpp>
+#include <gslMinFloatAttr.h>
+#include <interfaceHeaven/calculationTypeHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
+#include <limits>
 #include <logMe/logMe.h>
 #include <progHelper.h>
 
@@ -58,10 +63,7 @@ dtPoint3 analyticGeometry::getPoint(dtReal const *const uvw) const
 dtPoint3 analyticGeometry::getPointPercent(dtReal const *const uvw) const
 {
   dtReal uvwP[dim()];
-  dt__forFromToIndex(0, dim(), ii)
-  {
-    uvwP[ii] = getMin(ii) + uvw[ii] * (getMax(ii) - getMin(ii));
-  }
+  dt__forFromToIndex(0, dim(), ii) { uvwP[ii] = val_percent(uvw[ii], ii); }
 
   return getPoint(uvwP);
 }
@@ -70,10 +72,7 @@ dtPoint3 analyticGeometry::getPointPercent(dtReal const *const uvw) const
 analyticGeometry::firstDerPercent(dtReal const *const uvw) const
 {
   dtReal uvwP[dim()];
-  dt__forFromToIndex(0, dim(), ii)
-  {
-    uvwP[ii] = getMin(ii) + uvw[ii] * (getMax(ii) - getMin(ii));
-  }
+  dt__forFromToIndex(0, dim(), ii) { uvwP[ii] = val_percent(uvw[ii], ii); }
   return firstDer(uvwP);
 }
 
@@ -347,6 +346,117 @@ std::vector<dtPoint3> analyticGeometry::cornerPoints(void) const
     dt__throwUnexpected(updateBoundingBox());
 }
 
+bool analyticGeometry::reparam(dtPoint3 const &xyz, std::vector<dtReal> &uvw)
+  const
+{
+  // convert initial guess to percent
+  dt__forAllIndex(uvw, ii) { uvw[ii] = val_percent(uvw[ii], ii); }
+
+  // initialize guesses and steps
+  std::vector<std::vector<dtReal>> guesses;
+  std::vector<dtReal> steps;
+  if (this->dim() == 1)
+  {
+    guesses = std::vector<std::vector<dtReal>>(
+      ::boost::assign::list_of
+      // clang-format off
+        (::boost::assign::list_of(0.50))
+        (::boost::assign::list_of(0.75))
+        (::boost::assign::list_of(0.25))
+      // clang-format on
+    );
+    steps = std::vector<dtReal>(::boost::assign::list_of(0.001));
+  }
+  else if (this->dim() == 2)
+  {
+    guesses = std::vector<std::vector<dtReal>>(
+      ::boost::assign::list_of
+      // clang-format off
+        (::boost::assign::list_of(0.50)(0.50))
+        (::boost::assign::list_of(0.75)(0.50))
+        (::boost::assign::list_of(0.25)(0.50))
+        (::boost::assign::list_of(0.50)(0.75))
+        (::boost::assign::list_of(0.75)(0.75))
+        (::boost::assign::list_of(0.25)(0.75))
+        (::boost::assign::list_of(0.50)(0.25))
+        (::boost::assign::list_of(0.75)(0.25))
+        (::boost::assign::list_of(0.25)(0.25))
+      // clang-format on
+    );
+    steps = std::vector<dtReal>(::boost::assign::list_of(0.001)(0.001));
+  }
+  else if (this->dim() == 3)
+  {
+    guesses =
+      std::
+        vector<std::
+                 vector<dtReal>>(::boost::assign::list_of
+                                 // clang-format off
+        (::boost::assign::list_of(0.50)(0.50)(0.50))
+        (::boost::assign::list_of(0.75)(0.50)(0.50))
+        (::boost::assign::list_of(0.25)(0.50)(0.50))
+        (::boost::assign::list_of(0.50)(0.75)(0.50))
+        (::boost::assign::list_of(0.75)(0.75)(0.50))
+        (::boost::assign::list_of(0.25)(0.75)(0.50))
+        (::boost::assign::list_of(0.50)(0.25)(0.50))
+        (::boost::assign::list_of(0.75)(0.25)(0.50))
+        (::boost::assign::list_of(0.25)(0.25)(0.50))
+        (::boost::assign::list_of(0.50)(0.50)(0.25))
+        (::boost::assign::list_of(0.75)(0.50)(0.25))
+        (::boost::assign::list_of(0.25)(0.50)(0.25))
+        (::boost::assign::list_of(0.50)(0.75)(0.25))
+        (::boost::assign::list_of(0.75)(0.75)(0.25))
+        (::boost::assign::list_of(0.25)(0.75)(0.25))
+        (::boost::assign::list_of(0.50)(0.25)(0.25))
+        (::boost::assign::list_of(0.75)(0.25)(0.25))
+        (::boost::assign::list_of(0.25)(0.25)(0.25))
+        (::boost::assign::list_of(0.50)(0.50)(0.25))
+        (::boost::assign::list_of(0.75)(0.50)(0.25))
+        (::boost::assign::list_of(0.25)(0.50)(0.25))
+        (::boost::assign::list_of(0.50)(0.75)(0.25))
+        (::boost::assign::list_of(0.75)(0.75)(0.25))
+        (::boost::assign::list_of(0.25)(0.75)(0.25))
+        (::boost::assign::list_of(0.50)(0.25)(0.25))
+        (::boost::assign::list_of(0.75)(0.25)(0.25))
+        (::boost::assign::list_of(0.25)(0.25)(0.25))
+                                 // clang-format on
+        );
+    steps = std::vector<dtReal>(::boost::assign::list_of(0.001)(0.001)(0.001));
+  }
+  else
+    dt__throwUnexpected(reparam());
+
+  // initialize return vector; it an initial guess is present, prepend it to
+  // the guesses vector; if not, set return value to nan
+  if (uvw.empty())
+  {
+    uvw = std::vector<dtReal>(dim(), std::numeric_limits<dtReal>::quiet_NaN());
+  }
+  else
+  {
+    guesses.insert(guesses.begin(), uvw);
+  }
+
+  // perform minimization
+  gslMinFloatAttr md(
+    dt__pH(pointGeometryDist)(new pointGeometryDist(xyz, this)),
+    guesses,
+    steps,
+    XYZTolerance(),
+    1000
+  );
+  md.perform();
+
+  // convert result from percent to parameter space
+  std::vector<dtReal> const &uvw_percent = md.result();
+  dt__forAllIndex(uvw_percent, ii)
+  {
+    uvw[ii] = val_percent(uvw_percent[ii], ii);
+  }
+  // return converged flag
+  return md.converged();
+}
+
 dtReal analyticGeometry::characteristicLength(void) const
 {
   if (_characteristicLength < 0.)
@@ -478,6 +588,26 @@ bool analyticGeometry::equal(const analyticGeometry &other) const
 bool analyticGeometry::equal(analyticGeometry const *const other) const
 {
   return this->equal(*other);
+}
+
+dtReal analyticGeometry::val_percent(dtReal const &per, int const &dir) const
+{
+  if (isClosed(dir))
+    return (getMin(dir) + (getMax(dir) - getMin(dir)) * per);
+
+  return floatHandling::boundToRange(
+    getMin(dir) + (getMax(dir) - getMin(dir)) * per, getMin(dir), getMax(dir)
+  );
+}
+
+dtReal analyticGeometry::percent_val(dtReal const &val, int const &dir) const
+{
+  if (isClosed(dir))
+    return (val - getMin(dir)) / (getMax(dir) - getMin(dir));
+
+  return floatHandling::boundToRange(
+    (val - getMin(dir)) / (getMax(dir) - getMin(dir)), 0.0, 1.0
+  );
 }
 
 dt__C_addCloneForpVH(analyticGeometry);

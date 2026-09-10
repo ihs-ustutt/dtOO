@@ -52,7 +52,6 @@ public:
   dtGmshModel const &refDtGmshModel(void) const;
   dtGmshModel &refDtGmshModel(void);
   virtual ::GEntity::GeomType geomType(void) const;
-  void setGeomType(::GEntity::GeomType const &gT);
   virtual Range<double> parBounds(int i) const;
   virtual GPoint point(double par1, double par2) const;
   virtual std::pair<SVector3, SVector3> firstDer(const SPoint2 &param) const;
@@ -113,6 +112,9 @@ public:
 
 private:
   static bool sortPredicate(::MVertex const *d1, ::MVertex const *d2);
+  void copy_XYZtoUV(
+    double X, double Y, double Z, double &U, double &V, double relax
+  ) const;
 
 private:
   dt__pH(map2dTo3d) _mm;
