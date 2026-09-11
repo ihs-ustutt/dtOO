@@ -262,7 +262,6 @@ map3dTo3d::firstDer(dtReal const &uu, dtReal const &vv, dtReal const &ww) const
   return analyticGeometry::firstDer(
     std::initializer_list<dtReal>({uu, vv, ww}).begin()
   );
-
 }
 
 dtVector3
