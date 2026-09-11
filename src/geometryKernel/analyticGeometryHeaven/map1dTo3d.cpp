@@ -56,7 +56,7 @@ dtPoint3 map1dTo3d::getPointPercent(dtReal const &uu) const
 
 ::std::vector<dtVector3> map1dTo3d::firstDer(dtReal const *const uvw) const
 {
-  return ::std::vector<dtVector3>(1, this->firstDerU(uvw[0]));
+  return analyticGeometry::firstDer(uvw);
 }
 
 map1dTo3d *map1dTo3d::segmentPercent(dtReal const &u0, dtReal const &u1) const
@@ -96,26 +96,8 @@ dtInt map1dTo3d::getRenderResolutionU(void) const
 
 dtVector3 map1dTo3d::firstDerU(dtReal const &uu) const
 {
-  dtReal uP = percent_u(uu);
-
-  if (uP < 0.01)
-  {
-    return (
-      (getPointPercent(_deltaPer) - getPointPercent(0.)) /
-      (u_percent(_deltaPer) - u_percent(0.))
-    );
-  }
-  if (uP > 0.99)
-  {
-    return (
-      (getPointPercent(1.) - getPointPercent(1. - _deltaPer)) /
-      (u_percent(1.) - u_percent(1. - _deltaPer))
-    );
-  }
-  return (
-    (getPointPercent(uP + _deltaPer) - getPointPercent(uP - _deltaPer)) /
-    (u_percent(uP + _deltaPer) - u_percent(uP - _deltaPer))
-  );
+  return analyticGeometry::firstDer(std::initializer_list<dtReal>({uu}).begin()
+  )[0];
 }
 
 dtVector3 map1dTo3d::firstDerUPercent(dtReal const &uP) const
