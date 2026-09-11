@@ -27,6 +27,7 @@ License
 namespace dtOO {
 class dtTransformer;
 
+//! Base class for parameterized curves in two-dimensional space.
 class vec2dOneD : public vec2dFunction {
 public:
   dt__class(vec2dOneD, analyticFunction);
@@ -43,14 +44,20 @@ public:
   void setMax(dtReal const &max);
   virtual dtReal xMin(dtInt const &dir) const;
   virtual dtReal xMax(dtInt const &dir) const;
+  //! Numerically compute the curve tangent at a native parameter.
   virtual dtVector2 DYdtVector2(dtReal const &xx) const;
+  //! Return the unit normal at a native parameter.
   dtVector2 unitNdtVector2(dtReal const &xx) const;
+  //! Return the unit normal at a normalized parameter.
   dtVector2 unitNdtVector2Percent(dtReal const &xx) const;
   dtReal x_percent(dtReal const &xx) const;
   dtReal percent_x(dtReal const &xx) const;
   dtPoint2 YdtPoint2(dtReal const &xx) const;
+  //! Evaluate the curve at a normalized parameter.
   dtPoint2 YdtPoint2Percent(dtReal const &xx) const;
+  //! Return the arc length from the minimum parameter through x1.
   dtReal length(dtReal const &x1) const;
+  //! Return the arc length over the full parameter interval.
   dtReal length(void) const;
 
 private:

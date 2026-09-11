@@ -26,6 +26,7 @@ License
 namespace dtOO {
 class aFY;
 
+//! Input-coordinate vector used by analytic functions.
 class aFX : public std::vector<dtReal> {
 public:
   aFX(void);
@@ -33,6 +34,7 @@ public:
   aFX(const aFY &orig);
   aFX(std::vector<dtReal> const &orig);
   aFX(dtInt const &ss, double const &ref);
+  //! Return the coordinates as a standard vector.
   std::vector<dtReal> toStdVector(void);
 };
 } // namespace dtOO

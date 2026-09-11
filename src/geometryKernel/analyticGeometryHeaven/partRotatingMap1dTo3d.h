@@ -21,6 +21,7 @@ License
 #include "rotatingMap1dTo3d.h"
 
 namespace dtOO {
+//! Revolution surface restricted to a supplied normalized angular interval.
 class partRotatingMap1dTo3d : public rotatingMap1dTo3d {
 public:
   dt__class(partRotatingMap1dTo3d, analyticGeometry);

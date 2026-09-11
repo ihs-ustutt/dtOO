@@ -28,12 +28,18 @@ License
 namespace dtOO {
 class scaOneD;
 
+//! Curve obtained by evaluating a scalar parameter function on another curve.
 class scaOneDInMap1dTo3d : public map1dTo3d {
 public:
   dt__class(scaOneDInMap1dTo3d, analyticGeometry);
   scaOneDInMap1dTo3d();
   scaOneDInMap1dTo3d(const scaOneDInMap1dTo3d &orig);
   scaOneDInMap1dTo3d(scaOneD const *const s1d, map1dTo3d const *const m1d);
+  /*!
+   * Construct a composition of \p s1d and \p m1d.
+   *
+   * @param percentF Interpret scalar-function output as normalized curve u.
+   */
   scaOneDInMap1dTo3d(
     scaOneD const *const s1d, map1dTo3d const *const m1d, bool const &percentF
   );
@@ -52,7 +58,9 @@ public:
   //
   //
   //
+  //! Return the composed scalar function.
   scaOneD const *ptrToScaOneD(void) const;
+  //! Return the composed curve map.
   map1dTo3d const *ptrToMap1dTo3d(void) const;
 
 private:

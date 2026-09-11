@@ -28,6 +28,8 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+//! Template decorator that applies an invertible 3D transformer to a volume
+//! map.
 template <typename funT> class map3dTo3dTransformed : public funT {
   BOOST_STATIC_ASSERT((boost::is_base_of<map3dTo3d, funT>::value));
 
@@ -42,6 +44,7 @@ public:
   virtual map3dTo3dTransformed *cloneTransformed(dtTransformer const *const dtT
   ) const;
   virtual map3dTo3dTransformed *create(void) const;
+  //! Evaluate the wrapped volume and transform its point.
   virtual dtPoint3
   getPoint(dtReal const &uu, dtReal const &vv, dtReal const &ww) const;
   virtual std::string dumpToString(void) const;
@@ -50,6 +53,7 @@ public:
   //
   virtual std::vector<dtVector3>
   firstDer(dtReal const &uu, dtReal const &vv, dtReal const &ww) const;
+  //! Reparameterize a point through the base volume implementation.
   virtual dtPoint3 reparamInVolume(dtPoint3 const &ppXYZ) const;
   virtual bool isTransformed(void) const;
 

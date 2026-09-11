@@ -28,6 +28,8 @@ namespace dtOO {
 class map2dTo3d;
 class dtTransformer;
 
+//! Identity volume map on native [-1, 1] coordinates without percent
+//! conversion.
 class infinityMap3dTo3d : public map3dTo3d {
 public:
   dt__class(infinityMap3dTo3d, analyticGeometry);
@@ -41,11 +43,17 @@ public:
   virtual bool isClosed(dtInt const &dir) const;
   virtual dtReal getMin(dtInt const &dir) const;
   virtual dtReal getMax(dtInt const &dir) const;
+  //! Percent-to-native u conversion is unsupported for this map.
   virtual dtReal u_percent(dtReal const &uu) const;
+  //! Percent-to-native v conversion is unsupported for this map.
   virtual dtReal v_percent(dtReal const &vv) const;
+  //! Percent-to-native w conversion is unsupported for this map.
   virtual dtReal w_percent(dtReal const &ww) const;
+  //! Native-to-percent u conversion is unsupported for this map.
   virtual dtReal percent_u(dtReal const &per) const;
+  //! Native-to-percent v conversion is unsupported for this map.
   virtual dtReal percent_v(dtReal const &per) const;
+  //! Native-to-percent w conversion is unsupported for this map.
   virtual dtReal percent_w(dtReal const &per) const;
 
   virtual dtPoint3

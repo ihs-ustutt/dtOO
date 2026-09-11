@@ -25,6 +25,8 @@ License
 namespace dtOO {
 class map2dTo3d;
 
+//! Extends a surface parameter direction to span its containing volume
+//! direction.
 class map2dTo3d_fullExtentInMap3dTo3d {
 public:
   dt__classOnlyName(map2dTo3d_fullExtentInMap3dTo3d);
@@ -32,6 +34,7 @@ public:
     map2dTo3d const *const m2d, dtInt const &m2dParDir, dtInt const &toM3dParDir
   );
   virtual ~map2dTo3d_fullExtentInMap3dTo3d();
+  //! Return the extended surface; ownership is transferred.
   map2dTo3d *result(void);
 
 private:

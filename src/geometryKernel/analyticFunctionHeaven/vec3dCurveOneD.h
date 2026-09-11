@@ -32,6 +32,7 @@ class dtCurve;
 class renderInterface;
 class dtTransformer;
 
+//! Three-dimensional curve backed by a dtCurve geometry object.
 class vec3dCurveOneD : public vec3dOneD {
 public:
   dt__class(vec3dCurveOneD, analyticFunction);
@@ -44,13 +45,16 @@ public:
   virtual vec3dCurveOneD *create(void) const;
   virtual ~vec3dCurveOneD();
   virtual aFY Y(aFX const &xx) const;
+  //! Return the underlying curve geometry for modification.
   dtCurve *ptrDtCurve(void) const;
+  //! Return the underlying curve geometry as a const pointer.
   dtCurve const *const ptrConstDtCurve(void) const;
   virtual bool closed(dtInt const &dir) const;
 
 private:
   ptrHandling<dtCurve> _dtC;
 };
+//! Compound collection of three-dimensional curves.
 typedef analyticFunctionCompound<vec3dCurveOneD> vec3dCurveOneDCompound;
 } // namespace dtOO
 #endif /* VEC3DCURVEONED_H */

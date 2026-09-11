@@ -28,7 +28,7 @@ License
 namespace dtOO {
 class dtTransformer;
 
-/**
+/*!
  * Add a scalar function \f$s(\underline{x})\f$ value to a vector
  * function \f$\underline{f}(u,v)\f$ according to
  *
@@ -48,13 +48,19 @@ class dtTransformer;
  *     \underline{c}
  *   \right) \text{.}
  * \f]
- * $\underline{c} is user given vector.
+ * The reference vector \f$\underline{c}\f$ is supplied when constructing the
+ * mapping.
  */
 class vec3dThickedTwoD : public vec3dTwoD {
 public:
   dt__class(vec3dThickedTwoD, analyticFunction);
   vec3dThickedTwoD();
   vec3dThickedTwoD(const vec3dThickedTwoD &orig);
+  /*!
+   * @param ff Base surface mapping.
+   * @param tt Thickness mapping.
+   * @param nf User-defined reference vector used to project the normal.
+   */
   vec3dThickedTwoD(
     vec3dTwoD const *const ff, vec3dTwoD const *const tt, dtVector3 const nf
   );

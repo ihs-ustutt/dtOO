@@ -29,6 +29,7 @@ namespace dtOO {
 class vec2dTwoD;
 class dtTransformer;
 
+//! Surface obtained by evaluating a two-dimensional UV map on another surface.
 class vec2dTwoDInMap2dTo3d : public map2dTo3d {
 public:
   dt__class(vec2dTwoDInMap2dTo3d, analyticGeometry);
@@ -37,6 +38,11 @@ public:
   vec2dTwoDInMap2dTo3d(
     vec2dTwoD const *const v2d2d, map2dTo3d const *const m2d
   );
+  /*!
+   * Construct a composition of \p v2d2d and \p m2d.
+   *
+   * @param percentF Interpret the generated UV coordinates as normalized.
+   */
   vec2dTwoDInMap2dTo3d(
     vec2dTwoD const *const v2d2d,
     map2dTo3d const *const m2d,
@@ -57,7 +63,9 @@ public:
   //
   //
   //
+  //! Return the composed UV map.
   vec2dTwoD const *ptrToVec2dTwoD(void) const;
+  //! Return the composed surface map.
   map2dTo3d const *ptrToMap2dTo3d(void) const;
 
 private:

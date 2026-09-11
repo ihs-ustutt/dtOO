@@ -29,6 +29,7 @@ namespace dtOO {
 class renderInterface;
 class dtTransformer;
 
+//! Base class for three-parameter mappings into three-dimensional space.
 class vec3dThreeD : public vec3dFunction {
 public:
   dt__class(vec3dThreeD, analyticFunction);
@@ -48,6 +49,7 @@ public:
   using analyticFunction::xMin;
   virtual dtReal xMin(dtInt const &dir) const;
   virtual dtReal xMax(dtInt const &dir) const;
+  //! Numerically compute the three partial derivative vectors.
   virtual std::vector<dtVector3> DYdtVector3(aFX const &xx) const;
   using analyticFunction::percent_x;
   using analyticFunction::x_percent;
@@ -56,6 +58,7 @@ public:
   dtPoint3 YdtPoint3(aFX const &xx) const;
   dtPoint3
   YdtPoint3(dtReal const &x0, dtReal const &x1, dtReal const &x2) const;
+  //! Evaluate the mapping at normalized input coordinates.
   dtPoint3 YdtPoint3Percent(aFX const &xx) const;
   dtPoint3
   YdtPoint3Percent(dtReal const &x0, dtReal const &x1, dtReal const &x2) const;

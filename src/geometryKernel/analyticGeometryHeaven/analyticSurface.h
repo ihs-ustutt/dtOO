@@ -28,6 +28,7 @@ namespace dtOO {
 class dtSurface;
 class dtTransformer;
 
+//! Surface wrapper around a CAD dtSurface with analytic-map operations.
 class analyticSurface : public map2dTo3d {
 public:
   dt__class(analyticSurface, analyticGeometry);
@@ -55,6 +56,7 @@ public:
   firstDer(dtReal const &uu, dtReal const &vv) const;
   virtual std::vector<dtVector3>
   secondDer(dtReal const &uu, dtReal const &vv) const;
+  //! Return CAD surface coordinates closest to \p ppXYZ.
   virtual dtPoint2 reparamOnFace(dtPoint3 const &ppXYZ) const;
   virtual map1dTo3d *
   segmentConstU(dtReal const &uu, dtReal const &p0, dtReal const &p1) const;
@@ -69,6 +71,7 @@ public:
   dtSurface *ptrDtSurface(void) const;
   dtSurface const *ptrConstDtSurface(void) const;
 
+  //! Offset the underlying CAD surface along its normal by \p nn.
   virtual void offsetNormal(dtReal const nn);
 
 private:

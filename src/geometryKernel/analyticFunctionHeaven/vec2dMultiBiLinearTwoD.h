@@ -29,11 +29,13 @@ License
 namespace dtOO {
 class dtTransformer;
 
+//! Piecewise bilinear mapping assembled from a two-dimensional point grid.
 class vec2dMultiBiLinearTwoD : public vec2dTwoD {
 public:
   dt__class(vec2dMultiBiLinearTwoD, analyticFunction);
   vec2dMultiBiLinearTwoD();
   vec2dMultiBiLinearTwoD(vec2dMultiBiLinearTwoD const &orig);
+  //! Construct piecewise bilinear patches from a rectangular point grid.
   vec2dMultiBiLinearTwoD(twoDArrayHandling<dtPoint2> const &pp);
   vec2dMultiBiLinearTwoD *clone(void) const;
   virtual vec2dMultiBiLinearTwoD *
@@ -42,6 +44,7 @@ public:
   virtual ~vec2dMultiBiLinearTwoD();
   virtual aFY Y(aFX const &xx) const;
   virtual bool closed(dtInt const &dir) const;
+  //! Invert a mapped point through the containing bilinear patch.
   aFX invY(aFY const &yy) const;
 
 private:

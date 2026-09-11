@@ -29,6 +29,7 @@ namespace dtOO {
 class renderInterface;
 class dtTransformer;
 
+//! Base class for scalar functions of three independent variables.
 class scaThreeD : public scaFunction {
 public:
   dt__class(scaThreeD, analyticFunction);
@@ -38,9 +39,11 @@ public:
   virtual scaThreeD *clone(void) const = 0;
   virtual scaThreeD *cloneTransformed(dtTransformer const *const dtT) const = 0;
   virtual scaThreeD *create(void) const = 0;
+  //! Evaluate from a three-coordinate input vector.
   virtual dtReal YFloat(aFX const &xx) const;
   virtual dtReal
   YFloat(dtReal const &x0, dtReal const &x1, dtReal const &x2) const = 0;
+  //! Evaluate at normalized coordinates in [0, 1].
   dtReal
   YFloatPercent(dtReal const &xP0, dtReal const &xP1, dtReal const &xP2) const;
   void setMin(int const &dir, dtReal const &min);
@@ -52,6 +55,7 @@ public:
   using analyticFunction::x_percent;
   aFX x_percent(dtReal const &x0, dtReal const &x1, dtReal const &x2) const;
   aFX percent_x(dtReal const &x0, dtReal const &x1, dtReal const &x2) const;
+  //! Numerically compute the partial derivatives at an input vector.
   std::vector<dtReal> DYFloat(aFX const &xx) const;
   std::vector<dtReal>
   DYFloat(dtReal const &x0, dtReal const &x1, dtReal const &x2) const;

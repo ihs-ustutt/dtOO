@@ -25,6 +25,7 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+//! Base class for analytic functions with a scalar output.
 class scaFunction : public analyticFunction {
 public:
   dt__class(scaFunction, analyticFunction);
@@ -34,6 +35,7 @@ public:
   virtual ~scaFunction();
   virtual dtInt yDim(void) const;
   virtual dtReal YFloat(aFX const &xx) const = 0;
+  //! Evaluate the scalar function and package the value in an aFY vector.
   virtual aFY Y(aFX const &xx) const;
 };
 dt__H_addCloneForpVH(scaFunction);

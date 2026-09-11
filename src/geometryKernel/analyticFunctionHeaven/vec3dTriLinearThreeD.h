@@ -28,6 +28,7 @@ License
 namespace dtOO {
 class dtTransformer;
 
+//! Trilinear mapping of a hexahedron defined by its eight corner points.
 class vec3dTriLinearThreeD : public vec3dThreeD {
 public:
   dt__class(vec3dTriLinearThreeD, analyticFunction);
@@ -69,6 +70,7 @@ public:
   virtual ~vec3dTriLinearThreeD();
   virtual aFY Y(aFX const &xx) const;
   virtual bool closed(dtInt const &dir) const;
+  //! Return output bounds derived from the eight corner points.
   virtual std::pair<aFY, aFY> yBoundingBox(void) const;
 
 private:

@@ -27,6 +27,7 @@ License
 namespace dtOO {
 class dtTransformer;
 
+//! Base class for parameterized curves in three-dimensional space.
 class vec3dOneD : public vec3dFunction {
 public:
   dt__class(vec3dOneD, analyticFunction);
@@ -45,14 +46,20 @@ public:
   void setMin(int const &dir, dtReal const &min);
   virtual dtReal xMin(dtInt const &dir) const;
   virtual dtReal xMax(dtInt const &dir) const;
+  //! Numerically compute the curve tangent at a native parameter.
   virtual dtVector3 DYdtVector3(dtReal const &xx) const;
+  //! Numerically compute the curve tangent at a normalized parameter.
   virtual dtVector3 DYdtVector3Percent(dtReal const &xx) const;
   dtReal x_percent(dtReal const &xx) const;
   dtReal percent_x(dtReal const &xx) const;
   dtPoint3 YdtPoint3(dtReal const &xx) const;
+  //! Evaluate the curve at a normalized parameter.
   dtPoint3 YdtPoint3Percent(dtReal const &xx) const;
+  //! Return the arc length from the minimum parameter through x1.
   dtReal length(dtReal const &x1) const;
+  //! Return the arc length over the full parameter interval.
   dtReal length(void) const;
+  //! Return the native parameter corresponding to a normalized value.
   dtReal operator%(const dtReal &percent) const;
   vectorHandling<renderInterface *> getRender(void) const;
 

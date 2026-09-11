@@ -27,10 +27,21 @@ License
 namespace dtOO {
 class map2dTo3d;
 
+//! Transfinite interpolation of a cube bounded by six surface mappings.
 class transIntCube {
 public:
   dt__classOnlyName(transIntCube);
   transIntCube();
+  /*!
+   * Construct the cube from its normalized-coordinate boundary surfaces.
+   *
+   * @param aS0 Surface at z = 1.
+   * @param aS1 Surface at x = 0.
+   * @param aS2 Surface at z = 0.
+   * @param aS3 Surface at x = 1.
+   * @param aS4 Surface at y = 0.
+   * @param aS5 Surface at y = 1.
+   */
   transIntCube(
     map2dTo3d const *const aS0,
     map2dTo3d const *const aS1,
@@ -41,7 +52,9 @@ public:
   );
   transIntCube(const transIntCube &orig);
   virtual ~transIntCube();
+  //! Evaluate the interpolated volume at normalized cube coordinates.
   dtPoint3 getValue(dtReal const xx, dtReal const yy, dtReal const zz) const;
+  //! Return the six boundary-surface mappings in their stored order.
   vectorHandling<map2dTo3d const *> const &getConstRefToMap2dTo3d(void) const;
 
 private:

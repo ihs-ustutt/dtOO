@@ -26,12 +26,14 @@ License
 namespace dtOO {
 class aFX;
 
+//! Output-value vector returned by analytic functions.
 class aFY : public std::vector<dtReal> {
 public:
   aFY(void);
   aFY(const aFY &orig);
   aFY(const aFX &orig);
   aFY(dtInt const &ss, double const &ref);
+  //! Return the values as a standard vector.
   std::vector<dtReal> stdVector(void);
 };
 } // namespace dtOO

@@ -27,12 +27,14 @@ namespace dtOO {
 class analyticGeometry;
 class map1dTo3d;
 
+//! Finds an oriented index sequence that forms a closed loop of curves.
 class map1dTo3d_findLoop {
 public:
   dt__classOnlyName(map1dTo3d_findLoop);
   map1dTo3d_findLoop(dt__pVH(map1dTo3d) const &m1ds);
   map1dTo3d_findLoop(vectorHandling<analyticGeometry *> const m1ds);
   virtual ~map1dTo3d_findLoop();
+  //! Return signed curve indices in the discovered loop orientation.
   std::vector<dtInt> result(void);
 
 private:

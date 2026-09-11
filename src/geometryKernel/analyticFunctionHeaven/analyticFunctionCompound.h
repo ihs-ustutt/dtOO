@@ -25,6 +25,7 @@ License
 #include <interfaceHeaven/vectorHandling.h>
 
 namespace dtOO {
+//! Adds tagged component-function ownership to an analytic function type.
 template <typename funT> class analyticFunctionCompound : public funT {
 public:
   dt__class(analyticFunctionCompound, analyticFunction);
@@ -40,19 +41,28 @@ public:
   virtual analyticFunctionCompound *clone(void) const;
   virtual funT *weakClone(void) const;
   virtual analyticFunctionCompound *create(void) const;
+  /*!
+   * Adopt externally owned components instead of cloning them.
+   *
+   * The caller retains ownership of the supplied components.
+   */
   void trojanHorse(
     vectorHandling<analyticFunction *> const &vec,
     std::map<int, dtInt> const &pos_tag
   );
+  //! Return the component stored at a positional index.
   funT const &component(dtInt const &pos) const;
+  //! Clone and append a component, assigning the next available tag.
   funT &addComponent(funT const &toAdd);
   dtInt nComponents(void) const;
+  //! Return the component associated with a tag.
   funT const &componentFromTag(dtInt const &tag) const;
   bool hasTag(dtInt const &tag) const;
   virtual vectorHandling<renderInterface *> getRender(void) const;
   virtual bool isCompound(void) const;
   virtual vectorHandling<analyticFunction *> const &vecRef(void) const;
   virtual std::map<int, dtInt> const &mapRef(void) const;
+  //! Return whether this instance references externally owned components.
   bool isTrojan(void) const;
 
 private:

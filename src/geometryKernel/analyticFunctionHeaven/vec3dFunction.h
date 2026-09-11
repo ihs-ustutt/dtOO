@@ -25,6 +25,7 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+//! Base class for analytic functions that return three-dimensional points.
 class vec3dFunction : public analyticFunction {
 public:
   dt__class(vec3dFunction, analyticFunction);
@@ -33,6 +34,7 @@ public:
   virtual vec3dFunction *clone(void) const = 0;
   virtual ~vec3dFunction();
   virtual dtInt yDim(void) const;
+  //! Evaluate and convert the result to a three-dimensional point.
   dtPoint3 YdtPoint3(aFX const &xx) const;
   virtual bool closed(dtInt const &dir) const = 0;
 };

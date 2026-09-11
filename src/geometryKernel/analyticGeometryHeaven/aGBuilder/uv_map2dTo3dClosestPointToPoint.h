@@ -26,6 +26,7 @@ License
 namespace dtOO {
 class map2dTo3d;
 
+//! Finds UV coordinates on a surface closest to a supplied spatial point.
 class uv_map2dTo3dClosestPointToPoint {
 public:
   dt__classOnlyName(uv_map2dTo3dClosestPointToPoint);
@@ -45,7 +46,9 @@ public:
     dtInt const &maxIterations = 100
   );
   virtual ~uv_map2dTo3dClosestPointToPoint();
+  //! Return the closest native UV coordinates.
   dtPoint2 result(void);
+  //! Return the distance from the input point to the closest surface point.
   dtReal distance(void);
 
 private:

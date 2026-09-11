@@ -29,6 +29,7 @@ namespace dtOO {
 class renderInterface;
 class dtTransformer;
 
+//! Base class for two-parameter mappings into three-dimensional space.
 class vec3dTwoD : public vec3dFunction {
 public:
   dt__class(vec3dTwoD, analyticFunction);
@@ -45,9 +46,12 @@ public:
   void setMin(int const &dir, dtReal const &min);
   virtual dtReal xMin(dtInt const &dir) const;
   virtual dtReal xMax(dtInt const &dir) const;
+  //! Numerically compute the two partial derivative vectors.
   virtual std::vector<dtVector3> DYdtVector3(aFX const &xx) const;
   std::vector<dtVector3> DYdtVector3(dtReal const &x0, dtReal const &x1) const;
+  //! Return the unit surface normal at native input coordinates.
   dtVector3 unitNdtVector3(aFX const &xx) const;
+  //! Return the unit surface normal at normalized input coordinates.
   dtVector3 unitNdtVector3Percent(aFX const &xx) const;
   using analyticFunction::percent_x;
   using analyticFunction::x_percent;
@@ -55,9 +59,11 @@ public:
   aFX percent_x(dtReal const &x0, dtReal const &x1) const;
   dtPoint3 YdtPoint3(aFX const &xx) const;
   dtPoint3 YdtPoint3(dtReal const &x0, dtReal const &x1) const;
+  //! Evaluate the mapping at normalized input coordinates.
   dtPoint3 YdtPoint3Percent(aFX const &xx) const;
   dtPoint3 YdtPoint3Percent(dtReal const &x0, dtReal const &x1) const;
   vectorHandling<renderInterface *> getRender(void) const;
+  //! Convert normalized coordinates to native input coordinates.
   aFX operator%(const aFX &percent) const;
 
 private:

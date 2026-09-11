@@ -26,6 +26,8 @@ namespace dtOO {
 class map1dTo3d;
 class map2dTo3d;
 
+//! Approximates a curve offset by a surface normal within its supporting
+//! surface.
 class map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d {
 public:
   dt__classOnlyName(map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d);
@@ -38,6 +40,7 @@ public:
     dtInt const &order
   );
   virtual ~map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d();
+  //! Return the approximated normal-offset curve; ownership is transferred.
   map1dTo3d *result(void);
 
 private:

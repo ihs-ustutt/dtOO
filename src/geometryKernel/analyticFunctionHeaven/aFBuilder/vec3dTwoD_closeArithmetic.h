@@ -26,13 +26,20 @@ License
 namespace dtOO {
 class vec3dTwoD;
 
+//! Closes gaps between surface mappings with arithmetic surface correction.
 class vec3dTwoD_closeArithmetic {
 public:
   dt__classOnlyName(vec3dTwoD_closeArithmetic);
+  /*!
+   * @param v3d Surface mappings whose underlying geometry is corrected.
+   * @param dir Surface parameter direction containing the gaps.
+   * @param nSegments Number of arithmetic correction segments.
+   */
   vec3dTwoD_closeArithmetic(
     dt__pVH(vec3dTwoD) const &v3d, dtInt const &dir, dtInt const &nSegments
   );
   virtual ~vec3dTwoD_closeArithmetic();
+  //! Return the corrected surface mappings.
   dt__pVH(vec3dTwoD) result(void);
 
 private:

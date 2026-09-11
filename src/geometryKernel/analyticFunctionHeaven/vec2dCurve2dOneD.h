@@ -31,6 +31,7 @@ class dtCurve2d;
 class renderInterface;
 class dtTransformer;
 
+//! Two-dimensional curve backed by a dtCurve2d geometry object.
 class vec2dCurve2dOneD : public vec2dOneD {
 public:
   dt__class(vec2dCurve2dOneD, analyticFunction);
@@ -45,6 +46,7 @@ public:
   using vec2dOneD::Y; // name hiding
   virtual aFY Y(dtReal const &xx) const;
   vectorHandling<renderInterface *> getRender(void) const;
+  //! Return the underlying curve geometry.
   dtCurve2d const *ptrDtCurve2d(void) const;
   virtual bool closed(dtInt const &dir) const;
 

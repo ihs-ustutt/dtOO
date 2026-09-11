@@ -29,6 +29,7 @@ namespace dtOO {
 class renderInterface;
 class dtTransformer;
 
+//! Base class for two-parameter mappings into two-dimensional space.
 class vec2dTwoD : public vec2dFunction {
 public:
   dt__class(vec2dTwoD, analyticFunction);
@@ -45,6 +46,7 @@ public:
   void setMin(int const &dir, dtReal const &min);
   virtual dtReal xMin(dtInt const &dir) const;
   virtual dtReal xMax(dtInt const &dir) const;
+  //! Numerically compute the two partial derivative vectors.
   virtual std::vector<dtVector2> DYdtVector2(aFX const &xx) const;
   std::vector<dtVector2> DYdtVector2(dtReal const &x0, dtReal const &x1) const;
   using analyticFunction::percent_x;
@@ -53,6 +55,7 @@ public:
   aFX percent_x(dtReal const &x0, dtReal const &x1) const;
   dtPoint2 YdtPoint2(aFX const &xx) const;
   dtPoint2 YdtPoint2(dtReal const &x0, dtReal const &x1) const;
+  //! Evaluate the mapping at normalized input coordinates.
   dtPoint2 YdtPoint2Percent(aFX const &xx) const;
   dtPoint2 YdtPoint2Percent(dtReal const &x0, dtReal const &x1) const;
   vectorHandling<renderInterface *> getRender(void) const;

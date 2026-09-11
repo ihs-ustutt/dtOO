@@ -30,11 +30,18 @@ License
 namespace dtOO {
 class dtTransformer;
 
+//! Scalar hyperbolic-tangent grading function with adjustable coefficients.
 class scaTanhGradingOneD : public scaOneDPolyInterface {
 public:
   dt__class(scaTanhGradingOneD, analyticFunction);
   scaTanhGradingOneD();
   scaTanhGradingOneD(scaTanhGradingOneD const &orig);
+  /*!
+   * @param cc Coefficients of the hyperbolic-tangent expression.
+   * @param gg Current grading factor.
+   * @param ggMin Minimum permitted grading factor.
+   * @param ggMax Maximum permitted grading factor.
+   */
   scaTanhGradingOneD(
     std::vector<dtReal> cc,
     dtReal const &gg,
@@ -46,7 +53,9 @@ public:
   scaTanhGradingOneD *create(void) const;
   virtual ~scaTanhGradingOneD();
   virtual dtReal YFloat(dtReal const &xx) const;
+  //! Return the number of grading degrees of freedom.
   virtual dtInt nDOF(void) const;
+  //! Update the grading degrees of freedom.
   virtual void setDOF(std::vector<dtReal> const value);
 
 private:
@@ -55,6 +64,7 @@ private:
   dtReal _ggMax;
   std::vector<dtReal> _cc;
 };
+//! Compound collection of hyperbolic-tangent grading functions.
 typedef analyticFunctionCompound<scaTanhGradingOneD> scaTanhGradingOneDCompound;
 } // namespace dtOO
 #endif /* scaTanhGradingOneD_H */

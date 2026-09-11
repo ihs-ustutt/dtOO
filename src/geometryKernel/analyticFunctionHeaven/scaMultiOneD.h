@@ -29,6 +29,7 @@ License
 namespace dtOO {
 class dtTransformer;
 
+//! Joins scalar one-dimensional functions over their respective input ranges.
 template <typename funT> class scaMultiOneD : public funT {
 public:
   dt__class(scaMultiOneD, analyticFunction);
@@ -39,6 +40,7 @@ public:
   virtual scaMultiOneD *create(void) const;
   virtual dtReal YFloat(dtReal const &xx) const;
   virtual dtReal invYFloat(dtReal const &yy) const;
+  //! Clone and register a function for its native input interval.
   virtual void add(funT const &aFun);
   virtual void dump(void) const;
 

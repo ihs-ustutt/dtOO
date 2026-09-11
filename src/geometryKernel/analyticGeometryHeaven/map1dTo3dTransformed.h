@@ -28,6 +28,7 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+//! Template decorator that applies an invertible 3D transformer to a curve map.
 template <typename funT> class map1dTo3dTransformed : public funT {
   BOOST_STATIC_ASSERT((boost::is_base_of<map1dTo3d, funT>::value));
 
@@ -42,10 +43,12 @@ public:
   virtual map1dTo3dTransformed *cloneTransformed(dtTransformer const *const dtT
   ) const;
   virtual map1dTo3dTransformed *create(void) const;
+  //! Evaluate the wrapped curve and transform its point.
   virtual dtPoint3 getPoint(dtReal const &uu) const;
   //
   //
   //
+  //! Evaluate the wrapped curve derivative and transform its vector.
   virtual dtVector3 firstDerU(dtReal const &uu) const;
   virtual bool isTransformed(void) const;
 

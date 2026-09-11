@@ -29,11 +29,17 @@ namespace dtOO {
 class dtTransformer;
 class dtMuParser;
 
+//! Scalar two-variable expression evaluated by muParser.
 class scaMuParserTwoD : public scaTwoD {
 public:
   dt__class(scaMuParserTwoD, analyticFunction);
   scaMuParserTwoD();
   scaMuParserTwoD(scaMuParserTwoD const &orig);
+  /*!
+   * @param expression muParser expression that evaluates to a scalar.
+   * @param argOne Name of the first expression variable.
+   * @param argTwo Name of the second expression variable.
+   */
   scaMuParserTwoD(
     std::string const expression,
     std::string const argOne,

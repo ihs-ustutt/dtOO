@@ -29,11 +29,18 @@ License
 namespace dtOO {
 class vec3dThreeD;
 
+//! Volume obtained by evaluating a three-dimensional UVW function in another
+//! volume map.
 class vec3dThreeDInMap3dTo3d : public map3dTo3d {
 public:
   dt__class(vec3dThreeDInMap3dTo3d, analyticGeometry);
   vec3dThreeDInMap3dTo3d();
   vec3dThreeDInMap3dTo3d(const vec3dThreeDInMap3dTo3d &orig);
+  /*!
+   * Construct a composition of \p v3d and \p m3d.
+   *
+   * @param percentF Interpret generated UVW coordinates as normalized.
+   */
   vec3dThreeDInMap3dTo3d(
     vec3dThreeD const *const v3d,
     map3dTo3d const *const m3d,
@@ -49,7 +56,9 @@ public:
   virtual bool isClosed(dtInt const &dir) const;
   virtual dtReal getMin(dtInt const &dir) const;
   virtual dtReal getMax(dtInt const &dir) const;
+  //! Return the composed UVW map.
   vec3dThreeD const *refToVec3dThreeD(void) const;
+  //! Return the composed volume map.
   map3dTo3d const *refToMap3dTo3d(void) const;
 
 private:

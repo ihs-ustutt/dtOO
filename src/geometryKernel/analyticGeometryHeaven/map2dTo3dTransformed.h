@@ -29,6 +29,8 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+//! Template decorator that applies an invertible 3D transformer to a surface
+//! map.
 template <typename funT> class map2dTo3dTransformed : public funT {
   BOOST_STATIC_ASSERT((boost::is_base_of<map2dTo3d, funT>::value));
 
@@ -43,7 +45,9 @@ public:
   virtual map2dTo3dTransformed *cloneTransformed(dtTransformer const *const dtT
   ) const;
   virtual map2dTo3dTransformed *create(void) const;
+  //! Evaluate the wrapped surface and transform its point.
   virtual dtPoint3 getPoint(dtReal const &uu, dtReal const &vv) const;
+  //! Return transformed supplementary render objects.
   virtual vectorHandling<renderInterface *> getExtRender(void) const;
   //
   //
@@ -53,6 +57,7 @@ public:
   firstDer(dtReal const &uu, dtReal const &vv) const;
   virtual std::vector<dtVector3>
   secondDer(dtReal const &uu, dtReal const &vv) const;
+  //! Reparameterize a point through the base surface implementation.
   virtual dtPoint2 reparamOnFace(dtPoint3 const &ppXYZ) const;
   virtual bool isTransformed(void) const;
 

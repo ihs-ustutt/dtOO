@@ -44,6 +44,7 @@ class map2dTo3d;
  *  (0,0)            (1,0)
  * \endcode
  */
+//! Constructs the five faces that form a margin around a surface boundary.
 class map2dTo3d_constructMarginFaces {
 public:
   dt__classOnlyName(map2dTo3d_constructMarginFaces);
@@ -51,6 +52,7 @@ public:
     map2dTo3d const *const m2d, dtReal const &width
   );
   virtual ~map2dTo3d_constructMarginFaces();
+  //! Return the constructed central and four margin faces.
   dt__pVH(map2dTo3d) result(void);
 
 private:

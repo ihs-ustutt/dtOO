@@ -518,20 +518,6 @@ map1dTo3d *map2dTo3d::segmentConstV(
   return segment(p20, p21);
 }
 
-/**
- *   (v)
- *    A
- *    |
- *
- *   (3)      (2)
- *    +--------+
- *    |        |
- *    |        |
- *    |        |
- *    |        |
- *    +--------+ --> (u)
- *   (0)      (1)
- */
 map2dTo3d *map2dTo3d::segment(
   dtPoint2 const &p0, dtPoint2 const &p1, dtPoint2 const &p2, dtPoint2 const &p3
 ) const
@@ -541,19 +527,6 @@ map2dTo3d *map2dTo3d::segment(
   );
 }
 
-/**
- *   (v)
- *    A
- *    |
- *            (1)
- *    +--------+
- *    |        |
- *    |        |
- *    |        |
- *    |        |
- *    +--------+ --> (u)
- *   (0)
- */
 map2dTo3d *
 map2dTo3d::segmentRectangle(dtPoint2 const &p0, dtPoint2 const &p1) const
 {
@@ -600,20 +573,6 @@ map2dTo3d::segmentPercent(dtPoint2 const &p0, dtPoint2 const &p1) const
   return segment(uv_percent(p0), uv_percent(p1));
 }
 
-/**
- *   (v)
- *    A
- *    |
- *
- *   (3)      (2)
- *    +--------+
- *    |        |
- *    |        |
- *    |        |
- *    |        |
- *    +--------+ --> (u)
- *   (0)      (1)
- */
 map2dTo3d *map2dTo3d::segmentPercent(
   dtPoint2 const &p0, dtPoint2 const &p1, dtPoint2 const &p2, dtPoint2 const &p3
 ) const
@@ -623,19 +582,6 @@ map2dTo3d *map2dTo3d::segmentPercent(
   );
 }
 
-/**
- *   (v)
- *    A
- *    |
- *            (1)
- *    +--------+
- *    |        |
- *    |        |
- *    |        |
- *    |        |
- *    +--------+ --> (u)
- *   (0)
- */
 map2dTo3d *
 map2dTo3d::segmentRectanglePercent(dtPoint2 const &p0, dtPoint2 const &p1) const
 {

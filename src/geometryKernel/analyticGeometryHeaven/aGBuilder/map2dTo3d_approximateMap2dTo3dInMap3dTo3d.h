@@ -26,6 +26,7 @@ namespace dtOO {
 class map2dTo3d;
 class map3dTo3d;
 
+//! Approximates a surface expressed in the parameter space of a volume map.
 class map2dTo3d_approximateMap2dTo3dInMap3dTo3d {
 public:
   dt__classOnlyName(map2dTo3d_approximateMap2dTo3dInMap3dTo3d);
@@ -37,6 +38,7 @@ public:
     dtInt const &order
   );
   virtual ~map2dTo3d_approximateMap2dTo3dInMap3dTo3d();
+  //! Return the approximating surface; ownership is transferred.
   map2dTo3d *result(void);
 
 private:

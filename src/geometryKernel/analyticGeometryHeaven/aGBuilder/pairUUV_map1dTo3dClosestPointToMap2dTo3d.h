@@ -27,6 +27,8 @@ namespace dtOO {
 class map1dTo3d;
 class map2dTo3d;
 
+//! Finds the closest curve parameter and surface UV coordinates between two
+//! maps.
 class pairUUV_map1dTo3dClosestPointToMap2dTo3d {
 public:
   dt__classOnlyName(pairUUV_map1dTo3dClosestPointToMap2dTo3d);
@@ -34,6 +36,7 @@ public:
     map1dTo3d const *const m1d, map2dTo3d const *const m2d
   );
   virtual ~pairUUV_map1dTo3dClosestPointToMap2dTo3d();
+  //! Return the closest curve u and surface UV coordinates.
   std::pair<dtReal, dtPoint2> result(void);
 
 private:

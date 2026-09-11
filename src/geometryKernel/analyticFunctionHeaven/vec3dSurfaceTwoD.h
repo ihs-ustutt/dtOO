@@ -30,6 +30,7 @@ namespace dtOO {
 class dtSurface;
 class dtTransformer;
 
+//! Two-parameter three-dimensional mapping backed by a surface geometry object.
 class vec3dSurfaceTwoD : public vec3dTwoD {
 public:
   dt__class(vec3dSurfaceTwoD, analyticFunction);
@@ -42,14 +43,18 @@ public:
   virtual vec3dSurfaceTwoD *create(void) const;
   virtual ~vec3dSurfaceTwoD();
   virtual aFY Y(aFX const &xx) const;
+  //! Return the underlying surface geometry for modification.
   dtSurface *ptrDtSurface(void) const;
+  //! Return the underlying surface geometry as a const pointer.
   dtSurface const *constPtrDtSurface(void) const;
   virtual bool closed(dtInt const &dir) const;
+  //! Invert a point on the underlying surface to its parameters.
   virtual aFX invY(aFY const &yy) const;
 
 private:
   ptrHandling<dtSurface> _dtS;
 };
+//! Compound collection of surface mappings.
 typedef analyticFunctionCompound<vec3dSurfaceTwoD> vec3dSurfaceTwoDCompound;
 } // namespace dtOO
 #endif /* VEC3DSURFACETWOD_H */
