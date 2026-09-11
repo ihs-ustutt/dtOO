@@ -53,6 +53,7 @@ staticPropertiesHandler::staticPropertiesHandler()
   setOption("map1dTo3d_deltaPer", "0.01");
   setOption("map2dTo3d_deltaPer", "0.01");
   setOption("map3dTo3d_deltaPer", "0.01");
+  setOption("analyticGeometry_deltaPer", "0.01");
   setOption("transfinite_correctionLoops", "10");
   setOption("isEqualExtendCheck", "false");
   setOption("logLevel", "0");

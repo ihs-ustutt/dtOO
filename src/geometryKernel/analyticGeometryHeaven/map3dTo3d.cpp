@@ -61,7 +61,7 @@ dtPoint3 map3dTo3d::getPoint(dtReal const *const uvw) const
 
 ::std::vector<dtVector3> map3dTo3d::firstDer(dtReal const *const uvw) const
 {
-  return this->firstDer(uvw[0], uvw[1], uvw[2]);
+  return analyticGeometry::firstDer(uvw);
 }
 
 vectorHandling<renderInterface *> map3dTo3d::getRender(void) const
@@ -259,69 +259,9 @@ vectorHandling<renderInterface *> map3dTo3d::getRender(void) const
 std::vector<dtVector3>
 map3dTo3d::firstDer(dtReal const &uu, dtReal const &vv, dtReal const &ww) const
 {
-  dtReal uP = percent_u(uu);
-  dtReal vP = percent_v(vv);
-  dtReal wP = percent_w(ww);
-
-  std::vector<dtVector3> ret(3);
-  if (uP < _deltaPer)
-  {
-    ret[0] =
-      (getPointPercent(_deltaPer, vP, wP) - getPointPercent(0., vP, wP)) /
-      (u_percent(_deltaPer) - u_percent(0.));
-  }
-  else if ((uP >= _deltaPer) && (uP <= (1. - _deltaPer)))
-  {
-    ret[0] = (getPointPercent(uP + _deltaPer, vP, wP) -
-              getPointPercent(uP - _deltaPer, vP, wP)) /
-             (u_percent(uP + _deltaPer) - u_percent(uP - _deltaPer));
-  }
-  else if (uP > (1. - _deltaPer))
-  {
-    ret[0] =
-      (getPointPercent(1., vP, wP) - getPointPercent(1. - _deltaPer, vP, wP)) /
-      (u_percent(1.) - u_percent(1. - _deltaPer));
-  }
-
-  if (vP < _deltaPer)
-  {
-    ret[1] =
-      (getPointPercent(uP, _deltaPer, wP) - getPointPercent(uP, 0., wP)) /
-      (v_percent(_deltaPer) - v_percent(0.));
-  }
-  else if ((vP >= _deltaPer) && (vP <= (1. - _deltaPer)))
-  {
-    ret[1] = (getPointPercent(uP, vP + _deltaPer, wP) -
-              getPointPercent(uP, vP - _deltaPer, wP)) /
-             (v_percent(vP + _deltaPer) - v_percent(vP - _deltaPer));
-  }
-  else if (vP > (1. - _deltaPer))
-  {
-    ret[1] =
-      (getPointPercent(uP, 1., wP) - getPointPercent(uP, 1. - _deltaPer, wP)) /
-      (v_percent(1.) - v_percent(1. - _deltaPer));
-  }
-
-  if (wP < _deltaPer)
-  {
-    ret[2] =
-      (getPointPercent(uP, vP, _deltaPer) - getPointPercent(uP, vP, 0.)) /
-      (w_percent(_deltaPer) - w_percent(0.));
-  }
-  else if ((wP >= _deltaPer) && (wP <= (1. - _deltaPer)))
-  {
-    ret[2] = (getPointPercent(uP, vP, wP + _deltaPer) -
-              getPointPercent(uP, vP, wP - _deltaPer)) /
-             (w_percent(wP + _deltaPer) - w_percent(wP - _deltaPer));
-  }
-  else if (wP > (1. - _deltaPer))
-  {
-    ret[2] =
-      (getPointPercent(uP, vP, 1.) - getPointPercent(uP, vP, 1. - _deltaPer)) /
-      (w_percent(1.) - w_percent(1. - _deltaPer));
-  }
-
-  return ret;
+  return analyticGeometry::firstDer(
+    std::initializer_list<dtReal>({uu, vv, ww}).begin()
+  );
 }
 
 dtVector3

@@ -213,6 +213,7 @@ private:
   mutable dtReal _characteristicLength;
   mutable std::pair<dtPoint3, dtPoint3> _boundingBox;
   mutable dtReal _boundingBoxValue;
+  static dtReal _deltaPer;
 };
 dt__H_addCloneForpVH(analyticGeometry);
 } // namespace dtOO
