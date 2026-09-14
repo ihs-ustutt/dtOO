@@ -160,6 +160,45 @@ std::vector<dtVector3> analyticGeometry::firstDer(dtReal const *const uvw) const
   return dd;
 }
 
+std::vector<dtVector3> analyticGeometry::secondDer(dtReal const *const uvw
+) const
+{
+  dtInt const nDim = this->dim();
+  std::vector<dtReal> uvwP(nDim, std::numeric_limits<dtReal>::quiet_NaN());
+  std::vector<dtVector3> dd;
+  dd.reserve(nDim * (nDim + 1) / 2);
+  dtReal const deltaPerInv = 1.0 - _deltaPer;
+  dt__forFromToIndex(0, nDim, dim) { uvwP[dim] = percent_val(uvw[dim], dim); }
+
+  dt__forFromToIndex(0, nDim, firstDim)
+  {
+    dt__forFromToIndex(firstDim, nDim, secondDim)
+    {
+      std::vector<dtReal> uvwP_h = uvwP;
+      std::vector<dtReal> uvwP_l = uvwP;
+      uvwP_h[secondDim] = uvwP_h[secondDim] + _deltaPer;
+      uvwP_l[secondDim] = uvwP_l[secondDim] - _deltaPer;
+      if (uvwP[secondDim] < _deltaPer)
+      {
+        uvwP_h[secondDim] = _deltaPer;
+        uvwP_l[secondDim] = 0.0;
+      }
+      else if (uvwP[secondDim] > deltaPerInv)
+      {
+        uvwP_h[secondDim] = 1.0;
+        uvwP_l[secondDim] = deltaPerInv;
+      }
+      dd.push_back(
+        (firstDerPercent(&uvwP_h[0])[firstDim] -
+         firstDerPercent(&uvwP_l[0])[firstDim]) /
+        (val_percent(uvwP_h[secondDim], secondDim) -
+         val_percent(uvwP_l[secondDim], secondDim))
+      );
+    }
+  }
+  return dd;
+}
+
 void analyticGeometry::dump(void) const
 {
   dt__info(

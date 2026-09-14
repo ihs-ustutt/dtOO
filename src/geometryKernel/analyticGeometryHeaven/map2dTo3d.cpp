@@ -307,69 +307,9 @@ dtVector3 map2dTo3d::firstDerV(dtReal const &uu, dtReal const &vv) const
 std::vector<dtVector3>
 map2dTo3d::secondDer(dtReal const &uu, dtReal const &vv) const
 {
-  dtReal uP = percent_u(uu);
-  dtReal vP = percent_v(vv);
-  dtReal const deltaPerInv = 1. - _deltaPer;
-  std::vector<dtVector3> dd(3);
-
-  //
-  // dUU
-  //
-  if (uP < _deltaPer)
-  {
-    dd[0] = (firstDerU(_deltaPer, vP) - firstDerU(0., vP)) /
-            (u_percent(_deltaPer) - u_percent(0.));
-  }
-  else if ((uP >= _deltaPer) && (uP <= deltaPerInv))
-  {
-    dd[0] = (firstDerU(uP + _deltaPer, vP) - firstDerU(uP - _deltaPer, vP)) /
-            (u_percent(uP + _deltaPer) - u_percent(uP - _deltaPer));
-  }
-  else if (uP > deltaPerInv)
-  {
-    dd[0] = (firstDerU(1., vP) - firstDerU(1. - _deltaPer, vP)) /
-            (u_percent(1.) - u_percent(deltaPerInv));
-  }
-
-  //
-  // ddUV
-  //
-  if (vP < _deltaPer)
-  {
-    dd[1] = (firstDerV(uP, _deltaPer) - firstDerV(uP, 0.)) /
-            (u_percent(_deltaPer) - u_percent(0.));
-  }
-  else if ((vP >= _deltaPer) && (vP <= deltaPerInv))
-  {
-    dd[1] = (firstDerV(uP, vP + _deltaPer) - firstDerV(uP, vP - _deltaPer)) /
-            (u_percent(uP + _deltaPer) - u_percent(uP - _deltaPer));
-  }
-  else if (vP > deltaPerInv)
-  {
-    dd[1] = (firstDerV(uP, 1.) - firstDerV(uP, 1. - _deltaPer)) /
-            (u_percent(1.) - u_percent(deltaPerInv));
-  }
-
-  //
-  // dVV
-  //
-  if (vP < _deltaPer)
-  {
-    dd[2] = (firstDerV(uP, _deltaPer) - firstDerV(uP, 0.)) /
-            (v_percent(_deltaPer) - v_percent(0.));
-  }
-  else if ((vP >= _deltaPer) && (vP <= deltaPerInv))
-  {
-    dd[2] = (firstDerV(uP, vP + _deltaPer) - firstDerU(uP, vP - _deltaPer)) /
-            (v_percent(vP + _deltaPer) - v_percent(vP - _deltaPer));
-  }
-  else if (vP > deltaPerInv)
-  {
-    dd[2] = (firstDerV(uP, 1.) - firstDerV(uP, 1. - _deltaPer)) /
-            (v_percent(1.) - v_percent(deltaPerInv));
-  }
-
-  return dd;
+  return analyticGeometry::secondDer(
+    std::initializer_list<dtReal>({uu, vv}).begin()
+  );
 }
 
 dtVector3 map2dTo3d::secondDerUU(dtReal const &uu, dtReal const &vv) const
