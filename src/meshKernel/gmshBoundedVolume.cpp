@@ -293,7 +293,6 @@ dtGmshFace *gmshBoundedVolume::getFace(std::string const &tag) const
   {
     if (_physLabels[2][jj] == tag)
     {
-      int pNum = _gm->getPhysicalNumber(2, tag);
       dtGmshModel::intGEntityVMap groups;
       _gm->getPhysicalGroups(2, groups);
       std::vector<::GEntity *> &geV = groups[_gm->getPhysicalNumber(2, tag)];
@@ -309,6 +308,7 @@ dtGmshFace *gmshBoundedVolume::getFace(std::string const &tag) const
       }
     }
   }
+  return nullptr;
 }
 
 dtGmshRegion *gmshBoundedVolume::getRegion(std::string const &tag) const
@@ -341,6 +341,7 @@ dtGmshRegion *gmshBoundedVolume::getRegion(std::string const &tag) const
       }
     }
   }
+  return nullptr;
 }
 
 dtGmshModel *gmshBoundedVolume::getModel(void) const

@@ -62,7 +62,7 @@ bezierSurface_bezierCurveFillConstructOCC::
   );
 
   dtOCCSurfaceBase base;
-  base.setOCC(Handle(Geom_Surface)::DownCast(fill.Surface()));
+  base.setOCC(Handle(Geom_Surface)(fill.Surface().get()));
   _dtS.reset(new dtOCCBezierSurface(base));
 }
 

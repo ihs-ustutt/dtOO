@@ -44,7 +44,7 @@ dtOCCGeomFillBoundary::dtOCCGeomFillBoundary(
   : dtOCCCurve(cBase)
 {
   _boundary.reset(new dtOCCGeomFillBoundaryBase());
-  _boundary->setOCC(Handle(GeomFill_Boundary)::DownCast(bBase.getOCC()));
+  _boundary->setOCC(bBase.getOCC());
   dt__mustCast(OCCBoundaryRef().getOCC().get(), GeomFill_Boundary const, _ptr);
 }
 

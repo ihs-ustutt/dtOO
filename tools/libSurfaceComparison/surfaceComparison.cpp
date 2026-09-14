@@ -150,6 +150,9 @@ namespace dtOO {
         }
       }
     }
+    if (_printlevel>0)
+      cout << "Root not found" << endl;
+    return _auxiliary > 0.15 ? 2 : 1;
   }
    
   void surfaceComparison::init( 
