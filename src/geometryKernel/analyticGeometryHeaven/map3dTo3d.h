@@ -159,9 +159,6 @@ public:
     dtPoint3 const &p2,
     dtPoint3 const &p3
   ) const;
-
-private:
-  static dtReal _deltaPer;
 };
 dt__H_addCloneForpVH(map3dTo3d);
 } // namespace dtOO

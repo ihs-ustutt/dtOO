@@ -42,9 +42,6 @@ License
 #include <vector>
 
 namespace dtOO {
-dtReal map2dTo3d::_deltaPer =
-  staticPropertiesHandler::getInstance()->getOptionFloat("map2dTo3d_deltaPer");
-
 map2dTo3d::map2dTo3d() : analyticGeometry() {}
 
 map2dTo3d::map2dTo3d(const map2dTo3d &orig) : analyticGeometry(orig) {}

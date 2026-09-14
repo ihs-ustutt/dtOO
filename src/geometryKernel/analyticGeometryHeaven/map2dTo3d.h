@@ -218,9 +218,6 @@ public:
   segmentRectanglePercent(dtPoint2 const &p0, dtPoint2 const &p1) const;
   //! Convert normalized u and v coordinates to native coordinates.
   dtPoint2 operator%(const dtPoint2 &percent) const;
-
-private:
-  static dtReal _deltaPer;
 };
 
 //

@@ -43,9 +43,6 @@ License
 #include <gslMinFloatAttr.h>
 
 namespace dtOO {
-dtReal map3dTo3d::_deltaPer =
-  staticPropertiesHandler::getInstance()->getOptionFloat("map3dTo3d_deltaPer");
-
 map3dTo3d::map3dTo3d() : analyticGeometry() {}
 
 map3dTo3d::map3dTo3d(const map3dTo3d &orig) : analyticGeometry(orig) {}
