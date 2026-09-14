@@ -9,14 +9,10 @@ Create ``staticPropertiesHandler`` and initialize:
 ...   jsonPrimitive(
 ...     '{'                                                                                                                                                                              
 ...       '"option" : ['                                                        
-...         '{"name" : "reparamOnFace_precision", "value" : "1.e-06"},'         
-...         '{"name" : "reparamInVolume_precision","value" : "1.e-06"},'        
 ...         '{"name" : "invY_precision", "value" : "1.e-04"},'                  
 ...         '{"name" : "xyz_resolution", "value" : "1.e-08"},'                  
-...         '{"name" : "XYZ_resolution", "value" : "1.e-07"},'                  
 ...         '{"name" : "uvw_resolution", "value" : "1.e-04"},'                  
 ...         '{"name" : "logLevel", "value" : "99"},'
-...         '{"name" : "map2dTo3d_deltaPer", "value" : "1.e-8"}'
 ...       ']'                                                                   
 ...     '}' 
 ...   )

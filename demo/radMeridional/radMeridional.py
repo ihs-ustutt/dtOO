@@ -514,14 +514,9 @@ class radMeridional:
           dtOO.jsonPrimitive(
             '{'
               '"option" : ['
-                '{"name" : "reparamOnFace_precision", "value" : "1.e-05"},'
-                '{"name" : "reparamInVolume_precision","value" : "1.e-05"},'
                 '{"name" : "invY_precision", "value" : "1.e-04"},'
                 '{"name" : "xyz_resolution", "value" : "1.e-04"},'
-                '{"name" : "XYZ_resolution", "value" : "1.e-04"},'
                 '{"name" : "uvw_resolution", "value" : "1.e-03"},'
-                '{"name" : "point_render_diameter", "value" : "0.005"},'
-                '{"name" : "vector_render_size", "value" : "0.05"},'
                 '{"name" : "function_render_resolution_u", "value" : "150"},'
                 '{"name" : "function_render_resolution_v", "value" : "150"},'
                 '{"name" : "function_render_resolution_w", "value" : "150"},'
@@ -529,9 +524,6 @@ class radMeridional:
                 '{"name" : "geometry_render_resolution_v", "value" : "150"},'
                 '{"name" : "geometry_render_resolution_w", "value" : "150"},'
                 '{"name" : "ompNumThreads", "value" : "2"},'
-                '{"name" : "map1dTo3d_deltaPer", "value" : "0.01"},'
-                '{"name" : "map2dTo3d_deltaPer", "value" : "0.01"},'
-                '{"name" : "map3dTo3d_deltaPer", "value" : "0.01"},'
                 #'{"name" : "logLevel", "value" : "2"},'
                 '{"name" : "logLevel", "value" : "99"},'
                 '{"name" : "isEqualExtendCheck", "value" : "true"}'
@@ -2332,4 +2324,3 @@ class radMeridional:
           Initialization of the dtBundle.
         """
         return self.container
-

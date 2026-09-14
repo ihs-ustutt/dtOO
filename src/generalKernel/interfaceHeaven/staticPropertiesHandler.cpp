@@ -39,8 +39,6 @@ staticPropertiesHandler::staticPropertiesHandler()
   setOption("invY_precision", "1.e-2");
   setOption("xyz_resolution", "1.e-4");
   setOption("uvw_resolution", "1.e-2");
-  setOption("point_render_diameter", "1.");
-  setOption("vector_render_size", "1.");
   setOption("render_max_nPoints", "50");
   setOption("function_render_resolution_u", "10");
   setOption("function_render_resolution_v", "10");
@@ -50,12 +48,10 @@ staticPropertiesHandler::staticPropertiesHandler()
   setOption("geometry_render_resolution_w", "10");
   setOption("workingDirectory", systemHandling::currentDirectory());
   setOption("ompNumThreads", "1");
-  setOption("map1dTo3d_deltaPer", "0.01");
-  setOption("map2dTo3d_deltaPer", "0.01");
-  setOption("map3dTo3d_deltaPer", "0.01");
   setOption("analyticGeometry_deltaPer", "0.01");
   setOption("transfinite_correctionLoops", "10");
   setOption("isEqualExtendCheck", "false");
+  setOption("geometry_sort", "false");
   setOption("logLevel", "0");
   if (std::getenv("DTOO_LOGLEVEL") != NULL)
   {

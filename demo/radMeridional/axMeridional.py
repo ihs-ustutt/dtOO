@@ -56,23 +56,15 @@ class axMeridional:
           dtOO.jsonPrimitive(
             '{'
               '"option" : ['
-                '{"name" : "reparamOnFace_precision", "value" : "1.e-05"},'
-                '{"name" : "reparamInVolume_precision","value" : "1.e-05"},'
                 '{"name" : "invY_precision", "value" : "1.e-04"},'
                 '{"name" : "xyz_resolution", "value" : "1.e-05"},'
-                '{"name" : "XYZ_resolution", "value" : "1.e-04"},'
                 '{"name" : "uvw_resolution", "value" : "1.e-03"},'
-                '{"name" : "point_render_diameter", "value" : "0.005"},'
-                '{"name" : "vector_render_size", "value" : "0.05"},'
                 '{"name" : "function_render_resolution_u", "value" : "50"},'
                 '{"name" : "function_render_resolution_v", "value" : "50"},'
                 '{"name" : "function_render_resolution_w", "value" : "50"},'
                 '{"name" : "geometry_render_resolution_u", "value" : "50"},'
                 '{"name" : "geometry_render_resolution_v", "value" : "50"},'
                 '{"name" : "geometry_render_resolution_w", "value" : "50"},'
-                '{"name" : "map1dTo3d_deltaPer", "value" : "0.01"},'
-                '{"name" : "map2dTo3d_deltaPer", "value" : "0.01"},'
-                '{"name" : "map3dTo3d_deltaPer", "value" : "0.01"},'
                 #'{"name" : "logLevel", "value" : "99"},'
                 '{"name" : "logLevel", "value" : "2"},'
                 '{"name" : "isEqualExtendCheck", "value" : "true"}'
@@ -937,4 +929,3 @@ if __name__ == "__main__":
     generate.createOfCase() 
      
     # ------------------- EOF ------------------- #
-
