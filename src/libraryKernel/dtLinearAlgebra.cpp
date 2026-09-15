@@ -804,6 +804,8 @@ bool dtLinearAlgebra::isInsideQuadrangle(
   case CGAL::ON_UNBOUNDED_SIDE:
     return false;
   }
+  dt__throwUnexpected(isInsideQuadrangle());
+  return false;
 }
 
 bool dtLinearAlgebra::isInsideHexahedron(

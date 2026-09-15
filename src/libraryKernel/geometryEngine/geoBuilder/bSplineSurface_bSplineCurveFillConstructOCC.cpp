@@ -73,7 +73,7 @@ bSplineSurface_bSplineCurveFillConstructOCC ::
   dt__tryOcc(fill.Init(
     CC[0], CC[1], CC[2], CC[3], GeomFill_FillingStyle::GeomFill_StretchStyle
   );
-             base.setOCC(Handle(Geom_Surface)::DownCast(fill.Surface()));
+             base.setOCC(Handle(Geom_Surface)(fill.Surface().get()));
              ,
              << "Could not initialize and create filled surface." << std::endl
              << logMe::dtFormat("[0] (%e %e %e) -> (%e %e %e)\n") %
@@ -115,7 +115,7 @@ bSplineSurface_bSplineCurveFillConstructOCC ::
     dtCurve const *const c3
   )
 {
-  vectorHandling<dtCurve const *> ccV(4, NULL);
+  vectorHandling<dtCurve const *> ccV(4);
   ccV[0] = c0;
   ccV[1] = c1;
   ccV[2] = c2;

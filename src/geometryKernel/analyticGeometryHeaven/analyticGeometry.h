@@ -90,6 +90,13 @@ public:
    * @return First derivative vector for every parameter direction.
    */
   virtual ::std::vector<dtVector3> firstDer(dtReal const *const uvw) const = 0;
+  /*!
+   * Evaluate second derivatives using native parameter coordinates.
+   *
+   * @return Unique second derivatives in upper-triangular parameter order:
+   *         UU, UV, ..., VV, ...
+   */
+  virtual ::std::vector<dtVector3> secondDer(dtReal const *const uvw) const;
   //
   // optional overload
   //
@@ -213,6 +220,7 @@ private:
   mutable dtReal _characteristicLength;
   mutable std::pair<dtPoint3, dtPoint3> _boundingBox;
   mutable dtReal _boundingBoxValue;
+  static dtReal _deltaPer;
 };
 dt__H_addCloneForpVH(analyticGeometry);
 } // namespace dtOO

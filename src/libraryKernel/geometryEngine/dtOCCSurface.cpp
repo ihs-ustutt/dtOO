@@ -254,7 +254,7 @@ dtPoint2 dtOCCSurface::reparam(dtPoint3 const point) const
     static_cast<Standard_Real>(point.y()),
     static_cast<Standard_Real>(point.z())
   );
-  Standard_Real Tol = 1.e-02 * dtSurface::XYZTolerance();
+  Standard_Real const Tol = 1.e-02 * dtSurface::XYZTolerance();
 
   //
   // Reparam by Projection

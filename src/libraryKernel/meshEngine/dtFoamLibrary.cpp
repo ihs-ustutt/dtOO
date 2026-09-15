@@ -87,7 +87,7 @@ void dtFoamLibrary::renumber(
     // Count uses of vertices of meshF for f
     ::Foam::label nMatched = 0;
 
-    forAll(f, fp) if (::Foam::findIndex(meshF, f[fp]) != -1) nMatched++;
+    forAll(f, fp) if (meshF.find(f[fp]) != -1) nMatched++;
 
     if (nMatched == meshF.size())
       return faceI;
@@ -111,7 +111,7 @@ void dtFoamLibrary::renumber(
     // Count uses of vertices of meshF for f
     ::Foam::label nMatched = 0;
 
-    forAll(f, fp) if (::Foam::findIndex(meshF, f[fp]) != -1) nMatched++;
+    forAll(f, fp) if (meshF.find(f[fp]) != -1) nMatched++;
 
     if (nMatched == meshF.size())
       return faceI;
@@ -133,7 +133,7 @@ bool dtFoamLibrary::correctOrientation(
   {
     const ::Foam::face &f = faces[i];
 
-    ::Foam::vector n(f.normal(points));
+    ::Foam::vector n(f.areaNormal(points));
 
     // Check if vector from any point on face to cc points outwards
     if (((points[f[0]] - cc) & n) < 0)
@@ -290,16 +290,16 @@ void dtFoamLibrary::readCells(
 )
 {
 #ifdef DTOO_HAS_FOAMEXT
-  const ::Foam::cellModel &hex = *(::Foam::cellModeller::lookup("hex"));
-  const ::Foam::cellModel &prism = *(::Foam::cellModeller::lookup("prism"));
-  const ::Foam::cellModel &pyr = *(::Foam::cellModeller::lookup("pyr"));
-  const ::Foam::cellModel &tet = *(::Foam::cellModeller::lookup("tet"));
+  const ::Foam::cellModel &hex = *(::Foam::cellModel::ptr("hex"));
+  const ::Foam::cellModel &prism = *(::Foam::cellModel::ptr("prism"));
+  const ::Foam::cellModel &pyr = *(::Foam::cellModel::ptr("pyr"));
+  const ::Foam::cellModel &tet = *(::Foam::cellModel::ptr("tet"));
 #endif
 #ifdef DTOO_HAS_OpenFOAM
-  const ::Foam::cellModel &hex = *(::Foam::cellModeller().lookup("hex"));
-  const ::Foam::cellModel &prism = *(::Foam::cellModeller().lookup("prism"));
-  const ::Foam::cellModel &pyr = *(::Foam::cellModeller().lookup("pyr"));
-  const ::Foam::cellModel &tet = *(::Foam::cellModeller().lookup("tet"));
+  const ::Foam::cellModel &hex = *(::Foam::cellModel::ptr("hex"));
+  const ::Foam::cellModel &prism = *(::Foam::cellModel::ptr("prism"));
+  const ::Foam::cellModel &pyr = *(::Foam::cellModel::ptr("pyr"));
+  const ::Foam::cellModel &tet = *(::Foam::cellModel::ptr("tet"));
 #endif
   ::Foam::face triPoints(3);
   ::Foam::face quadPoints(4);

@@ -114,7 +114,6 @@ private:
 
 private:
   mutable dtReal _tmpL;
-  static dtReal _deltaPer;
 };
 
 //

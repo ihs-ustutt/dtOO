@@ -213,12 +213,7 @@ dtPoint2 dtOCCSurface2d::reparam(dtPoint2 const point) const
     static_cast<Standard_Real>(point.y()),
     static_cast<Standard_Real>(0.)
   );
-  Standard_Real Utol =
-    static_cast<Standard_Real>(staticPropertiesHandler::getInstance()
-                                 ->getOptionFloat("reparamOnFace_precision"));
-  Standard_Real Vtol =
-    static_cast<Standard_Real>(staticPropertiesHandler::getInstance()
-                                 ->getOptionFloat("reparamOnFace_precision"));
+  Standard_Real const Tol = 1.e-02 * dtSurface2d::XYZTolerance();
 
   Standard_Real U;
   Standard_Real V;
@@ -232,14 +227,13 @@ dtPoint2 dtOCCSurface2d::reparam(dtPoint2 const point) const
   GeomAdaptor_Surface gas;
   Extrema_ExtPS ext;
   dt__tryOcc(gas.Load(_surface->getOCC());
-             ext.Initialize(gas, U1, U2, V1, V2, Utol, Vtol);
+             ext.Initialize(gas, U1, U2, V1, V2, Tol, Tol);
              ext.SetFlag(Extrema_ExtFlag::Extrema_ExtFlag_MIN);
              ext.SetAlgo(Extrema_ExtAlgo::Extrema_ExtAlgo_Grad);
              ext.Perform(pp);
              ,
              << dt__point2d(point) << std::endl
-             << dt__eval(Utol) << std::endl
-             << dt__eval(Vtol) << std::endl
+             << dt__eval(Tol) << std::endl
              << dt__eval(U) << std::endl
              << dt__eval(V) << std::endl
              << dt__point2d(pointPercent(0., 0.)) << std::endl
@@ -253,8 +247,7 @@ dtPoint2 dtOCCSurface2d::reparam(dtPoint2 const point) const
     dt__throw(
       reparam(),
       << dt__eval(ext.IsDone()) << dt__point2d(point) << std::endl
-      << dt__eval(Utol) << std::endl
-      << dt__eval(Vtol) << std::endl
+      << dt__eval(Tol) << std::endl
       << dt__eval(U) << std::endl
       << dt__eval(V) << std::endl
       << dt__point2d(pointPercent(0., 0.)) << std::endl

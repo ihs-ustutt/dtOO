@@ -93,6 +93,7 @@ public:
     dtReal const vv, dtReal const uuMin, dtReal const uuMax
   ) const;
   dtPoint2 reparamPercent(dtPoint2 const point) const;
+  static dtReal XYZTolerance(void);
 };
 dt__H_addCloneForpVH(dtSurface2d);
 } // namespace dtOO

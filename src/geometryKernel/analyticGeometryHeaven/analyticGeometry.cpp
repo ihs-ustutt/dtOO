@@ -27,6 +27,11 @@ License
 #include <progHelper.h>
 
 namespace dtOO {
+dtReal analyticGeometry::_deltaPer =
+  staticPropertiesHandler::getInstance()->getOptionFloat(
+    "analyticGeometry_deltaPer"
+  );
+
 analyticGeometry::analyticGeometry() : labelHandling()
 {
   _resU = staticPropertiesHandler::getInstance()->getOptionInt(
@@ -116,6 +121,82 @@ int analyticGeometry::getRenderResolution(int const &dir) const
       << "dir should be 0, 1 or 2."
     );
   }
+}
+
+std::vector<dtVector3> analyticGeometry::firstDer(dtReal const *const uvw) const
+{
+  dtInt const nDim = this->dim();
+  std::vector<dtReal> uvwP(nDim, std::numeric_limits<dtReal>::quiet_NaN());
+  std::vector<dtVector3> dd(
+    dim(),
+    dtVector3(
+      std::numeric_limits<dtReal>::quiet_NaN(),
+      std::numeric_limits<dtReal>::quiet_NaN(),
+      std::numeric_limits<dtReal>::quiet_NaN()
+    )
+  );
+  dtReal const deltaPerInv = 1.0 - _deltaPer;
+  dt__forFromToIndex(0, nDim, dim) { uvwP[dim] = percent_val(uvw[dim], dim); }
+
+  dt__forFromToIndex(0, nDim, dim)
+  {
+    std::vector<dtReal> uvwP_h = uvwP;
+    std::vector<dtReal> uvwP_l = uvwP;
+    uvwP_h[dim] = uvwP_h[dim] + _deltaPer;
+    uvwP_l[dim] = uvwP_l[dim] - _deltaPer;
+    if (uvwP[dim] < _deltaPer)
+    {
+      uvwP_h[dim] = _deltaPer;
+      uvwP_l[dim] = 0.0;
+    }
+    else if (uvwP[dim] > deltaPerInv)
+    {
+      uvwP_h[dim] = 1.0;
+      uvwP_l[dim] = deltaPerInv;
+    }
+    dd[dim] = (getPointPercent(&uvwP_h[0]) - getPointPercent(&uvwP_l[0])) /
+              (val_percent(uvwP_h[dim], dim) - val_percent(uvwP_l[dim], dim));
+  }
+  return dd;
+}
+
+std::vector<dtVector3> analyticGeometry::secondDer(dtReal const *const uvw
+) const
+{
+  dtInt const nDim = this->dim();
+  std::vector<dtReal> uvwP(nDim, std::numeric_limits<dtReal>::quiet_NaN());
+  std::vector<dtVector3> dd;
+  dd.reserve(nDim * (nDim + 1) / 2);
+  dtReal const deltaPerInv = 1.0 - _deltaPer;
+  dt__forFromToIndex(0, nDim, dim) { uvwP[dim] = percent_val(uvw[dim], dim); }
+
+  dt__forFromToIndex(0, nDim, firstDim)
+  {
+    dt__forFromToIndex(firstDim, nDim, secondDim)
+    {
+      std::vector<dtReal> uvwP_h = uvwP;
+      std::vector<dtReal> uvwP_l = uvwP;
+      uvwP_h[secondDim] = uvwP_h[secondDim] + _deltaPer;
+      uvwP_l[secondDim] = uvwP_l[secondDim] - _deltaPer;
+      if (uvwP[secondDim] < _deltaPer)
+      {
+        uvwP_h[secondDim] = _deltaPer;
+        uvwP_l[secondDim] = 0.0;
+      }
+      else if (uvwP[secondDim] > deltaPerInv)
+      {
+        uvwP_h[secondDim] = 1.0;
+        uvwP_l[secondDim] = deltaPerInv;
+      }
+      dd.push_back(
+        (firstDerPercent(&uvwP_h[0])[firstDim] -
+         firstDerPercent(&uvwP_l[0])[firstDim]) /
+        (val_percent(uvwP_h[secondDim], secondDim) -
+         val_percent(uvwP_l[secondDim], secondDim))
+      );
+    }
+  }
+  return dd;
 }
 
 void analyticGeometry::dump(void) const

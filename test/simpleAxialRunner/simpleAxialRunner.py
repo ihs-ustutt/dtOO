@@ -154,14 +154,9 @@ class simpleAxialRunner:
       dtOO.jsonPrimitive(
         '{'
           '"option" : ['
-            '{"name" : "reparamOnFace_precision", "value" : "1.e-06"},'
-            '{"name" : "reparamInVolume_precision","value" : "1.e-06"},'
             '{"name" : "invY_precision", "value" : "1.e-04"},'
             '{"name" : "xyz_resolution", "value" : "1.e-06"},'
-            '{"name" : "XYZ_resolution", "value" : "1.e-05"},'
             '{"name" : "uvw_resolution", "value" : "1.e-04"},'
-            '{"name" : "point_render_diameter", "value" : "0.005"},'
-            '{"name" : "vector_render_size", "value" : "0.05"},'
             '{"name" : "function_render_resolution_u", "value" : "21"},'
             '{"name" : "function_render_resolution_v", "value" : "21"},'
             '{"name" : "function_render_resolution_w", "value" : "21"},'
@@ -696,4 +691,3 @@ def CreateAndShow( *args, **kwargs ):
 
 if __name__ == "__main__":
   simpleAxialRunner().create()
-

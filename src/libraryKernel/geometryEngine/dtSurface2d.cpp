@@ -20,6 +20,7 @@ License
 
 #include "dtCurve2d.h"
 #include <interfaceHeaven/ptrHandling.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 #include <logMe/logMe.h>
 #include <vector>
 
@@ -208,5 +209,12 @@ std::string dtSurface2d::dumpToString(void) const
 
   return ss.str();
 }
+
+dtReal dtSurface2d::XYZTolerance(void)
+{
+  return staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"
+  );
+}
+
 dt__C_addCloneForpVH(dtSurface2d);
 } // namespace dtOO

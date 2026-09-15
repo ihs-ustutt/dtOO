@@ -187,7 +187,7 @@ map2dTo3d *translatingMap2dTo3d::segmentConstW(dtReal const &ww) const
   {
     map1dTo3d *m1d = aS->segmentConstVPercent(percent_w(ww), 0., 1.);
     dt__ptrAss(analyticCurve * s3d, analyticCurve::DownCast(m1d));
-    vectorHandling<dtCurve const *> cV(2, NULL);
+    vectorHandling<dtCurve const *> cV(2);
     cV[0] = s3d->ptrConstDtCurve()->clone();
     cV[1] = geomCurve_curveTranslateConstructOCC(s3d->ptrConstDtCurve(), _vv)
               .result();
