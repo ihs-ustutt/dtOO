@@ -1,22 +1,25 @@
 
 import logging
-logging.basicConfig(
-  format='[ %(asctime)s - %(levelname)8s - %(filename)s:%(lineno)d ]'
-         ' - %(message)s', 
-  datefmt='%d-%b-%y %H:%M:%S', 
-  level=logging.DEBUG
-)
 
-logging.debug("Debug")
-logging.info("Info")
-logging.warning("Warning")
-logging.error("Error")
+if not logging.getLogger().handlers:
+    logging.basicConfig(
+      format='[ %(asctime)s - %(levelname)8s - %(filename)s:%(lineno)d ]'
+             ' - %(message)s', 
+      datefmt='%d-%b-%y %H:%M:%S', 
+      level=logging.DEBUG
+    )
+
+    logging.debug("Debug")
+    logging.info("Info")
+    logging.warning("Warning")
+    logging.error("Error")
 
 import dtOOPythonSWIG as dtOO
 
 import re
 import numpy as np
 import sys
+import os
 import importlib
 from typing import List
 
@@ -484,6 +487,7 @@ class radMeridional:
 	
     def __init__(
         self,
+        state = None
     ):
         """Initalize the radMeridional object. 
 
@@ -505,9 +509,22 @@ class radMeridional:
         """ 
         # Create an empty container
         self.container = dtOO.dtBundle()
-
+        
         # Create log file
-        dtOO.logMe.initLog('build.log')
+        if state != None:
+            self.state_ = state
+            dtOO.logMe.initLog('build.'+self.state_+'.log')
+            
+            ### change working directory to local ssd ###
+            wd = os.environ["TMPDIR"]
+            os.chdir(wd)
+            
+            working_dir =f'{{"name": "workingDirectory", "value": "{wd}" }},'
+            #working_dir =f'{{\"name\": \"workingDirectory\", \"value\": \"{wd}\" }}'
+        
+        else:
+            dtOO.logMe.initLog('build.log')
+            working_dir = ""
 
         # Init staticProperties
         dtOO.staticPropertiesHandler.getInstance().jInit(
@@ -524,13 +541,22 @@ class radMeridional:
                 '{"name" : "geometry_render_resolution_v", "value" : "150"},'
                 '{"name" : "geometry_render_resolution_w", "value" : "150"},'
                 '{"name" : "ompNumThreads", "value" : "2"},'
-                #'{"name" : "logLevel", "value" : "2"},'
-                '{"name" : "logLevel", "value" : "99"},'
-                '{"name" : "isEqualExtendCheck", "value" : "true"}'
+                '{"name" : "map1dTo3d_deltaPer", "value" : "0.01"},'
+                '{"name" : "map2dTo3d_deltaPer", "value" : "0.01"},'
+                '{"name" : "map3dTo3d_deltaPer", "value" : "0.01"},'
+                '{"name" : "isEqualExtendCheck", "value" : "true"},'
+                + working_dir +
+                '{"name" : "logLevel", "value" : "2"}'
+                #'{"name" : "logLevel", "value" : "99"}'
               ']'
             '}'
           )
         )
+        self.aF = self.container.cptr_aF()
+        self.aG = self.container.cptr_aG()
+        self.bV = self.container.cptr_bV()
+        self.dC = self.container.cptr_dC()
+        self.dP = self.container.cptr_dP()
 
         # Init baseContainer and labeledVectorHandlings
         self.bC = self.container.cptr_bC()
@@ -543,11 +569,7 @@ class radMeridional:
         dtOO.lVHOstateHandler.clear()
         dtOO.lVHOstateHandler( dtOO.jsonPrimitive(), self.cV ).thisown = False
 
-        self.aF = self.container.cptr_aF()
-        self.aG = self.container.cptr_aG()
-        self.bV = self.container.cptr_bV()
-        self.dC = self.container.cptr_dC()
-        self.dP = self.container.cptr_dP()
+
 
     def createMeridional(self, configM, hubCurves, shroudCurves): 
         """Create the regular channels and special hub and shroud curves.
