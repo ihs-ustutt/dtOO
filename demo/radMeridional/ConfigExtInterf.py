@@ -538,11 +538,11 @@ if __name__ == "__main__":
     
     generate.createMeridional(configM, hubCurves, shroudCurves)
     #generate.createLayerRegion(configL)
-    generate.createBlade(configGV)
+    #generate.createBlade(configGV)
     generate.createBlade(configRu)
     
     container = generate.getContainer()
-    #bV = container.cptr_bV()
+    bV = container.cptr_bV()
      
     #container = generate.getContainer()
     #from dtOOPythonApp.tools import dtOO2OCC
@@ -568,13 +568,13 @@ if __name__ == "__main__":
     #  "interface.stp"
     #)
     
-    #bV["ru_mesh"].makeGrid()
+    bV["ru_mesh"].makeGrid()
     #bV["gv_mesh"].makeGrid()
     #bV["meshLayers"].makeGrid()
 
-    stateLbl = "testCase"
-    indiv = "0"
+    #stateLbl = "testCase"
+    #indiv = "0"
     
-    createOFCase(container, stateLbl, indiv, 0.36)
+    #createOFCase(container, stateLbl, indiv, 0.36)
 
     # ------------------- EOF ------------------- #
