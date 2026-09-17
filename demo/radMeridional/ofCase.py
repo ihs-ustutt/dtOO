@@ -3,6 +3,7 @@ import shutil
 import sys 
 import os
 import time
+from pathlib import Path
 
 if not logging.getLogger().handlers:
     logging.basicConfig(
@@ -26,10 +27,9 @@ class ofCase:
     
     import sys
 
-    def __init__(self, state, solver_launcher=None):
+    def __init__(self, state):
 
         self.state_ = state
-        self.solver_launcher_ = list(solver_launcher or [])
         ### change working directory to local ssd ###
         self.wd_ = os.environ["TMPDIR"]
         #os.chdir(self.wd_)
@@ -51,9 +51,18 @@ class ofCase:
         #
         # draft tube
         #
+        
+        
+        LEGACY_DIR = Path(__file__).resolve().parent
+        SAUGROHR = LEGACY_DIR / "saugrohr.cgns"
 
         rmsh = dtOO.readMOABMesh()
-        rmsh.jInit(dtOO.jsonPrimitive('{"label" : "dt_mesh", "_fileName" : "saugrohr.cgns"}'), None, None, None, None, None)
+        rmsh.jInit(
+            dtOO.jsonPrimitive(
+                '{"label" : "dt_mesh", "_fileName" : "'+str(SAUGROHR)+'"}'
+            ), 
+            None, None, None, None, None
+        )
         rmsh.makeGrid()
         
         bV.push_back( rmsh )
@@ -258,14 +267,13 @@ class ofCase:
         #self.cDir_ = dC["of"].getDirectory(dtOO.lVHOstateHandler().commonState())
         dC["of"].runCurrentState()
     
-    def simulate(self):
+    def simulate(self, solver_launcher=None):
         """Perform the simulation.
 
         Perform the simulation using foamlib. The simulation runs for 500 
         iterations as a laminar simulation. Afterwards, it is switched to turbulent
         mode.
         """
-        
         # get the cpus per task, the first set value is taken
         #  "FLOW_OPT_MPI_RANKS" is defined by the hydroflow config as mpi_ranks
         #  "SLURM_CPUS_PER_TASK" is set in the batch script
@@ -277,6 +285,16 @@ class ofCase:
             #os.environ.get("SLURM_TRES_PER_TASK", "cpu=1").split("=")[-1]
           )
         )
+        
+        if solver_launcher is not None:
+            self.solver_launcher_ = list(solver_launcher)
+        else:
+            self.solver_launcher_ = [
+                "mpiexec",
+                "--oversubscribe",
+                "-n",
+                str(cpus_per_task),
+            ]
 
         logging.info(f"Start CFD for state {self.state_} on {cpus_per_task} cores.")
         self.history_['Start Time'] = time.time()
@@ -326,6 +344,7 @@ class ofCase:
                 solver_cmd = [*self.solver_launcher_, "simpleFoam"]
                 if cpus_per_task > 1:
                     solver_cmd.append("-parallel")
+                fc.run(cmd=solver_cmd)
                 #if cpus_per_task > 1:
                 #    fc.run(cmd=["mpiexec", "--oversubscribe", "-n", f"{cpus_per_task}","simpleFoam", "-parallel"])
                 #else:
@@ -335,9 +354,8 @@ class ofCase:
                 fc.control_dict['writeInterval'] = 100
                 #fc.control_dict['purgeWrite'] = 10
                 fc.turbulence_properties["RAS"]["turbulence"] = True
-                solver_cmd = [*self.solver_launcher_, "simpleFoam"]
-                if cpus_per_task > 1:
-                    solver_cmd.append("-parallel")
+                fc.run(cmd=solver_cmd)
+
                 #if cpus_per_task > 1:
                 #    fc.run(cmd=["mpiexec", "--oversubscribe", "-n", f"{cpus_per_task}","simpleFoam", "-parallel"])
                 #else:
@@ -345,7 +363,7 @@ class ofCase:
 
             if cpus_per_task > 1:
                 fc.run(["reconstructPar", '-time', '500,2000'])
-                #fc.run(["reconstructPar", '-time', '500'])
+                #fc.run(["reconstructPar", '-time', '100'])
 
         except:
             logging.exception(f"Failed: {self.state_}.")
@@ -444,7 +462,8 @@ class ofCase:
         logging.info("eta = %f" % eta)
         logging.info("dh_ru = %f" % dh_ru)
 
-        fit = np.abs(dh_ru + 0.8)/0.8 + (1.0 - eta)
+        #fit = np.abs(dh_ru + 0.8)/0.8 + (1.0 - eta)
+        fit = (1.0 - eta)
 
         #
         # Check if the simulated geometry is a pump or a turbine; if it is a pump,

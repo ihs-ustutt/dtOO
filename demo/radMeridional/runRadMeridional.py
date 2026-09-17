@@ -285,14 +285,14 @@ def runRadMeridional(x, state, solver_launcher=None):
         #
         # Simulation
         #
-        sim = ofCase.ofCase(state, solver_launcher)    
+        sim = ofCase.ofCase(state)    
         # Create the open foam case
         start_time = time.time()
         sim.createOFCase(cc, h_inlet)
         end_time = time.time()
         logging.info(f"Proxy: finished meshing for state {state}. Time: {end_time - start_time}. Start CFD...")
         # Run the simulation
-        sim.simulate()
+        sim.simulate(solver_launcher)
         # Evaluation
         fit, dh_ru, M_z, eta = sim.evaluate()
         fit_extra = {'dh_ru':dh_ru.tolist(), 'M_z': float(M_z), 'eta': eta.tolist()}
