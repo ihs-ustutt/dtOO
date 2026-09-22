@@ -78,7 +78,7 @@ void staticPropertiesHandler::jInit(jsonPrimitive const &jE)
     setOption("logLevel", std::string(std::getenv("DTOO_LOGLEVEL")));
   }
   dtLog::setLogLevel(getOption("logLevel"));
- 
+
 #ifdef DTOO_HAS_OMP
   omp_set_num_threads(getOptionInt("ompNumThreads"));
 #endif

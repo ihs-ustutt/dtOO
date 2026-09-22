@@ -578,7 +578,7 @@ std::string stringPrimitive::regex_escape(std::string text)
   );
   return text;
 }
-bool stringPrimitive::isInt(std::string const& str)
+bool stringPrimitive::isInt(std::string const &str)
 {
   if (str.empty())
     return false;
@@ -591,10 +591,8 @@ bool stringPrimitive::isInt(std::string const& str)
   if (start == str.size())
     return false;
 
-  return std::all_of(
-    str.begin() + start,
-    str.end(),
-    [](unsigned char c) { return std::isdigit(c); }
-  );
+  return std::all_of(str.begin() + start, str.end(), [](unsigned char c) {
+    return std::isdigit(c);
+  });
 }
 } // namespace dtOO
