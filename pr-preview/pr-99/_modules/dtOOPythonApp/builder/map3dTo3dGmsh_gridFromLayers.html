@@ -1,0 +1,1256 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers &mdash; dtOO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/dtoo-logo-inv-nbg.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demonstration.html">Demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../test.html">Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/ihs-ustutt/dtOO">Back to GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">dtOO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonApp.tools.dtBundleTools</span><span class="w"> </span><span class="kn">import</span> <span class="n">dtBundleBuilder</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">jsonPrimitive</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">bVOMeshRule</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">analyticGeometry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">map2dTo3d</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">map3dTo3d</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">map3dTo3dGmsh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">jsonPrimitive</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">bVOWriteMSH</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">bVONameRegions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">bVOFaceToPatchRule</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">bVOAnalyticGeometryToFace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">labeledVectorHandlingAnalyticGeometry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">labeledVectorHandlingAnalyticFunction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">vectorReal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">scaTanhGradingOneD</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">scaTanhGradingOneDCompound</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">bVOSetPrescribedElementSize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">bVOSetPrescribedMeshSizeAtPoints</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="n">bVOOrientCellVolumes</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<div class="viewcode-block" id="map3dTo3dGmsh_gridFromLayers">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers.map3dTo3dGmsh_gridFromLayers">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">map3dTo3dGmsh_gridFromLayers</span> <span class="p">(</span><span class="n">dtBundleBuilder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Create mesh topology as map3dTo3dGmsh.</span>
+
+<span class="sd">    This class:</span>
+
+<span class="sd">        - Creates a map3dTo3dGmsh topology object.</span>
+<span class="sd">        - Adds the unstructured region to the topology.</span>
+<span class="sd">        - Adds layer volumes to the topology.</span>
+<span class="sd">        - Manages layer faces in the topology.</span>
+<span class="sd">        - Applies mesh settings to the edges.</span>
+<span class="sd">        - Applies gradings and mesh rules.</span>
+<span class="sd">        - Renames faces.</span>
+<span class="sd">        - Applies mesh settings to topology.</span>
+
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    label_: str</span>
+<span class="sd">      Label.</span>
+<span class="sd">    layerList_: List[List[List[analyticGeometry] | List[bool]]]</span>
+<span class="sd">      Layer lists for hub and shroud with 3d regions and bool list.</span>
+<span class="sd">    nLayers_: int</span>
+<span class="sd">      Number of elements normal to the walls in the layer volumes.</span>
+<span class="sd">    firstElement_: float</span>
+<span class="sd">      Size of first element on the walls.</span>
+<span class="sd">    elementSizeSw_: float</span>
+<span class="sd">      Element size in streamwise direction.</span>
+<span class="sd">    elementSizeCirc_: float</span>
+<span class="sd">      Element size in circumferential direction.</span>
+<span class="sd">    unstructured_: analyticGeometry</span>
+<span class="sd">      Multi bounded volume of the unstructured region.</span>
+<span class="sd">    unstructuredSurfaces_: List[analyticGeometry]</span>
+<span class="sd">      Bounding faces of the mult bounded volume.</span>
+<span class="sd">    map3dTo3dGmshJson_: jsonPrimitive</span>
+<span class="sd">      JSON structure for map3dTo3dGmsh.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    None </span>
+
+
+<span class="sd">    The class is used to create the mesh topology of a flow channel consisting </span>
+<span class="sd">    of five- or six-sided layer volumes on the hub and shroud walls and a </span>
+<span class="sd">    multiple bounded volume inside the flow domain, connecting to the layer </span>
+<span class="sd">    volumes.</span>
+
+<span class="sd">    The layer volumes are meshed transfinite and the multiple bounded volume is </span>
+<span class="sd">    meshed unstructured.</span>
+
+<span class="sd">    In the constructor, the input parameters are instantiated. The multiple </span>
+<span class="sd">    bounded volume is instantiated as ``unstructured_``. The list with its</span>
+<span class="sd">    bounding surfaces is instantiated as ``unstructuredSurfaces_``.</span>
+
+<span class="sd">    The layer list is instantiated as ``layerList``. Its structure is as </span>
+<span class="sd">    follows:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        layerList = List[</span>
+<span class="sd">            List[</span>
+<span class="sd">                List[analyticGeometry],</span>
+<span class="sd">                List[bool]</span>
+<span class="sd">            ]</span>
+<span class="sd">        ]</span>
+
+<span class="sd">    The entries correspond to the following values:</span>
+
+<span class="sd">    - ``layerList[0]``: Hub layers</span>
+<span class="sd">    - ``layerList[1]``: Shroud layers</span>
+<span class="sd">    - ``layerList[i][0]``: List of layer volumes.</span>
+<span class="sd">    - ``layerList[i][1]``: List of Boolean values indicating whether the corresponding</span>
+<span class="sd">      layer is located on a radius of zero.</span>
+
+<span class="sd">    The layers are meshed with a grading extending from the wall faces into the</span>
+<span class="sd">    flow domain. The number of elements in the grading is defined as ``nLayers_``.</span>
+<span class="sd">    The size of the first element on the wall is specified with ``firstElement_``.</span>
+
+<span class="sd">    The number of elements in streamwise and circumferential direction is set </span>
+<span class="sd">    with ``elementSizeSw_`` and ``elementSizeCirc_``. These parameters correspond </span>
+<span class="sd">    to maximal element sizes on the hub and shroud walls.</span>
+
+<span class="sd">    The size of the elements in the unstructured region is set with the minimal </span>
+<span class="sd">    and maximal characteristic lengths ``charLengthMin`` and ``charLengthMax``.</span>
+
+<span class="sd">    The topology settings are defined with a ``jsonPrimitive`` object instantiated </span>
+<span class="sd">    as ``map3dTo3dGmshJson_``. Here, the characteristic lengths of the unstructured </span>
+<span class="sd">    mesh elements are applied.</span>
+
+<span class="sd">    With the :meth:`build` method, the mesh settings are applied to the topology. </span>
+<span class="sd">    The methods :meth:`detectFirstAndSecond` and </span>
+<span class="sd">    :meth:`getCommonEdgesByPhysicalFaces` are used to organize the faces and edges </span>
+<span class="sd">    of the layer volumes.</span>
+
+<span class="sd">    The mesh topology is appended to the bounded volume container at the end of </span>
+<span class="sd">    the :meth:`build` method.  </span>
+<span class="sd">    """</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">mv</span><span class="p">:</span> <span class="n">analyticGeometry</span><span class="p">,</span> 
+                 <span class="n">bs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">],</span>
+                 <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">layers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">analyticGeometry</span><span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="nb">bool</span><span class="p">]]],</span>
+                 <span class="n">nElementsLayer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">firstElement</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">elementSize_sw</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">elementSize_circ</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">charLengthMin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+                 <span class="n">charLengthMax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.10</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="p">:</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">"""Constructor</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mv: analyticGeometry</span>
+<span class="sd">          Multi bounded volume of the unstructured region</span>
+<span class="sd">        bs: List[analyticGeometry]</span>
+<span class="sd">          Bounding faces of the mult bounded volume</span>
+<span class="sd">        label: str</span>
+<span class="sd">          Label.</span>
+<span class="sd">        layers: List[List[List[analyticGeometry] | List[bool]]]</span>
+<span class="sd">          Layer lists for hub and shroud with 3d regions and bool list.</span>
+<span class="sd">        nElementLayer: int</span>
+<span class="sd">          Number of elements in grading.</span>
+<span class="sd">        firstElement: float</span>
+<span class="sd">          size of first element in grading.</span>
+<span class="sd">        elementSize_sw: float</span>
+<span class="sd">          Element size in streamwise direction</span>
+<span class="sd">        elementSize_circ: float</span>
+<span class="sd">          Element size in circumferential direction</span>
+<span class="sd">        charLengthMin: float</span>
+<span class="sd">          Minimal characteristic length of elements in unstructured region.</span>
+<span class="sd">        charLengthMax: float</span>
+<span class="sd">          Maximal characteristic length of elements in unstructured region.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        """</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">map3dTo3dGmsh_gridFromLayers</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        
+        <span class="c1"># setting global params</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span> <span class="o">=</span> <span class="n">layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nLayers_</span> <span class="o">=</span> <span class="n">nElementsLayer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">firstElement_</span> <span class="o">=</span> <span class="n">firstElement</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elementSizeSW_</span> <span class="o">=</span> <span class="n">elementSize_sw</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elementSizeCIRC_</span> <span class="o">=</span> <span class="n">elementSize_circ</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unstructured_</span> <span class="o">=</span> <span class="n">mv</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unstructuredSurfaces_</span> <span class="o">=</span> <span class="n">bs</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">"Building </span><span class="si">%s</span><span class="s2"> ..."</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">)</span> <span class="p">)</span>
+        
+        <span class="c1">#logMe.initLog('layerMesh.log')</span>
+        
+        <span class="c1"># setting up volume</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map3dTo3dGmshJson_</span> <span class="o">=</span> <span class="n">jsonPrimitive</span><span class="p">(</span>
+            <span class="s1">'{"label" : "'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'",'</span>
+                <span class="s1">'"option" : ['</span>
+                <span class="s1">'{"name" : "[gmsh]General.Terminal", "value" : "1."},'</span>
+                <span class="s1">'{"name" : "[gmsh]General.Verbosity", "value" : "100."},'</span>
+                <span class="s1">'{"name" : "[gmsh]General.ExpertMode", "value" : "1."},'</span>
+                <span class="s1">'{'</span>
+                  <span class="s1">'"name" : "[gmsh]Mesh.CharacteristicLengthMin", '</span>
+                  <span class="s1">'"value" : "'</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">charLengthMin</span><span class="p">)</span><span class="o">+</span><span class="s1">'"'</span>
+                <span class="s1">'},'</span>
+                <span class="s1">'{'</span>
+                  <span class="s1">'"name" : "[gmsh]Mesh.CharacteristicLengthMax", '</span>
+                  <span class="s1">'"value" : "'</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">charLengthMax</span><span class="p">)</span><span class="o">+</span><span class="s1">'"'</span>
+                <span class="s1">'},'</span>
+                <span class="s1">'{"name" : "[gmsh]Mesh.Algorithm", "value" : "1"},'</span>
+                <span class="s1">'{"name" : "[gmsh]Mesh.MeshSizeExtendFromBoundary", "value" : "1"},'</span>
+                <span class="s1">'{"name" : "[gmsh]Mesh.MeshSizeFromPoints", "value" : "1"}'</span>
+              <span class="s1">'],'</span>
+              <span class="s1">'"analyticGeometry" : []'</span>
+            <span class="s1">'}'</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="map3dTo3dGmsh_gridFromLayers.build">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers.map3dTo3dGmsh_gridFromLayers.build">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Build part.</span>
+<span class="sd">        </span>
+<span class="sd">        This method is the main method of the class.</span>
+
+<span class="sd">            - Creates a ``map3dTo3dGmsh`` topology object.</span>
+<span class="sd">            - Adds the unstructured region to the topology.</span>
+<span class="sd">            - Adds layer volumes to the topology.</span>
+<span class="sd">            - Manages layer faces in the topology.</span>
+<span class="sd">            - Applies mesh settings to the edges.</span>
+<span class="sd">            - Applies gradings and mesh rules.</span>
+<span class="sd">            - Renames faces.</span>
+<span class="sd">            - Applies mesh settings to the topology.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+
+<span class="sd">        The topology object ``m3Gmsh`` is created with the settings in</span>
+<span class="sd">        ``map3dTo3dGmsh_``.</span>
+
+<span class="sd">        The labeled vector handling objects ``aG`` and ``aF`` are created to handle</span>
+<span class="sd">        analytic geometries and functions in this method.</span>
+
+<span class="sd">        The bounding faces of the unstructured region in ``unstructuredSurfaces_`` are</span>
+<span class="sd">        labeled in the getter method ``getUnstructuredRegion`` of the class</span>
+<span class="sd">        ``analyticGeometry_layerRegion``. The labels are as follows:</span>
+
+<span class="sd">            - ``"periodicUnstruct_0"`` : First periodic surface</span>
+<span class="sd">            - ``"periodicUnstruct_1"`` : Second periodic surface</span>
+<span class="sd">            - ``"interface_unstruct"`` : Inlet of the flow domain's unstructured region</span>
+<span class="sd">            - ``"outlet_unstruct"`` : Outlet of the flow domain's unstructured region</span>
+<span class="sd">            - ``"para" + str(i)`` : Connecting faces to the layer volumes</span>
+
+<span class="sd">        The bounding faces that are not labeled with the string ``para`` are pushed</span>
+<span class="sd">        into ``aG`` by iterating over the list.</span>
+
+<span class="sd">        :numref:`gridLayersMeshFaces` shows the face ``outlet_unstruct`` in orange and</span>
+<span class="sd">        ``interface_unstruct`` in red. The faces labeled with ``para`` are equal to</span>
+<span class="sd">        the wall parallel faces of the layer volumes (purple). The periodic faces of</span>
+<span class="sd">        the unstructured region are not shown.</span>
+
+<span class="sd">        .. _gridLayersMeshFaces:</span>
+<span class="sd">        .. figure:: meridionalFigs/layersMeshFaces.png</span>
+<span class="sd">           :width: 50%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Faces in the layered flow domain.</span>
+<span class="sd">        </span>
+<span class="sd">        The multiple bounded volume of the unstructured region is added to the topology</span>
+<span class="sd">        and allocated in ``unstrct3d``.</span>
+
+<span class="sd">        In a nested loop over ``layerList_``, the layer volumes of the hub and shroud</span>
+<span class="sd">        are added to the topology. The faces of the layers are added to ``aG``.</span>
+<span class="sd">        The activities inside the loop are illustrated in the following figure.</span>
+
+<span class="sd">        .. _gridLayers_activity0:</span>
+<span class="sd">        .. figure:: meridionalFigs/gridLayers_activity0.png</span>
+<span class="sd">           :width: 70%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Activities for adding the layer volumes to the topology.</span>
+
+<span class="sd">        **Loop over Hub and Shroud**</span>
+
+<span class="sd">            ::</span>
+
+<span class="sd">                i_hs in range(len(layerList_))</span>
+
+<span class="sd">            The first level loop iterates over the hub and shroud data in</span>
+<span class="sd">            ``layerList_``. According to the iterator ``i_hs``, the ``label``</span>
+<span class="sd">            variable is set to the strings ``hub`` or ``shroud``.</span>
+<span class="sd">            </span>
+<span class="sd">            **Loop over Layers**</span>
+
+<span class="sd">                ::</span>
+
+<span class="sd">                    i_l in range(len(layerList[i_hs][0]))</span>
+
+<span class="sd">                The second level loop iterates over the hub or shroud layers in</span>
+<span class="sd">                ``layerList_[i_hs]``. The iterator is ``i_l``.</span>
+
+<span class="sd">                With the method :meth:`detectFirstAndSecond`, the faces of each layer are</span>
+<span class="sd">                identified. The method takes the layer volume as a ``map3dTo3d`` object</span>
+<span class="sd">                and the parameter direction as an integer input. By calling the function</span>
+<span class="sd">                once for each parameter direction, all faces of the layer volume are</span>
+<span class="sd">                returned. The returned faces are allocated to the following parameters:</span>
+
+<span class="sd">                    - ``ortho0`` and ``ortho1`` : Faces orthogonal to the wall (:numref:`gridLayersMeshFaces` dark blue)</span>
+<span class="sd">                    - ``periodic0`` and ``periodic1`` : Periodic faces on the flow domain segment (:numref:`gridLayersMeshFaces` light blue (``periodic0`` not shown))</span>
+<span class="sd">                    - ``channel`` : Wall faces on hub and shroud (:numref:`gridLayersMeshFaces` green)</span>
+<span class="sd">                    - ``parallel`` : Faces extending parallel to the wall (:numref:`gridLayersMeshFaces` purple)</span>
+
+<span class="sd">                Here, ``ortho0`` is the upstream face of each layer volume and</span>
+<span class="sd">                ``ortho1`` is the downstream face. The faces ``ortho0`` and ``ortho1``</span>
+<span class="sd">                are labeled as follows:</span>
+
+<span class="sd">                    - ``ortho0`` : ``"ortho_"+label+str(i_l)``</span>
+<span class="sd">                    - ``ortho1`` : ``"ortho_"+label+str(i_l)+1``</span>
+
+<span class="sd">                The layer volumes are added to the topology ``m3dGmsh`` and receive the</span>
+<span class="sd">                region ID ``rID``.</span>
+
+<span class="sd">                The labeling of the other faces depends on whether the layer volume is</span>
+<span class="sd">                five- or six-sided. A layer is five-sided if it is located on the radius</span>
+<span class="sd">                of zero. This is checked with the list in ``layerList_[i_hs][1]``.</span>
+<span class="sd">                This differentiation is necessary, because different meshing strategies </span>
+<span class="sd">                have to be applied.</span>
+<span class="sd">                </span>
+
+<span class="sd">                **The layer is six sided:**</span>
+
+<span class="sd">                    The layer is six sided when</span>
+<span class="sd">                    ``layerList_[i_hs][1][i_l] == False`` applies. In this case, the naming</span>
+<span class="sd">                    of the faces is as follows:</span>
+
+<span class="sd">                        - ``periodic1`` : ``"periodic0_"+label+str(i_l)``</span>
+<span class="sd">                        - ``periodic0`` : ``"periodic1_"+label+str(i_l)``</span>
+<span class="sd">                        - ``channel`` : ``"channel_"+label+str(i_l)``</span>
+<span class="sd">                        - ``parallel`` : ``"parallel_"+label+str(i_l)``</span>
+
+<span class="sd">                    The mesh settings are set to transfinite and recursive.</span>
+
+<span class="sd">                **The layer is five sided:**</span>
+
+<span class="sd">                    If the layer is five sided, the string ``5s`` is added to the face names:</span>
+
+<span class="sd">                        - ``periodic1`` : ``"periodic05s_"+label+str(i_l)``</span>
+<span class="sd">                        - ``periodic0`` : ``"periodic15s_"+label+str(i_l)``</span>
+<span class="sd">                        - ``channel`` : ``"channel5s_"+label+str(i_l)``</span>
+<span class="sd">                        - ``parallel`` : ``"parallel5s_"+label+str(i_l)``</span>
+
+<span class="sd">                    In this case, the layer cannot be meshed completely transfinite recursive.</span>
+<span class="sd">                    Its mesh settings have to be applied directly to the edges.</span>
+
+<span class="sd">                The labeled faces are pushed into ``aG``.</span>
+<span class="sd">                ``ortho0`` is pushed into ``aG`` in every iteration. ``ortho1`` is only</span>
+<span class="sd">                pushed in the last iteration</span>
+<span class="sd">                ``i_l == len(layerList_[i_hs][0])-1`` if the last layer is not on a radius</span>
+<span class="sd">                of zero ``layerList_[i_hs][1][i_l] == False``.</span>
+<span class="sd">        </span>
+<span class="sd">        **Apply Mesh Sizing**</span>
+
+<span class="sd">        With an observer of the class ``bVOAnalyticGeometryToFace``, the labeled</span>
+<span class="sd">        faces in ``aG`` are added to the topology ``m3dGmsh``.</span>
+<span class="sd">        </span>
+<span class="sd">        The mesh settings are applied to the edges of the layer volumes. The</span>
+<span class="sd">        following figure shows the edges on which mesh settings are applied.</span>
+
+<span class="sd">        .. _layersMeshSetting:</span>
+<span class="sd">        .. figure:: meridionalFigs/layersMeshSetting.png</span>
+<span class="sd">           :width: 50%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Edges in the flow domain on which mesh settings are applied.</span>
+<span class="sd">           ``channelToParallelLines`` (green), ``swLines`` (magenta), and</span>
+<span class="sd">           ``circLines`` (blue). On grey edges no mesh settings are applied.</span>
+<span class="sd">        </span>
+<span class="sd">        **Apply Gradings on the Walls**</span>
+
+<span class="sd">            The grading on the hub and shroud layers is set on the edges extending from</span>
+<span class="sd">            the ``channel`` to ``parallel`` faces. The edges are stored in</span>
+<span class="sd">            ``channelToParallelLines``. By iterating over these edges, the grading is</span>
+<span class="sd">            applied with the method ``setGrading``. The first input of this method is</span>
+<span class="sd">            the direction of the grading, and the second one is an identifier for the</span>
+<span class="sd">            grading function. The number of elements is set to ``nLayers_``.</span>
+
+<span class="sd">            While iterating over the edges, the sum of their edge lengths is calculated.</span>
+<span class="sd">            Using the number of edges in ``channelToParallelLines``, the mean edge</span>
+<span class="sd">            length is calculated. By dividing this value by ``nLayers_``, the mesh size</span>
+<span class="sd">            ``meshSizeAtPoints`` at the connection face between the layer and the</span>
+<span class="sd">            unstructured volume is estimated.</span>
+
+<span class="sd">        To set the number of elements on the edges in the streamwise</span>
+<span class="sd">        (:numref:`layersMeshSetting` (magenta)) and circumferential directions</span>
+<span class="sd">        (:numref:`layersMeshSetting` (blue)), an iteration over the layer list is</span>
+<span class="sd">        performed. The following figure illustrates the processes in an activity</span>
+<span class="sd">        diagram.</span>
+
+<span class="sd">        .. _gridLayers_activity1:</span>
+<span class="sd">        .. figure:: meridionalFigs/gridLayers_activity1.png</span>
+<span class="sd">           :width: 90%</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">           Activities for the mesh settings in the streamwise and circumferential directions.</span>
+<span class="sd">           Pink action blocks correspond to operations on the streamwise edges, blue action</span>
+<span class="sd">           blocks correspond to operations on circumferential edges.</span>
+<span class="sd">        </span>
+<span class="sd">        **Prepare List**</span>
+
+<span class="sd">            The list ``lChannel_circ = [0,0]`` is prepared. The two values in this list</span>
+<span class="sd">            are used in the loop to store the maximum lengths of the circumferential</span>
+<span class="sd">            edges on the hub and shroud walls.</span>
+<span class="sd"> </span>
+<span class="sd">        **Loop over Hub And Shroud**</span>
+
+<span class="sd">            ::</span>
+
+<span class="sd">                i_hs in range(len(layerList_))</span>
+
+<span class="sd">            Similarly to the loop in :numref:`gridLayers_activity0`, a nested loop</span>
+<span class="sd">            over the two levels of ``layerList_`` is performed. The first level loop</span>
+<span class="sd">            iterates over the hub and shroud layers. The string value of ``label`` is</span>
+<span class="sd">            set accordingly.</span>
+
+<span class="sd">            **Loop over Layers**</span>
+
+<span class="sd">                ``i_l in range(len(layerList_[i_hs][0]))``</span>
+
+<span class="sd">                The second level loop iterates over the specific layers in the hub or</span>
+<span class="sd">                shroud set.</span>
+<span class="sd">                </span>
+<span class="sd">                **Edges in Streamwise Direction**</span>
+
+<span class="sd">                    The length ``lChannel_sw`` of the wall edge of the current layer in</span>
+<span class="sd">                    the streamwise direction is calculated. The edge is returned as the</span>
+<span class="sd">                    common edge between the ``channel`` and the ``periodic0`` faces with</span>
+<span class="sd">                    the method :meth:`getCommonEdgesByPhysicalFaces`.</span>
+
+<span class="sd">                    With this length, the number of elements ``nE`` is calculated by</span>
+<span class="sd">                    dividing the length through the element size ``elementSizeSW_``. By</span>
+<span class="sd">                    rounding ``nE`` to the next highest integer value, it is ensured that</span>
+<span class="sd">                    ``elementSizeSW_`` is the maximal element size on the wall face in</span>
+<span class="sd">                    the streamwise direction.</span>
+
+<span class="sd">                    The handling of six- and five-sided layers differs here. This is</span>
+<span class="sd">                    checked with the value in ``layerList_[i_hs][1][i_l]``.</span>
+
+<span class="sd">                **Layer is six sided**</span>
+
+<span class="sd">                    ``layerList_[i_hs][1][i_l] == False``</span>
+
+<span class="sd">                    The streamwise edges (:numref:`layersMeshSetting` (magenta))</span>
+<span class="sd">                    extending between the ``ortho`` faces of the layer are returned</span>
+<span class="sd">                    by the method ``getDtGmshEdgeTagListByFromToPhysical`` of the</span>
+<span class="sd">                    Gmsh model.</span>
+
+<span class="sd">                **Layer is five sided**</span>
+
+<span class="sd">                    ``layerList_[i_hs][1][i_l] == True``</span>
+
+<span class="sd">                    The four edges are returned by the method</span>
+<span class="sd">                    :meth:`getCommonEdgesByPhysicalFaces`. Here, the edges of the</span>
+<span class="sd">                    ``channel`` or the ``parallel`` faces are compared with the</span>
+<span class="sd">                    ``periodic0`` and ``periodic1`` faces. The common edges of these</span>
+<span class="sd">                    faces are stored in the list ``swLines``.</span>
+
+<span class="sd">                    The meshing of the four sided faces ``ortho``, ``periodic0``,</span>
+<span class="sd">                    and ``periodic1`` of the layer is set to transfinite with a</span>
+<span class="sd">                    recombine.</span>
+<span class="sd">                </span>
+<span class="sd">                **Apply Mesh Settings on Edges in Streamwise Direction**</span>
+
+<span class="sd">                    By iterating over ``swLines``, the number of elements ``nE`` is set</span>
+<span class="sd">                    on the edges.</span>
+
+<span class="sd">                **Edges in Cricumferential Direction**</span>
+
+<span class="sd">                    The length ``l_ortho`` of the upstream circumferential edge of the</span>
+<span class="sd">                    layer volume is returned. If the length is greater than the value</span>
+<span class="sd">                    stored in ``lChannel_circ``, the value replaces the current entry in</span>
+<span class="sd">                    the list.</span>
+
+<span class="sd">                    If the iteration is at the last layer and the layer is not located on</span>
+<span class="sd">                    a radius of zero, the length ``l_ortho`` is calculated and compared</span>
+<span class="sd">                    for the downstream circumferential edge.</span>
+<span class="sd">            </span>
+<span class="sd">            </span>
+<span class="sd">            **Apply Mesh Settings on Edges in Circumferential Direction**</span>
+
+<span class="sd">                After the second level loop for a layer region has concluded, the number of</span>
+<span class="sd">                elements according to the maximal edge length is set on the circumferential</span>
+<span class="sd">                edges.</span>
+
+<span class="sd">                The number of elements ``nE`` is calculated with the maximal edge length</span>
+<span class="sd">                ``lChannel_circ[i_hs]`` and the element size ``elementSizeCirc_``. By</span>
+<span class="sd">                rounding the value of ``nE`` to the next higher integer, it is ensured that</span>
+<span class="sd">                the specified element size represents a maximum size along the</span>
+<span class="sd">                circumferential direction of the layer wall.</span>
+
+<span class="sd">                The circumferential edges ``circLines``</span>
+<span class="sd">                (:numref:`layersMeshSetting` (blue)) extend between the ``periodic`` faces.</span>
+<span class="sd">                By iterating over ``circLines``, the number of elements is set.</span>
+<span class="sd">        </span>
+<span class="sd">        **Create Observers**</span>
+
+<span class="sd">            The observer ``bVOSetPrescribedMeshSizeAtPoints`` is applied. This observer</span>
+<span class="sd">            is used to set the mesh size of the unstructured region at the connection</span>
+<span class="sd">            points with the layer volumes to the value calculated in</span>
+<span class="sd">            ``meshSizeAtPoints``.</span>
+
+<span class="sd">            The object of the grading function ``theRef`` is created with the `dtOO`</span>
+<span class="sd">            class `scaTanhGradingOneDCompound`. It is labeled ``aF_grading`` and</span>
+<span class="sd">            pushed into ``aF``.</span>
+
+<span class="sd">            An observer of the class ``bVOSetPrescribedElementSize`` is created. This</span>
+<span class="sd">            observer combines the analytic grading function specified in ``theRef`` with</span>
+<span class="sd">            the ``_type`` identifier and the size of the first element in the grading</span>
+<span class="sd">            ``firstElement_``.</span>
+
+<span class="sd">            The mesh rules are applied with the observer ``bVOMeshRule``. The rules</span>
+<span class="sd">            ``dtMeshFreeGradingGEdge``, ``dtMeshGFace``, and ``dtMeshGRegion`` are used</span>
+<span class="sd">            for all edges, surfaces, and volumes.</span>
+
+<span class="sd">            The observer of the class ``bVOFaceToPatchRule`` is used to rename the</span>
+<span class="sd">            faces. This is done so that the naming of the face regions is consistent</span>
+<span class="sd">            with the setup rules of the simulation.</span>
+
+<span class="sd">            The faces are renamed with the label ``label_`` and a string for the region.</span>
+<span class="sd">            The following names are assigned to the faces:</span>
+
+<span class="sd">                - ``label_ + '_hub'`` : hub walls</span>
+<span class="sd">                - ``label_ + '_shroud'`` : shroud walls</span>
+<span class="sd">                - ``label_ + '_inlet'`` : inlet surfaces</span>
+<span class="sd">                - ``label_ + '_outlet'`` : outlet surfaces</span>
+<span class="sd">                - ``label_ + '_periodic0'`` : first periodic segment faces</span>
+<span class="sd">                - ``label_ + '_periodic1'`` : second periodic segment faces</span>
+
+<span class="sd">            With an if-condition, it is checked whether the last hub wall extends to a</span>
+<span class="sd">            radius of zero. If this is the case (see</span>
+<span class="sd">            :numref:`gridLayersMeshFaces`), the hub layer regions are not part of the</span>
+<span class="sd">            outlet.</span>
+
+<span class="sd">            If the last hub wall is not on zero, the last ``ortho`` face of the hub</span>
+<span class="sd">            regions is added as an outlet face.</span>
+
+<span class="sd">            With the observer of the class ``bVOWriteMSH``, the settings for the created</span>
+<span class="sd">            ``.msh`` file are defined.</span>
+
+<span class="sd">            The observer ``bVOOrientCellVolumes`` is applied with the setting</span>
+<span class="sd">            ``"_positive" : true``.</span>
+<span class="sd">        </span>
+<span class="sd">        **Returns**</span>
+
+<span class="sd">            The method `appendBoundedVolume` is used to append the topology object</span>
+<span class="sd">            ``m3dGmsh`` to the container objects in the main class.</span>
+
+<span class="sd">            A mesh resulting from this topology is shown in the following figure.</span>
+
+<span class="sd">            .. _layerMesh:</span>
+<span class="sd">            .. figure:: meridionalFigs/layersMesh.png</span>
+<span class="sd">               :width: 40%</span>
+<span class="sd">               :align: center</span>
+
+<span class="sd">               Mesh of a draft tube cone resulting from the described topology.</span>
+<span class="sd">        """</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># create the topology object</span>
+        <span class="c1">#</span>
+        <span class="n">m3dGmsh</span> <span class="o">=</span> <span class="n">map3dTo3dGmsh</span><span class="p">()</span>
+        <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">map3dTo3dGmshJson_</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># create the labeled vector handling objects</span>
+        <span class="c1">#</span>
+        <span class="n">aF</span> <span class="o">=</span> <span class="n">labeledVectorHandlingAnalyticFunction</span><span class="p">()</span>
+        <span class="n">aG</span> <span class="o">=</span> <span class="n">labeledVectorHandlingAnalyticGeometry</span><span class="p">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Creating Layer Mesh on hub and shroud"</span><span class="p">)</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># add the unstructured region to the model</span>
+        <span class="c1">#</span>
+        <span class="n">unstruct3d</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">addIfToGmshModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unstructured_</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"unstruct3d = </span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="n">unstruct3d</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">unstructured_</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
+               <span class="s2">"debug_unstructuredRegion_"</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">)</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># iterate over the surfaces of the unstructured region</span>
+        <span class="c1"># the faces were already labeled in getUnstructuredRegion()</span>
+        <span class="c1">#</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unstructuredSurfaces_</span><span class="p">:</span>
+
+            <span class="c1"># the interface and the outlet surfaces as well as the periodic surfaces</span>
+            <span class="c1">#  are added. Not the faces parallel to the hub and shroud curves ("para")</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"para"</span><span class="p">)):</span>
+                <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+                 
+        <span class="c1"># self.layerList_ has the following format:</span>
+        <span class="c1"># self.layerList_ = [[hub layer lists],[shroud layer list]]</span>
+        <span class="c1"># with:</span>
+        <span class="c1"># [hub layer lists] = [[3d layer domain], [bool list radius zero]]</span>
+        <span class="c1"># [bool list radius zero] tracks which layer segment has a radius of zero</span>
+        <span class="c1"># those layers are meshed five sided the entrie for those layers is True </span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># iterate over the layers and pushing their respective surfaces</span>
+        <span class="c1"># six and five sided layers are treated differently</span>
+        <span class="c1">#</span>
+        <span class="k">for</span> <span class="n">i_hs</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">)):</span>
+
+            <span class="k">if</span> <span class="n">i_hs</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="s2">"hub"</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="s2">"shroud"</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Adding </span><span class="si">%s</span><span class="s2"> Layers. Number of Layers: </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="n">i_hs</span><span class="p">][</span><span class="mi">0</span><span class="p">])))</span>
+            
+            <span class="c1">#</span>
+            <span class="c1"># iterate over the hub and shroud layers</span>
+            <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">i_l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="n">i_hs</span><span class="p">][</span><span class="mi">0</span><span class="p">])):</span>
+                
+                <span class="c1"># current 3d region</span>
+                <span class="n">layer3d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="n">i_hs</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="n">i_l</span><span class="p">]</span>
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
+                    <span class="n">layer3d</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
+                    <span class="s2">"debug_layer_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span>
+                <span class="p">)</span>
+                <span class="c1">#</span>
+                <span class="c1"># find the correct surfaces on the region by using the uvw direction</span>
+                <span class="c1"># naming of faces:</span>
+                <span class="c1">#   ortho    -&gt; faces orthogonal to streamwise direction (connecting the layers)</span>
+                <span class="c1">#   periodic -&gt; periodic faces (extend from channel curve radially inside the channel)</span>
+                <span class="c1">#   channel  -&gt; faces on channel side</span>
+                <span class="c1">#   parallel -&gt; faces parallel to channel</span>
+                <span class="c1">#</span>
+                <span class="n">ortho0</span><span class="p">,</span> <span class="n">ortho1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectFirstAndSecond</span><span class="p">(</span><span class="n">layer3d</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">periodic0</span><span class="p">,</span> <span class="n">periodic1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectFirstAndSecond</span><span class="p">(</span><span class="n">layer3d</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">channel</span><span class="p">,</span> <span class="n">parallel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectFirstAndSecond</span><span class="p">(</span><span class="n">layer3d</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+                
+                <span class="c1"># set the labels of the ortho faces</span>
+                <span class="n">ortho0</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"ortho_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">))</span>
+                <span class="n">ortho1</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"ortho_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+                <span class="c1"># add the 3d layer as a region</span>
+                <span class="n">rID</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">addIfRegionToGmshModel</span><span class="p">(</span><span class="n">layer3d</span><span class="p">)</span>
+                
+                <span class="c1"># the labels are different for six and five sided regions</span>
+                <span class="c1"># this is done becuase they have to be treated differently during meshing</span>
+                <span class="c1">#</span>
+                <span class="c1"># check in the layer list if the current layer is on a radius of zero</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="n">i_hs</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">i_l</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> layer no. </span><span class="si">%i</span><span class="s2"> is six sided"</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">i_l</span><span class="p">))</span>
+                    <span class="n">periodic0</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"periodic0_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">))</span>
+                    <span class="n">periodic1</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"periodic1_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">))</span>
+                    <span class="n">channel</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"channel_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">))</span>
+                    <span class="n">parallel</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"parallel_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">))</span>
+
+                    <span class="c1"># only six sided regions can be meshed completely transfinite</span>
+                    <span class="c1"># Recursive means that all the edges and faces of the region are also tramsfinite</span>
+                    <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshRegionByTag</span><span class="p">(</span> <span class="n">rID</span> <span class="p">)</span><span class="o">.</span><span class="n">meshTransfiniteRecursive</span><span class="p">()</span>
+                    <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshRegionByTag</span><span class="p">(</span> <span class="n">rID</span> <span class="p">)</span><span class="o">.</span><span class="n">meshRecombineRecursive</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> layer no. </span><span class="si">%i</span><span class="s2"> is five sided"</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">i_l</span><span class="p">))</span>
+                    <span class="n">periodic0</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"periodic05s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">))</span>
+                    <span class="n">periodic1</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"periodic15s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">))</span>
+                    <span class="n">channel</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"channel5s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">))</span>
+                    <span class="n">parallel</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">"parallel5s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">))</span>
+                
+                <span class="c1"># push back the faces</span>
+                <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">ortho0</span><span class="p">)</span>
+                <span class="c1"># ortho1 is only pushed in the last region if it is six sided</span>
+                <span class="c1"># (ortho1 in a five sided region is rotated surface with radius of zero</span>
+                <span class="c1"># this results in a degenerated face)</span>
+                <span class="k">if</span> <span class="n">i_l</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="n">i_hs</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="n">i_hs</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">i_l</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">ortho1</span><span class="p">)</span>
+                <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">periodic0</span><span class="p">)</span>
+                <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">periodic1</span><span class="p">)</span>
+                <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+                <span class="n">aG</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">parallel</span><span class="p">)</span>
+                                 
+        <span class="c1"># initialize the region labels</span>
+        <span class="n">ob</span> <span class="o">=</span> <span class="n">bVONameRegions</span><span class="p">()</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span> <span class="n">jsonPrimitive</span><span class="p">(</span><span class="s1">'{ "_regionLabel" : [] }'</span><span class="p">),</span> <span class="n">m3dGmsh</span> <span class="p">)</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">preUpdate</span><span class="p">()</span> 
+        
+        <span class="c1">#</span>
+        <span class="c1"># initialize the surface labels in gmsh</span>
+        <span class="c1">#</span>
+        <span class="n">ob</span> <span class="o">=</span> <span class="n">bVOAnalyticGeometryToFace</span><span class="p">()</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+          <span class="n">jsonPrimitive</span><span class="p">(</span>
+            <span class="s1">'{'</span>
+              <span class="s1">'"analyticGeometry" : ['</span>
+                <span class="s1">'{"labels" : "ortho_*"},'</span>
+                <span class="s1">'{"labels" : "channel*"},'</span>
+                <span class="s1">'{"labels" : "periodic1*"},'</span>
+                <span class="s1">'{"labels" : "periodic0*"},'</span>
+                <span class="s1">'{"label" : "periodicUnstruct_1"},'</span>
+                <span class="s1">'{"label" : "periodicUnstruct_0"},'</span>
+                <span class="s1">'{"label" : "interface_unstruct"},'</span>
+                <span class="s1">'{"label" : "outlet_unstruct"},'</span>
+                <span class="s1">'{"labels" : "parallel*"}'</span>
+              <span class="s1">'],'</span>
+              <span class="s1">'"_inc" : 10.0,'</span>
+              <span class="s1">'"_facesPerEntry" : []'</span>
+            <span class="s1">'}'</span>
+          <span class="p">),</span>
+          <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">aG</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m3dGmsh</span>
+        <span class="p">)</span> 
+        <span class="n">ob</span><span class="o">.</span><span class="n">preUpdate</span><span class="p">()</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># mesh the lines orthogonal to the channel lines</span>
+        <span class="c1"># these lines connect the channel and parallel faces</span>
+        <span class="c1">#</span>
+        <span class="n">channelToParallelLines</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeTagListByFromToPhysical</span><span class="p">(</span><span class="s2">"channel*"</span><span class="p">,</span><span class="s2">"parallel*"</span><span class="p">)</span>
+        <span class="c1"># channel to parallel length</span>
+        <span class="n">c2pLength</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># iterate over the edges and apply mesh settings</span>
+        <span class="c1">#</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">channelToParallelLines</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">"meshing graded Line : ID: </span><span class="si">%i</span><span class="s2">, number of elements: </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nLayers_</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">theEdge</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeByTag</span><span class="p">(</span> <span class="n">line</span> <span class="p">)</span>
+            <span class="c1"># mesh the lines with the specified number of elements and set the grading</span>
+            <span class="n">theEdge</span><span class="o">.</span><span class="n">meshTransfiniteWNElements</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nLayers_</span> <span class="p">)</span>
+            <span class="n">theEdge</span><span class="o">.</span><span class="n">setGrading</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
+                <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeByTag</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">getMap1dTo3d</span><span class="p">(),</span>
+                <span class="s2">"debug_layerEdge_channelToParallelLine_"</span><span class="o">+</span><span class="s2">"_ID"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span>
+            <span class="p">)</span>
+            <span class="c1"># sum up the channel to parallel lengths of the edges</span>
+            <span class="n">c2pLength</span> <span class="o">=</span> <span class="n">c2pLength</span> <span class="o">+</span> <span class="n">theEdge</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+        
+        <span class="c1"># calculate the mean value of the edge lengths</span>
+        <span class="n">c2pLength</span> <span class="o">=</span> <span class="n">c2pLength</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">channelToParallelLines</span><span class="p">)</span>
+        
+        <span class="c1"># estimate the mesh size at the points</span>
+        <span class="n">meshSizeAtPoints</span> <span class="o">=</span>  <span class="n">c2pLength</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">nLayers_</span>
+
+        <span class="c1"># list containing the lengths of the mesh lines in circumferential direction</span>
+        <span class="n">lChannel_circ</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># iterate over the hub and shroud layers</span>
+        <span class="c1"># the mesh settings for the edges in streamwise and circumferential directions are set</span>
+        <span class="c1"># regions with five sides are specially treated in this loop</span>
+        <span class="c1">#</span>
+        <span class="k">for</span> <span class="n">i_hs</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">)):</span>
+
+            <span class="k">if</span> <span class="n">i_hs</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="s2">"hub"</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="s2">"shroud"</span>
+            
+            <span class="c1"># iterate over the individual layers in the hub and shroud layer list</span>
+            <span class="k">for</span> <span class="n">i_l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="n">i_hs</span><span class="p">][</span><span class="mi">0</span><span class="p">])):</span>
+                
+                <span class="c1"># find an edge on the channel in streamwise direction</span>
+                <span class="c1"># this edge is the common edge between the channel and the periodic </span>
+                <span class="c1"># face in this layere region</span>
+                <span class="n">edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCommonEdgesByPhysicalFaces</span><span class="p">(</span>
+                        <span class="n">m3dGmsh</span><span class="p">,</span>
+                        <span class="s2">"channel*"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">,</span>
+                        <span class="s2">"periodic0*"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span>
+                    <span class="p">)</span>
+                <span class="c1"># calculate the length and number of elements on this line</span>
+                <span class="c1"># this number of elements is used for all streamwise lines in this layer region</span>
+                <span class="n">lChannel_sw</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getMap1dTo3d</span><span class="p">()</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+                <span class="n">nE</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">lChannel_sw</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">elementSizeSW_</span><span class="p">))</span>                  
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"layer </span><span class="si">%s%i</span><span class="s2"> has a channel length of </span><span class="si">%.4f</span><span class="s2">, meshing with </span><span class="si">%i</span><span class="s2"> elements"</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">label</span><span class="p">,</span> <span class="n">i_l</span><span class="p">,</span> <span class="n">lChannel_sw</span><span class="p">,</span> <span class="n">nE</span><span class="p">))</span>
+                
+                <span class="c1"># find all streamwise layer curves for a six sided region</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="n">i_hs</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">i_l</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="c1"># the curves are found by searching the connecting lines of the orthogonal faces</span>
+                    <span class="n">swLines</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeTagListByFromToPhysical</span><span class="p">(</span>
+                            <span class="s2">"ortho_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">,</span>
+                            <span class="s2">"ortho_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">)</span>
+                
+                <span class="c1"># find streamwise layercurves for five sided regions</span>
+                <span class="c1">#  needs special treatment because this region doesnt have a second ortho face</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="n">i_hs</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">i_l</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="c1"># lines have to be found manually as the common lines </span>
+                    <span class="c1">#  between channel/parallel face and the periodic faces</span>
+                    <span class="n">line0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCommonEdgesByPhysicalFaces</span><span class="p">(</span>
+                        <span class="n">m3dGmsh</span><span class="p">,</span>
+                        <span class="s2">"channel5s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">,</span>
+                        <span class="s2">"periodic05s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span>
+                    <span class="p">)</span>
+                    <span class="n">line1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCommonEdgesByPhysicalFaces</span><span class="p">(</span>
+                        <span class="n">m3dGmsh</span><span class="p">,</span>
+                        <span class="s2">"channel5s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">,</span>
+                        <span class="s2">"periodic15s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span>
+                    <span class="p">)</span>
+                    <span class="n">line2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCommonEdgesByPhysicalFaces</span><span class="p">(</span>
+                        <span class="n">m3dGmsh</span><span class="p">,</span>
+                        <span class="s2">"parallel5s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">,</span>
+                        <span class="s2">"periodic05s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span>
+                    <span class="p">)</span>
+                    <span class="n">line3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCommonEdgesByPhysicalFaces</span><span class="p">(</span>
+                        <span class="n">m3dGmsh</span><span class="p">,</span>
+                        <span class="s2">"parallel5s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">,</span>
+                        <span class="s2">"periodic15s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span>
+                    <span class="p">)</span>
+                    <span class="n">swLines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tag</span><span class="p">(),</span> <span class="n">line1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tag</span><span class="p">(),</span> <span class="n">line2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tag</span><span class="p">(),</span> <span class="n">line3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tag</span><span class="p">()]</span>
+
+                    <span class="c1"># set the orthogonal and periodic faces of the five sided region as transfinite</span>
+                    <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">"ortho_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">)</span><span class="o">.</span><span class="n">meshTransfinite</span><span class="p">()</span>
+                    <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">"ortho_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">)</span><span class="o">.</span><span class="n">meshRecombine</span><span class="p">()</span>
+                    <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">"periodic05s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">)</span><span class="o">.</span><span class="n">meshTransfinite</span><span class="p">()</span>
+                    <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">"periodic05s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">)</span><span class="o">.</span><span class="n">meshRecombine</span><span class="p">()</span>
+                    <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">"periodic15s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">)</span><span class="o">.</span><span class="n">meshTransfinite</span><span class="p">()</span>
+                    <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">"periodic15s_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">)</span><span class="o">.</span><span class="n">meshRecombine</span><span class="p">()</span>
+                
+                <span class="c1">#</span>
+                <span class="c1"># set the mesh size of the streamwise layer lines of the region</span>
+                <span class="c1">#</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">swLines</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
+                        <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeByTag</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">getMap1dTo3d</span><span class="p">(),</span>
+                        <span class="s2">"debug_layerEdge_swLine_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"_ID"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span>
+                    <span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">"meshing streamwise Line : </span><span class="si">%s%i</span><span class="s2">, ID: </span><span class="si">%i</span><span class="s2">, number of elements: </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">i_l</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">nE</span><span class="p">)</span> <span class="p">)</span>
+                    <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeByTag</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">meshTransfiniteWNElements</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">nE</span><span class="p">)</span>
+                   
+                <span class="c1"># find a layer curve in circumferential direction </span>
+                <span class="c1">#  as the common edge between the channel and the ortho face</span>
+                <span class="n">edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCommonEdgesByPhysicalFaces</span><span class="p">(</span>
+                    <span class="n">m3dGmsh</span><span class="p">,</span>
+                    <span class="s2">"channel*"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">,</span>
+                    <span class="s2">"ortho_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span>
+                <span class="p">)</span>
+                <span class="c1"># length of circumferential curve</span>
+                <span class="n">l_ortho</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getMap1dTo3d</span><span class="p">()</span><span class="o">.</span><span class="n">length</span><span class="p">())</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Circumferential edge : </span><span class="si">%s%i</span><span class="s2">, ID: </span><span class="si">%i</span><span class="s2">, length: </span><span class="si">%.4f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">i_l</span><span class="p">,</span> <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tag</span><span class="p">(),</span> <span class="n">l_ortho</span><span class="p">))</span>
+                <span class="c1"># find the longest circumferential edge in the hub and shroud layers</span>
+                <span class="c1">#  based on this length the number of elements in circ direction will be calculated</span>
+                <span class="k">if</span> <span class="n">l_ortho</span> <span class="o">&gt;</span> <span class="n">lChannel_circ</span><span class="p">[</span><span class="n">i_hs</span><span class="p">]:</span>
+                    <span class="n">lChannel_circ</span><span class="p">[</span><span class="n">i_hs</span><span class="p">]</span> <span class="o">=</span> <span class="n">l_ortho</span>
+                
+                <span class="c1"># find the last layer curve in circumferential direction of the last region</span>
+                <span class="c1">#  this is only done for six sided regions </span>
+                <span class="c1">#  (the radius of the last circ line of five sided regions is zero)</span>
+                <span class="k">if</span> <span class="n">i_l</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="n">i_hs</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="n">i_hs</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">i_l</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="n">edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCommonEdgesByPhysicalFaces</span><span class="p">(</span>
+                        <span class="n">m3dGmsh</span><span class="p">,</span>
+                        <span class="s2">"channel_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span><span class="p">,</span>
+                        <span class="s2">"ortho_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i_l</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s2">"*"</span>
+                    <span class="p">)</span>
+                    <span class="n">l_ortho</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getMap1dTo3d</span><span class="p">()</span><span class="o">.</span><span class="n">length</span><span class="p">())</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Circumferential edge : </span><span class="si">%s%i</span><span class="s2">, ID: </span><span class="si">%i</span><span class="s2">, length: </span><span class="si">%.4f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">i_l</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tag</span><span class="p">(),</span> <span class="n">l_ortho</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">l_ortho</span> <span class="o">&gt;</span> <span class="n">lChannel_circ</span><span class="p">[</span><span class="n">i_hs</span><span class="p">]:</span>
+                        <span class="n">lChannel_circ</span><span class="p">[</span><span class="n">i_hs</span><span class="p">]</span> <span class="o">=</span> <span class="n">l_ortho</span>                
+                    
+            <span class="c1"># calculate the number of elements for the edges in circ direction from the longest edge length</span>
+            <span class="n">nE</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">lChannel_circ</span><span class="p">[</span><span class="n">i_hs</span><span class="p">]</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">elementSizeCIRC_</span><span class="p">))</span>
+            
+            <span class="c1"># find all circ edges on hub or shroud</span>
+            <span class="n">circLines</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeTagListByFromToPhysical</span><span class="p">(</span>
+                            <span class="s2">"periodic0_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">"*"</span><span class="p">,</span>
+                            <span class="s2">"periodic1_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">"*"</span>
+                        <span class="p">)</span> 
+
+            <span class="c1"># set the number of elements on the circ edges for hub or shroud</span>
+            <span class="c1"># number of elements have to be constant for these edges for transfinte meshing</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">circLines</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">appendAnalyticGeometry</span><span class="p">(</span>
+                    <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeByTag</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">getMap1dTo3d</span><span class="p">(),</span>
+                    <span class="s2">"debug_layerEdge_circLine_"</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">"_ID"</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">+</span><span class="s2">"_"</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span>
+                <span class="p">)</span>
+
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> <span class="s2">"meshing circumferential Line : </span><span class="si">%s</span><span class="s2">, ID: </span><span class="si">%i</span><span class="s2">, number of elements: </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">nE</span><span class="p">)</span> <span class="p">)</span>
+                <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshEdgeByTag</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">meshTransfiniteWNElements</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">nE</span><span class="p">)</span>
+        
+        <span class="c1"># set an observer which prescribes meshsizes</span>
+        <span class="c1"># meshSizeAtPoints is calculatate from the mean length of the channel to parallel</span>
+        <span class="c1"># and the number of layers between them </span>
+        <span class="n">ob</span> <span class="o">=</span> <span class="n">bVOSetPrescribedMeshSizeAtPoints</span><span class="p">()</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+          <span class="n">jsonPrimitive</span><span class="p">()</span>\
+            <span class="o">.</span><span class="n">appendReal</span><span class="p">(</span><span class="s2">"_meshSize"</span><span class="p">,</span> <span class="n">meshSizeAtPoints</span><span class="p">),</span>
+          <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m3dGmsh</span>
+        <span class="p">)</span>
+        <span class="c1">#m3dGmsh.attachBVObserver(ob)</span>
+
+        <span class="c1"># initiale the grading function </span>
+        <span class="c1"># scaTanhGradingOneD(c, g, gMin, gMax) -&gt; f(x)=c[0]+c[1]*tanh(g*(c[2]+c[3]*x))/tanh(g)</span>
+        <span class="n">theRef</span> <span class="o">=</span> <span class="n">scaTanhGradingOneDCompound</span><span class="p">(</span>
+                    <span class="n">scaTanhGradingOneD</span><span class="p">(</span>
+                        <span class="n">vectorReal</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]),</span>
+                                        <span class="mf">1.0</span><span class="p">,</span>
+                                        <span class="mf">0.1</span><span class="p">,</span> <span class="mf">5.0</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+        <span class="n">theRef</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span> <span class="s2">"aF_grading"</span> <span class="p">)</span>
+        <span class="n">aF</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">theRef</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+        
+        <span class="c1"># set the first element size specified as a class variable </span>
+        <span class="n">ob</span> <span class="o">=</span> <span class="n">bVOSetPrescribedElementSize</span><span class="p">()</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+            <span class="n">jsonPrimitive</span><span class="p">(</span>
+                <span class="s1">'{'</span>
+                <span class="s1">'"_type": 3,'</span>
+                <span class="s1">'"_firstElementSize": '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">firstElement_</span><span class="p">)</span><span class="o">+</span><span class="s1">','</span>
+                <span class="s1">'"_grading" : {'</span>
+                    <span class="s1">'"analyticFunction" : {"label" : "aF_grading"}'</span>
+                  <span class="s1">'}'</span>
+                <span class="s1">'}'</span>
+            <span class="p">),</span>
+            <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">aF</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m3dGmsh</span>
+        <span class="p">)</span>
+        <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">attachBVObserver</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
+        
+        <span class="c1"># set mesh rules</span>
+        <span class="n">ob</span> <span class="o">=</span> <span class="n">bVOMeshRule</span><span class="p">()</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+          <span class="n">jsonPrimitive</span><span class="p">(</span>
+            <span class="s1">'{'</span>
+              <span class="s1">'"option" : ['</span>
+                <span class="s1">'{"name" : "debug", "value" : "true"}'</span>
+              <span class="s1">'],'</span>
+              <span class="s1">'"_rule1D" : ['</span>
+                <span class="s1">'"dtMeshFreeGradingGEdge(*)"'</span>
+              <span class="s1">'],'</span>
+              <span class="s1">'"_rule2D" : ['</span>
+                <span class="s1">'"dtMeshGFace(*)"'</span>
+              <span class="s1">'],'</span>
+              <span class="s1">'"_rule3D" : ['</span>
+                <span class="s1">'"dtMeshGRegion(*)"'</span>
+              <span class="s1">'],'</span>
+              <span class="s1">'"_only" : [],'</span>
+              <span class="s1">'"dtMeshOperator" : ['</span>
+                <span class="s1">'{'</span>
+                  <span class="s1">'"name" : "dtMeshFreeGradingGEdge",'</span>
+                  <span class="s1">'"label" : "dtMeshFreeGradingGEdge",'</span>
+                  <span class="s1">'"typeTransfinite" : [3],'</span>
+                  <span class="s1">'"gradingFunctions" : { "analyticFunction" : ['</span>
+                    <span class="s1">'{"label" : "aF_grading"}'</span>
+                  <span class="s1">']}'</span>
+                <span class="s1">'},'</span>
+                <span class="s1">'{'</span>
+                  <span class="s1">'"name" : "dtMeshGFace",'</span>
+                  <span class="s1">'"label" : "dtMeshGFace"'</span>
+                <span class="s1">'},'</span>
+                <span class="s1">'{'</span>
+                  <span class="s1">'"name" : "dtMeshGRegion",'</span>   
+                  <span class="s1">'"label" : "dtMeshGRegion",'</span>
+                  <span class="s1">'"_minQShapeMetric" : 0.0,'</span>
+                  <span class="s1">'"_relax" : 0.1,'</span>
+                  <span class="s1">'"_nPyramidOpenSteps" : 10,'</span> 
+                  <span class="s1">'"_nSmooths" : 3'</span>
+                <span class="s1">'}'</span>
+              <span class="s1">']'</span>
+            <span class="s1">'}'</span>
+          <span class="p">),</span>
+          <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">aF</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m3dGmsh</span>
+        <span class="p">)</span>
+        <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">attachBVObserver</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
+         
+        <span class="c1">## useful debug statement to understand the naming of the layers and vizualize them</span>
+        <span class="c1">##  especially for the bVOFaceToPatchRule</span>
+        <span class="c1">#for face in m3dGmsh.getModel().getDtGmshFaceListByPhysical("*"):</span>
+        <span class="c1">#    print(face.getPhysicalString())</span>
+        <span class="c1">#    self.appendAnalyticGeometry(</span>
+        <span class="c1">#        face.getMap2dTo3d(),</span>
+        <span class="c1">#        "debug_allFaces_"+face.getPhysicalString()</span>
+        <span class="c1">#    )</span>
+        <span class="c1">#print("length hub : ", str(len(self.layerList_[0][0])))</span>
+        <span class="c1">#print("length shroud : ", str(len(self.layerList_[1][0])))</span>
+        
+        <span class="c1">#</span>
+        <span class="c1"># setting bVOFaceToPatchRule, renames all the added faces</span>
+        <span class="c1"># this is done to set boundary conditions in the of case later</span>
+        <span class="c1">#</span>
+        <span class="n">ob</span> <span class="o">=</span> <span class="n">bVOFaceToPatchRule</span><span class="p">()</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># if the last hub layer is on radius 0 the unstructured region goes to radius zero</span>
+        <span class="c1"># there is no hub layer on the outlet</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+              <span class="n">jsonPrimitive</span><span class="p">(</span>
+                <span class="s1">'{'</span>
+                  <span class="s1">'"_patchRule" : ['</span>
+                    <span class="s1">'":*channel*hub*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_hub:",'</span>
+                    <span class="s1">'":*channel*shroud*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_shroud:",'</span>
+                    <span class="s1">'":*ortho_*0_*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_inlet:",'</span>
+                    <span class="s1">'":*interface_unstruct*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_inlet:",'</span>
+                    <span class="c1"># outlet part of last layer</span>
+                    <span class="s1">'":*ortho_shroud'</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span><span class="o">+</span><span class="s1">'*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_outlet:",'</span>
+                    <span class="s1">'":*outlet_unstruct*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_outlet:",'</span>
+                    <span class="s1">'":*periodic0*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_periodic0:",'</span>
+                    <span class="s1">'":*periodic1*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_periodic1:",'</span>
+                    <span class="s1">'":*periodicUnstruct_0*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_periodic0:",'</span>
+                    <span class="s1">'":*periodicUnstruct_1*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_periodic1:"'</span>
+                  <span class="s1">'],'</span>
+                  <span class="s1">'"_regRule" : ['</span>
+                    <span class="s1">'":*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">':"'</span>
+                  <span class="s1">']'</span>
+                <span class="s1">'}'</span>
+              <span class="p">),</span>
+              <span class="n">m3dGmsh</span>
+            <span class="p">)</span>
+        <span class="c1"># if the radius is not zero in the last hub layer the last ortho segment</span>
+        <span class="c1">#  of the hub is also part of the outlet bondary</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+              <span class="n">jsonPrimitive</span><span class="p">(</span>
+                <span class="s1">'{'</span>
+                  <span class="s1">'"_patchRule" : ['</span>
+                    <span class="s1">'":*channel*_hub*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_hub:",'</span>
+                    <span class="s1">'":*channel*_shroud*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_shroud:",'</span>
+                    <span class="s1">'":*ortho_*0_*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_inlet:",'</span>
+                    <span class="s1">'":*interface_unstruct*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_inlet:",'</span>
+                    <span class="s1">'":*ortho_shroud'</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span><span class="o">+</span><span class="s1">'*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_outlet:",'</span>
+                    <span class="s1">'":*ortho_hub'</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layerList_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span><span class="o">+</span><span class="s1">'*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_outlet:",'</span>
+                    <span class="s1">'":*outlet_unstruct*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_outlet:",'</span>
+                    <span class="s1">'":*periodic0*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_periodic0:",'</span>
+                    <span class="s1">'":*periodic1*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_periodic1:",'</span>
+                    <span class="s1">'":*periodicUnstruct_0*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_periodic0:",'</span>
+                    <span class="s1">'":*periodicUnstruct_1*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">'_periodic1:"'</span>
+                  <span class="s1">'],'</span>
+                  <span class="s1">'"_regRule" : ['</span>
+                    <span class="s1">'":*::'</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">+</span><span class="s1">':"'</span>
+                  <span class="s1">']'</span>
+                <span class="s1">'}'</span>
+              <span class="p">),</span>
+              <span class="n">m3dGmsh</span>
+            <span class="p">)</span>
+
+        <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">attachBVObserver</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
+        
+        <span class="c1">#m3dGmsh.makeGrid()    </span>
+
+        <span class="n">ob</span> <span class="o">=</span> <span class="n">bVOWriteMSH</span><span class="p">()</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+          <span class="n">jsonPrimitive</span><span class="p">(</span><span class="s1">'{"_filename" : "", "_saveAll" : true}'</span><span class="p">),</span>
+          <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">m3dGmsh</span>
+        <span class="p">)</span>
+        <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">attachBVObserver</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
+        <span class="c1">#ob.postUpdate()</span>
+
+        <span class="n">ob</span> <span class="o">=</span> <span class="n">bVOOrientCellVolumes</span><span class="p">()</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">ob</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+            <span class="n">jsonPrimitive</span><span class="p">(</span><span class="s1">'{"_positive" : true}'</span><span class="p">),</span> <span class="n">m3dGmsh</span>
+        <span class="p">)</span>
+        <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">attachBVObserver</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
+        
+        <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">appendBoundedVolume</span><span class="p">(</span><span class="n">m3dGmsh</span><span class="p">)</span>
+
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="map3dTo3dGmsh_gridFromLayers.detectFirstAndSecond">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers.map3dTo3dGmsh_gridFromLayers.detectFirstAndSecond">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">detectFirstAndSecond</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                             <span class="n">channel</span><span class="p">:</span> <span class="n">map3dTo3d</span><span class="p">,</span> 
+                             <span class="n">direction</span><span class="p">:</span> <span class="nb">int</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">map2dTo3d</span><span class="p">,</span> <span class="n">map2dTo3d</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Detect first and second faces in a volume's parameter direction.</span>
+<span class="sd">        </span>
+<span class="sd">        This method returns the faces of a `map3dTo3d` object at </span>
+<span class="sd">        0 and 100 percent of the u-, v-, or w-paramter.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        channel: map3dTo3d</span>
+<span class="sd">          Volume.</span>
+<span class="sd">        direction: int</span>
+<span class="sd">          Direction in uvw</span>
+
+<span class="sd">            - 1 -&gt; U</span>
+<span class="sd">            - 2 -&gt; V</span>
+<span class="sd">            - 3 -&gt; W</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        first: map2dTo3d</span>
+<span class="sd">          first segment in direction</span>
+<span class="sd">        second: map2dTo3d</span>
+<span class="sd">          second segment in direction</span>
+<span class="sd">        """</span>
+        <span class="n">firstPar</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">secondPar</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">if</span> <span class="n">direction</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+          <span class="n">firstPar</span> <span class="o">=</span> <span class="mf">1.0</span>
+          <span class="n">secondPar</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+          <span class="n">first</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">segmentConstUPercent</span><span class="p">(</span><span class="n">firstPar</span><span class="p">)</span>
+          <span class="n">second</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">segmentConstUPercent</span><span class="p">(</span><span class="n">secondPar</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+          <span class="n">first</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">segmentConstVPercent</span><span class="p">(</span><span class="n">firstPar</span><span class="p">)</span>
+          <span class="n">second</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">segmentConstVPercent</span><span class="p">(</span><span class="n">secondPar</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+          <span class="n">first</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">segmentConstWPercent</span><span class="p">(</span><span class="n">firstPar</span><span class="p">)</span>
+          <span class="n">second</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">segmentConstWPercent</span><span class="p">(</span><span class="n">secondPar</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Wrong direction."</span><span class="p">)</span>  
+        
+        <span class="k">return</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span></div>
+
+    
+<div class="viewcode-block" id="map3dTo3dGmsh_gridFromLayers.getCommonEdgesByPhysicalFaces">
+<a class="viewcode-back" href="../../../api.html#dtOOPythonApp.builder.map3dTo3dGmsh_gridFromLayers.map3dTo3dGmsh_gridFromLayers.getCommonEdgesByPhysicalFaces">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCommonEdgesByPhysicalFaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                      <span class="n">m3dGmsh</span><span class="p">,</span>
+                                      <span class="n">face0</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                      <span class="n">face1</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return the common edges between two faces.</span>
+<span class="sd">        </span>
+<span class="sd">        This method:</span>
+
+<span class="sd">            - Iterates over the edges on both faces.</span>
+<span class="sd">            - Finds faces with the same tag.</span>
+<span class="sd">            - Returns them in a list.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        channel: map3dTo3d</span>
+<span class="sd">          Volume.</span>
+<span class="sd">        face0: str</span>
+<span class="sd">          Pyhsical name of first face</span>
+<span class="sd">        face1: str</span>
+<span class="sd">          Pyhsical name of second face</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        commonEdges: List[dtGmshEdge]</span>
+<span class="sd">          List of edges on both faces</span>
+<span class="sd">        """</span>
+        <span class="n">commonEdges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">edges0</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="n">face0</span><span class="p">)</span><span class="o">.</span><span class="n">dtEdges</span><span class="p">()</span>
+        <span class="n">edges1</span> <span class="o">=</span> <span class="n">m3dGmsh</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="n">face1</span><span class="p">)</span><span class="o">.</span><span class="n">dtEdges</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">e0</span> <span class="ow">in</span> <span class="n">edges0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">e1</span> <span class="ow">in</span> <span class="n">edges1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">e0</span><span class="o">.</span><span class="n">tag</span><span class="p">())</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">e1</span><span class="o">.</span><span class="n">tag</span><span class="p">()):</span>
+                    <span class="n">commonEdges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">commonEdges</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Alexander Tismer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
