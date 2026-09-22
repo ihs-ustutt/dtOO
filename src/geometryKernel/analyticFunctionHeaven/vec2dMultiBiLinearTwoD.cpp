@@ -85,9 +85,9 @@ vec2dMultiBiLinearTwoD::vec2dMultiBiLinearTwoD(
   dt__info(
     vec2dMultiBiLinearTwoD(),
     << "y0" << std::endl
-    << logMe::floatMatrixToString(rangeY0) << std::endl
+    << dtLog::floatMatrixToString(rangeY0) << std::endl
     << "y1" << std::endl
-    << logMe::floatMatrixToString(rangeY1)
+    << dtLog::floatMatrixToString(rangeY1)
   );
 }
 
@@ -176,11 +176,11 @@ aFX vec2dMultiBiLinearTwoD::invY(aFY const &yy) const
 
   dt__warning(
     invY(),
-    << dt__eval(yy) << std::endl
+    << "yy = " << dtLog::str(yy) << std::endl
     << "rangeX0" << std::endl
-    << logMe::floatMatrixToString(rangeX0) << std::endl
+    << dtLog::floatMatrixToString(rangeX0) << std::endl
     << "rangeX1" << std::endl
-    << logMe::floatMatrixToString(rangeX1) << std::endl
+    << dtLog::floatMatrixToString(rangeX1) << std::endl
     << "Cannot determine interval."
   );
   return analyticFunction::invY(yy);

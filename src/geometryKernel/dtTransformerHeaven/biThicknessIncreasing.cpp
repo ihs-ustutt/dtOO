@@ -120,7 +120,7 @@ biThicknessIncreasing::apply(lvH_analyticFunction const *const sFunP) const
       itVal.push_back(p2Inv[jj].x());
       itVal.push_back(p2Inv[jj].y());
     }
-    dt__debug(apply(), << logMe::vecToTable(header, itVal));
+    dt__debug(apply(), << dtLog::vecToTable(header, itVal));
     //
     // reverse orientation of resulting splineCurve
     //

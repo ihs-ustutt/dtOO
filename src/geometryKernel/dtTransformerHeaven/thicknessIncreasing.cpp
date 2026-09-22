@@ -156,7 +156,7 @@ thicknessIncreasing::apply(lvH_analyticFunction const *const sFunP) const
     itVal.push_back(tt);
     itVal.push_back(1.);
 
-    dt__debug(apply(), << logMe::vecToTable(header, itVal));
+    dt__debug(apply(), << dtLog::vecToTable(header, itVal));
     //
     // create new function
     //

@@ -434,7 +434,7 @@ void gmshBoundedVolume::makePreGrid(void)
   {
     dt__info(
       makePreGrid(),
-      << aSymb.first << " -> " << aSymb.second.value << " : "
+      << aSymb.first << " -> " << dtLog::str(aSymb.second.value) << " : "
       << aSymb.second.list
     );
   }
@@ -509,10 +509,10 @@ void gmshBoundedVolume::updateBoundingBox(void)
   dt__info(
     updateBoundingBox(),
     << "Gmsh boundingBox:" << std::endl
-    << logMe::dtFormat("min: (%d, %d, %d)") % CTX::instance()->min[0] %
+    << dtLog::dtFormat("min: (%d, %d, %d)") % CTX::instance()->min[0] %
            CTX::instance()->min[1] % CTX::instance()->min[2]
     << std::endl
-    << logMe::dtFormat("max: (%d, %d, %d)") % CTX::instance()->max[0] %
+    << dtLog::dtFormat("max: (%d, %d, %d)") % CTX::instance()->max[0] %
            CTX::instance()->max[1] % CTX::instance()->max[2]
     << std::endl
     << "Gmsh fieldManager:" << std::endl

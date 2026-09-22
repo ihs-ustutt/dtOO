@@ -29,6 +29,7 @@
 %{
 #include <string>
 #include <vector>
+#include <dtLog/dtLog.h>
 #include <logMe/logMe.h>
 #include <mainConceptFwd.h>
 namespace dtOO {
@@ -441,6 +442,7 @@ namespace dtOO {
   typedef unsigned int              dtUnsInt;
   typedef long unsigned int         dtLongUnsInt;
 }
+%include dtLog/dtLog.h
 %include logMe/dtMacros.h
 namespace dtOO {
   class logMe {

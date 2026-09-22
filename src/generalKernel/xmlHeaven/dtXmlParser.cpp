@@ -177,12 +177,12 @@ void dtXmlParser::parseFile(char const *const fileName)
   {
     logContainer<dtXmlParser> logC(logINFO, "parse()");
     logC() << "include files:" << std::endl
-           << logMe::dtFormat("[ %23s ] -> %s") % "<label>" % "<filename> "
+           << dtLog::dtFormat("[ %23s ] -> %s") % "<label>" % "<filename> "
            << std::endl;
     for (int ii = 0; ii < label.size(); ii++)
     {
       ::QDomElement wElement = getElement("include", label[ii]);
-      logC() << logMe::dtFormat("[ %23s ] -> %s") % label[ii] %
+      logC() << dtLog::dtFormat("[ %23s ] -> %s") % label[ii] %
                   getAttributeStr("filename", wElement)
              << std::endl;
       label[ii] = getAttributeStr("filename", wElement);
@@ -382,7 +382,7 @@ std::vector<std::string> dtXmlParser::getStates(void) const
 
 void dtXmlParser::write(lvH_constValue const *const cValP) const
 {
-  write(NowDateAndTime(), cValP);
+  write(dtLog::NowDateAndTime(), cValP);
 }
 
 void dtXmlParser::write(

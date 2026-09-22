@@ -347,7 +347,7 @@ void uRelInChannel::apply(void)
         {
           dt__forFromToIndex(0, grid[ii].size(), jj)
           {
-            of << logMe::dtFormat("%4i, %4i, "
+            of << dtLog::dtFormat("%4i, %4i, "
                                   "%16.8e, %16.8e, %16.8e, "
                                   "%16.8e, %16.8e, %16.8e, "
                                   "%16.8e, %16.8e, %16.8e, "
@@ -431,7 +431,7 @@ void uRelInChannel::apply(void)
           //
           // write values
           //
-          of << logMe::dtFormat("%16i, "
+          of << dtLog::dtFormat("%16i, "
                                 "%16.8e, %16.8e, %16.8e, "
                                 "%16.8e, %16.8e, %16.8e, "
                                 "%16.8e, %16.8e, %16.8e, "

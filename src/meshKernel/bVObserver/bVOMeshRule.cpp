@@ -168,13 +168,17 @@ void bVOMeshRule::init(
   dt__info(
     preUpdate(),
     << "rule = " << rule << std::endl
-    << "_rule1D = " << config().lookup<std::vector<std::string>>("_rule1D")
+    << "_rule1D = "
+    << dtLog::str(config().lookup<std::vector<std::string>>("_rule1D"))
     << std::endl
-    << "_rule2D = " << config().lookup<std::vector<std::string>>("_rule2D")
+    << "_rule2D = "
+    << dtLog::str(config().lookup<std::vector<std::string>>("_rule2D"))
     << std::endl
-    << "_rule3D = " << config().lookup<std::vector<std::string>>("_rule3D")
+    << "_rule3D = "
+    << dtLog::str(config().lookup<std::vector<std::string>>("_rule3D"))
     << std::endl
-    << "_only = " << config().lookup<std::vector<std::string>>("_only")
+    << "_only = "
+    << dtLog::str(config().lookup<std::vector<std::string>>("_only"))
   );
 }
 

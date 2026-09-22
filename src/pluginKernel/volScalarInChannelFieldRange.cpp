@@ -336,7 +336,7 @@ void volScalarInChannelFieldRange::apply(void)
           if (phi[ii][jj] == 0.)
             continue;
 
-          of << logMe::dtFormat("%16.8e, %16.8e, %16.8e, "
+          of << dtLog::dtFormat("%16.8e, %16.8e, %16.8e, "
                                 "%16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
                   grid[ii][jj].x() % grid[ii][jj].y() % grid[ii][jj].z() %
                   val[ii][jj] % sf[ii][jj].x() % sf[ii][jj].y() %

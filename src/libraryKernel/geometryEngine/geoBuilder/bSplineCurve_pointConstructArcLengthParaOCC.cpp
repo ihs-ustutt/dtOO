@@ -77,7 +77,7 @@ bSplineCurve_pointConstructArcLengthParaOCC ::
   header.push_back("l(u)/l_ges");
   dt__debug(
     bSplineCurve_pointConstructArcLengthParaOCC(),
-    << logMe::vecToTable(header, ul)
+    << dtLog::vecToTable(header, ul)
   );
 }
 

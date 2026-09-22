@@ -83,7 +83,7 @@ public:
   static bool isFullWildcard(std::string const str);
   static bool
   matchWildcard(std::string const &pWildStr, std::string const &pStringStr);
-
+  static bool isInt(std::string const& str);
 protected:
   stringPrimitive();
 

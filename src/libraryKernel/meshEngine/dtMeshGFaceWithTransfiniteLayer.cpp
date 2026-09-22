@@ -86,7 +86,7 @@ void dtMeshGFaceWithTransfiniteLayer::init(
       nLayers.size() == 1,
       nLayers.push_back(0),
       init(),
-      << "nLayers = " << nLayers << std::endl
+      << "nLayers = " << dtLog::str(nLayers) << std::endl
       << "Add zero element."
     );
 
@@ -94,7 +94,7 @@ void dtMeshGFaceWithTransfiniteLayer::init(
       nLayers.size() > 2,
       nLayers.erase(nLayers.begin() + 2, nLayers.end()),
       init(),
-      << "nLayers = " << nLayers << std::endl
+      << "nLayers = " << dtLog::str(nLayers) << std::endl
       << "Trim vector"
     );
   }

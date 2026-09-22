@@ -110,10 +110,10 @@ uVw_phirMs::retract(std::vector<dtPoint3> const *const toRetract) const
 
     dt__debug(
       retract(),
-      << logMe::dtFormat("Retracting point (u, v, w) = (%E, %E, %E)") % uu %
+      << dtLog::dtFormat("Retracting point (u, v, w) = (%E, %E, %E)") % uu %
              vv % ww
       << std::endl
-      << logMe::dtFormat("to point (phir, mm, ss) = (%E, %E, %E)") % phir % mm %
+      << dtLog::dtFormat("to point (phir, mm, ss) = (%E, %E, %E)") % phir % mm %
              ss
     );
 

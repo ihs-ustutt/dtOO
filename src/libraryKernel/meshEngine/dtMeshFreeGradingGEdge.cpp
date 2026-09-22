@@ -33,6 +33,7 @@ License
 #include <interfaceHeaven/timeHandling.h>
 #include <logMe/dtMacros.h>
 #include <progHelper.h>
+#include <xmlHeaven/dtXmlParserBase.h>
 #include <xmlHeaven/qtXmlBase.h>
 
 namespace dtOO {
@@ -206,7 +207,7 @@ void dtMeshFreeGradingGEdge::operator()(dtGmshEdge *dtge)
 
       //        logC()
       //          << "sumL = " << sumL << std::endl
-      //          << logMe::dtFormat("%16s %16s %16s %16s %16s %16s => %16s")
+      //          << dtLog::dtFormat("%16s %16s %16s %16s %16s %16s => %16s")
       //            % "u_n" % "l-l_0" % "dL" % "gg" % "(l-l_0)/sum(l)"
       //            % "gg-(l-l_0)/sum(l)" % "u_n+1"
       //          << std::endl;
@@ -215,7 +216,7 @@ void dtMeshFreeGradingGEdge::operator()(dtGmshEdge *dtge)
       dt__forFromToIndex(1, nP - 1, ii)
       {
         //          logC()
-        //            << logMe::dtFormat(
+        //            << dtLog::dtFormat(
         //              "%16.10e %16.10e %16.10e %16.10e %16.10e %16.10e =>
         //              %16.10e"
         //            )
@@ -228,7 +229,7 @@ void dtMeshFreeGradingGEdge::operator()(dtGmshEdge *dtge)
         uu[ii] = l_u.invYFloat(gg[ii] * sumL);
       }
       dtReal tol = config().lookupDef<dtReal>("_tolerance", 1.E-08);
-      logC() << logMe::dtFormat(
+      logC() << dtLog::dtFormat(
                   "[ %3i ] sumEps = %12.5e maxEps = %12.5e (threshold = %12.5e)"
                 ) %
                   smoothIt % sumEps % maxEps % tol

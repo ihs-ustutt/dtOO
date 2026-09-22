@@ -83,7 +83,7 @@ void dtPoint2_surfaceEquidistantPoint::writeTableToLog(void) const
       mat[ii][jj] = _dMS[ii][jj].x();
     }
   }
-  dt__info(writeTableToLog(), << logMe::floatMatrixToString(mat));
+  dt__info(writeTableToLog(), << dtLog::floatMatrixToString(mat));
 
   for (int ii = 0; ii < _dMS.size(0); ii++)
   {
@@ -92,9 +92,9 @@ void dtPoint2_surfaceEquidistantPoint::writeTableToLog(void) const
       mat[ii][jj] = _dMS[ii][jj].y();
     }
   }
-  dt__info(writeTableToLog(), << logMe::floatMatrixToString(mat));
+  dt__info(writeTableToLog(), << dtLog::floatMatrixToString(mat));
 
-  dt__info(writeTableToLog(), << logMe::vecToString(_sumM));
-  dt__info(writeTableToLog(), << logMe::vecToString(_sumS));
+  dt__info(writeTableToLog(), << dtLog::str(_sumM));
+  dt__info(writeTableToLog(), << dtLog::str(_sumS));
 }
 } // namespace dtOO

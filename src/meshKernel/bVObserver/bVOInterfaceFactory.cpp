@@ -78,7 +78,7 @@ bVOInterface *bVOInterfaceFactory::create(std::string const str)
     create(),
     << str << " could not be created." << std::endl
     << "Implemented builder:" << std::endl
-    << logMe::vecToString(av, 1) << std::endl
+    << dtLog::str(av) << std::endl
   );
 }
 

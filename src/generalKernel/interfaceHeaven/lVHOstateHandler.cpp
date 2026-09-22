@@ -70,7 +70,7 @@ std::string lVHOstateHandler::commonState(void)
   }
   progHelper::removeBastardTwins(cStates);
 
-  dt__debug(commonState(), << cStates);
+  dt__debug(commonState(), << dtLog::str(cStates));
 
   if (cStates.size() == 1)
   {
@@ -95,7 +95,7 @@ std::string lVHOstateHandler::writeState(std::string label)
 {
   if (label == "")
   {
-    label = NowDateAndTime();
+    label = dtLog::NowDateAndTime();
     this->makeState(label);
   }
 

@@ -77,8 +77,8 @@ void trans6SidedCubeAGXmlBuilder::buildPart(
     {
       reverse = dtXmlParserBase::getAttributeStrVector("reverse", toBuild);
     }
-    dt__info(buildPart(), << "exchange = " << exchange);
-    dt__info(buildPart(), << "reverse = " << reverse);
+    dt__info(buildPart(), << "exchange = " << dtLog::str(exchange));
+    dt__info(buildPart(), << "reverse = " << dtLog::str(reverse));
 
     dtInt counter = 0;
     dt__forAllIter(std::vector<::QDomElement>, wElementVec, it)
@@ -144,7 +144,7 @@ void trans6SidedCubeAGXmlBuilder::buildPart(
     {
       reverse = dtXmlParserBase::getAttributeStrVector("reverse", toBuild);
     }
-    dt__info(buildPart(), << "exchange = " << exchange);
+    dt__info(buildPart(), << "exchange = " << dtLog::str(exchange));
 
     vectorHandling<dtSurface const *> cDtS;
     dt__forFromToIndex(0, 2, ii)

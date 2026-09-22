@@ -111,7 +111,7 @@ ofOpenFOAMSetupRule *ofOpenFOAMSetupRule::create(std::string const &str)
     create(),
     << str << " could not be created." << std::endl
     << "Implemented rules:" << std::endl
-    << logMe::vecToString(av, 1) << std::endl
+    << dtLog::str(av) << std::endl
   );
 }
 
@@ -142,7 +142,9 @@ void ofOpenFOAMSetupRule::executeOnMesh(
   ::Foam::polyBoundaryMesh &bM =
     const_cast<::Foam::polyBoundaryMesh &>(mesh.boundaryMesh());
   ::Foam::label id = bM.findPatchID(rule[1]);
-  dt__throwIfWithMessage(id < 0, executeOnMesh(), << "rule = " << rule);
+  dt__throwIfWithMessage(
+    id < 0, executeOnMesh(), << "rule = " << dtLog::str(rule)
+  );
 
   //
   // replace old patch
@@ -165,7 +167,7 @@ void ofOpenFOAMSetupRule::executeOnVolVectorField(
   std::vector<std::string> const &rule, ::Foam::volVectorField &field
 ) const
 {
-  dt__debug(executeOnVolVectorField(), << "Execute: " << rule);
+  dt__debug(executeOnVolVectorField(), << "Execute: " << dtLog::str(rule));
   std::string thisRule = getRuleOfField(field.name(), rule);
   if (thisRule.empty())
     return;

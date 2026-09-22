@@ -113,8 +113,8 @@ void analyticGeometryToCSV::apply(void)
     //
     // write header
     //
-    of << logMe::dtFormat("# dim %16i") % theG->dim() << std::endl
-       << logMe::dtFormat("# nP %16i %16i %16i") % _nP[0] % _nP[1] % _nP[2]
+    of << dtLog::dtFormat("# dim %16i") % theG->dim() << std::endl
+       << dtLog::dtFormat("# nP %16i %16i %16i") % _nP[0] % _nP[1] % _nP[2]
        << std::endl;
 
     //
@@ -128,7 +128,7 @@ void analyticGeometryToCSV::apply(void)
       dt__forFromToIndex(0, grid.size(), ii)
       {
         dtPoint3 const &ref = grid[ii];
-        of << logMe::dtFormat("%16.8e %16.8e %16.8e") % ref.x() % ref.y() %
+        of << dtLog::dtFormat("%16.8e %16.8e %16.8e") % ref.x() % ref.y() %
                 ref.z()
            << std::endl;
       }
@@ -148,7 +148,7 @@ void analyticGeometryToCSV::apply(void)
         dt__forFromToIndex(0, grid.size(), ii)
         {
           dtPoint3 const &ref = grid[ii][jj];
-          of << logMe::dtFormat("%16.8e %16.8e %16.8e") % ref.x() % ref.y() %
+          of << dtLog::dtFormat("%16.8e %16.8e %16.8e") % ref.x() % ref.y() %
                   ref.z()
              << std::endl;
         }

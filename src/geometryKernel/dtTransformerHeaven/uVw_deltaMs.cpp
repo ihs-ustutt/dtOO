@@ -120,10 +120,10 @@ uVw_deltaMs::retract(std::vector<dtPoint3> const *const toRetract) const
 
     dt__debug(
       retract(),
-      << logMe::dtFormat("Retracting point (u, v, w) = (%E, %E, %E)") % uu %
+      << dtLog::dtFormat("Retracting point (u, v, w) = (%E, %E, %E)") % uu %
              vv % ww
       << std::endl
-      << logMe::dtFormat("to point (delta, mm, ss) = (%E, %E, %E)") % delta %
+      << dtLog::dtFormat("to point (delta, mm, ss) = (%E, %E, %E)") % delta %
              mm % ss
     );
 

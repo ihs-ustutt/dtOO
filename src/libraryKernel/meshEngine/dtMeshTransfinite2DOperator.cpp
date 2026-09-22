@@ -269,7 +269,7 @@ dtMeshTransfinite2DOperator::computeEdgeLoops(dtGmshFace *gf)
       dtInt boundSize = bound[ii].size();
       if (bound[ii].front() < bound[ii].back())
       {
-        logC() << logMe::dtFormat(
+        logC() << dtLog::dtFormat(
                     "[ %3d ] ( %3d ) : Ascending Edge %10.2f < %10.2f"
                   ) %
                     ii % cc % bound[ii].front() % bound[ii].back()
@@ -280,7 +280,7 @@ dtMeshTransfinite2DOperator::computeEdgeLoops(dtGmshFace *gf)
           {
             bound[ii][jj] = .5 * (bound[ii][jj + 1] + bound[ii][jj - 1]);
             logC()
-              << logMe::dtFormat(
+              << dtLog::dtFormat(
                    "[ %3d ]    <    : %3d -> ... %10.7f < %10.7f < %10.7f ..."
                  ) %
                    ii % jj % bound[ii][jj - 1] % bound[ii][jj] %
@@ -294,7 +294,7 @@ dtMeshTransfinite2DOperator::computeEdgeLoops(dtGmshFace *gf)
           bound[ii][boundSize - 2] =
             .5 * (bound[ii][boundSize - 3] + bound[ii][boundSize - 1]);
           logC()
-            << logMe::dtFormat(
+            << dtLog::dtFormat(
                  "[ %3d ]    <    : end -> ... %10.7f < %10.7f < %10.7f ..."
                ) %
                  ii % bound[ii][boundSize - 3] % bound[ii][boundSize - 2] %
@@ -305,7 +305,7 @@ dtMeshTransfinite2DOperator::computeEdgeLoops(dtGmshFace *gf)
       // descending
       else
       {
-        logC() << logMe::dtFormat(
+        logC() << dtLog::dtFormat(
                     "[ %3d ] ( %3d ) : Descending Edge %10.2f > %10.2f"
                   ) %
                     ii % cc % bound[ii].front() % bound[ii].back()
@@ -316,7 +316,7 @@ dtMeshTransfinite2DOperator::computeEdgeLoops(dtGmshFace *gf)
           {
             bound[ii][jj] = .5 * (bound[ii][jj + 1] + bound[ii][jj - 1]);
             logC()
-              << logMe::dtFormat(
+              << dtLog::dtFormat(
                    "[ %3d ]    >    : %3d -> ... %10.7f > %10.7f > %10.7f ..."
                  ) %
                    ii % jj % bound[ii][jj - 1] % bound[ii][jj] %
@@ -330,7 +330,7 @@ dtMeshTransfinite2DOperator::computeEdgeLoops(dtGmshFace *gf)
           bound[ii][boundSize - 2] =
             .5 * (bound[ii][boundSize - 3] + bound[ii][boundSize - 1]);
           logC()
-            << logMe::dtFormat(
+            << dtLog::dtFormat(
                  "[ %3d ]    >    : end -> ... %10.7f > %10.7f > %10.7f ..."
                ) %
                  ii % bound[ii][boundSize - 3] % bound[ii][boundSize - 2] %
@@ -361,7 +361,7 @@ dtMeshTransfinite2DOperator::computeEdgeLoops(dtGmshFace *gf)
       << "Cannot correct edge loop " << ii << "."
     );
 
-    logC() << logMe::dtFormat("[ %3d ]   Ok") % ii << std::endl;
+    logC() << dtLog::dtFormat("[ %3d ]   Ok") % ii << std::endl;
   }
 
   return pUV;

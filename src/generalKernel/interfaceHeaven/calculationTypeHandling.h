@@ -93,12 +93,12 @@ public:
       {
         dt__ddebug(
           boundToRange(),
-          << logMe::dtFormat(
+          << dtLog::dtFormat(
                "Value %e above upper bound. / [%e, %e] / diffPer = %e"
              ) % value %
                  a % b % diffPer
           << std::endl
-          << logMe::Backtrace()
+          << dtLog::trace()
         );
       }
       return b;
@@ -110,12 +110,12 @@ public:
       {
         dt__ddebug(
           boundToRange(),
-          << logMe::dtFormat(
+          << dtLog::dtFormat(
                "Value %e below lower bound. / [%e, %e] / diffPer = %e"
              ) % value %
                  a % b % diffPer
           << std::endl
-          << logMe::Backtrace()
+          << dtLog::trace()
         );
       }
       return a;

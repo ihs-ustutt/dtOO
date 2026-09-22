@@ -418,7 +418,9 @@ void meshWhisperer::addRenumberedVertices(void)
                 "transfinite_vertices(", ")", anEntry
               )
             );
-          dt__info(addRenumberedVertices(), << "tFRule = " << tFRule);
+          dt__info(
+            addRenumberedVertices(), << "tFRule = " << dtLog::str(tFRule)
+          );
           _gm->getDtGmshFaceByTag(stringPrimitive::stringToInt(tFRule[0]))
             ->transfinite_vertices = std::vector<std::vector<::MVertex *>>(
             stringPrimitive::stringToInt(tFRule[1]),

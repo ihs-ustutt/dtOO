@@ -115,7 +115,10 @@ void ofOpenFOAMCase::jInit(
     //
     _setupRule[ruleStrVec].reset(rulePtr);
 
-    dt__info(init(), << "ofOpenFOAMSetupRule[ " << ii << " ] = " << ruleStrVec);
+    dt__info(
+      init(),
+      << "ofOpenFOAMSetupRule[ " << ii << " ] = " << dtLog::str(ruleStrVec)
+    );
   }
 
   //
@@ -142,9 +145,13 @@ void ofOpenFOAMCase::jInit(
       stringPrimitive::convertToStringVector(":", ":", tmpFieldRule[ii]);
 
     dt__throwIfWithMessage(
-      _fieldRule[ii].size() < 3, init(), << dt__eval(_fieldRule[ii])
+      _fieldRule[ii].size() < 3,
+      init(),
+      << "_fieldRule[ " << ii << " ] = " << dtLog::str(_fieldRule[ii])
     );
-    dt__info(init(), << "_fieldRule[ " << ii << " ] = " << _fieldRule[ii]);
+    dt__info(
+      init(), << "_fieldRule[ " << ii << " ] = " << dtLog::str(_fieldRule[ii])
+    );
   }
   //
   // get boundedVolumes
@@ -292,7 +299,9 @@ void ofOpenFOAMCase::initMeshVectors(
       }
     }
   }
-  dt__info(initMeshVectors(), << "physicalNames = " << physicalNames);
+  dt__info(
+    initMeshVectors(), << "physicalNames = " << dtLog::str(physicalNames)
+  );
 }
 
 void ofOpenFOAMCase::runCurrentState(void)
@@ -465,7 +474,9 @@ void ofOpenFOAMCase::runCurrentState(void)
 
       dt__forAllRefAuto(_fieldRule, aRule)
       {
-        dt__info(runCurrentState(), << "Processing fieldRule: " << aRule);
+        dt__info(
+          runCurrentState(), << "Processing fieldRule: " << dtLog::str(aRule)
+        );
         if (aRule[0] == "volVectorField")
         {
           ::Foam::IStringStream is(aRule[2]);

@@ -110,7 +110,7 @@ void bVOSetPrescribedMeshSizeAtPoints::preUpdate(void)
   logContainer<bVOSetPrescribedMeshSizeAtPoints> logC(logINFO, "preUpdate()");
   dt__forAllRefAuto(gm->vertices(), aV)
   {
-    logC() << logMe::dtFormat("dtGmshVertex[ %3i ]: meshSize = %f") %
+    logC() << dtLog::dtFormat("dtGmshVertex[ %3i ]: meshSize = %f") %
                 aV->tag() % aV->prescribedMeshSizeAtVertex()
            << std::endl;
   }

@@ -322,7 +322,7 @@ void volVectorFieldVersusXYZ::apply(void)
             if (area[ii][jj] == 0.)
               continue;
 
-            of << logMe::dtFormat("%16i, %16i, "
+            of << dtLog::dtFormat("%16i, %16i, "
                                   "%16.8e, %16.8e, %16.8e, "
                                   "%16.8e, %16.8e, %16.8e, "
                                   "%16.8e, %16.8e, "

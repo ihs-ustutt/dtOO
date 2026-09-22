@@ -237,7 +237,7 @@ void volScalarFieldRange::apply(void)
       //
       dt__forFromToIndex(0, coord.size(), ii)
       {
-        of << logMe::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
+        of << dtLog::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
                 coord[ii].x() % coord[ii].y() % coord[ii].z() % val[ii] %
                 vol[ii]
            << std::endl;

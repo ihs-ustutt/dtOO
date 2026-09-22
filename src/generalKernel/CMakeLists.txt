@@ -121,8 +121,7 @@ SET(HEADERS
   interfaceHeaven/lVHOjsonLoad.h
   interfaceHeaven/lVHOstateHandler.h
   interfaceHeaven/dtBundle.h
-  logMe/logBase.h
-  logMe/Output2FILE.h
+  dtLog/dtLog.h
   logMe/logMe.h
   logMe/dtMacros.h
   logMe/dtParMacros.h
@@ -234,8 +233,7 @@ SET(SOURCES
   interfaceHeaven/lVHOjsonLoad.cpp
   interfaceHeaven/lVHOstateHandler.cpp
   interfaceHeaven/dtBundle.cpp
-  logMe/logBase.cpp
-  logMe/Output2FILE.cpp
+  dtLog/dtLog.cpp
   logMe/logMe.cpp
   attributionHeaven/floatAtt.cpp
   attributionHeaven/pointGeometryDist.cpp

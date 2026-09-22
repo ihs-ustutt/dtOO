@@ -154,10 +154,10 @@ void geomSurface_readStlOCCAGXmlBuilder::buildPart(
   //
   dt__info(
     buildPart(),
-    << logMe::dtFormat("max %8.3e %8.3e %8.3e %8.3e") % maxAngle[0] %
+    << dtLog::dtFormat("max %8.3e %8.3e %8.3e %8.3e") % maxAngle[0] %
            maxAngle[1] % maxAngle[2] % maxAngle[3]
     << std::endl
-    << logMe::dtFormat("pos %8i %8i %8i %8i") % maxAnglePos[0] %
+    << dtLog::dtFormat("pos %8i %8i %8i %8i") % maxAnglePos[0] %
            maxAnglePos[1] % maxAnglePos[2] % maxAnglePos[3]
   );
   maxAngle.push_back(maxAngle[0]);

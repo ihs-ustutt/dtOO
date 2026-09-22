@@ -281,27 +281,27 @@ void meshQuality::apply(void)
          << "# [4] type 6 (pyr)" << std::endl
          << "# [5] type 7 (tet)" << std::endl;
 
-      of << logMe::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
+      of << dtLog::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
               bcSkew.globalMin() % bcSkew.average() % bcSkew.globalMax() %
               bcNonOrtho.globalMin() % bcNonOrtho.average() %
               bcNonOrtho.globalMax()
          << std::endl
-         << logMe::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
+         << dtLog::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
               bcElemSkew[0].globalMin() % bcElemSkew[0].average() %
               bcElemSkew[0].globalMax() % bcElemNonOrtho[0].globalMin() %
               bcElemNonOrtho[0].average() % bcElemNonOrtho[0].globalMax()
          << std::endl
-         << logMe::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
+         << dtLog::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
               bcElemSkew[1].globalMin() % bcElemSkew[1].average() %
               bcElemSkew[1].globalMax() % bcElemNonOrtho[1].globalMin() %
               bcElemNonOrtho[1].average() % bcElemNonOrtho[1].globalMax()
          << std::endl
-         << logMe::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
+         << dtLog::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
               bcElemSkew[2].globalMin() % bcElemSkew[2].average() %
               bcElemSkew[2].globalMax() % bcElemNonOrtho[2].globalMin() %
               bcElemNonOrtho[2].average() % bcElemNonOrtho[2].globalMax()
          << std::endl
-         << logMe::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
+         << dtLog::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
               bcElemSkew[3].globalMin() % bcElemSkew[3].average() %
               bcElemSkew[3].globalMax() % bcElemNonOrtho[3].globalMin() %
               bcElemNonOrtho[3].average() % bcElemNonOrtho[3].globalMax();

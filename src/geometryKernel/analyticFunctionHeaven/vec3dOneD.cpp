@@ -170,7 +170,7 @@ dtReal vec3dOneD::length(dtReal const &x1) const
     }
   }
 
-  dt__debug(length(), << logMe::vecToTable(header, itVal));
+  dt__debug(length(), << dtLog::vecToTable(header, itVal));
 
   return l1;
 }

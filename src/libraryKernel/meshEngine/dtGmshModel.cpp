@@ -1863,7 +1863,9 @@ std::string dtGmshModel::getPhysicalString(::GEntity const *const ge) const
     return std::string("");
 
   dt__throwIfWithMessage(
-    physicals.size() != 1, getPhysicalString(), << dt__eval(physicals)
+    physicals.size() != 1,
+    getPhysicalString(),
+    << "physicals = " << dtLog::str(physicals)
   );
 
   return physicals[0];

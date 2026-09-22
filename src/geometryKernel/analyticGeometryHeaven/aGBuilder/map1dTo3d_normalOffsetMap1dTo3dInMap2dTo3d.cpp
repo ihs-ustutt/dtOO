@@ -133,7 +133,7 @@ map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d ::
   header.push_back("|(T-int(T))/T|");
   dt__info(
     map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d(),
-    << logMe::vecToTable(header, itVal)
+    << dtLog::vecToTable(header, itVal)
   );
 
   //

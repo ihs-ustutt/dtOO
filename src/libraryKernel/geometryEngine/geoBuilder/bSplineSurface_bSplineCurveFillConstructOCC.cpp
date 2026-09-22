@@ -76,19 +76,19 @@ bSplineSurface_bSplineCurveFillConstructOCC ::
              base.setOCC(Handle(Geom_Surface)(fill.Surface().get()));
              ,
              << "Could not initialize and create filled surface." << std::endl
-             << logMe::dtFormat("[0] (%e %e %e) -> (%e %e %e)\n") %
+             << dtLog::dtFormat("[0] (%e %e %e) -> (%e %e %e)\n") %
                     cc[0]->pointPercent(0.).x() % cc[0]->pointPercent(0.).y() %
                     cc[0]->pointPercent(0.).z() % cc[0]->pointPercent(1.).x() %
                     cc[0]->pointPercent(1.).y() % cc[0]->pointPercent(1.).z()
-             << logMe::dtFormat("[1] (%e %e %e) -> (%e %e %e)\n") %
+             << dtLog::dtFormat("[1] (%e %e %e) -> (%e %e %e)\n") %
                     cc[1]->pointPercent(0.).x() % cc[1]->pointPercent(0.).y() %
                     cc[1]->pointPercent(0.).z() % cc[1]->pointPercent(1.).x() %
                     cc[1]->pointPercent(1.).y() % cc[1]->pointPercent(1.).z()
-             << logMe::dtFormat("[2] (%e %e %e) -> (%e %e %e)\n") %
+             << dtLog::dtFormat("[2] (%e %e %e) -> (%e %e %e)\n") %
                     cc[2]->pointPercent(0.).x() % cc[2]->pointPercent(0.).y() %
                     cc[2]->pointPercent(0.).z() % cc[2]->pointPercent(1.).x() %
                     cc[2]->pointPercent(1.).y() % cc[2]->pointPercent(1.).z()
-             << logMe::dtFormat("[3] (%e %e %e) -> (%e %e %e)\n") %
+             << dtLog::dtFormat("[3] (%e %e %e) -> (%e %e %e)\n") %
                     cc[3]->pointPercent(0.).x() % cc[3]->pointPercent(0.).y() %
                     cc[3]->pointPercent(0.).z() % cc[3]->pointPercent(1.).x() %
                     cc[3]->pointPercent(1.).y() % cc[3]->pointPercent(1.).z());

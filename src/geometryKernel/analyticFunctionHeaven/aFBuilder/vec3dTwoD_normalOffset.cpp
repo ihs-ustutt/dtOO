@@ -96,7 +96,7 @@ vec3dTwoD_normalOffset::vec3dTwoD_normalOffset(
         grid[grid.size(0) - 1][jj] - closeSmooth * ddU_mean;
       dt__info(
         vec3dTwoD_normalOffset(),
-        << logMe::dtFormat(
+        << dtLog::dtFormat(
              "ddU start / ddU end [%d]: (%f, %f, %f)/(%f, %f, %f)\n"
              "ddU mean [%d]: (%f, %f, %f)\n"
              "startNext / lastPrev [%d]:  (%f, %f, %f) / (%f, %f, %f) "
@@ -121,7 +121,7 @@ vec3dTwoD_normalOffset::vec3dTwoD_normalOffset(
       grid[grid.size(0) - 1][jj] = grid[0][jj];
       dt__info(
         vec3dTwoD_normalOffset(),
-        << logMe::dtFormat(
+        << dtLog::dtFormat(
              "Move start / end point [%d]: (%f, %f, %f)/(%f, %f, %f) "
              "-> (%f, %f, %f)"
            ) % jj %
