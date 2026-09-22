@@ -140,6 +140,8 @@ if (MPI_FOUND)
     program_options
     thread
     regex
+    log 
+    log_setup
     mpi
     serialization
     REQUIRED
@@ -149,6 +151,7 @@ if (MPI_FOUND)
     "${Boost_FILESYSTEM_LIBRARY_RELEASE};${Boost_SYSTEM_LIBRARY_RELEASE};"
     "${Boost_TIMER_LIBRARY_RELEASE};${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE}"
     "${Boost_THREAD_LIBRARY_RELEASE};${Boost_REGEX_LIBRARY_RELEASE}"
+    "${Boost_LOG_LIBRARY_RELEASE};${Boost_LOG_SETUP_LIBRARY_RELEASE}"
     "${Boost_MPI_LIBRARY_RELEASE};${Boost_SERIALIZATION_LIBRARY_RELEASE}"
   )
   add_definitions(-DDTOO_HAS_MPI)
@@ -162,6 +165,8 @@ else (MPI_FOUND)
     program_options
     thread
     regex
+    log 
+    log_setup
     REQUIRED
   )
   SET(
@@ -169,6 +174,7 @@ else (MPI_FOUND)
     "${Boost_FILESYSTEM_LIBRARY_RELEASE};${Boost_SYSTEM_LIBRARY_RELEASE};"
     "${Boost_TIMER_LIBRARY_RELEASE};${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE}"
     "${Boost_THREAD_LIBRARY_RELEASE};${Boost_REGEX_LIBRARY_RELEASE}"
+    "${Boost_LOG_LIBRARY_RELEASE};${Boost_LOG_SETUP_LIBRARY_RELEASE}"
   )  
 endif (MPI_FOUND)
 #------------------------------------------------------------------------------#
