@@ -43,9 +43,7 @@ License
 #include "dtLogMacros.h"
 
 namespace dtOO {
-/**
- * @brief The dtLogLevel enum
- *
+/*!
  * This enumeration defines the severity levels for logging messages.
  * It is used to categorize log messages based on their importance or
  * severity. The levels are ordered from least severe (logDDEBUG) to
@@ -60,21 +58,21 @@ enum dtLogLevel {
   logFATAL
 };
 
-/**
- * @brief The dtLog class
- *
- * This class is a singleton that provides logging functionality using the
- * Boost.Log library. It allows logging messages with different severity levels
- * and provides utility functions for formatting and outputting various data
- * structures.
+//! Singleton class for logging messages with different severity levels.
+/*!
+ * The dtLog class provides a singleton instance for logging messages with
+ * various severity levels. It allows you to configure the logging level,
+ * format log records, and retrieve the current date and time. The class
+ * also provides utility functions for converting data structures to string
+ * representations for logging purposes.
  */
 class dtLog {
   dt__classOnlyName(dtLog);
 
 private:
-  /**
-   * @brief dtLog
-   * Private constructor to enforce singleton pattern.
+  /*!
+   * Private constructor for the dtLog singleton class.
+   * Initializes the logging system and sets up the log file sink.
    * @param filename Optional filename for log output.
    */
   dtLog(const ::std::string &filename);
@@ -83,78 +81,66 @@ public:
   dtLog(dtLog &other) = delete;
   void operator=(const dtLog &) = delete;
   virtual ~dtLog();
-  /**
-   * @brief ptr
+  /*!
    * Static method to get the singleton instance of dtLog.
    * @param filename Optional filename for log output.
    * @return Pointer to the singleton instance of dtLog.
    */
   static dtLog *ptr(const ::std::string &filename = ::std::string());
-  /**
-   * @brief NowExTime
+  /*!
    * Static method to get the elapsed time since the start of the program.
    * @return Elapsed time in seconds as a dtReal.
    */
   static dtReal NowExTime(void);
-  /**
-   * @brief NowDateAndTime
+  /*!
    * Static method to get the current date and time as a string.
    * @return Current date and time in string format.
    */
   static std::string NowDateAndTime(void);
-  /**
-   * @brief setLogLevel
+  /*!
    * Static method to set the logging severity level.
    * @param level Logging severity level (boost::log::trivial::severity_level).
    */
   static void setLogLevel(boost::log::trivial::severity_level level);
-  /**
-   * @brief setLogLevel
+  /*!
    * Static method to set the logging severity level using a string.
    * @param level Logging severity level as a string (e.g., "info", "debug").
    */
   static void setLogLevel(const ::std::string &level);
-  /**
-   * @brief setLogLevel
+  /*!
    * Static method to set the logging severity level using an integer.
    * @param level Logging severity level as an integer (0-5).
    */
   static void setLogLevel(const int &level);
-  /**
-   * @brief formatLogRecord
+  /*!
    * Static method to format log records for output.
    * @param record Log record to format.
    * @param stream Output stream for formatted log record.
    */
   static bool report(dtInt const &level);
-  /**
-   * @brief formatLogRecord
+  /*!
    * Static method to format log records for output.
    * @param record Log record to format.
    * @param stream Output stream for formatted log record.
    */
   static bool report(dtLogLevel const &level);
-  /**
-   * @brief alwaysLogger
+  /*!
    * Static method to get a logger that always logs messages regardless of the
    * severity level.
    * @return Reference to a logger that always logs messages.
    */
   static boost::log::sources::logger_mt &alwaysLogger();
-  /**
-   * @brief trace
+  /*!
    * Static method to get a string representation of the current call stack.
    * @return String representation of the call stack.
    */
   static std::string trace(void);
-  /**
-   * @brief reportingLevel
+  /*!
    * Static method to get the current logging severity level.
    * @return Current logging severity level as dtLogLevel.
    */
   static dtLogLevel reportingLevel(void);
-  /**
-   * @brief str
+  /*!
    * Template method to convert a vector of values to a string representation.
    * @param values Vector of values to convert.
    * @return String representation of the vector.
@@ -167,8 +153,7 @@ public:
     os << " ]";
     return os.str();
   }
-  /**
-   * @brief str
+  /*!
    * Template method to convert a map of key-value pairs to a string
    * representation.
    * @param toLog Map of key-value pairs to convert.
@@ -187,8 +172,7 @@ public:
     os << " ]";
     return os.str();
   }
-  /**
-   * @brief str
+  /*!
    * Template method to convert a list of values to a string representation.
    * @param values List of values to convert.
    * @return String representation of the list.
@@ -197,12 +181,11 @@ public:
   {
     std::ostringstream os;
     os << "[ ";
-    dt__forAllConstIterAuto(values, valueIt) os << *valueIt << " | ";
+    dt__forAllConstRefAuto(values, value) os << value << " | ";
     os << " ]";
     return os.str();
   }
-  /**
-   * @brief str
+  /*!
    * Template method to convert a vector of vectors (matrix) to a string
    * representation with specified width and precision.
    * @param mat Vector of vectors (matrix) to convert.
@@ -255,8 +238,7 @@ public:
   {
     return str(mat, 13, 6);
   }
-  /**
-   * @brief vecToTable
+  /*!
    * Template method to convert a vector of values to a formatted table string
    * representation with headers and optional additional information.
    * @param header Vector of strings representing the table headers.
