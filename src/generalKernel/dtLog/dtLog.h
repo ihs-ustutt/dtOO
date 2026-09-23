@@ -236,8 +236,7 @@ public:
   {
     std::ostringstream os;
     os << "[ ";
-    for (auto const &value : values)
-      os << value << " | ";
+    dt__forAllRefAuto(values, value) os << value << " | ";
     os << " ]";
     return os.str();
   }
@@ -260,8 +259,7 @@ public:
   {
     std::ostringstream os;
     os << "[ ";
-    for (auto const &value : values)
-      os << value << " | ";
+    dt__forAllRefAuto(values, value) os << value << " | ";
     os << " ]";
     return os.str();
   }
