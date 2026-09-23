@@ -163,7 +163,7 @@ class simpleAxialRunner:
             '{"name" : "geometry_render_resolution_u", "value" : "21"},'
             '{"name" : "geometry_render_resolution_v", "value" : "21"},'
             '{"name" : "geometry_render_resolution_w", "value" : "21"},'
-            '{"name" : "logLevel", "value" : "3"},'
+            '{"name" : "logLevel", "value" : "debug"},'
             '{"name" : "isEqualExtendCheck", "value" : "false"}'
           ']'
         '}'

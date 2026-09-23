@@ -206,7 +206,7 @@ class hydFoil:
             '{"name" : "invY_precision", "value" : "1.e-04"},'
             '{"name" : "xyz_resolution", "value" : "1.e-08"},'
             '{"name" : "uvw_resolution", "value" : "1.e-04"},'
-            '{"name" : "logLevel", "value" : "99"}'
+            '{"name" : "logLevel", "value" : "trace"}'
           ']'
         '}'
       )
