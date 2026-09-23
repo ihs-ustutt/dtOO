@@ -3,6 +3,11 @@ Import
 
 >>> from dtOOPythonSWIG import *
 
+Initialize a log file:
+
+>>> logMe.initLog("floatAtt.log")
+'floatAtt.log'
+
 Create ``staticPropertiesHandler`` and initialize:
 
 >>> staticPropertiesHandler.getInstance().jInit(
@@ -17,11 +22,6 @@ Create ``staticPropertiesHandler`` and initialize:
 ...     '}' 
 ...   )
 ... )
-
-Initialize a log file:
-
->>> logMe.initLog("floatAtt.log")
-'floatAtt.log'
 
 Create the function 
 

@@ -3,14 +3,14 @@ Import ``dtOOPythonSWIG``:
 
 >>> from dtOOPythonSWIG import *
 
-Create a ``staticPropertiesHandler`` object and initialize:
-
->>> staticPropertiesHandler.getInstance().jInit(jsonPrimitive())
-
 Create a log file:
 
 >>> logMe.initLog('multipleBounded.log')
 'multipleBounded.log'
+
+Create a ``staticPropertiesHandler`` object and initialize:
+
+>>> staticPropertiesHandler.getInstance().jInit(jsonPrimitive())
 
 Create a container, a vector of ``constValue`` objects and initialize a 
 ``lVHOstateHandler`` object:

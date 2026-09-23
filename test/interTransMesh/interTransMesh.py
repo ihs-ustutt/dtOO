@@ -16,6 +16,11 @@ Import ``dtOO``:
 
 >>> import dtOOPythonSWIG as dtOO
 
+Create a log file:
+
+>>> dtOO.logMe.initLog('interTransMesh.log')
+'interTransMesh.log'
+
 Define ``dtOO``'s options:
 
 >>> dtOO.staticPropertiesHandler.getInstance().jInit(
@@ -37,11 +42,6 @@ Define ``dtOO``'s options:
 ...     '}'
 ...   )
 ... )
-
-Create a log file:
-
->>> dtOO.logMe.initLog('interTransMesh.log')
-'interTransMesh.log'
 
 Create a ``dtBundle`` object; this is necessary for the definition of a 
 ``labeledVectorHandlingConstValue`` object that is observed by a 

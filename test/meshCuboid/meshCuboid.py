@@ -17,6 +17,11 @@ Import ``dtOO`` and ``numpy``:
 >>> import dtOOPythonSWIG as dtOO
 >>> import numpy as np
 
+Create a log file:
+
+>>> dtOO.logMe.initLog('gradingCuboid.log')
+'gradingCuboid.log'
+
 Define ``dtOO``'s options:
 
 >>> dtOO.staticPropertiesHandler.getInstance().jInit(
@@ -38,11 +43,6 @@ Define ``dtOO``'s options:
 ...     '}'
 ...   )
 ... )
-
-Create a log file:
-
->>> dtOO.logMe.initLog('gradingCuboid.log')
-'gradingCuboid.log'
 
 Create containers for object handling:
 
