@@ -162,8 +162,7 @@ public:
   {
     std::ostringstream os;
     os << "[ ";
-    dt__forAllConstRefAuto(values, value)
-      os << value << " | ";
+    dt__forAllConstRefAuto(values, value) os << value << " | ";
     os << " ]";
     return os.str();
   }
