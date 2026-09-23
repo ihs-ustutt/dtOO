@@ -27,10 +27,6 @@ License
 #include <progHelper.h>
 
 namespace dtOO {
-dtReal analyticGeometry::_deltaPer =
-  staticPropertiesHandler::getInstance()->getOptionFloat(
-    "analyticGeometry_deltaPer"
-  );
 
 analyticGeometry::analyticGeometry() : labelHandling()
 {
@@ -45,6 +41,9 @@ analyticGeometry::analyticGeometry() : labelHandling()
   );
   _characteristicLength = -1.;
   _boundingBoxValue = -1.;
+  _deltaPer = staticPropertiesHandler::getInstance()->getOptionFloat(
+    "analyticGeometry_deltaPer"
+  );
 }
 
 analyticGeometry::analyticGeometry(analyticGeometry const &orig)
@@ -56,6 +55,7 @@ analyticGeometry::analyticGeometry(analyticGeometry const &orig)
   _characteristicLength = orig._characteristicLength;
   _boundingBox = orig._boundingBox;
   _boundingBoxValue = orig._boundingBoxValue;
+  _deltaPer = orig._deltaPer;
 }
 
 analyticGeometry::~analyticGeometry() {}
