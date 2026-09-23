@@ -30,6 +30,7 @@ License
 #include <boost/log/trivial.hpp>
 #include <boost/log/utility/manipulators/add_value.hpp>
 #include <iomanip>
+#include <list>
 #include <map>
 #include <sstream>
 #include <string>
@@ -196,7 +197,7 @@ public:
   {
     std::ostringstream os;
     os << "[ ";
-    dt__forAllIterAuto(values, valueIt) os << *valueIt << " | ";
+    dt__forAllConstIterAuto(values, valueIt) os << *valueIt << " | ";
     os << " ]";
     return os.str();
   }

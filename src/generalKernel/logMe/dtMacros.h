@@ -194,6 +194,9 @@ License
   for (auto const &iterator : vector)
 #define dt__forAllIterAuto(vector, iterator)                                   \
   for (auto iterator = vector.begin(); iterator != vector.end(); ++iterator)
+#define dt__forAllConstIterAuto(vector, iterator)                              \
+  for (auto const iterator = vector.begin(); iterator != vector.end();         \
+       ++iterator)
 #define dt__forFromToIter(iterator_type, from, to, iter)                       \
   for (iterator_type iter = from; iter != to; ++iter)
 #define dt__mustCast(object, type, result)                                     \
