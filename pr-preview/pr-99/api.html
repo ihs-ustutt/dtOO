@@ -542,12 +542,8 @@ representations and operations.</p>
 <span id="_CPPv3N4dtOO5dtLogE"></span><span id="_CPPv2N4dtOO5dtLogE"></span><span id="dtOO::dtLog"></span><span class="target" id="classdtOO_1_1dtLog"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dtLog</span></span></span><a class="headerlink" href="#_CPPv4N4dtOO5dtLogE" title="Link to this definition"></a><br /></dt>
 <dd><p>Singleton class for logging messages with different severity levels. </p>
 <p>The <code class="docutils literal notranslate"><a class="reference internal" href="#classdtOO_1_1dtLog"><span class="std std-ref"><span class="pre">dtLog</span></span></a></code> class provides the central logging interface for the dtOO framework. It is based on Boost.Log and provides a common mechanism for reporting informational messages, warnings, errors, and debugging output.</p>
-<p>
-The logging system supports six severity levels:<dl class="simple">
-<dt><strong>Severity levels</strong></dt><dd><p></p>
-</dd>
-</dl>
-</p>
+<p><strong>Severity levels</strong></p>
+<p>The logging system supports six severity levels:</p>
 <p><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">trace</span></code> Detailed diagnostic information intended for tracing program execution.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">debug</span></code> Information useful for debugging and development.</p></li>
@@ -558,12 +554,8 @@ The logging system supports six severity levels:<dl class="simple">
 </ul>
 </p>
 <p>The log level can be configured using <a class="reference internal" href="#classdtOO_1_1dtLog_1ab826e5f3b579499ce3cf707baaffd56e"><span class="std std-ref">setLogLevel</span></a>. Only messages whose severity is equal to or higher than the configured level are written. Messages generated with <code class="docutils literal notranslate"><span class="pre">dtLog__always</span></code> are written independently of the configured log level.</p>
-<p>
-The logging macros defined in <code class="docutils literal notranslate"><span class="pre">dtLogMacros.h</span></code> provide a convenient interface for writing log messages:<dl class="simple">
-<dt><strong>Logging macros</strong></dt><dd><p></p>
-</dd>
-</dl>
-</p>
+<p><strong>Logging macros</strong></p>
+<p>The logging macros defined in <code class="docutils literal notranslate"><span class="pre">dtLogMacros.h</span></code> provide a convenient interface for writing log messages:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">dtLog__debug</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Processing "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" elements."</span><span class="p">;</span>
 <span class="n">dtLog__info</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Mesh successfully generated."</span><span class="p">;</span>
 <span class="n">dtLog__warning</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"The requested value is outside the expected range."</span><span class="p">;</span>
@@ -581,28 +573,16 @@ The logging macros defined in <code class="docutils literal notranslate"><span c
 <span class="p">[</span>          <span class="p">]</span> <span class="o">+</span>   <span class="n">number</span> <span class="n">of</span> <span class="n">elements</span><span class="p">:</span>  <span class="mi">512</span>
 </pre></div>
 </div>
-<p>
-Log messages are written to a log file. The file is configured when the logging system is initialized through ptr:<dl class="simple">
-<dt><strong>Log file</strong></dt><dd><p></p>
-</dd>
-</dl>
-</p>
+<p><strong>Log file</strong></p>
+<p>Log messages are written to a log file. The file is configured when the logging system is initialized through ptr:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">dtLog</span><span class="o">::</span><span class="n">ptr</span><span class="p">(</span><span class="s">"dtOO.log"</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">dtLog__always</span></code> stream is provided for messages that should always be written, independently of the configured log level. It is intended for important status messages such as initialization information or configuration changes.</p>
-<p>
-In addition to the logging macros, <a class="reference internal" href="#classdtOO_1_1dtLog_1aede5e74ab92a4b0e74775d6d4de3ee22"><span class="std std-ref">str</span></a> provides helper functions for generating formatted representations of vectors and matrices. This allows numerical data structures to be included in log messages in a consistent format.<dl class="simple">
-<dt><strong>Formatted output</strong></dt><dd><p></p>
-</dd>
-</dl>
-</p>
-<p>
-The logging system also provides adapters for external libraries. Messages generated by Gmsh and OpenCASCADE can be redirected to <code class="docutils literal notranslate"><a class="reference internal" href="#classdtOO_1_1dtLog"><span class="std std-ref"><span class="pre">dtLog</span></span></a></code>, allowing messages from these libraries to use the same log file, severity levels, and output format as messages generated by dtOO itself. <dl class="simple">
-<dt><strong>External libraries</strong></dt><dd><p></p>
-</dd>
-</dl>
-</p>
+<p><strong>Formatted output</strong></p>
+<p>In addition to the logging macros, <a class="reference internal" href="#classdtOO_1_1dtLog_1aede5e74ab92a4b0e74775d6d4de3ee22"><span class="std std-ref">str</span></a> provides helper functions for generating formatted representations of vectors and matrices. This allows numerical data structures to be included in log messages in a consistent format.</p>
+<p><strong>External libraries</strong></p>
+<p>The logging system also provides adapters for external libraries. Messages generated by Gmsh and OpenCASCADE can be redirected to <code class="docutils literal notranslate"><a class="reference internal" href="#classdtOO_1_1dtLog"><span class="std std-ref"><span class="pre">dtLog</span></span></a></code>, allowing messages from these libraries to use the same log file, severity levels, and output format as messages generated by dtOO itself. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
 <dl class="cpp function">
