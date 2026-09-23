@@ -17,6 +17,8 @@ License
 
 #include "dtLog.h"
 
+#include "dtGmshMessagePrinter.h"
+#include "dtOCCMessagePrinter.h"
 #include <boost/log/core.hpp>
 #include <boost/log/expressions.hpp>
 #include <boost/log/utility/setup/common_attributes.hpp>
@@ -26,8 +28,6 @@ License
 #include <dtOOVersion.h>
 #include <execinfo.h>
 #include <interfaceHeaven/stringPrimitive.h>
-#include "dtOCCMessagePrinter.h"
-#include "dtGmshMessagePrinter.h"
 
 namespace logging = boost::log;
 namespace keywords = boost::log::keywords;
