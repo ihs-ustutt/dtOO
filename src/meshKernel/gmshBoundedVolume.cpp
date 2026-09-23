@@ -54,15 +54,13 @@ bool gmshBoundedVolume::_registrated = boundedVolumeFactory::registrate(
   dt__tmpPtr(gmshBoundedVolume, new gmshBoundedVolume())
 );
 
-gmshBoundedVolume::gmshBoundedVolume() : boundedVolume() { gmsh::initialize(); }
-
-gmshBoundedVolume::~gmshBoundedVolume()
+gmshBoundedVolume::gmshBoundedVolume() : boundedVolume()
 {
-  //
-  // gmsh deletes also the models
-  //
-  //	  gmsh::finalize();
+  if (gmsh::isInitialized() == false)
+    gmsh::initialize();
 }
+
+gmshBoundedVolume::~gmshBoundedVolume() {}
 
 void gmshBoundedVolume::jInit(
   jsonPrimitive const &jE,
