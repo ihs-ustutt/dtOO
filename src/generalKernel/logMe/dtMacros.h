@@ -190,6 +190,8 @@ License
   for (type::const_iterator iter = (vector).begin(); iter != (vector).end();   \
        ++iter)
 #define dt__forAllRefAuto(vector, iterator) for (auto &iterator : vector)
+#define dt__forAllConstRefAuto(vector, iterator)                               \
+  for (auto const &iterator : vector)
 #define dt__forAllIterAuto(vector, iterator)                                   \
   for (auto iterator = vector.begin(); iterator != vector.end(); ++iterator)
 #define dt__forFromToIter(iterator_type, from, to, iter)                       \

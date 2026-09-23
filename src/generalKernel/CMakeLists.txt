@@ -121,6 +121,7 @@ SET(HEADERS
   interfaceHeaven/lVHOjsonLoad.h
   interfaceHeaven/lVHOstateHandler.h
   interfaceHeaven/dtBundle.h
+  dtLog/dtLogMacros.h
   dtLog/dtLog.h
   logMe/logMe.h
   logMe/dtMacros.h

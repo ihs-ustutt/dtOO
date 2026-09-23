@@ -39,162 +39,17 @@ License
 #include <exceptionHeaven/eGSL.h>
 #include <exceptionHeaven/eGeneral.h>
 
-#define dtLog__(severity)                                                      \
-  BOOST_LOG_TRIVIAL(severity)                                                  \
-    << "[" << __FILE_NAME__ << ":" << __LINE__ << ":" << __FUNCTION__ << "] "
-
-#define dtLogInt__(level)                                                      \
-  BOOST_LOG_SEV(                                                               \
-    boost::log::trivial::logger::get(),                                        \
-    static_cast<boost::log::trivial::severity_level>(level)                    \
-  ) << "["                                                                     \
-    << __FILE_NAME__ << ":" << __LINE__ << ":" << __FUNCTION__ << "] "
-#define dtLog__trace dtLog__(trace)
-#define dtLog__debug dtLog__(debug)
-#define dtLog__info dtLog__(info)
-#define dtLog__warning dtLog__(warning)
-#define dtLog__error dtLog__(error)
-#define dtLog__fatal dtLog__(fatal)
-#define dtLog__always BOOST_LOG(dtOO::dtLog::alwaysLogger())
-
-// macros
-#define dt__quote(name) #name
-#define dt__point2d(point)                                                     \
-  #point " = ( " << point.x() << ", " << point.y() << ")"
-#define dt__vector3d(vector)                                                   \
-  #vector " = ( " << vector.x() << ", " << vector.y() << ", " << vector.z()    \
-                  << ")"
-#define dt__point3d(point)                                                     \
-  #point " = ( " << point.x() << ", " << point.y() << ", " << point.z() << ")"
-#define dt__eval(eval) #eval " = " << eval
-#define dt__dumpToString(log) this << " {" << std::endl log << std::endl << "}"
-#define dt__ddebug(functionname, message) dtLog__trace message;
-#define dt__debug(functionname, message) dtLog__debug message;
-#define dt__info(functionname, message) dtLog__info message;
-#define dt__warning(functionname, message) dtLog__warning message;
-#define dt__infoNoClass(functionname, message) dtLog__info message;
-#define dt__debugNoClass(functionname, message) dtLog__debug message;
-#define dt__warningNoClass(functionname, message) dtLog__warning message;
-#define dt__quickinfo(message) dtLog__info message;
-#define dt__quickdebug(message) dtLog__debug message;
-#define dt__throw(functionname, message)                                       \
-  throw dtOO::eGeneral(                                                        \
-    std::ostringstream().flush()                                               \
-    << "[ " << className() << "::" #functionname << " ]" << std::endl          \
-    << "*-> file '" << __FILE__ << "'" << std::endl                            \
-    << "*-> line '" << __LINE__ << "'" << std::endl                            \
-    << std::endl message << std::endl                                          \
-    << dtOO::dtLog::trace() << std::endl                                       \
-    << "Honor thy error as a hidden intention. (Brian Eno)"                    \
-  )
-#define dt__throwNoClass(functionname, message)                                \
-  throw dtOO::eGeneral(                                                        \
-    std::ostringstream().flush()                                               \
-    << "[ ::" #functionname << " ]" << std::endl                               \
-    << "*-> file '" << __FILE__ << "'" << std::endl                            \
-    << "*-> line '" << __LINE__ << "'" << std::endl                            \
-    << std::endl message << std::endl                                          \
-    << dtOO::dtLog::trace() << std::endl                                       \
-    << "Honor thy error as a hidden intention. (Brian Eno)"                    \
-  )
-#define dt__throwUnexpected(functionname)                                      \
-  dt__throw(functionname, << "Unexpected")
-#define dt__throwUnexpectedNoClass(functionname)                               \
-  dt__throwNoClass(functionname, << "Unexpected")
-#define dt__throwIfWithMessage(cond, functionname, message)                    \
-  if (cond)                                                                    \
-  {                                                                            \
-    dt__throw(                                                                 \
-      functionname, << "condition: " #cond " is true." << std::endl message    \
-    );                                                                         \
-  }
-#define dt__throwIf(cond, functionname)                                        \
-  if (cond)                                                                    \
-  {                                                                            \
-    dt__throw(functionname, << "condition: " #cond " is true.");               \
-  }
-#define dt__throwIfNoClass(cond, functionname)                                 \
-  if (cond)                                                                    \
-  {                                                                            \
-    dt__throwNoClass(functionname, << "condition: " #cond " is true.");        \
-  }
-#define dt__warnIfWithMessage(cond, functionname, message)                     \
-  if (cond)                                                                    \
-  {                                                                            \
-    dt__warning(                                                               \
-      functionname, << "condition: " #cond " is true." << std::endl message    \
-    );                                                                         \
-  }
-#define dt__warnIfWithSolution(cond, solution, functionname)                   \
-  if (cond)                                                                    \
-  {                                                                            \
-    dt__warning(                                                               \
-      functionname, << "condition: " #cond " is true." << std::endl            \
-    );                                                                         \
-    solution;                                                                  \
-  }
-#define dt__warnIfWithMessageAndSolution(                                      \
-  cond, solution, functionname, message                                        \
-)                                                                              \
-  if (cond)                                                                    \
-  {                                                                            \
-    dt__warning(                                                               \
-      functionname, << "condition: " #cond " is true." << std::endl message    \
-    );                                                                         \
-    solution;                                                                  \
-  }
-#define dt__warnIf(cond, functionname)                                         \
-  if (cond)                                                                    \
-  {                                                                            \
-    dt__warning(functionname, << "condition: " #cond " is true.");             \
-  }
-#define dt__solution(cond, solution)                                           \
-  if (cond)                                                                    \
-    solution;
-#define dt__tryOcc(cmd, errorOut)                                              \
-  try                                                                          \
-  {                                                                            \
-    OCC_CATCH_SIGNALS                                                          \
-    cmd                                                                        \
-  } catch (Standard_Failure & stdF)                                            \
-  {                                                                            \
-    throw eGeneral(                                                            \
-      std::ostringstream().flush()                                             \
-      << className() << "::" << std::endl                                      \
-      << "*-> file '" << __FILE__ << "'" << std::endl                          \
-      << "*-> line '" << __LINE__ << "'" << std::endl                          \
-      << std::endl                                                             \
-      << stdF.GetMessageString() << std::endl                                  \
-      << std::endl errorOut << std::endl                                       \
-      << dtOO::dtLog::trace() << std::endl                                     \
-      << "Honor thy error as a hidden intention. (Brian Eno)"                  \
-    );                                                                         \
-  }
-#define moab__throwIf(cond, functionname)                                      \
-  if (cond)                                                                    \
-  {                                                                            \
-    std::string err;                                                           \
-    moab::MBErrorHandler_GetLastError(err);                                    \
-    dt__throw(                                                                 \
-      functionname,                                                            \
-      << "condition: " #cond " is true." << std::endl                          \
-      << dt__eval(err)                                                         \
-    );                                                                         \
-  }
-#define moab__throwIfWithMessage(cond, functionname, message)                  \
-  if (cond)                                                                    \
-  {                                                                            \
-    std::string err;                                                           \
-    moab::MBErrorHandler_GetLastError(err);                                    \
-    dt__throw(                                                                 \
-      functionname,                                                            \
-      << "condition: " #cond " is true." << std::endl                          \
-      << dt__eval(err) << std::endl message                                    \
-    );                                                                         \
-  }
+#include "dtLogMacros.h"
 
 namespace dtOO {
-
+/**
+ * @brief The dtLogLevel enum
+ *
+ * This enumeration defines the severity levels for logging messages.
+ * It is used to categorize log messages based on their importance or
+ * severity. The levels are ordered from least severe (logDDEBUG) to
+ * most severe (logFATAL).
+ */
 enum dtLogLevel {
   logDDEBUG = 0,
   logDEBUG,
@@ -204,43 +59,121 @@ enum dtLogLevel {
   logFATAL
 };
 
+/**
+ * @brief The dtLog class
+ *
+ * This class is a singleton that provides logging functionality using the
+ * Boost.Log library. It allows logging messages with different severity levels
+ * and provides utility functions for formatting and outputting various data
+ * structures.
+ */
 class dtLog {
   dt__classOnlyName(dtLog);
 
-public:
-  typedef ::boost::format dtFormat;
-
 private:
-  typedef boost::log::sinks::synchronous_sink<
-    boost::log::sinks::text_file_backend>
-    fileSink;
-
+  /**
+   * @brief dtLog
+   * Private constructor to enforce singleton pattern.
+   * @param filename Optional filename for log output.
+   */
   dtLog(const ::std::string &filename);
 
 public:
   dtLog(dtLog &other) = delete;
   void operator=(const dtLog &) = delete;
-
-  static dtLog *ptr(const ::std::string &filename = ::std::string());
-  static dtReal NowExTime(void);
-  static std::string NowDateAndTime(void);
-  static void setLogLevel(boost::log::trivial::severity_level level);
-  static void setLogLevel(const ::std::string &level);
-  static void setLogLevel(const int &level);
-  static boost::log::sources::logger_mt &alwaysLogger();
   virtual ~dtLog();
+  /**
+   * @brief ptr
+   * Static method to get the singleton instance of dtLog.
+   * @param filename Optional filename for log output.
+   * @return Pointer to the singleton instance of dtLog.
+   */
+  static dtLog *ptr(const ::std::string &filename = ::std::string());
+  /**
+   * @brief NowExTime
+   * Static method to get the elapsed time since the start of the program.
+   * @return Elapsed time in seconds as a dtReal.
+   */
+  static dtReal NowExTime(void);
+  /**
+   * @brief NowDateAndTime
+   * Static method to get the current date and time as a string.
+   * @return Current date and time in string format.
+   */
+  static std::string NowDateAndTime(void);
+  /**
+   * @brief setLogLevel
+   * Static method to set the logging severity level.
+   * @param level Logging severity level (boost::log::trivial::severity_level).
+   */
+  static void setLogLevel(boost::log::trivial::severity_level level);
+  /**
+   * @brief setLogLevel
+   * Static method to set the logging severity level using a string.
+   * @param level Logging severity level as a string (e.g., "info", "debug").
+   */
+  static void setLogLevel(const ::std::string &level);
+  /**
+   * @brief setLogLevel
+   * Static method to set the logging severity level using an integer.
+   * @param level Logging severity level as an integer (0-5).
+   */
+  static void setLogLevel(const int &level);
+  /**
+   * @brief formatLogRecord
+   * Static method to format log records for output.
+   * @param record Log record to format.
+   * @param stream Output stream for formatted log record.
+   */
+  static bool report(dtInt const &level);
+  /**
+   * @brief formatLogRecord
+   * Static method to format log records for output.
+   * @param record Log record to format.
+   * @param stream Output stream for formatted log record.
+   */
+  static bool report(dtLogLevel const &level);
+  /**
+   * @brief alwaysLogger
+   * Static method to get a logger that always logs messages regardless of the
+   * severity level.
+   * @return Reference to a logger that always logs messages.
+   */
+  static boost::log::sources::logger_mt &alwaysLogger();
+  /**
+   * @brief trace
+   * Static method to get a string representation of the current call stack.
+   * @return String representation of the call stack.
+   */
   static std::string trace(void);
+  /**
+   * @brief reportingLevel
+   * Static method to get the current logging severity level.
+   * @return Current logging severity level as dtLogLevel.
+   */
   static dtLogLevel reportingLevel(void);
-
+  /**
+   * @brief str
+   * Template method to convert a vector of values to a string representation.
+   * @param values Vector of values to convert.
+   * @return String representation of the vector.
+   */
   template <class T> static std::string str(std::vector<T> const &values)
   {
     std::ostringstream os;
     os << "[ ";
-    dt__forAllRefAuto(values, value) os << value << " | ";
+    dt__forAllConstRefAuto(values, value)
+      os << value << " | ";
     os << " ]";
     return os.str();
   }
-
+  /**
+   * @brief str
+   * Template method to convert a map of key-value pairs to a string
+   * representation.
+   * @param toLog Map of key-value pairs to convert.
+   * @return String representation of the map.
+   */
   template <class T0, class T1>
   static std::string str(const std::map<T0, T1> &toLog)
   {
@@ -254,16 +187,29 @@ public:
     os << " ]";
     return os.str();
   }
-
+  /**
+   * @brief str
+   * Template method to convert a list of values to a string representation.
+   * @param values List of values to convert.
+   * @return String representation of the list.
+   */
   template <class T> static std::string str(std::list<T> const &values)
   {
     std::ostringstream os;
     os << "[ ";
-    dt__forAllRefAuto(values, value) os << value << " | ";
+    dt__forAllIterAuto(values, valueIt) os << *valueIt << " | ";
     os << " ]";
     return os.str();
   }
-
+  /**
+   * @brief str
+   * Template method to convert a vector of vectors (matrix) to a string
+   * representation with specified width and precision.
+   * @param mat Vector of vectors (matrix) to convert.
+   * @param width Width for formatting each element.
+   * @param precision Precision for formatting floating-point values.
+   * @return String representation of the matrix.
+   */
   template <class T>
   static std::string
   str(std::vector<std::vector<T>> const &mat, dtInt width, dtInt precision)
@@ -304,13 +250,21 @@ public:
     os << std::endl;
     return os.str();
   }
-
   static std::string
   floatMatrixToString(std::vector<std::vector<dtReal>> const &mat)
   {
     return str(mat, 13, 6);
   }
-
+  /**
+   * @brief vecToTable
+   * Template method to convert a vector of values to a formatted table string
+   * representation with headers and optional additional information.
+   * @param header Vector of strings representing the table headers.
+   * @param vec Vector of values to convert into a table format.
+   * @param addInfo Optional vector of strings for additional information to be
+   * printed before the table.
+   * @return String representation of the formatted table.
+   */
   template <class T>
   static std::string vecToTable(
     std::vector<std::string> const &header,
@@ -344,15 +298,15 @@ public:
     return os.str();
   }
 
-  static bool report(dtInt const &level) { return level >= logLevel_; }
-  static bool report(dtLogLevel const &level)
-  {
-    return report(static_cast<dtInt>(level));
-  }
+public:
+  typedef ::boost::format dtFormat;
 
 private:
   static dtLog *instance_;
   static clock_t startTime_;
+  typedef boost::log::sinks::synchronous_sink<
+    boost::log::sinks::text_file_backend>
+    fileSink;
   static boost::shared_ptr<fileSink> fileSink_;
   std::string fileName_;
   static dtInt logLevel_;
