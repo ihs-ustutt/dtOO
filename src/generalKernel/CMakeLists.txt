@@ -123,6 +123,8 @@ SET(HEADERS
   interfaceHeaven/dtBundle.h
   dtLog/dtLogMacros.h
   dtLog/dtLog.h
+  dtLog/dtOCCMessagePrinter.h
+  dtLog/dtGmshMessagePrinter.h
   logMe/logMe.h
   logMe/dtMacros.h
   logMe/dtParMacros.h
@@ -235,6 +237,8 @@ SET(SOURCES
   interfaceHeaven/lVHOstateHandler.cpp
   interfaceHeaven/dtBundle.cpp
   dtLog/dtLog.cpp
+  dtLog/dtOCCMessagePrinter.cpp
+  dtLog/dtGmshMessagePrinter.cpp
   logMe/logMe.cpp
   attributionHeaven/floatAtt.cpp
   attributionHeaven/pointGeometryDist.cpp

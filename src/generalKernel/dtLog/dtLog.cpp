@@ -26,6 +26,8 @@ License
 #include <dtOOVersion.h>
 #include <execinfo.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include "dtOCCMessagePrinter.h"
+#include "dtGmshMessagePrinter.h"
 
 namespace logging = boost::log;
 namespace keywords = boost::log::keywords;
@@ -148,6 +150,11 @@ dtLog::dtLog(const ::std::string &filename)
                 << "." << dtOO::git::versionCommitNo << " ( "
                 << dtOO::git::versionName << " )" << std::endl
                 << "*";
+  // register additional message printers
+  dtLog__always << "Registering OCC message printer.";
+  dtOCCMessagePrinter::registerPrinter();
+  dtLog__always << "Registering gmsh message printer.";
+  dtGmshMessagePrinter::registerPrinter();
 }
 
 dtLog::~dtLog() {}
