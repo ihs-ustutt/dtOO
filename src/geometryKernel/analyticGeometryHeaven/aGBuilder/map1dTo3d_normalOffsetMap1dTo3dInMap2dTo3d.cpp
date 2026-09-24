@@ -56,15 +56,12 @@ map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d ::
   std::vector<dtPoint3> ppXYZ =
     dtPoint3_map1dTo3dEquidistantPoint(m1d, nPointsMax).result();
   std::vector<dtPoint2> ppNewUV(ppXYZ.size());
-  std::vector<dtReal> itVal;
   dtReal deltaThick = thick / nIntegrationPoints;
   dt__forAllIndex(ppXYZ, ii)
   {
     dtReal percent =
       static_cast<dtReal>(ii) / static_cast<dtReal>(nPointsMax - 1);
-    //
     // reparam on surface and get derivative
-    //
     dtPoint2 ppUV = m2d->reparamOnFace(ppXYZ[ii]);
     dtVector3 dCdU = m1d->firstDerU(*m1d & percent);
 
@@ -74,71 +71,43 @@ map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d ::
     dtReal intDist = 0.;
     for (int jj = 0; jj < nIntegrationPoints; jj++)
     {
-      //
       // approximate normal
       // calculate cross product of surface normal and curve normal
-      //
       dtVector3 nS = m2d->normal(ppNewUV[ii]);
       dtVector3 nInC = dtLinearAlgebra::crossProduct(dCdU, nS);
       nInC = dtLinearAlgebra::normalize(nInC);
 
-      //
       // calculate distance with approximated normal
-      //
       dtPoint3 ppOpt = movingXYZ[0] + deltaThick * nInC;
       dtVector3 deltaXYZ = ppOpt - movingXYZ[0];
 
-      //
       // calculate approximation of distance in parameter space
       // solve: deltaXYZ = J(u,v) deltaUV
-      //
       dtVector2 deltaUV =
         dtLinearAlgebra::toDtVector2(dtLinearAlgebra::solveMatrix(
           m2d->jacobi(ppNewUV[ii]),
           dtLinearAlgebra::createMatrixVector(deltaXYZ)
         ));
 
-      //
       // update ppNewUV, movingXYZ and calculate discrete distance
-      //
       ppNewUV[ii] = ppNewUV[ii] + deltaUV;
       movingXYZ[1] = m2d->getPoint(ppNewUV[ii]);
       intDist = intDist + dtLinearAlgebra::length(movingXYZ[1] - movingXYZ[0]);
 
-      //
       // make current value old
-      //
       movingXYZ[0] = movingXYZ[1];
     }
 
-    //
-    // save iteration output
-    //
-    itVal.push_back(ppUV.x());
-    itVal.push_back(ppUV.y());
-    itVal.push_back(ppNewUV[ii].x());
-    itVal.push_back(ppNewUV[ii].y());
-    itVal.push_back(intDist);
-    itVal.push_back(fabs((thick - intDist) / thick));
+    // iteration output
+    dtLog__info << dtLog::dtFormat(
+                     "ppUV: (%+11.6e, %+11.6e), ppNewUV: (%+11.6e, %+11.6e), "
+                     "int(T): %+11.6e, |(T-int(T))/T|: %+11.6e"
+                   ) %
+                     ppUV.x() % ppUV.y() % ppNewUV[ii].x() % ppNewUV[ii].y() %
+                     intDist % fabs((thick - intDist) / thick);
   }
-  //
-  // output
-  //
-  std::vector<std::string> header;
-  header.push_back("p_u");
-  header.push_back("p_v");
-  header.push_back("pT_u");
-  header.push_back("pT_v");
-  header.push_back("int(T)");
-  header.push_back("|(T-int(T))/T|");
-  dt__info(
-    map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d(),
-    << dtLog::vecToTable(header, itVal)
-  );
 
-  //
   // create mapping
-  //
   _m1d.reset(new vec2dOneDInMap2dTo3d(
     dt__tmpPtr(
       vec2dCurve2dOneD,

@@ -295,4 +295,8 @@ bool dtLog::report(dtLogLevel const &level)
   return report(static_cast<dtInt>(level));
 }
 
+bool dtLog::logLevelIs(dtLogLevel const &level)
+{
+  return (static_cast<dtInt>(level) >= logLevel_);
+}
 } // namespace dtOO

@@ -325,46 +325,13 @@ public:
     return str(mat, 13, 6);
   }
   /*!
-   * Template method to convert a vector of values to a formatted table string
-   * representation with headers and optional additional information.
-   * @param header Vector of strings representing the table headers.
-   * @param vec Vector of values to convert into a table format.
-   * @param addInfo Optional vector of strings for additional information to be
-   * printed before the table.
-   * @return String representation of the formatted table.
+   * Static method to check if the current logging severity level is equal to
+   * or higher than the specified level.
+   * @param level Logging severity level to check.
+   * @return True if the current logging level is equal to or higher than the
+   * specified level, false otherwise.
    */
-  template <class T>
-  static std::string vecToTable(
-    std::vector<std::string> const &header,
-    std::vector<T> const &vec,
-    std::vector<std::string> addInfo = std::vector<std::string>(0, "")
-  )
-  {
-    std::ostringstream os;
-    for (int ii = 0; ii < addInfo.size(); ii++)
-    {
-      os << addInfo[ii] << std::endl;
-    }
-    for (int ii = 0; ii < header.size(); ii++)
-    {
-      os << boost::format("| %13s ") % header[ii];
-    }
-    os << std::endl;
-    dtInt ii = 0;
-    dtInt grouping = header.size();
-    while (ii < vec.size())
-    {
-      for (int jj = 0; jj < grouping; jj++)
-      {
-        os << boost::format("| %+11.6e ") % vec[ii];
-        ii++;
-        if (ii == vec.size())
-          break;
-      }
-      os << std::endl;
-    }
-    return os.str();
-  }
+  static bool logLevelIs(dtLogLevel const &level);
 
 public:
   typedef ::boost::format dtFormat;

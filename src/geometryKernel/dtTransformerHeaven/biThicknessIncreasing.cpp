@@ -64,37 +64,17 @@ biThicknessIncreasing::apply(lvH_analyticFunction const *const sFunP) const
   {
     std::vector<dtPoint2> p2;
     std::vector<dtPoint2> p2Inv;
-    //
-    // cast pointer and check if it is a analyticFunction
-    //
-    dt__ptrAss(
-      vec2dOneD const *const theF, vec2dOneD::ConstDownCast(sFunP->at(ii))
-    );
 
-    std::vector<dtReal> itVal;
-    std::vector<std::string> header;
-    header.push_back("Y_x");
-    header.push_back("Y_y");
-    header.push_back("N_x");
-    header.push_back("N_y");
-    header.push_back("tt");
-    header.push_back("ttInv");
-    header.push_back("L_i/L");
-    header.push_back("p2_x");
-    header.push_back("p2_y");
-    header.push_back("p2Inv_x");
-    header.push_back("p2Inv_y");
+    // cast pointer and check if it is a vec2dOneD
+    vec2dOneD const *const theF = vec2dOneD::MustConstDownCast(sFunP->at(ii));
 
-    //
     // thickness increasing
-    //
     dtReal cLength = theF->length();
     dt__info(apply(), << dt__eval(cLength));
     dtReal xMin = _para->xMin(0);
     dtReal xMax = _para->xMax(0);
-    //
+
     // points
-    //
     for (int jj = 0; jj < _nPointsOne; jj++)
     {
       dt__toFloat(dtReal jjF, jj);
@@ -108,35 +88,25 @@ biThicknessIncreasing::apply(lvH_analyticFunction const *const sFunP) const
       dtReal ttInv = _tD[1]->YFloat(curLength / cLength);
       p2.push_back(YY + tt * NN);
       p2Inv.push_back(YY - ttInv * NN);
-      itVal.push_back(YY.x());
-      itVal.push_back(YY.y());
-      itVal.push_back(NN.x());
-      itVal.push_back(NN.y());
-      itVal.push_back(tt);
-      itVal.push_back(ttInv);
-      itVal.push_back(curLength / cLength);
-      itVal.push_back(p2[jj].x());
-      itVal.push_back(p2[jj].y());
-      itVal.push_back(p2Inv[jj].x());
-      itVal.push_back(p2Inv[jj].y());
+      dtLog__debug << dtLog::dtFormat(
+                        "Y: (%+11.6e, %+11.6e), N: (%+11.6e, %+11.6e), "
+                        "tt: %+11.6e, ttInv: %+11.6e, L_i/L: %+11.6e, "
+                        "p2: (%+11.6e, %+11.6e), p2Inv: (%+11.6e, %+11.6e)"
+                      ) %
+                        YY.x() % YY.y() % NN.x() % NN.y() % tt % ttInv %
+                        (curLength / cLength) % p2[jj].x() % p2[jj].y() %
+                        p2Inv[jj].x() % p2Inv[jj].y();
     }
-    dt__debug(apply(), << dtLog::vecToTable(header, itVal));
-    //
-    // reverse orientation of resulting splineCurve
-    //
+    //  reverse orientation of resulting splineCurve
     if (_reverse)
     {
       std::reverse(p2.begin(), p2.end());
       std::reverse(p2Inv.begin(), p2Inv.end());
     }
-    //
     // create new function
-    //
     std::reverse(p2Inv.begin(), p2Inv.end());
 
-    //
     // remove
-    //
     dtReal uvRes =
       staticPropertiesHandler::getInstance()->getOptionFloat("uvw_resolution");
     if (dtLinearAlgebra::distance(p2.back(), p2Inv.front()) < uvRes)
@@ -194,9 +164,7 @@ biThicknessIncreasing::apply(lvH_analyticFunction const *const sFunP) const
       bSplineCurve2d_pointConstructOCC(p2All, _splineOrder).result()
     );
 
-    //
     // create scaCurve2dOneD
-    //
     transSFun.push_back(new vec2dCurve2dOneD(dtC2d.get()));
     transSFun.back()->setLabel(sFunP->at(ii)->getLabel());
   }
