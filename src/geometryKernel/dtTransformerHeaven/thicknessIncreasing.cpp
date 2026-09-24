@@ -90,10 +90,8 @@ thicknessIncreasing::apply(lvH_analyticFunction const *const sFunP) const
     if (_isInv)
       tt = -tt;
     p2.push_back(YY + tt * NN);
-    dtLog__debug << dtLog::dtFormat(
-                      "Y: (%+11.6e, %+11.6e), N: (%+11.6e, %+11.6e), "
-                      "tt: %+11.6e, L_i/L: %+11.6e"
-                    ) %
+    dtLog__debug << dtFormat("Y: (%+11.6e, %+11.6e), N: (%+11.6e, %+11.6e), "
+                             "tt: %+11.6e, L_i/L: %+11.6e") %
                       YY.x() % YY.y() % NN.x() % NN.y() % tt % 0.;
 
     // inner points
@@ -110,10 +108,8 @@ thicknessIncreasing::apply(lvH_analyticFunction const *const sFunP) const
       if (_isInv)
         tt = -tt;
       p2.push_back(YY + tt * NN);
-      dtLog__debug << dtLog::dtFormat(
-                        "Y: (%+11.6e, %+11.6e), N: (%+11.6e, %+11.6e), "
-                        "tt: %+11.6e, L_i/L: %+11.6e"
-                      ) %
+      dtLog__debug << dtFormat("Y: (%+11.6e, %+11.6e), N: (%+11.6e, %+11.6e), "
+                               "tt: %+11.6e, L_i/L: %+11.6e") %
                         YY.x() % YY.y() % NN.x() % NN.y() % tt %
                         (curLength / cLength);
     }
@@ -126,10 +122,8 @@ thicknessIncreasing::apply(lvH_analyticFunction const *const sFunP) const
     if (_isInv)
       tt = -tt;
     p2.push_back(YY + tt * NN);
-    dtLog__debug << dtLog::dtFormat(
-                      "Y: (%+11.6e, %+11.6e), N: (%+11.6e, %+11.6e), "
-                      "tt: %+11.6e, L_i/L: %+11.6e"
-                    ) %
+    dtLog__debug << dtFormat("Y: (%+11.6e, %+11.6e), N: (%+11.6e, %+11.6e), "
+                             "tt: %+11.6e, L_i/L: %+11.6e") %
                       YY.x() % YY.y() % NN.x() % NN.y() % tt % 1.;
 
     //  create new function

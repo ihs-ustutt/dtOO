@@ -199,8 +199,8 @@ void bVOEvilGodfather::postUpdate(void)
       if (!isFree)
         continue;
 
-      logC() << dtLog::dtFormat("(0) MTetrahedron[ %6i ]: V = %8.3e, "
-                                "skew = %8.3e angleShapeMeasure = %8.3e") %
+      logC() << dtFormat("(0) MTetrahedron[ %6i ]: V = %8.3e, "
+                         "skew = %8.3e angleShapeMeasure = %8.3e") %
                   jinx->getNum() % jinx->getVolume() % jinx->skewness() %
                   jinx->angleShapeMeasure()
              << std::endl;
@@ -212,8 +212,8 @@ void bVOEvilGodfather::postUpdate(void)
       {
         perturbElement(jinx, _perturbTet);
 
-        logC() << dtLog::dtFormat("(1) MTetrahedron[ %6i ]: V = %8.3e, "
-                                  "skew = %8.3e angleShapeMeasure = %8.3e") %
+        logC() << dtFormat("(1) MTetrahedron[ %6i ]: V = %8.3e, "
+                           "skew = %8.3e angleShapeMeasure = %8.3e") %
                     jinx->getNum() % jinx->getVolume() % jinx->skewness() %
                     jinx->angleShapeMeasure()
                << std::endl;
@@ -241,8 +241,8 @@ void bVOEvilGodfather::postUpdate(void)
         //
         dt__forAllRefAuto(nT.first, aTet)
         {
-          logC() << dtLog::dtFormat("(1a) MTetrahedron[ %6i ]: V = %8.3e, "
-                                    "skew = %8.3e angleShapeMeasure = %8.3e") %
+          logC() << dtFormat("(1a) MTetrahedron[ %6i ]: V = %8.3e, "
+                             "skew = %8.3e angleShapeMeasure = %8.3e") %
                       aTet->getNum() % aTet->getVolume() % aTet->skewness() %
                       aTet->angleShapeMeasure()
                  << std::endl;
@@ -313,8 +313,8 @@ void bVOEvilGodfather::postUpdate(void)
       if (!isFree)
         continue;
 
-      logC() << dtLog::dtFormat("(0) MHexahedron[ %6i ]: V = %8.3e, "
-                                "skew = %8.3e angleShapeMeasure = %8.3e") %
+      logC() << dtFormat("(0) MHexahedron[ %6i ]: V = %8.3e, "
+                         "skew = %8.3e angleShapeMeasure = %8.3e") %
                   jinx->getNum() % jinx->getVolume() % jinx->skewness() %
                   jinx->angleShapeMeasure()
              << std::endl;
@@ -326,8 +326,8 @@ void bVOEvilGodfather::postUpdate(void)
       {
         perturbElement(jinx, _perturbHex);
 
-        logC() << dtLog::dtFormat("(1) MHexahedron[ %6i ]: V = %8.3e, "
-                                  "skew = %8.3e angleShapeMeasure = %8.3e") %
+        logC() << dtFormat("(1) MHexahedron[ %6i ]: V = %8.3e, "
+                           "skew = %8.3e angleShapeMeasure = %8.3e") %
                     jinx->getNum() % jinx->getVolume() % jinx->skewness() %
                     jinx->angleShapeMeasure()
                << std::endl;
@@ -354,8 +354,8 @@ void bVOEvilGodfather::postUpdate(void)
         //
         dt__forAllRefAuto(nP.first, aPyr)
         {
-          logC() << dtLog::dtFormat("(1a) MPyramid[ %6i ]: V = %8.3e, "
-                                    "skew = %8.3e angleShapeMeasure = %8.3e") %
+          logC() << dtFormat("(1a) MPyramid[ %6i ]: V = %8.3e, "
+                             "skew = %8.3e angleShapeMeasure = %8.3e") %
                       aPyr->getNum() % aPyr->getVolume() % aPyr->skewness() %
                       aPyr->angleShapeMeasure()
                  << std::endl;

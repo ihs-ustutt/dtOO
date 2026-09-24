@@ -207,12 +207,12 @@ template <typename funT> void vec3dMultiThreeD<funT>::dump(void) const
     yMin = aPair.second->Y(aPair.first.first);
     yMax = aPair.second->Y(aPair.first.second);
     logC()
-      << dtLog::dtFormat(
+      << dtFormat(
            "min(%5i) : F( [%12.6e %12.6e %12.6e] ) = [%12.6e %12.6e %12.6e]"
          ) %
            cc % xMin[0] % xMin[1] % xMin[2] % yMin[0] % yMin[1] % yMin[2]
       << std::endl
-      << dtLog::dtFormat(
+      << dtFormat(
            "max(%5i) : F( [%12.6e %12.6e %12.6e] ) = [%12.6e %12.6e %12.6e]"
          ) %
            cc % xMax[0] % xMax[1] % xMax[2] % yMax[0] % yMax[1] % yMax[2]
@@ -223,15 +223,14 @@ template <typename funT> void vec3dMultiThreeD<funT>::dump(void) const
   xMax = funT::xMax();
   yMin = Y(xMin);
   yMax = Y(xMax);
-  logC() << dtLog::dtFormat(
-              "min() : F( [%12.6e %12.6e %12.6e] ) = [%12.6e %12.6e %12.6e]"
-            ) %
-              xMin[0] % xMin[1] % xMin[2] % yMin[0] % yMin[1] % yMin[2]
-         << std::endl
-         << dtLog::dtFormat(
-              "max() : F( [%12.6e %12.6e %12.6e] ) = [%12.6e %12.6e %12.6e]"
-            ) %
-              xMax[0] % xMax[1] % xMax[2] % yMax[0] % yMax[1] % yMax[2];
+  logC(
+  ) << dtFormat("min() : F( [%12.6e %12.6e %12.6e] ) = [%12.6e %12.6e %12.6e]"
+       ) %
+         xMin[0] % xMin[1] % xMin[2] % yMin[0] % yMin[1] % yMin[2]
+    << std::endl
+    << dtFormat("max() : F( [%12.6e %12.6e %12.6e] ) = [%12.6e %12.6e %12.6e]"
+       ) %
+         xMax[0] % xMax[1] % xMax[2] % yMax[0] % yMax[1] % yMax[2];
 }
 } // namespace dtOO
 #endif /* vec3dMultiThreeD_H */

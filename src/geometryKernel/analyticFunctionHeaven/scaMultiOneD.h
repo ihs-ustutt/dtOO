@@ -183,7 +183,7 @@ template <typename funT> void scaMultiOneD<funT>::dump(void) const
   logContainer<scaMultiOneD<funT>> logC(dtLogLevel::logDEBUG, "dump()");
   dt__forAllRefAuto(_ff, aPair)
   {
-    logC() << dtLog::dtFormat("F( [%12.6e %12.6e] ) = [%12.6e %12.6e]") %
+    logC() << dtFormat("F( [%12.6e %12.6e] ) = [%12.6e %12.6e]") %
                 aPair.first.first % aPair.first.second %
                 aPair.second->YFloat(aPair.first.first) %
                 aPair.second->YFloat(aPair.first.second)

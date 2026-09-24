@@ -336,7 +336,7 @@ void bVOSetRotationalPeriodicity::preUpdate(void)
         << "Distance of corresponding vertices is greater than gmsh "
            "internal tolerance."
         << std::endl
-        << dtLog::dtFormat("distance = %.16e, cScale = %.16e") %
+        << dtFormat("distance = %.16e, cScale = %.16e") %
                xyzSlv.distance(xyzTfo) % cScale
         << std::endl
         << "Use force option for this bVOObserver."

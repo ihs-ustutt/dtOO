@@ -96,31 +96,28 @@ std::ostream &operator<<(std::ostream &os, const barChart &toLog)
 
   os << "|" << std::endl
      << "| " << toLog._title << std::endl
-     << dtLog::dtFormat("| nValues = %i") % toLog._nValues << std::endl
-     << dtLog::dtFormat("| min       = %+5.2e, max       = %+5.2e") %
-          toLog._min % toLog._max
+     << dtFormat("| nValues = %i") % toLog._nValues << std::endl
+     << dtFormat("| min       = %+5.2e, max       = %+5.2e") % toLog._min %
+          toLog._max
      << std::endl
-     << dtLog::dtFormat("| globalMin = %+5.2e, globalMax = %+5.2e") %
+     << dtFormat("| globalMin = %+5.2e, globalMax = %+5.2e") %
           toLog._globalMin % toLog._globalMax
      << std::endl
-     << dtLog::dtFormat("| average   = %+5.2e") % av << std::endl
+     << dtFormat("| average   = %+5.2e") % av << std::endl
      << "|" << std::endl;
 
   dtInt avPos = av * 30 / (toLog._max - toLog._min);
   std::string avString(avPos, ' ');
   avString = avString + "#";
-  os << dtLog::dtFormat("| < %+5.2e  %-32s          |") % av % avString
-     << std::endl;
+  os << dtFormat("| < %+5.2e  %-32s          |") % av % avString << std::endl;
   os << "|" << std::endl;
   dt__forAllIndex(scale, ii)
   {
-    os << dtLog::dtFormat("| < %+5.2e ") %
-            (toLog._min + toLog._step * (ii + 1));
+    os << dtFormat("| < %+5.2e ") % (toLog._min + toLog._step * (ii + 1));
     dtInt nSigns = scale[ii] * 30;
     std::string barString(nSigns, '+');
-    os << dtLog::dtFormat(" %-32s %+6.2f %% | %i ( %5.2e )") %
-            barString.c_str() % (100. * percent[ii]) % toLog._bar[ii] %
-            toLog.barAverage(ii);
+    os << dtFormat(" %-32s %+6.2f %% | %i ( %5.2e )") % barString.c_str() %
+            (100. * percent[ii]) % toLog._bar[ii] % toLog.barAverage(ii);
     os << std::endl;
   }
   return os;

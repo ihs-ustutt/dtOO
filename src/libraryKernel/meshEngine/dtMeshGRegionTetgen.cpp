@@ -224,7 +224,7 @@ void dtMeshGRegionTetgen::convertFromTetgen(
 
   dt__info(
     convertFromTetgen(),
-    << dtLog::dtFormat("%d points %d edges and %d faces in the initial mesh") %
+    << dtFormat("%d points %d edges and %d faces in the initial mesh") %
            out->numberofpoints % out->numberofedges % out->numberoftrifaces
   );
 

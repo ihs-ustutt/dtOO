@@ -240,20 +240,20 @@ dtPoint2 map2dTo3d::reparamOnFace(dtPoint3 const &ppXYZ) const
     // write gmsh geo file
     std::fstream of;
     of.open(fname + ".geo", std::ios::out | std::ios::trunc);
-    of << dtLog::dtFormat("Point(1001) = { %16.8e, %16.8e, %16.8e };\n") %
-            ppXYZ.x() % ppXYZ.y() % ppXYZ.z();
-    of << dtLog::dtFormat("Point(1002) = { %16.8e, %16.8e, %16.8e };\n") %
+    of << dtFormat("Point(1001) = { %16.8e, %16.8e, %16.8e };\n") % ppXYZ.x() %
+            ppXYZ.y() % ppXYZ.z();
+    of << dtFormat("Point(1002) = { %16.8e, %16.8e, %16.8e };\n") %
             ppXYZReparam.x() % ppXYZReparam.y() % ppXYZReparam.z();
-    of << dtLog::dtFormat("Line(1000) = { 1001, 1002 };\n");
+    of << dtFormat("Line(1000) = { 1001, 1002 };\n");
     of.close();
 
     dt__throw(
       reparamOnFace(),
-      << dtLog::dtFormat("ppXYZ = %5.2e %5.2e %5.2e\n"
-                         "ppXYZReparam = %5.2e %5.2e %5.2e\n"
-                         "dist = %5.2e\n"
-                         "xyz_resolution = %5.2e\n"
-                         "virtualClassName() = %s") %
+      << dtFormat("ppXYZ = %5.2e %5.2e %5.2e\n"
+                  "ppXYZReparam = %5.2e %5.2e %5.2e\n"
+                  "dist = %5.2e\n"
+                  "xyz_resolution = %5.2e\n"
+                  "virtualClassName() = %s") %
              ppXYZ.x() % ppXYZ.y() % ppXYZ.z() % ppXYZReparam.x() %
              ppXYZReparam.y() % ppXYZReparam.z() % dist %
              staticPropertiesHandler::getInstance()->getOptionFloat(

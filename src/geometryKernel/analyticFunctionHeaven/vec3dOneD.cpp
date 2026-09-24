@@ -155,8 +155,7 @@ dtReal vec3dOneD::length(dtReal const &x1) const
     l1 = length(glpOrder[ii], x1);
     dtReal eps = fabs(l1 - l0) / l1;
     l0 = l1;
-    dtLog__debug << dtLog::dtFormat(
-                      "ii: %02d | l0: %+11.6e, l1: %+11.6e, eps: %+11.6e"
+    dtLog__debug << dtFormat("ii: %02d | l0: %+11.6e, l1: %+11.6e, eps: %+11.6e"
                     ) %
                       ii % l0 % l1 % eps;
     if (eps < geoRes)

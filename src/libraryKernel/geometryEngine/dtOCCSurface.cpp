@@ -265,10 +265,10 @@ dtPoint2 dtOCCSurface::reparam(dtPoint3 const point) const
 
   logContainer<dtOCCSurface> logC(logDEBUG, "reparam()");
 
-  logC() << dtLog::dtFormat("Points by Projection:\n");
+  logC() << dtFormat("Points by Projection:\n");
   dt__forFromToIndex(1, proj.NbPoints() + 1, i)
   {
-    logC() << dtLog::dtFormat("  %5d : dist = %5.2e\n") % i % proj.Distance(i);
+    logC() << dtFormat("  %5d : dist = %5.2e\n") % i % proj.Distance(i);
 
     if (dtSurface::inXYZTolerance(
           dtPoint3(proj.Point(i).X(), proj.Point(i).Y(), proj.Point(i).Z()),
@@ -278,7 +278,7 @@ dtPoint2 dtOCCSurface::reparam(dtPoint3 const point) const
       Standard_Real U;
       Standard_Real V;
       proj.Parameters(i, U, V);
-      logC() << dtLog::dtFormat("In Tolerance: U = %5.2e V = %5.2e") % U % V;
+      logC() << dtFormat("In Tolerance: U = %5.2e V = %5.2e") % U % V;
       return dtPoint2(
         floatHandling::boundToRange(U, minU(), maxU()),
         floatHandling::boundToRange(V, minV(), maxV())
@@ -316,11 +316,11 @@ dtPoint2 dtOCCSurface::reparam(dtPoint3 const point) const
     ext.NbExt() == 0, return dtSurface::reparam(point), reparam()
   );
 
-  logC() << dtLog::dtFormat("Points by Extrema:\n") << std::endl;
+  logC() << dtFormat("Points by Extrema:\n") << std::endl;
   dt__forFromToIndex(1, ext.NbExt() + 1, i)
   {
     Extrema_POnSurf epp = ext.Point(i);
-    logC() << dtLog::dtFormat("  %5d : dist = %5.2e\n") % i %
+    logC() << dtFormat("  %5d : dist = %5.2e\n") % i %
                 sqrt(ext.SquareDistance(i));
     if (dtSurface::inXYZTolerance(
           dtPoint3(epp.Value().X(), epp.Value().Y(), epp.Value().Z()), point
@@ -329,14 +329,14 @@ dtPoint2 dtOCCSurface::reparam(dtPoint3 const point) const
       Standard_Real U;
       Standard_Real V;
       epp.Parameter(U, V);
-      logC() << dtLog::dtFormat("In Tolerance: U = %5.2e V = %5.2e") % U % V;
+      logC() << dtFormat("In Tolerance: U = %5.2e V = %5.2e") % U % V;
       return dtPoint2(
         floatHandling::boundToRange(U, minU(), maxU()),
         floatHandling::boundToRange(V, minV(), maxV())
       );
     }
   }
-  logC() << dtLog::dtFormat("No Point found!");
+  logC() << dtFormat("No Point found!");
   return dtSurface::reparam(point);
 }
 

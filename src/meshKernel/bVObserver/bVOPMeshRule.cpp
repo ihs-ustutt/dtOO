@@ -227,7 +227,7 @@ bVOPMeshRule::prepareDistribution(std::list<T> list, std::vector<dtReal> weight)
 
   logContainer<bVOPMeshRule> logC(dtLogLevel::logINFO, "prepareDistribution()");
   logC() << "Distribution" << std::endl
-         << dtLog::dtFormat("[ %4s ] -> %4s : %6s") % "tag" % "rank" % "master"
+         << dtFormat("[ %4s ] -> %4s : %6s") % "tag" % "rank" % "master"
          << std::endl;
   dt__forAllRefAuto(list, anEnt)
   {
@@ -235,7 +235,7 @@ bVOPMeshRule::prepareDistribution(std::list<T> list, std::vector<dtReal> weight)
     {
       onRankMap[anEnt] = onRankMap[anEnt->getMeshMaster()];
     }
-    logC() << dtLog::dtFormat("[ %4d ] -> %3d : %3d") % anEnt->tag() %
+    logC() << dtFormat("[ %4d ] -> %3d : %3d") % anEnt->tag() %
                 onRankMap[anEnt] % anEnt->getMeshMaster()->tag()
            << std::endl;
   }

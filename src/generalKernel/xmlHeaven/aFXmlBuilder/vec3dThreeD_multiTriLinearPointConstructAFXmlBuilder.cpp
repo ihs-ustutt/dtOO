@@ -84,17 +84,15 @@ void vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder::buildPart(
     dt__info(
       buildPart(),
       << "Create function component with points:" << std::endl
-      << dtLog::dtFormat("Y[0] = (%f, %f, %f)") % pA[ii][3] % pA[ii][4] %
-             pA[ii][5]
+      << dtFormat("Y[0] = (%f, %f, %f)") % pA[ii][3] % pA[ii][4] % pA[ii][5]
       << std::endl
-      << dtLog::dtFormat("Y[1] = (%f, %f, %f)") % pA[ii + 1][3] %
-             pA[ii + 1][4] % pA[ii + 1][5]
+      << dtFormat("Y[1] = (%f, %f, %f)") % pA[ii + 1][3] % pA[ii + 1][4] %
+             pA[ii + 1][5]
       << std::endl
-      << dtLog::dtFormat("X[0] = (%f, %f, %f)") % pA[ii][0] % pA[ii][1] %
-             pA[ii][2]
+      << dtFormat("X[0] = (%f, %f, %f)") % pA[ii][0] % pA[ii][1] % pA[ii][2]
       << std::endl
-      << dtLog::dtFormat("X[1] = (%f, %f, %f)") % pA[ii + 1][0] %
-             pA[ii + 1][1] % pA[ii + 1][2]
+      << dtFormat("X[1] = (%f, %f, %f)") % pA[ii + 1][0] % pA[ii + 1][1] %
+             pA[ii + 1][2]
       << std::endl
     );
     v3d->add(new vec3dTriLinearThreeD(

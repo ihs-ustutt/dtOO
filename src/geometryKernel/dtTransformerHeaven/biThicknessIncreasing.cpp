@@ -88,7 +88,7 @@ biThicknessIncreasing::apply(lvH_analyticFunction const *const sFunP) const
       dtReal ttInv = _tD[1]->YFloat(curLength / cLength);
       p2.push_back(YY + tt * NN);
       p2Inv.push_back(YY - ttInv * NN);
-      dtLog__debug << dtLog::dtFormat(
+      dtLog__debug << dtFormat(
                         "Y: (%+11.6e, %+11.6e), N: (%+11.6e, %+11.6e), "
                         "tt: %+11.6e, ttInv: %+11.6e, L_i/L: %+11.6e, "
                         "p2: (%+11.6e, %+11.6e), p2Inv: (%+11.6e, %+11.6e)"

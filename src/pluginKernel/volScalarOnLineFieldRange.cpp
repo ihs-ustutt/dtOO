@@ -264,7 +264,7 @@ void volScalarOnLineFieldRange::apply(void)
         //
         dt__forFromToIndex(0, value.size(), ii)
         {
-          of << dtLog::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
+          of << dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e") %
                   grid[ii].x() % grid[ii].y() % grid[ii].z() % ll[ii] %
                   value[ii]
              << std::endl;

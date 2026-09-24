@@ -243,8 +243,8 @@ void volVectorFieldRange::apply(void)
       //
       dt__forFromToIndex(0, coord.size(), ii)
       {
-        of << dtLog::dtFormat("%16.8e, %16.8e, %16.8e, "
-                              "%16.8e, %16.8e, %16.8e, %16.8e") %
+        of << dtFormat("%16.8e, %16.8e, %16.8e, "
+                       "%16.8e, %16.8e, %16.8e, %16.8e") %
                 coord[ii].x() % coord[ii].y() % coord[ii].z() % val[ii].x() %
                 val[ii].y() % val[ii].z() % vol[ii]
            << std::endl;

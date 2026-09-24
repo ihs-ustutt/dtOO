@@ -400,13 +400,13 @@ void UcylInChannel::apply(void)
         {
           dt__forFromToIndex(0, grid[ii].size(), jj)
           {
-            of << dtLog::dtFormat("%4i, %4i, "
-                                  "%16.8e, %16.8e, %16.8e, "
-                                  "%16.8e, %16.8e, "
-                                  "%16.8e, %16.8e, %16.8e, "
-                                  "%16.8e, %16.8e, %16.8e, "
-                                  "%16.8e, %16.8e, "
-                                  "%16.8e") %
+            of << dtFormat("%4i, %4i, "
+                           "%16.8e, %16.8e, %16.8e, "
+                           "%16.8e, %16.8e, "
+                           "%16.8e, %16.8e, %16.8e, "
+                           "%16.8e, %16.8e, %16.8e, "
+                           "%16.8e, %16.8e, "
+                           "%16.8e") %
                     ii % jj % grid[ii][jj].x() % grid[ii][jj].y() %
                     grid[ii][jj].z() % R[ii][jj] % Z[ii][jj] % U[ii][jj].x() %
                     U[ii][jj].y() % U[ii][jj].z() % Ucyl[ii][jj].x() %
@@ -490,14 +490,14 @@ void UcylInChannel::apply(void)
           //
           // write values
           //
-          of << dtLog::dtFormat("%16i, "
-                                "%16.8e, %16.8e, %16.8e, "
-                                "%16.8e, %16.8e, "
-                                "%16.8e, %16.8e, %16.8e, "
-                                "%16.8e, %16.8e, %16.8e, "
-                                "%16.8e, %16.8e, "
-                                "%16.8e, %16.8e, %16.8e, "
-                                "%16.8e") %
+          of << dtFormat("%16i, "
+                         "%16.8e, %16.8e, %16.8e, "
+                         "%16.8e, %16.8e, "
+                         "%16.8e, %16.8e, %16.8e, "
+                         "%16.8e, %16.8e, %16.8e, "
+                         "%16.8e, %16.8e, "
+                         "%16.8e, %16.8e, %16.8e, "
+                         "%16.8e") %
                   jj % avgXYZ.x() % avgXYZ.y() % avgXYZ.z() % avgR % avgZ %
                   avgU.x() % avgU.y() % avgU.z() % avgUcyl.x() % avgUcyl.y() %
                   avgUcyl.z() % avgU_n % avgUcyl_n %

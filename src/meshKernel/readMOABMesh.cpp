@@ -272,7 +272,7 @@ std::map<std::string, dtGmshFace *> readMOABMesh::createFaces(
   rval = mb.num_contained_meshsets(0, &nMeshSets, 0);
   moab__throwIf(rval != moab::MB_SUCCESS, createFaces());
 
-  logC() << dtLog::dtFormat("[ x ] --- MeshSets ( %3i ) --- ") % nMeshSets
+  logC() << dtFormat("[ x ] --- MeshSets ( %3i ) --- ") % nMeshSets
          << std::endl;
 
   moab::Range allSets;
@@ -302,11 +302,10 @@ std::map<std::string, dtGmshFace *> readMOABMesh::createFaces(
     if (dim[1] == 0)
       continue;
 
-    logC() << dtLog::dtFormat("[ %i ] handle %i") % meshSetCounter %
+    logC() << dtFormat("[ %i ] handle %i") % meshSetCounter %
                 std::distance(allSets.begin(), it)
            << std::endl
-           << dtLog::dtFormat(
-                "[ %i ] number of entities (1D, 2D, 3D) = (%i, %i, %i)"
+           << dtFormat("[ %i ] number of entities (1D, 2D, 3D) = (%i, %i, %i)"
               ) %
                 meshSetCounter % dim[0] % dim[1] % dim[2]
            << std::endl;
@@ -326,8 +325,8 @@ std::map<std::string, dtGmshFace *> readMOABMesh::createFaces(
     rval = mb.get_entities_by_type(currentSet, moab::MBQUAD, aRange);
     moab__throwIf(rval != moab::MB_SUCCESS, createFaces());
 
-    logC() << dtLog::dtFormat("[ %i ] number of quadrangles %i") %
-                meshSetCounter % aRange.size()
+    logC() << dtFormat("[ %i ] number of quadrangles %i") % meshSetCounter %
+                aRange.size()
            << std::endl;
 
     //
@@ -398,7 +397,7 @@ std::map<std::string, dtGmshRegion *> readMOABMesh::createRegions(
   rval = mb.num_contained_meshsets(0, &nMeshSets, 0);
   moab__throwIf(rval != moab::MB_SUCCESS, createRegions());
 
-  logC() << dtLog::dtFormat("[ x ] --- MeshSets ( %3i ) --- ") % nMeshSets
+  logC() << dtFormat("[ x ] --- MeshSets ( %3i ) --- ") % nMeshSets
          << std::endl;
 
   moab::Range allSets;
@@ -428,10 +427,9 @@ std::map<std::string, dtGmshRegion *> readMOABMesh::createRegions(
     if (dim[2] == 0)
       continue;
 
-    logC() << dtLog::dtFormat("[ %i ] handle %i") % meshSetCounter % currentSet
+    logC() << dtFormat("[ %i ] handle %i") % meshSetCounter % currentSet
            << std::endl
-           << dtLog::dtFormat(
-                "[ %i ] number of entities (1D, 2D, 3D) = (%i, %i, %i)"
+           << dtFormat("[ %i ] number of entities (1D, 2D, 3D) = (%i, %i, %i)"
               ) %
                 meshSetCounter % dim[0] % dim[1] % dim[2]
            << std::endl;
@@ -451,8 +449,8 @@ std::map<std::string, dtGmshRegion *> readMOABMesh::createRegions(
     rval = mb.get_entities_by_type(currentSet, moab::MBHEX, aRange);
     moab__throwIf(rval != moab::MB_SUCCESS, createRegions());
 
-    logC() << dtLog::dtFormat("[ %i ] number of hexahedra %i") %
-                meshSetCounter % aRange.size()
+    logC() << dtFormat("[ %i ] number of hexahedra %i") % meshSetCounter %
+                aRange.size()
            << std::endl;
 
     //

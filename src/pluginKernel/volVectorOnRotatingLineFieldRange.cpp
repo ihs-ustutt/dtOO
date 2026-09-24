@@ -431,7 +431,7 @@ void volVectorOnRotatingLineFieldRange::apply(void)
           if (phi == 0.)
             continue;
 
-          of << dtLog::dtFormat(
+          of << dtFormat(
                   "%16.8e, %16.8e, %16.8e, "
                   "%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e"
                 ) %

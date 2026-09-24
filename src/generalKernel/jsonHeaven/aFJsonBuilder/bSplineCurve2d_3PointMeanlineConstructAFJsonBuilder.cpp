@@ -95,7 +95,7 @@ bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder::buildPart(
       dtC2d->setControlPoint(1, p0 + (1. + (scale - 1.) / 2.) * v0);
       dtC2d->setControlPoint(2, p0 + (1. + (scale - 1.) / 2.) * (v0 + v1));
 
-      logC() << dtLog::dtFormat("( %3d ) : %5.2f -> %5.2f") % ii % scale %
+      logC() << dtFormat("( %3d ) : %5.2f -> %5.2f") % ii % scale %
                   (config.lookup<dtReal>("targetLength") / dtC2d->length())
              << std::endl;
       if (fabs(config.lookup<dtReal>("targetLength") / dtC2d->length() - 1.) <=

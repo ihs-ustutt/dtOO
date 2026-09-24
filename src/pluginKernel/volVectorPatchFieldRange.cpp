@@ -282,8 +282,8 @@ void volVectorPatchFieldRange::apply(void)
       //
       dt__forFromToIndex(0, pXYZ.size(), ii)
       {
-        of << dtLog::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, "
-                              "%16.8e, %16.8e, %16.8e, %16.8e") %
+        of << dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, "
+                       "%16.8e, %16.8e, %16.8e, %16.8e") %
                 pXYZ[ii].x() % pXYZ[ii].y() % pXYZ[ii].z() % val[ii].x() %
                 val[ii].y() % val[ii].z() % sf[ii].x() % sf[ii].y() %
                 sf[ii].z() % phi[ii]

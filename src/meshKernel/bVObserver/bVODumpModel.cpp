@@ -65,7 +65,7 @@ void bVODumpModel::preUpdate(void)
     gm->getPhysicalGroups(dim, map);
     dt__forAllRefAuto(map, aPair)
     {
-      logC() << dtLog::dtFormat(
+      logC() << dtFormat(
                   "Physical group ( %d ): name = %s, dim = %d ( %d entities )"
                 ) %
                   aPair.first % gm->getPhysicalName(dim, aPair.first) % dim %
@@ -80,7 +80,7 @@ void bVODumpModel::preUpdate(void)
       logC() << "dtGmshVertex[] = NULL" << std::endl;
       continue;
     }
-    logC() << dtLog::dtFormat("dtGmshVertex[ %3i ] = %s ( %x )") % aV->tag() %
+    logC() << dtFormat("dtGmshVertex[ %3i ] = %s ( %x )") % aV->tag() %
                 gm->getPhysicalString(aV) % aV
            << std::endl
            << "  edges = " << dtLog::str(aV->edges()) << std::endl;
@@ -92,7 +92,7 @@ void bVODumpModel::preUpdate(void)
       logC() << "dtGmshEdge[] = NULL" << std::endl;
       continue;
     }
-    logC() << dtLog::dtFormat("dtGmshEdge[ %3i ] = %s ( %x )") % aE->tag() %
+    logC() << dtFormat("dtGmshEdge[ %3i ] = %s ( %x )") % aE->tag() %
                 gm->getPhysicalString(aE) % aE
            << std::endl
            << "  faces = " << dtLog::str(aE->faces()) << std::endl
@@ -111,7 +111,7 @@ void bVODumpModel::preUpdate(void)
       logC() << "dtGmshFace[] = NULL" << std::endl;
       continue;
     }
-    logC() << dtLog::dtFormat("dtGmshFace[ %3i ] = %s ( %x )") % aF->tag() %
+    logC() << dtFormat("dtGmshFace[ %3i ] = %s ( %x )") % aF->tag() %
                 gm->getPhysicalString(aF) % aF
            << std::endl
            << "  edges = " << dtLog::str(aF->edges()) << std::endl
@@ -132,7 +132,7 @@ void bVODumpModel::preUpdate(void)
       logC() << "dtGmshRegion[] = NULL" << std::endl;
       continue;
     }
-    logC() << dtLog::dtFormat("dtGmshRegion[ %3i ] = %s ( %x )") % aR->tag() %
+    logC() << dtFormat("dtGmshRegion[ %3i ] = %s ( %x )") % aR->tag() %
                 gm->getPhysicalString(aR) % aR
            << std::endl
            << "  faceList = " << dtLog::str(aR->faces()) << std::endl

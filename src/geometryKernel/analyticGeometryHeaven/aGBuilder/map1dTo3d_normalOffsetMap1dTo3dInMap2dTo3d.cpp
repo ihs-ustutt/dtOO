@@ -99,7 +99,7 @@ map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d ::
     }
 
     // iteration output
-    dtLog__info << dtLog::dtFormat(
+    dtLog__info << dtFormat(
                      "ppUV: (%+11.6e, %+11.6e), ppNewUV: (%+11.6e, %+11.6e), "
                      "int(T): %+11.6e, |(T-int(T))/T|: %+11.6e"
                    ) %

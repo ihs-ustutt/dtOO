@@ -237,14 +237,14 @@ dtInt labeledVectorHandling<T>::getPosition(std::string const label) const
 template <typename T> void labeledVectorHandling<T>::dump(void) const
 {
   logContainer<labeledVectorHandling<T>> logC(logINFO, "dump()");
-  logC() << dtLog::dtFormat("[ %40s ] -> %s") % "label" % "type" << std::endl;
+  logC() << dtFormat("[ %40s ] -> %s") % "label" % "type" << std::endl;
   std::vector<std::string> itVal;
   dt__forAllIndex(*this, ii)
   {
     labelHandling *obj;
     dt__mustCast(this->at(ii), labelHandling, obj);
 
-    logC() << dtLog::dtFormat("[ %40s ] -> %s") % obj->getLabel() %
+    logC() << dtFormat("[ %40s ] -> %s") % obj->getLabel() %
                 obj->virtualClassName()
            << std::endl;
   }

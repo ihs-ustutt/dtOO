@@ -373,7 +373,7 @@ void dtMeshGRegion::createPyramids(dtGmshRegion *dtgr)
         vertFix++;
       }
     }
-    logC() << dtLog::dtFormat("%3i / %3i ( %f ) : %8i / %8i") % ii %
+    logC() << dtFormat("%3i / %3i ( %f ) : %8i / %8i") % ii %
                 config().lookup<dtInt>("_nPyramidOpenSteps") % cRelax %
                 vertMove % vertFix
            << std::endl;

@@ -177,7 +177,7 @@ void bVOSetPrescribedElementSize::preUpdate(void)
       //
       if (config().contains("_firstElementSize"))
       {
-        logC() << dtLog::dtFormat(
+        logC() << dtFormat(
                     "Edge %4d (firstElementSize = %16.10e): %16.10e -> %6.1f %%"
                   ) %
                     aEdge->tag() %
@@ -190,7 +190,7 @@ void bVOSetPrescribedElementSize::preUpdate(void)
       }
       if (config().contains("_lastElementSize"))
       {
-        logC() << dtLog::dtFormat(
+        logC() << dtFormat(
                     "Edge %4d (lastElementSize = %16.10e): %16.10e -> %6.1f %%"
                   ) %
                     aEdge->tag() % config().lookup<dtReal>("_lastElementSize") %

@@ -58,6 +58,8 @@ enum dtLogLevel {
   logFATAL
 };
 
+typedef ::boost::format dtFormat;
+
 /*!
  * @class dtLog
  * @brief Singleton class for logging messages with different severity levels.
@@ -332,9 +334,6 @@ public:
    * specified level, false otherwise.
    */
   static bool logLevelIs(dtLogLevel const &level);
-
-public:
-  typedef ::boost::format dtFormat;
 
 private:
   static dtLog *instance_;

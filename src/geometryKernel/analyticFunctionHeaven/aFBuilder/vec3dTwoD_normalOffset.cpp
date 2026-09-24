@@ -96,13 +96,11 @@ vec3dTwoD_normalOffset::vec3dTwoD_normalOffset(
         grid[grid.size(0) - 1][jj] - closeSmooth * ddU_mean;
       dt__info(
         vec3dTwoD_normalOffset(),
-        << dtLog::dtFormat(
-             "ddU start / ddU end [%d]: (%f, %f, %f)/(%f, %f, %f)\n"
-             "ddU mean [%d]: (%f, %f, %f)\n"
-             "startNext / lastPrev [%d]:  (%f, %f, %f) / (%f, %f, %f) "
-             "-> (%f, %f, %f) / (%f, %f, %f)"
-           ) % jj %
-               ddU_s.x() % ddU_s.y() % ddU_s.z() % ddU_e.x() % ddU_e.y() %
+        << dtFormat("ddU start / ddU end [%d]: (%f, %f, %f)/(%f, %f, %f)\n"
+                    "ddU mean [%d]: (%f, %f, %f)\n"
+                    "startNext / lastPrev [%d]:  (%f, %f, %f) / (%f, %f, %f) "
+                    "-> (%f, %f, %f) / (%f, %f, %f)") %
+               jj % ddU_s.x() % ddU_s.y() % ddU_s.z() % ddU_e.x() % ddU_e.y() %
                ddU_e.z() % jj % ddU_mean.x() % ddU_mean.y() % ddU_mean.z() %
                jj % p_sNext.x() % p_sNext.y() % p_sNext.z() % p_ePrev.x() %
                p_ePrev.y() % p_ePrev.z() % grid[1][jj].x() % grid[1][jj].y() %
@@ -121,11 +119,9 @@ vec3dTwoD_normalOffset::vec3dTwoD_normalOffset(
       grid[grid.size(0) - 1][jj] = grid[0][jj];
       dt__info(
         vec3dTwoD_normalOffset(),
-        << dtLog::dtFormat(
-             "Move start / end point [%d]: (%f, %f, %f)/(%f, %f, %f) "
-             "-> (%f, %f, %f)"
-           ) % jj %
-               p_s.x() % p_s.y() % p_s.z() % p_e.x() % p_e.y() % p_e.z() %
+        << dtFormat("Move start / end point [%d]: (%f, %f, %f)/(%f, %f, %f) "
+                    "-> (%f, %f, %f)") %
+               jj % p_s.x() % p_s.y() % p_s.z() % p_e.x() % p_e.y() % p_e.z() %
                grid[0][jj].x() % grid[0][jj].y() % grid[0][jj].z()
       );
     }

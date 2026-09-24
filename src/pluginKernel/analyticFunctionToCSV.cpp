@@ -110,9 +110,9 @@ void analyticFunctionToCSV::apply(void)
     //
     // write header
     //
-    of << dtLog::dtFormat("# xDim %16i") % theF->xDim() << std::endl
-       << dtLog::dtFormat("# yDim %16i") % theF->yDim() << std::endl
-       << dtLog::dtFormat("# nP %16i %16i %16i") % _nP[0] % _nP[1] % _nP[2]
+    of << dtFormat("# xDim %16i") % theF->xDim() << std::endl
+       << dtFormat("# yDim %16i") % theF->yDim() << std::endl
+       << dtFormat("# nP %16i %16i %16i") % _nP[0] % _nP[1] % _nP[2]
        << std::endl;
 
     //
@@ -128,8 +128,7 @@ void analyticFunctionToCSV::apply(void)
         dt__forFromToIndex(0, grid.size(), ii)
         {
           dtPoint3 const &ref = grid[ii][jj];
-          of << dtLog::dtFormat("%16.8e %16.8e %16.8e") % ref.x() % ref.y() %
-                  ref.z()
+          of << dtFormat("%16.8e %16.8e %16.8e") % ref.x() % ref.y() % ref.z()
              << std::endl;
         }
         //

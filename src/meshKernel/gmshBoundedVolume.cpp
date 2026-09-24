@@ -507,10 +507,10 @@ void gmshBoundedVolume::updateBoundingBox(void)
   dt__info(
     updateBoundingBox(),
     << "Gmsh boundingBox:" << std::endl
-    << dtLog::dtFormat("min: (%d, %d, %d)") % CTX::instance()->min[0] %
+    << dtFormat("min: (%d, %d, %d)") % CTX::instance()->min[0] %
            CTX::instance()->min[1] % CTX::instance()->min[2]
     << std::endl
-    << dtLog::dtFormat("max: (%d, %d, %d)") % CTX::instance()->max[0] %
+    << dtFormat("max: (%d, %d, %d)") % CTX::instance()->max[0] %
            CTX::instance()->max[1] % CTX::instance()->max[2]
     << std::endl
     << "Gmsh fieldManager:" << std::endl
