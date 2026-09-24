@@ -130,52 +130,44 @@ endif (DTOO_USE_MPI)
 # Use BOOST_CONFIG_LIBRARIES for configuring instead of Boost_LIBRARIES to 
 # prevent error, when linking dtOODesignTool
 #
+set(BOOST_COMPONENTS
+  filesystem
+  system
+  timer
+  program_options
+  thread
+  regex
+  log
+  log_setup
+)
 if (MPI_FOUND)
-  find_package(
-    Boost 
-    COMPONENTS 
-    filesystem 
-    system 
-    timer
-    program_options
-    thread
-    regex
-    log 
-    log_setup
+  list(APPEND BOOST_COMPONENTS
     mpi
     serialization
-    REQUIRED
   )
-  SET(
-    BOOST_CONFIG_LIBRARIES 
-    "${Boost_FILESYSTEM_LIBRARY_RELEASE};${Boost_SYSTEM_LIBRARY_RELEASE};"
-    "${Boost_TIMER_LIBRARY_RELEASE};${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE}"
-    "${Boost_THREAD_LIBRARY_RELEASE};${Boost_REGEX_LIBRARY_RELEASE}"
-    "${Boost_LOG_LIBRARY_RELEASE};${Boost_LOG_SETUP_LIBRARY_RELEASE}"
-    "${Boost_MPI_LIBRARY_RELEASE};${Boost_SERIALIZATION_LIBRARY_RELEASE}"
+endif()
+find_package(Boost REQUIRED COMPONENTS ${BOOST_COMPONENTS})
+
+set(
+  BOOST_CONFIG_LIBRARIES
+  ${Boost_FILESYSTEM_LIBRARY_RELEASE}
+  ${Boost_SYSTEM_LIBRARY_RELEASE}
+  ${Boost_TIMER_LIBRARY_RELEASE}
+  ${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE}
+  ${Boost_THREAD_LIBRARY_RELEASE}
+  ${Boost_REGEX_LIBRARY_RELEASE}
+  ${Boost_LOG_LIBRARY_RELEASE}
+  ${Boost_LOG_SETUP_LIBRARY_RELEASE}
+)
+if (MPI_FOUND)
+  list(APPEND BOOST_CONFIG_LIBRARIES
+    ${Boost_MPI_LIBRARY_RELEASE}
+    ${Boost_SERIALIZATION_LIBRARY_RELEASE}
   )
+endif()
+
+if (MPI_FOUND)
   add_definitions(-DDTOO_HAS_MPI)
-else (MPI_FOUND)
-  find_package(
-    Boost 
-    COMPONENTS 
-    filesystem 
-    system 
-    timer
-    program_options
-    thread
-    regex
-    log 
-    log_setup
-    REQUIRED
-  )
-  SET(
-    BOOST_CONFIG_LIBRARIES 
-    "${Boost_FILESYSTEM_LIBRARY_RELEASE};${Boost_SYSTEM_LIBRARY_RELEASE};"
-    "${Boost_TIMER_LIBRARY_RELEASE};${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE}"
-    "${Boost_THREAD_LIBRARY_RELEASE};${Boost_REGEX_LIBRARY_RELEASE}"
-    "${Boost_LOG_LIBRARY_RELEASE};${Boost_LOG_SETUP_LIBRARY_RELEASE}"
-  )  
 endif (MPI_FOUND)
 #------------------------------------------------------------------------------#
 #
@@ -326,21 +318,35 @@ add_dependencies(dtOO version)
 #
 #------------------------------------------------------------------------------#
 target_link_libraries(
-  dtOO 
-  ${CGAL_LIBRARIES} 
-  ${GMSH_LIBRARIES} 
-  ${MUPARSER_LIBRARIES} 
-  ${OpenCASCADE_LIBRARIES} 
+  dtOO
+  ${CGAL_LIBRARIES}
+  ${GMSH_LIBRARIES}
+  ${MUPARSER_LIBRARIES}
+  ${OpenCASCADE_LIBRARIES}
   Qt5::Core
   Qt5::Xml
   ${GSL_LIBRARIES}
-  ${Boost_LIBRARIES}
+  Boost::filesystem
+  Boost::system
+  Boost::timer
+  Boost::program_options
+  Boost::thread
+  Boost::regex
+  Boost::log
+  Boost::log_setup
   ${MOAB_LIBRARIES}
   ${OpenMesh_LIBRARIES}
   ${OpenVolumeMesh_LIBRARIES}
   ${IGL_LIBRARIES}
   ${GMP_LIBRARIES}
 )
+if (MPI_FOUND)
+  target_link_libraries(
+    dtOO
+    Boost::mpi
+    Boost::serialization
+  )
+endif()
 
 set(
   _configLibList
