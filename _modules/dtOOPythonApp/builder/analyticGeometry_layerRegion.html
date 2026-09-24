@@ -927,7 +927,7 @@
 <span class="sd">            **Get Cuves v0 and v1**</span>
 
 <span class="sd">                The second layer boundary curve is constructed so it extends</span>
-<span class="sd">                in the mean normal direction :math:`\mathbf{v_{mean}}` between the</span>
+<span class="sd">                in the mean normal direction :math:`\\mathbf{v_{mean}}` between the</span>
 <span class="sd">                curves ``speCurve[i-1]`` and ``speCurve[i]`` at their shared point</span>
 <span class="sd">                :math:`P_0`. The curves are assigned to the variables ``v0`` and</span>
 <span class="sd">                ``v1``.</span>
@@ -941,18 +941,18 @@
 <span class="sd">                   \\mathbf{v_{mean}} = \\frac{\\mathbf{n_0} + \\mathbf{n_1}}{\\|\\mathbf{n_0} + \\mathbf{n_1}\\|}</span>
 
 <span class="sd">                The normal directions of the curves</span>
-<span class="sd">                (:math:`\mathbf{n_0}` and :math:`\mathbf{n_1}`) at the shared point</span>
+<span class="sd">                (:math:`\\mathbf{n_0}` and :math:`\\mathbf{n_1}`) at the shared point</span>
 <span class="sd">                are calculated as the cross products of the normal axis of the</span>
 <span class="sd">                channel cross section ``normalAxis_``</span>
-<span class="sd">                (:math:`\mathbf{n_{global}}`) and the tangential directions of the</span>
+<span class="sd">                (:math:`\\mathbf{n_{global}}`) and the tangential directions of the</span>
 <span class="sd">                curves at the shared point</span>
-<span class="sd">                (:math:`\mathbf{t_0}` and :math:`\mathbf{t_1}`).</span>
+<span class="sd">                (:math:`\\mathbf{t_0}` and :math:`\\mathbf{t_1}`).</span>
 
 <span class="sd">                .. math:: </span>
 
 <span class="sd">                   \\mathbf{n} = \\frac{\\mathbf{t} \\times \\mathbf{n_{global}}}{\\|\\mathbf{t} \\times \\mathbf{n_{global}}\\|}</span>
 
-<span class="sd">                The resulting vector :math:`\mathbf{v_{mean}}` is stored in the</span>
+<span class="sd">                The resulting vector :math:`\\mathbf{v_{mean}}` is stored in the</span>
 <span class="sd">                variable ``layerVec``.</span>
 
 <span class="sd">                The following figure illustrates the generation of the second layer</span>
@@ -992,11 +992,11 @@
 <span class="sd">                The layer boundary curve is constructed between the points</span>
 <span class="sd">                :math:`P_0` and :math:`P_1`. The point :math:`P_1` is calculated from</span>
 <span class="sd">                the point :math:`P_0` by adding the direction vector ``layerVec``</span>
-<span class="sd">                (:math:`\mathbf{v_{mean}}`) multiplied by the required layer thickness.</span>
+<span class="sd">                (:math:`\\mathbf{v_{mean}}`) multiplied by the required layer thickness.</span>
 
 <span class="sd">                .. math:: </span>
 <span class="sd">                 </span>
-<span class="sd">                   P_1 = P_0 + \\mathbf{v_{mean}} * t_{Layer} / cos(\lambda)</span>
+<span class="sd">                   P_1 = P_0 + \\mathbf{v_{mean}} * t_{Layer} / cos(\\lambda)</span>
 
 <span class="sd">                The resulting curve is stored in the list ``layerStreamOrtho``.</span>
 <span class="sd">            </span>
@@ -1438,8 +1438,8 @@
 <span class="sd">            normal direction of the wall curve at :math:`P_0`.</span>
 
 <span class="sd">            The normal direction is defined as the cross product between the tangent</span>
-<span class="sd">            direction :math:`\mathbf{t}` at :math:`P_0` and the global normal axis</span>
-<span class="sd">            ``normalAxis_`` (:math:`\mathbf{n_{global}}`).</span>
+<span class="sd">            direction :math:`\\mathbf{t}` at :math:`P_0` and the global normal axis</span>
+<span class="sd">            ``normalAxis_`` (:math:`\\mathbf{n_{global}}`).</span>
 
 <span class="sd">            The offset length is prescribed by ``layer_thickness``</span>
 <span class="sd">            (:math:`t_{Layer}`). The value of ``direction`` (:math:`k`) ensures</span>
@@ -1777,7 +1777,7 @@
 
 <span class="sd">        .. math::</span>
 
-<span class="sd">           {360^\circ}/{n_{Slices}}</span>
+<span class="sd">           {360^\\circ}/{n_{Slices}}</span>
 
 <span class="sd">        The generated layer volumes are stored in the lists ``hubLayer3d`` and</span>
 <span class="sd">        ``shroudLayer3d``.</span>
@@ -1904,7 +1904,7 @@
 
 <span class="sd">            .. math::</span>
 
-<span class="sd">               {360^\circ}/{n_{Slices}}</span>
+<span class="sd">               {360^\\circ}/{n_{Slices}}</span>
 
 <span class="sd">            Conditional statements are used to assign labels to the generated</span>
 <span class="sd">            surfaces. Due to the ordering of curves in ``unstructVH_``, the first</span>

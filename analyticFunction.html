@@ -110,6 +110,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api.html#other-core-classes">Other core classes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api.html#execution-and-extension">Execution and extension</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#logging-output">Logging output</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#python-pydtoo-classes">Python pyDtOO classes</a></li>
@@ -2047,7 +2048,7 @@ Create a simple function, e.g by</p>
 <span id="_CPPv3N4dtOO17vec2dBiLinearTwoD17vec2dBiLinearTwoDERK8dtPoint2RK8dtPoint2RK8dtPoint2RK8dtPoint2"></span><span id="_CPPv2N4dtOO17vec2dBiLinearTwoD17vec2dBiLinearTwoDERK8dtPoint2RK8dtPoint2RK8dtPoint2RK8dtPoint2"></span><span id="dtOO::vec2dBiLinearTwoD::vec2dBiLinearTwoD__dtPoint2CR.dtPoint2CR.dtPoint2CR.dtPoint2CR"></span><span class="target" id="classdtOO_1_1vec2dBiLinearTwoD_1aaca1de9784096e87342b589228ea559f"></span><span class="sig-name descname"><span class="n"><span class="pre">vec2dBiLinearTwoD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p2</span></span>, <span class="n"><span class="pre">dtPoint2</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p3</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO17vec2dBiLinearTwoD17vec2dBiLinearTwoDERK8dtPoint2RK8dtPoint2RK8dtPoint2RK8dtPoint2" title="Link to this definition"></a><br /></dt>
 <dd><p>Construct from the four corners of the parameter-space quadrilateral. </p>
 <p>(v) A |</p>
-<p>p3 p2 +—–&amp;#8212;+ <table class="docutils align-default">
+<p>p3 p2 +—–—+ <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p></p></th>
 </tr>
@@ -2060,7 +2061,7 @@ Create a simple function, e.g by</p>
 </tbody>
 </table>
 
-+—–&amp;#8212;+ –&gt; (u) p0 p1</p>
++—–—+ –&gt; (u) p0 p1</p>
 <p>according to: <a class="reference external" href="http://en.wikipedia.org/wiki/Bilinear_interpolation">http://en.wikipedia.org/wiki/Bilinear_interpolation</a></p>
 </dd></dl>
 
@@ -2330,7 +2331,7 @@ Create a simple function, e.g by</p>
 <span id="_CPPv3N4dtOO17vec3dBiLinearTwoD17vec3dBiLinearTwoDERK8dtPoint3RK8dtPoint3RK8dtPoint3RK8dtPoint3"></span><span id="_CPPv2N4dtOO17vec3dBiLinearTwoD17vec3dBiLinearTwoDERK8dtPoint3RK8dtPoint3RK8dtPoint3RK8dtPoint3"></span><span id="dtOO::vec3dBiLinearTwoD::vec3dBiLinearTwoD__dtPoint3CR.dtPoint3CR.dtPoint3CR.dtPoint3CR"></span><span class="target" id="classdtOO_1_1vec3dBiLinearTwoD_1a60c058b49a8b44593432d01a3c8aaa93"></span><span class="sig-name descname"><span class="n"><span class="pre">vec3dBiLinearTwoD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p0</span></span>, <span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p1</span></span>, <span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p2</span></span>, <span class="n"><span class="pre">dtPoint3</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p3</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4dtOO17vec3dBiLinearTwoD17vec3dBiLinearTwoDERK8dtPoint3RK8dtPoint3RK8dtPoint3RK8dtPoint3" title="Link to this definition"></a><br /></dt>
 <dd><p>Construct from the four corners of the parameter-space quadrilateral. </p>
 <p>(v) A |</p>
-<p>p3 p2 +—–&amp;#8212;+ <table class="docutils align-default">
+<p>p3 p2 +—–—+ <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p></p></th>
 </tr>
@@ -2343,7 +2344,7 @@ Create a simple function, e.g by</p>
 </tbody>
 </table>
 
-+—–&amp;#8212;+ –&gt; (u) p0 p1</p>
++—–—+ –&gt; (u) p0 p1</p>
 <p>according to: <a class="reference external" href="http://en.wikipedia.org/wiki/Bilinear_interpolation">http://en.wikipedia.org/wiki/Bilinear_interpolation</a></p>
 </dd></dl>
 
