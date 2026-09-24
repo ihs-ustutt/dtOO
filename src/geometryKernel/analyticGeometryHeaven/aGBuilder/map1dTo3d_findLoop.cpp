@@ -71,7 +71,7 @@ map1dTo3d_findLoop::map1dTo3d_findLoop(dt__pVH(map1dTo3d) const &m1ds)
     }
     dt__throwIf(!success, map1dTo3d_findLoop());
   }
-  logC() << "_orientedCurves = " << _orientedCurves << std::endl;
+  logC() << "_orientedCurves = " << dtLog::str(_orientedCurves) << std::endl;
 }
 
 map1dTo3d_findLoop::map1dTo3d_findLoop(

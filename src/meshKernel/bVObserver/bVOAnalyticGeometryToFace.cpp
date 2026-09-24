@@ -293,8 +293,8 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       {
         dt__debug(
           preUpdate(),
-          << logMe::dtFormat("Accept: midDist = %f, midIsOnFace = %d, %d == "
-                             "%d, distAv = %f, label = %s") %
+          << dtFormat("Accept: midDist = %f, midIsOnFace = %d, %d == "
+                      "%d, distAv = %f, label = %s") %
                  midDist % midIsOnFace % inTol % ckPoints.size() % distAv %
                  m2d->getLabel()
         );
@@ -318,8 +318,8 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       {
         dt__debug(
           preUpdate(),
-          << logMe::dtFormat("Skip: midDist = %f, midIsOnFace = %d, %d == %d, "
-                             "distAv = %f, label = %s") %
+          << dtFormat("Skip: midDist = %f, midIsOnFace = %d, %d == %d, "
+                      "distAv = %f, label = %s") %
                  midDist % midIsOnFace % inTol % ckPoints.size() % distAv %
                  m2d->getLabel()
         );
@@ -360,7 +360,7 @@ bVOAnalyticGeometryToFace::calcCheckPoints(dtGmshFace const *const aFace) const
       // clang-format off
       dt__debug(
         calcCheckPoints(),
-        << logMe::dtFormat(
+        << dtFormat(
           "Add check point of convex polygon\n"
           "( %5.2e, %5.2e ) -> (%5.2e, %5.2e, %5.2e)"
         ) 

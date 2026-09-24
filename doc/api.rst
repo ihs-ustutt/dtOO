@@ -90,6 +90,15 @@ These classes represent simulation cases and extensions that process a model.
    dtCase
    dtPlugin
 
+Logging output
+--------------
+
+.. doxygenclass:: dtOO::dtLog
+    :members:
+
+.. doxygenfile:: dtLogMacros.h
+    :project: dtOO
+
 Python pyDtOO classes
 =====================
 

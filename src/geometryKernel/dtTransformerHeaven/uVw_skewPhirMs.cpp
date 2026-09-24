@@ -148,11 +148,9 @@ uVw_skewPhirMs::retract(std::vector<dtPoint3> const *const toRetract) const
 
     dt__debug(
       retract(),
-      << logMe::dtFormat("Retracting point (u, v, w) = (%E, %E, %E)") % uu %
-             vv % ww
+      << dtFormat("Retracting point (u, v, w) = (%E, %E, %E)") % uu % vv % ww
       << std::endl
-      << logMe::dtFormat("to point (phir, mm, ss) = (%E, %E, %E)") % phir % mm %
-             ss
+      << dtFormat("to point (phir, mm, ss) = (%E, %E, %E)") % phir % mm % ss
     );
 
     retVec.push_back(dtPoint3(phir, mm, ss));
@@ -268,14 +266,12 @@ void uVw_skewPhirMs::init(
     // log container
     //
     logContainer<uVw_skewPhirMs> logC(logINFO, "init()");
-    logC() << logMe::dtFormat("%12s | %12s | %12s") % "" % "|| isM ||" %
-                "|| isPhir ||"
+    logC() << dtFormat("%12s | %12s | %12s") % "" % "|| isM ||" % "|| isPhir ||"
            << std::endl
-           << logMe::dtFormat("%12s | %12s | %12s") % "step" % "------------" %
+           << dtFormat("%12s | %12s | %12s") % "step" % "------------" %
                 "------------"
            << std::endl
-           << logMe::dtFormat("%12s | %12s | %12s") % "" % "size(isM)" %
-                "size(isPhir)"
+           << dtFormat("%12s | %12s | %12s") % "" % "size(isM)" % "size(isPhir)"
            << std::endl;
 
     //      //
@@ -491,7 +487,7 @@ void uVw_skewPhirMs::init(
       //
       // output to container
       //
-      logC() << logMe::dtFormat("%12i | %12.5f | %12.5f") % thisStep %
+      logC() << dtFormat("%12i | %12.5f | %12.5f") % thisStep %
                   (dtLinearAlgebra::euclidianNorm(isM) / isM.size()) %
                   (dtLinearAlgebra::euclidianNorm(isPhir) / isPhir.size())
              << std::endl;

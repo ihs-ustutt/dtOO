@@ -108,14 +108,10 @@ void constValueAssingRule::apply(void)
 
       cV.push_back(_cV->get(cVLabel[ii]));
       cVVal.push_back(val[ii]);
+      dtLog__info << "cVLabel = " << cVLabel[ii] << std::endl
+                  << "cVVal = " << val[ii] << std::endl;
     }
   }
-
-  dt__info(
-    init(),
-    << "cV = " << logMe::stringPtrVec(cV, &constValue::getLabel, 1) << std::endl
-    << "cVVal = " << logMe::vecToString(cVVal, 1)
-  );
 
   dt__forAllIndex(cV, ii) cV[ii]->setValue(cVVal[ii]);
 }

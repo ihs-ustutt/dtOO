@@ -95,8 +95,8 @@ void dtMeshGRegionWithBoundaryLayer::jInit(
   config().append<std::vector<dtInt>>("_nSpacingSteps", nSpacingSteps);
   dt__info(
     jInit(),
-    << "_nSpacingSteps = " << logMe::vecToString(nSpacingSteps) << std::endl
-    << "_flipNormal = " << logMe::vecToString(_flipNormal) << std::endl
+    << "_nSpacingSteps = " << dtLog::str(nSpacingSteps) << std::endl
+    << "_flipNormal = " << dtLog::str(_flipNormal) << std::endl
   );
 }
 
@@ -954,17 +954,17 @@ void dtMeshGRegionWithBoundaryLayer::adjustThickness(void)
   dt__info(
     operator(),
     << "avSpacing = " << std::endl
-    << logMe::floatMatrixToString(avSpacing) << std::endl
+    << dtLog::floatMatrixToString(avSpacing) << std::endl
     << "maxSpacing = " << std::endl
-    << logMe::floatMatrixToString(maxSpacing) << std::endl
+    << dtLog::floatMatrixToString(maxSpacing) << std::endl
     << "minSpacing = " << std::endl
-    << logMe::floatMatrixToString(minSpacing) << std::endl
+    << dtLog::floatMatrixToString(minSpacing) << std::endl
     << "avT = " << std::endl
-    << logMe::vecToString(avT) << std::endl
+    << dtLog::str(avT) << std::endl
     << "maxT = " << std::endl
-    << logMe::vecToString(maxT) << std::endl
+    << dtLog::str(maxT) << std::endl
     << "minT = " << std::endl
-    << logMe::vecToString(minT) << std::endl
+    << dtLog::str(minT) << std::endl
   );
 
   //
@@ -1103,17 +1103,17 @@ void dtMeshGRegionWithBoundaryLayer::adjustThickness(void)
   dt__info(
     operator(),
     << "avSpacing = " << std::endl
-    << logMe::floatMatrixToString(avSpacing) << std::endl
+    << dtLog::floatMatrixToString(avSpacing) << std::endl
     << "maxSpacing = " << std::endl
-    << logMe::floatMatrixToString(maxSpacing) << std::endl
+    << dtLog::floatMatrixToString(maxSpacing) << std::endl
     << "minSpacing = " << std::endl
-    << logMe::floatMatrixToString(minSpacing) << std::endl
+    << dtLog::floatMatrixToString(minSpacing) << std::endl
     << "avT = " << std::endl
-    << logMe::vecToString(avT) << std::endl
+    << dtLog::str(avT) << std::endl
     << "maxT = " << std::endl
-    << logMe::vecToString(maxT) << std::endl
+    << dtLog::str(maxT) << std::endl
     << "minT = " << std::endl
-    << logMe::vecToString(minT) << std::endl
+    << dtLog::str(minT) << std::endl
   );
 }
 

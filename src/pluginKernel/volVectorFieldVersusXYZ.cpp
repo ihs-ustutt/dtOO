@@ -322,11 +322,11 @@ void volVectorFieldVersusXYZ::apply(void)
             if (area[ii][jj] == 0.)
               continue;
 
-            of << logMe::dtFormat("%16i, %16i, "
-                                  "%16.8e, %16.8e, %16.8e, "
-                                  "%16.8e, %16.8e, %16.8e, "
-                                  "%16.8e, %16.8e, "
-                                  "%16.8e, %16.8e") %
+            of << dtFormat("%16i, %16i, "
+                           "%16.8e, %16.8e, %16.8e, "
+                           "%16.8e, %16.8e, %16.8e, "
+                           "%16.8e, %16.8e, "
+                           "%16.8e, %16.8e") %
                     ii % jj % grid[ii][jj].x() % grid[ii][jj].y() %
                     grid[ii][jj].z() % value[ii][jj].x() % value[ii][jj].y() %
                     value[ii][jj].z() % area[ii][jj] % valueN[ii][jj] %

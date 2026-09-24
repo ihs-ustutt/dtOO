@@ -48,7 +48,7 @@ void ofOpenFOAMMappedFieldFixedValueRule::executeOnVolVectorField(
   std::vector<std::string> const &rule, ::Foam::volVectorField &field
 ) const
 {
-  dt__debug(executeOnVolVectorField(), << "Execute: " << rule);
+  dt__debug(executeOnVolVectorField(), << "Execute: " << dtLog::str(rule));
   std::string thisRule = getRuleOfField(field.name(), rule);
   if (thisRule.empty())
     return;

@@ -612,8 +612,7 @@ bool dtLinearAlgebra::isStraightLine(
   {
     dt__info(
       isStraightLine(),
-      << logMe::dtFormat("Bounding box: %f, %f, %f") % diff.x() % diff.y() %
-             diff.z()
+      << dtFormat("Bounding box: %f, %f, %f") % diff.x() % diff.y() % diff.z()
       << std::endl
       << "This is a straight line."
     );
@@ -846,12 +845,11 @@ bool dtLinearAlgebra::isInsidePolygon(
   logContainer<dtLinearAlgebra> logC(logDEBUG, "isInsidePolygon()");
   dt__forAllIndex(points, ii)
   {
-    logC() << logMe::dtFormat("Point %3d : %5.2f %5.2f") % ii % points[ii][0] %
+    logC() << dtFormat("Point %3d : %5.2f %5.2f") % ii % points[ii][0] %
                 points[ii][1]
            << std::endl;
   }
-  logC() << logMe::dtFormat("ChkPoint: %5.2f %5.2f") % pt[0] % pt[1]
-         << std::endl;
+  logC() << dtFormat("ChkPoint: %5.2f %5.2f") % pt[0] % pt[1] << std::endl;
   switch (::CGAL::bounded_side_2(points.begin(), points.end(), pt))
   {
   case CGAL::ON_BOUNDED_SIDE:

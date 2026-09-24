@@ -338,7 +338,7 @@ void volVectorInChannelFieldRange::apply(void)
           if (phi[ii][jj] == 0.)
             continue;
 
-          of << logMe::dtFormat(
+          of << dtFormat(
                   "%16.8e, %16.8e, %16.8e, "
                   "%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e"
                 ) %

@@ -277,7 +277,7 @@ void volScalarPatchFieldRange::apply(void)
       //
       dt__forFromToIndex(0, pXYZ.size(), ii)
       {
-        of << logMe::dtFormat(
+        of << dtFormat(
                 "%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e"
               ) %
                 pXYZ[ii].x() % pXYZ[ii].y() % pXYZ[ii].z() % val[ii] %

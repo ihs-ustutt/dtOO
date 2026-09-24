@@ -54,15 +54,13 @@ bool gmshBoundedVolume::_registrated = boundedVolumeFactory::registrate(
   dt__tmpPtr(gmshBoundedVolume, new gmshBoundedVolume())
 );
 
-gmshBoundedVolume::gmshBoundedVolume() : boundedVolume() { gmsh::initialize(); }
-
-gmshBoundedVolume::~gmshBoundedVolume()
+gmshBoundedVolume::gmshBoundedVolume() : boundedVolume()
 {
-  //
-  // gmsh deletes also the models
-  //
-  //	  gmsh::finalize();
+  if (gmsh::isInitialized() == false)
+    gmsh::initialize();
 }
+
+gmshBoundedVolume::~gmshBoundedVolume() {}
 
 void gmshBoundedVolume::jInit(
   jsonPrimitive const &jE,
@@ -434,7 +432,7 @@ void gmshBoundedVolume::makePreGrid(void)
   {
     dt__info(
       makePreGrid(),
-      << aSymb.first << " -> " << aSymb.second.value << " : "
+      << aSymb.first << " -> " << dtLog::str(aSymb.second.value) << " : "
       << aSymb.second.list
     );
   }
@@ -509,10 +507,10 @@ void gmshBoundedVolume::updateBoundingBox(void)
   dt__info(
     updateBoundingBox(),
     << "Gmsh boundingBox:" << std::endl
-    << logMe::dtFormat("min: (%d, %d, %d)") % CTX::instance()->min[0] %
+    << dtFormat("min: (%d, %d, %d)") % CTX::instance()->min[0] %
            CTX::instance()->min[1] % CTX::instance()->min[2]
     << std::endl
-    << logMe::dtFormat("max: (%d, %d, %d)") % CTX::instance()->max[0] %
+    << dtFormat("max: (%d, %d, %d)") % CTX::instance()->max[0] %
            CTX::instance()->max[1] % CTX::instance()->max[2]
     << std::endl
     << "Gmsh fieldManager:" << std::endl

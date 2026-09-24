@@ -48,7 +48,7 @@ dtOptimizeMeshGRegion::dtOptimizeMeshGRegion(const dtOptimizeMeshGRegion &orig)
 
 void dtOptimizeMeshGRegion::operator()(dtGmshRegion *dtgr)
 {
-  float const logTime = FILELog::LogTime();
+  float const logTime = dtLog::NowExTime();
   if (debugTrue())
   {
     std::string fname = ::boost::str(

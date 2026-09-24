@@ -115,7 +115,7 @@ void bVONameRegions::preUpdate(void)
         aReg->addPhysicalEntity(pTag);
         dtGmshModel::intGEntityVMap map;
         gm->getPhysicalGroups(3, map);
-        logC() << logMe::dtFormat(
+        logC() << dtFormat(
                     "Physical group %d / %s ( %d regions ) -> add region %d"
                   ) %
                     newL % pTag % map[pTag].size() % aReg->tag()

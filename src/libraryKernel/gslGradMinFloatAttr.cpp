@@ -160,10 +160,10 @@ bool gslGradMinFloatAttr::perform()
     try
     {
       // output
-      logC() << logMe::dtFormat("%3d : [ ") % jj;
+      logC() << dtFormat("%3d : [ ") % jj;
       dt__forAllIndex(guess()[jj], kk)
       {
-        logC() << logMe::dtFormat("%5.2d ") % guess()[jj][kk];
+        logC() << dtFormat("%5.2d ") % guess()[jj][kk];
       }
       logC() << "]";
 
@@ -201,24 +201,23 @@ bool gslGradMinFloatAttr::perform()
         iter = iter + 1;
         status = gsl_multimin_fdfminimizer_iterate(minf);
 
-        logC() << logMe::dtFormat("\n  %3d (status = %2d) : x = ") % iter %
-                    status;
+        logC() << dtFormat("\n  %3d (status = %2d) : x = ") % iter % status;
         gsl_vector *x = gsl_multimin_fdfminimizer_x(minf);
         dt__forFromToIndex(0, dimension(), hh)
         {
-          logC() << logMe::dtFormat("%+5.2e ") % gsl_vector_get(x, hh);
+          logC() << dtFormat("%+5.2e ") % gsl_vector_get(x, hh);
         }
         gsl_vector *grad = gsl_multimin_fdfminimizer_gradient(minf);
         logC() << " / grad = ";
         dt__forFromToIndex(0, dimension(), hh)
         {
-          logC() << logMe::dtFormat("%+5.2e ") % gsl_vector_get(grad, hh);
+          logC() << dtFormat("%+5.2e ") % gsl_vector_get(grad, hh);
         }
-        logC() << logMe::dtFormat(" -> f = %+5.2e ( dx = ") % minf->f;
+        logC() << dtFormat(" -> f = %+5.2e ( dx = ") % minf->f;
         gsl_vector *dx = gsl_multimin_fdfminimizer_dx(minf);
         dt__forFromToIndex(0, dimension(), hh)
         {
-          logC() << logMe::dtFormat("%+5.2e ") % gsl_vector_get(dx, hh);
+          logC() << dtFormat("%+5.2e ") % gsl_vector_get(dx, hh);
         }
         logC() << ")";
 
@@ -226,8 +225,7 @@ bool gslGradMinFloatAttr::perform()
         // with another guess
         if (status)
         {
-          logC() << logMe::dtFormat("\n  GSL: %s") %
-                      std::string(gsl_strerror(status));
+          logC() << dtFormat("\n  GSL: %s") % std::string(gsl_strerror(status));
           break;
         }
 
@@ -238,8 +236,8 @@ bool gslGradMinFloatAttr::perform()
         }
       } while (iter < maxIterations());
 
-      logC() << logMe::dtFormat("\n  %3d -> %+5.2e (%+5.2e) = %d") % iter %
-                  minf->f % precision() % converged()
+      logC() << dtFormat("\n  %3d -> %+5.2e (%+5.2e) = %d") % iter % minf->f %
+                  precision() % converged()
              << std::endl;
 
       if (minf->f < gF)
@@ -248,7 +246,7 @@ bool gslGradMinFloatAttr::perform()
         std::vector<dtReal> tRes = result();
         dt__forAllIndex(tRes, kk) tRes[kk] = gsl_vector_get(minf->x, kk);
         result(tRes);
-        logC() << logMe::dtFormat("-> Global minimum update -> %+5.2d\n") % gF;
+        logC() << dtFormat("-> Global minimum update -> %+5.2d\n") % gF;
       }
 
       if (converged())
@@ -258,12 +256,12 @@ bool gslGradMinFloatAttr::perform()
       logC() << "-> Exception" << std::endl;
     }
   }
-  logC() << logMe::dtFormat("=> min f( ");
+  logC() << dtFormat("=> min f( ");
   dt__forAllIndex(result(), kk)
   {
-    logC() << logMe::dtFormat("%+5.2d ") % result()[kk];
+    logC() << dtFormat("%+5.2d ") % result()[kk];
   }
-  logC() << logMe::dtFormat(") = %+5.2d") % gF;
+  logC() << dtFormat(") = %+5.2d") % gF;
   if (!converged())
     logC() << " -> F";
   logC() << std::endl;

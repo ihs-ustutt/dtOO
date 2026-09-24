@@ -3,6 +3,11 @@ Import
 
 >>> from dtOOPythonSWIG import *
 
+Initialize a log file:
+
+>>> logMe.initLog("floatAtt.log")
+'floatAtt.log'
+
 Create ``staticPropertiesHandler`` and initialize:
 
 >>> staticPropertiesHandler.getInstance().jInit(
@@ -12,16 +17,11 @@ Create ``staticPropertiesHandler`` and initialize:
 ...         '{"name" : "invY_precision", "value" : "1.e-04"},'                  
 ...         '{"name" : "xyz_resolution", "value" : "1.e-08"},'                  
 ...         '{"name" : "uvw_resolution", "value" : "1.e-04"},'                  
-...         '{"name" : "logLevel", "value" : "99"}'
+...         '{"name" : "logLevel", "value" : "trace"}'
 ...       ']'                                                                   
 ...     '}' 
 ...   )
 ... )
-
-Initialize a log file:
-
->>> logMe.initLog("floatAtt.log")
-'floatAtt.log'
 
 Create the function 
 

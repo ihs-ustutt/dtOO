@@ -101,7 +101,7 @@ omFaceH dtOMMesh::addFace(std::vector<::MVertex *> const &vertices)
     !fH.is_valid(),
     addFace(),
     << dt__eval(handle.size()) << std::endl
-    << handle
+    << dtLog::str(handle)
   );
 
   return fH;

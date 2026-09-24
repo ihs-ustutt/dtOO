@@ -315,8 +315,8 @@ twoDArrayHandling<dtPoint2> dtMeshTransfiniteGFace::correctConstV(
       uu[ii] = l_u.invYFloat(lengths_i[ii] / L_i * sumL);
     }
 
-    logC() << logMe::dtFormat("[ %3i ] sumEps = %12.5e maxEps = %12.5e") %
-                smoothIt % sumEps % maxEps
+    logC() << dtFormat("[ %3i ] sumEps = %12.5e maxEps = %12.5e") % smoothIt %
+                sumEps % maxEps
            << std::endl;
   }
 

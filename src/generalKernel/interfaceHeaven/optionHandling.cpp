@@ -130,75 +130,53 @@ optionHandling::getOption(std::string const name, std::string const val) const
   {
     if (_optionName[ii] == name)
     {
+      dtLog__trace << "Return option " << name << " with value "
+                   << _optionValue[ii];
       return _optionValue[ii];
     }
   }
+  dtLog__trace << "Return option " << name << " with default value " << val;
   return val;
 }
 
 std::string optionHandling::getOption(std::string const name) const
 {
-  std::string val = getOption(name, "");
-
+  std::string const val = getOption(name, "");
   dt__throwIfWithMessage(
-    val == "", getOption(), << "Option " << dt__eval(name) << " not found."
+    val == "", getOption(), << "Option " << name << " not found."
   );
-
   return val;
 }
 
 bool optionHandling::hasOption(std::string const name) const
 {
   if (getOption(name, "") == "")
-  {
     return false;
-  }
   return true;
 }
 
 dtReal optionHandling::getOptionFloat(std::string const name) const
 {
-  dtReal argumentFloat;
-  std::istringstream(getOption(name)) >> argumentFloat;
-  return argumentFloat;
+  return stringPrimitive::stringToFloat(getOption(name));
 }
 
 dtInt optionHandling::getOptionInt(std::string const name) const
 {
-  dtInt argumentInt;
-  std::istringstream(getOption(name)) >> argumentInt;
-  return argumentInt;
+  return stringPrimitive::stringToInt(getOption(name));
 }
 
 bool optionHandling::optionTrue(std::string const name) const
 {
-  for (int ii = 0; ii < _optionName.size(); ii++)
-  {
-    if (_optionName[ii] == name)
-    {
-      if (_optionValue[ii] == "true")
-      {
-        return true;
-      }
-      else if (_optionValue[ii] == "false")
-      {
-        return false;
-      }
-      else
-      {
-        dt__warning(
-          optionTrue(),
-          << "Option " << dt__eval(name) << " is set to " << _optionValue[ii]
-          << "."
-        );
-        return false;
-      }
-    }
-  }
-  dt__debug(
-    optionTrue(), << "Option " << dt__eval(name) << " not found. Set to false."
-  );
-
+  std::string const val = getOption(name, "false");
+  if (val == "true")
+    return true;
+  else if (val == "false")
+    return false;
+  else
+    dt__warning(
+      optionTrue(),
+      << "Option " << name << " is set to " << val << ". Return false."
+    );
   return false;
 }
 

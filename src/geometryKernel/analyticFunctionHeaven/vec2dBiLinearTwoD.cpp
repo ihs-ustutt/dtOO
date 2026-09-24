@@ -172,7 +172,7 @@ aFX vec2dBiLinearTwoD::invY(aFY const &yy) const
     << dt__point2d(_p1) << std::endl
     << dt__point2d(_p2) << std::endl
     << dt__point2d(_p3) << std::endl
-    << dt__eval(yy) << std::endl
+    << "yy = " << dtLog::str(yy) << std::endl
     << "Simple invert failed. Try with general analyticFunction::invY()"
   );
   return analyticFunction::invY(yy);

@@ -177,7 +177,7 @@ void bVOSetPrescribedElementSize::preUpdate(void)
       //
       if (config().contains("_firstElementSize"))
       {
-        logC() << logMe::dtFormat(
+        logC() << dtFormat(
                     "Edge %4d (firstElementSize = %16.10e): %16.10e -> %6.1f %%"
                   ) %
                     aEdge->tag() %
@@ -186,11 +186,11 @@ void bVOSetPrescribedElementSize::preUpdate(void)
                     (100. * _polyI->YFloat(x0) * ll /
                      config().lookup<dtReal>("_firstElementSize"))
                << std::endl
-               << "DOF = " << md.result() << std::endl;
+               << "DOF = " << dtLog::str(md.result()) << std::endl;
       }
       if (config().contains("_lastElementSize"))
       {
-        logC() << logMe::dtFormat(
+        logC() << dtFormat(
                     "Edge %4d (lastElementSize = %16.10e): %16.10e -> %6.1f %%"
                   ) %
                     aEdge->tag() % config().lookup<dtReal>("_lastElementSize") %
@@ -198,7 +198,7 @@ void bVOSetPrescribedElementSize::preUpdate(void)
                     (100. * (1. - _polyI->YFloat(x1)) * ll /
                      config().lookup<dtReal>("_lastElementSize"))
                << std::endl
-               << "DOF = " << md.result() << std::endl;
+               << "DOF = " << dtLog::str(md.result()) << std::endl;
       }
 
       //

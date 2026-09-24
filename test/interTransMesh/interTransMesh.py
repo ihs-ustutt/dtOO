@@ -16,6 +16,11 @@ Import ``dtOO``:
 
 >>> import dtOOPythonSWIG as dtOO
 
+Create a log file:
+
+>>> dtOO.logMe.initLog('interTransMesh.log')
+'interTransMesh.log'
+
 Define ``dtOO``'s options:
 
 >>> dtOO.staticPropertiesHandler.getInstance().jInit(
@@ -31,17 +36,12 @@ Define ``dtOO``'s options:
 ...         '{"name" : "geometry_render_resolution_u", "value" : "21"},'
 ...         '{"name" : "geometry_render_resolution_v", "value" : "21"},'
 ...         '{"name" : "geometry_render_resolution_w", "value" : "21"},'
-...         '{"name" : "logLevel", "value" : "0"},'
+...         '{"name" : "logLevel", "value" : "error"},'
 ...         '{"name" : "isEqualExtendCheck", "value" : "false"}'
 ...       ']'
 ...     '}'
 ...   )
 ... )
-
-Create a log file:
-
->>> dtOO.logMe.initLog('interTransMesh.log')
-'interTransMesh.log'
 
 Create a ``dtBundle`` object; this is necessary for the definition of a 
 ``labeledVectorHandlingConstValue`` object that is observed by a 

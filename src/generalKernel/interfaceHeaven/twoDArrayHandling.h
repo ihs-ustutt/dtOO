@@ -20,7 +20,6 @@ License
 
 #include <dtOOTypeDef.h>
 
-#include <boost/multi_array.hpp>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 

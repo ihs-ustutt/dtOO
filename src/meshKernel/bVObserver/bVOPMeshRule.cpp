@@ -144,13 +144,13 @@ void bVOPMeshRule::init(
   dt__info(
     preUpdate(),
     << "rule = " << rule << std::endl
-    << "_rule1D = " << _rule1D << std::endl
-    << "_rule2D = " << _rule2D << std::endl
-    << "_rule3D = " << _rule3D << std::endl
-    << "_only = " << _only << std::endl
-    << "_edgeWeight = " << _edgeWeight << std::endl
-    << "_faceWeight = " << _faceWeight << std::endl
-    << "_regionWeight = " << _regionWeight << std::endl
+    << "_rule1D = " << dtLog::str(_rule1D) << std::endl
+    << "_rule2D = " << dtLog::str(_rule2D) << std::endl
+    << "_rule3D = " << dtLog::str(_rule3D) << std::endl
+    << "_only = " << dtLog::str(_only) << std::endl
+    << "_edgeWeight = " << dtLog::str(_edgeWeight) << std::endl
+    << "_faceWeight = " << dtLog::str(_faceWeight) << std::endl
+    << "_regionWeight = " << dtLog::str(_regionWeight) << std::endl
     << "debug = " << optionHandling::debugTrue()
   );
 }
@@ -225,9 +225,9 @@ bVOPMeshRule::prepareDistribution(std::list<T> list, std::vector<dtReal> weight)
     }
   }
 
-  logContainer<bVOPMeshRule> logC(TLogLevel::logINFO, "prepareDistribution()");
+  logContainer<bVOPMeshRule> logC(dtLogLevel::logINFO, "prepareDistribution()");
   logC() << "Distribution" << std::endl
-         << logMe::dtFormat("[ %4s ] -> %4s : %6s") % "tag" % "rank" % "master"
+         << dtFormat("[ %4s ] -> %4s : %6s") % "tag" % "rank" % "master"
          << std::endl;
   dt__forAllRefAuto(list, anEnt)
   {
@@ -235,11 +235,12 @@ bVOPMeshRule::prepareDistribution(std::list<T> list, std::vector<dtReal> weight)
     {
       onRankMap[anEnt] = onRankMap[anEnt->getMeshMaster()];
     }
-    logC() << logMe::dtFormat("[ %4d ] -> %3d : %3d") % anEnt->tag() %
+    logC() << dtFormat("[ %4d ] -> %3d : %3d") % anEnt->tag() %
                 onRankMap[anEnt] % anEnt->getMeshMaster()->tag()
            << std::endl;
   }
-  logC() << "rankBalance = " << std::endl << rankBalance << std::endl;
+  logC() << "rankBalance = " << std::endl
+         << dtLog::str(rankBalance) << std::endl;
   logC.log();
 
   return onRankMap;

@@ -115,8 +115,7 @@ void bVONameFaces::preUpdate(void)
       {
         dtGmshFace *gf = gm->getDtGmshFaceByPhysical(face[cc]);
         gm->tagPhysical(gf, faceLabel[cc]);
-        logC() << logMe::dtFormat("Tag face : %s -> %s") % face[cc] %
-                    faceLabel[cc]
+        logC() << dtFormat("Tag face : %s -> %s") % face[cc] % faceLabel[cc]
                << std::endl;
       }
     }
@@ -135,11 +134,10 @@ void bVONameFaces::preUpdate(void)
           aFace->addPhysicalEntity(pTag);
           dtGmshModel::intGEntityVMap map;
           gm->getPhysicalGroups(2, map);
-          logC() << logMe::dtFormat(
-                      "Physical group %d / %s ( %d faces ) -> add face %d"
-                    ) %
-                      newL % pTag % map[pTag].size() % aFace->tag()
-                 << std::endl;
+          logC(
+          ) << dtFormat("Physical group %d / %s ( %d faces ) -> add face %d") %
+                 newL % pTag % map[pTag].size() % aFace->tag()
+            << std::endl;
         }
         counter++;
       }

@@ -97,13 +97,13 @@ void bVOWriteSTL::postUpdate(void)
 
           std::vector<MVertex *> mv;
           gf->triangles[jj]->getVertices(mv);
-          of << logMe::dtFormat("facet normal %g %g %g") % nn[0] % nn[1] % nn[2]
+          of << dtFormat("facet normal %g %g %g") % nn[0] % nn[1] % nn[2]
              << std::endl
              << "  outer loop" << std::endl;
           dt__forAllIndex(mv, kk)
           {
-            of << logMe::dtFormat("    vertex %g %g %g") % mv[kk]->x() %
-                    mv[kk]->y() % mv[kk]->z()
+            of << dtFormat("    vertex %g %g %g") % mv[kk]->x() % mv[kk]->y() %
+                    mv[kk]->z()
                << std::endl;
           }
           of << "  endloop" << std::endl;
@@ -117,24 +117,24 @@ void bVOWriteSTL::postUpdate(void)
           SVector3 nn = gf->quadrangles[jj]->getFace(0).normal();
           std::vector<MVertex *> mv;
           gf->quadrangles[jj]->getVertices(mv);
-          of << logMe::dtFormat("facet normal %g %g %g") % nn[0] % nn[1] % nn[2]
+          of << dtFormat("facet normal %g %g %g") % nn[0] % nn[1] % nn[2]
              << std::endl
              << "  outer loop" << std::endl;
           dt__forFromToIndex(0, 3, kk)
           {
-            of << logMe::dtFormat("    vertex %g %g %g") % mv[kk]->x() %
-                    mv[kk]->y() % mv[kk]->z()
+            of << dtFormat("    vertex %g %g %g") % mv[kk]->x() % mv[kk]->y() %
+                    mv[kk]->z()
                << std::endl;
           }
           of << "  endloop" << std::endl;
           of << "endfacet" << std::endl;
-          of << logMe::dtFormat("facet normal %g %g %g") % nn[0] % nn[1] % nn[2]
+          of << dtFormat("facet normal %g %g %g") % nn[0] % nn[1] % nn[2]
              << std::endl
              << "  outer loop" << std::endl;
           dtInt qid[3] = {0, 2, 3};
           dt__forFromToIndex(0, 3, kk)
           {
-            of << logMe::dtFormat("    vertex %g %g %g") % mv[qid[kk]]->x() %
+            of << dtFormat("    vertex %g %g %g") % mv[qid[kk]]->x() %
                     mv[qid[kk]]->y() % mv[qid[kk]]->z()
                << std::endl;
           }

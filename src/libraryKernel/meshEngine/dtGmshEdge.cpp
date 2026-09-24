@@ -243,11 +243,9 @@ bool dtGmshEdge::isEqual(::GEdge const *const ge0, ::GEdge const *const ge1)
         );
       dt__debug(
         isEqual(),
-        << logMe::dtFormat("p0 = (%6.2f, %6.2f, %6.2f)") % p0.x() % p0.y() %
-               p0.z()
+        << dtFormat("p0 = (%6.2f, %6.2f, %6.2f)") % p0.x() % p0.y() % p0.z()
         << std::endl
-        << logMe::dtFormat("p1 = (%6.2f, %6.2f, %6.2f)") % p1.x() % p1.y() %
-               p1.z()
+        << dtFormat("p1 = (%6.2f, %6.2f, %6.2f)") % p1.x() % p1.y() % p1.z()
         << std::endl
         << "|p0 - p1| = " << dist << std::endl
         << "p0 != p1 = " << differentPoint

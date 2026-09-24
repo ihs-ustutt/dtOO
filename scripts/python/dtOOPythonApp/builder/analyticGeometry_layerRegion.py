@@ -844,7 +844,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
             **Get Cuves v0 and v1**
 
                 The second layer boundary curve is constructed so it extends
-                in the mean normal direction :math:`\mathbf{v_{mean}}` between the
+                in the mean normal direction :math:`\\mathbf{v_{mean}}` between the
                 curves ``speCurve[i-1]`` and ``speCurve[i]`` at their shared point
                 :math:`P_0`. The curves are assigned to the variables ``v0`` and
                 ``v1``.
@@ -858,18 +858,18 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
                    \\mathbf{v_{mean}} = \\frac{\\mathbf{n_0} + \\mathbf{n_1}}{\\|\\mathbf{n_0} + \\mathbf{n_1}\\|}
 
                 The normal directions of the curves
-                (:math:`\mathbf{n_0}` and :math:`\mathbf{n_1}`) at the shared point
+                (:math:`\\mathbf{n_0}` and :math:`\\mathbf{n_1}`) at the shared point
                 are calculated as the cross products of the normal axis of the
                 channel cross section ``normalAxis_``
-                (:math:`\mathbf{n_{global}}`) and the tangential directions of the
+                (:math:`\\mathbf{n_{global}}`) and the tangential directions of the
                 curves at the shared point
-                (:math:`\mathbf{t_0}` and :math:`\mathbf{t_1}`).
+                (:math:`\\mathbf{t_0}` and :math:`\\mathbf{t_1}`).
 
                 .. math:: 
 
                    \\mathbf{n} = \\frac{\\mathbf{t} \\times \\mathbf{n_{global}}}{\\|\\mathbf{t} \\times \\mathbf{n_{global}}\\|}
 
-                The resulting vector :math:`\mathbf{v_{mean}}` is stored in the
+                The resulting vector :math:`\\mathbf{v_{mean}}` is stored in the
                 variable ``layerVec``.
 
                 The following figure illustrates the generation of the second layer
@@ -909,11 +909,11 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
                 The layer boundary curve is constructed between the points
                 :math:`P_0` and :math:`P_1`. The point :math:`P_1` is calculated from
                 the point :math:`P_0` by adding the direction vector ``layerVec``
-                (:math:`\mathbf{v_{mean}}`) multiplied by the required layer thickness.
+                (:math:`\\mathbf{v_{mean}}`) multiplied by the required layer thickness.
 
                 .. math:: 
                  
-                   P_1 = P_0 + \\mathbf{v_{mean}} * t_{Layer} / cos(\lambda)
+                   P_1 = P_0 + \\mathbf{v_{mean}} * t_{Layer} / cos(\\lambda)
 
                 The resulting curve is stored in the list ``layerStreamOrtho``.
             
@@ -1352,8 +1352,8 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
             normal direction of the wall curve at :math:`P_0`.
 
             The normal direction is defined as the cross product between the tangent
-            direction :math:`\mathbf{t}` at :math:`P_0` and the global normal axis
-            ``normalAxis_`` (:math:`\mathbf{n_{global}}`).
+            direction :math:`\\mathbf{t}` at :math:`P_0` and the global normal axis
+            ``normalAxis_`` (:math:`\\mathbf{n_{global}}`).
 
             The offset length is prescribed by ``layer_thickness``
             (:math:`t_{Layer}`). The value of ``direction`` (:math:`k`) ensures
@@ -1679,7 +1679,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
 
         .. math::
 
-           {360^\circ}/{n_{Slices}}
+           {360^\\circ}/{n_{Slices}}
 
         The generated layer volumes are stored in the lists ``hubLayer3d`` and
         ``shroudLayer3d``.
@@ -1803,7 +1803,7 @@ class analyticGeometry_layerRegion(dtBundleBuilder):
 
             .. math::
 
-               {360^\circ}/{n_{Slices}}
+               {360^\\circ}/{n_{Slices}}
 
             Conditional statements are used to assign labels to the generated
             surfaces. Due to the ordering of curves in ``unstructVH_``, the first

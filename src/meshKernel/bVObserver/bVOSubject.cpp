@@ -50,7 +50,7 @@ void bVOSubject::postNotify(void)
 
 void bVOSubject::dump(void) const
 {
-  logContainer<bVOSubject> logC(TLogLevel::logINFO, "dump()");
+  logContainer<bVOSubject> logC(dtLogLevel::logINFO, "dump()");
   int cc = 0;
   dt__forAllRefAuto(_observers, anOb)
   {

@@ -347,12 +347,12 @@ void uRelInChannel::apply(void)
         {
           dt__forFromToIndex(0, grid[ii].size(), jj)
           {
-            of << logMe::dtFormat("%4i, %4i, "
-                                  "%16.8e, %16.8e, %16.8e, "
-                                  "%16.8e, %16.8e, %16.8e, "
-                                  "%16.8e, %16.8e, %16.8e, "
-                                  "%16.8e, %16.8e, "
-                                  "%16.8e") %
+            of << dtFormat("%4i, %4i, "
+                           "%16.8e, %16.8e, %16.8e, "
+                           "%16.8e, %16.8e, %16.8e, "
+                           "%16.8e, %16.8e, %16.8e, "
+                           "%16.8e, %16.8e, "
+                           "%16.8e") %
                     ii % jj % grid[ii][jj].x() % grid[ii][jj].y() %
                     grid[ii][jj].z() % U[ii][jj].x() % U[ii][jj].y() %
                     U[ii][jj].z() % uRel[ii][jj].x() % uRel[ii][jj].y() %
@@ -431,13 +431,13 @@ void uRelInChannel::apply(void)
           //
           // write values
           //
-          of << logMe::dtFormat("%16i, "
-                                "%16.8e, %16.8e, %16.8e, "
-                                "%16.8e, %16.8e, %16.8e, "
-                                "%16.8e, %16.8e, %16.8e, "
-                                "%16.8e, %16.8e, "
-                                "%16.8e, %16.8e, %16.8e, "
-                                "%16.8e") %
+          of << dtFormat("%16i, "
+                         "%16.8e, %16.8e, %16.8e, "
+                         "%16.8e, %16.8e, %16.8e, "
+                         "%16.8e, %16.8e, %16.8e, "
+                         "%16.8e, %16.8e, "
+                         "%16.8e, %16.8e, %16.8e, "
+                         "%16.8e") %
                   jj % avgXYZ.x() % avgXYZ.y() % avgXYZ.z() % avgU.x() %
                   avgU.y() % avgU.z() % avguRel.x() % avguRel.y() %
                   avguRel.z() % avgU_n % avguRel_n %

@@ -41,11 +41,11 @@ dtPoint2 dtSurface::reparam(dtPoint3 const ppXYZ) const
   dtPoint2 ppUV = uv_geomSurfaceClosestPoint(this, ppXYZ).result();
 
   dtReal const dist = dtLinearAlgebra::distance(this->point(ppUV), ppXYZ);
-  logC() << logMe::dtFormat("U = %5.2e, V = %5.2e / dist = %5.2e\n") %
-              ppUV.x() % ppUV.y() % dist;
+  logC() << dtFormat("U = %5.2e, V = %5.2e / dist = %5.2e\n") % ppUV.x() %
+              ppUV.y() % dist;
   if (dtSurface::inXYZTolerance(dist))
   {
-    logC() << logMe::dtFormat("In Tolerance: U = %5.2e V = %5.2e") % ppUV.x() %
+    logC() << dtFormat("In Tolerance: U = %5.2e V = %5.2e") % ppUV.x() %
                 ppUV.y();
   }
   else

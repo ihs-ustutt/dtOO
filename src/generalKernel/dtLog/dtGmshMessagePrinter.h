@@ -7,31 +7,29 @@ License
     This file is part of dtOO.
 
     dtOO is distributed in the hope that it will be useful, but WITHOUT
-    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.  See the LICENSE.txt file in the
-    dtOO root directory for more details.
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+    or FITNESS FOR A PARTICULAR PURPOSE.  See the LICENSE.txt file in
+    the dtOO root directory for more details.
 
     You should have received a copy of the License along with dtOO.
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef OUTPUT2FILE_H
-#define OUTPUT2FILE_H
+#ifndef __dtGmshMessagePrinter_H__
+#define __dtGmshMessagePrinter_H__
 
-#include <dtOOTypeDef.h>
-
-#include "logBase.h"
-#include <fstream>
+#include <gmsh/GmshMessage.h>
 
 namespace dtOO {
-class Output2FILE {
-public:
-  static std::ofstream &Stream();
-  static void Output(const std::string &msg, TLogLevel level);
-  static void OutputFile(const std::string &msg, TLogLevel level);
 
-private:
-  Output2FILE();
+class dtGmshMessagePrinter : public GmshMessage {
+public:
+  dtGmshMessagePrinter();
+  virtual ~dtGmshMessagePrinter();
+  virtual void operator()(std::string level, std::string message) override;
+  static void registerPrinter();
 };
+
 } // namespace dtOO
-#endif /* OUTPUT2FILE_H */
+
+#endif // __dtGmshMessagePrinter_H__

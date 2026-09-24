@@ -26,7 +26,7 @@ Define `staticProperties`:
 ...         '{"name" : "geometry_render_resolution_u", "value" : "21"},'
 ...         '{"name" : "geometry_render_resolution_v", "value" : "21"},'
 ...         '{"name" : "geometry_render_resolution_w", "value" : "21"},'
-...         '{"name" : "logLevel", "value" : "99"}'
+...         '{"name" : "logLevel", "value" : "trace"}'
 ...       ']'
 ...     '}'
 ...   )

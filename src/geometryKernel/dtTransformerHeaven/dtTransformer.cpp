@@ -293,7 +293,7 @@ void dtTransformer::handleDtVector2(
     handleDtVector2(),
     << "Could not handle:" << std::endl
     << dt__eval(name) << std::endl
-    << dt__vector2d(value)
+    << dtFormat("value = (%e %e)") % value.x() % value.y()
   );
 }
 

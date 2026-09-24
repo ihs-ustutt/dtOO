@@ -66,7 +66,7 @@ void dtHybridOptMeshGRegion::operator()(dtGmshRegion *dtgr)
   }
 
   // write debug output
-  float const logTime = FILELog::LogTime();
+  float const logTime = dtLog::NowExTime();
   if (debugTrue())
   {
     std::string fname = ::boost::str(

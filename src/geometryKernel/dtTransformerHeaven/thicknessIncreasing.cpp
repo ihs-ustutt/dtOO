@@ -73,48 +73,28 @@ thicknessIncreasing::apply(lvH_analyticFunction const *const sFunP) const
   for (int ii = 0; ii < sFunP->size(); ii++)
   {
     std::vector<dtPoint2> p2;
-    //
-    // cast pointer and check if it is a analyticFunction
-    //
-    dt__ptrAss(vec2dOneD const *theF, vec2dOneD::ConstDownCast(sFunP->at(ii)));
+    // cast pointer and check if it is a vec2dOneD
+    vec2dOneD const *theF = vec2dOneD::MustConstDownCast(sFunP->at(ii));
 
-    std::vector<dtReal> itVal;
-    std::vector<std::string> header;
-    header.push_back("Y_x");
-    header.push_back("Y_y");
-    header.push_back("N_x");
-    header.push_back("N_y");
-    header.push_back("tt");
-    header.push_back("L_i/L");
-
-    //
     // thickness increasing
-    //
     dtReal cLength = theF->length();
     dt__info(apply(), << dt__eval(cLength));
     dtReal xMin = _paraOnePercentFunP->xMin(0);
     dtReal xMax = _paraOnePercentFunP->xMax(0);
-    //
+
     // first point
-    //
-    dtReal paraOne = xMin; // 0.;
+    dtReal paraOne = xMin;
     dtPoint2 YY = theF->YdtPoint2Percent(paraOne);
     dtVector2 NN = theF->unitNdtVector2Percent(paraOne);
     dtReal tt = _thicknessDistributionP->YFloat(0.);
     if (_isInv)
-    {
       tt = -tt;
-    }
     p2.push_back(YY + tt * NN);
-    itVal.push_back(YY.x());
-    itVal.push_back(YY.y());
-    itVal.push_back(NN.x());
-    itVal.push_back(NN.y());
-    itVal.push_back(tt);
-    itVal.push_back(0.);
-    //
+    dtLog__debug << dtFormat("Y: (%+11.6e, %+11.6e), N: (%+11.6e, %+11.6e), "
+                             "tt: %+11.6e, L_i/L: %+11.6e") %
+                      YY.x() % YY.y() % NN.x() % NN.y() % tt % 0.;
+
     // inner points
-    //
     for (int jj = 1; jj < (_nPointsOne - 1); jj++)
     {
       dt__toFloat(dtReal jjF, jj);
@@ -126,47 +106,32 @@ thicknessIncreasing::apply(lvH_analyticFunction const *const sFunP) const
       dtReal curLength = theF->length(theF->x_percent(paraOne));
       tt = _thicknessDistributionP->YFloat(curLength / cLength);
       if (_isInv)
-      {
         tt = -tt;
-      }
       p2.push_back(YY + tt * NN);
-      itVal.push_back(YY.x());
-      itVal.push_back(YY.y());
-      itVal.push_back(NN.x());
-      itVal.push_back(NN.y());
-      itVal.push_back(tt);
-      itVal.push_back(curLength / cLength);
+      dtLog__debug << dtFormat("Y: (%+11.6e, %+11.6e), N: (%+11.6e, %+11.6e), "
+                               "tt: %+11.6e, L_i/L: %+11.6e") %
+                        YY.x() % YY.y() % NN.x() % NN.y() % tt %
+                        (curLength / cLength);
     }
-    //
+
     // last point
-    //
     paraOne = xMax;
     YY = theF->YdtPoint2Percent(paraOne);
     NN = theF->unitNdtVector2Percent(paraOne);
     tt = _thicknessDistributionP->YFloat(1.);
     if (_isInv)
-    {
       tt = -tt;
-    }
     p2.push_back(YY + tt * NN);
-    itVal.push_back(YY.x());
-    itVal.push_back(YY.y());
-    itVal.push_back(NN.x());
-    itVal.push_back(NN.y());
-    itVal.push_back(tt);
-    itVal.push_back(1.);
+    dtLog__debug << dtFormat("Y: (%+11.6e, %+11.6e), N: (%+11.6e, %+11.6e), "
+                             "tt: %+11.6e, L_i/L: %+11.6e") %
+                      YY.x() % YY.y() % NN.x() % NN.y() % tt % 1.;
 
-    dt__debug(apply(), << logMe::vecToTable(header, itVal));
-    //
-    // create new function
-    //
+    //  create new function
     ptrHandling<dtCurve2d> dtC2d(
       bSplineCurve2d_pointConstructOCC(p2, _splineOrder).result()
     );
 
-    //
     // create scaCurve2dOneD
-    //
     transSFun.push_back(new vec2dCurve2dOneD(dtC2d.get()));
     transSFun.back()->setLabel(sFunP->at(ii)->getLabel());
   }

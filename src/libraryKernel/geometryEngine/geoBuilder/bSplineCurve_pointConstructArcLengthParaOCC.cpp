@@ -58,27 +58,6 @@ bSplineCurve_pointConstructArcLengthParaOCC ::
   dtOCCCurveBase base;
   base.setOCC(curve);
   _dtC.reset(new dtOCCBSplineCurve(base));
-
-  std::vector<dtReal> ul;
-  dtReal length = _dtC->l_uPercent(1.);
-  ul.push_back(0.);
-  ul.push_back(_dtC->l_uPercent(0.) / length);
-  ul.push_back(.25);
-  ul.push_back(_dtC->l_uPercent(.25) / length);
-  ul.push_back(.5);
-  ul.push_back(_dtC->l_uPercent(.5) / length);
-  ul.push_back(.75);
-  ul.push_back(_dtC->l_uPercent(.75) / length);
-  ul.push_back(1.00);
-  ul.push_back(_dtC->l_uPercent(1.00) / length);
-
-  std::vector<std::string> header;
-  header.push_back("u");
-  header.push_back("l(u)/l_ges");
-  dt__debug(
-    bSplineCurve_pointConstructArcLengthParaOCC(),
-    << logMe::vecToTable(header, ul)
-  );
 }
 
 bSplineCurve_pointConstructArcLengthParaOCC ::

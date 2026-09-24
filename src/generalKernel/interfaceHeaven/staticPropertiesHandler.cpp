@@ -16,6 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "staticPropertiesHandler.h"
+#include "dtLog/dtLog.h"
 #include "systemHandling.h"
 
 #include <logMe/logMe.h>
@@ -33,9 +34,7 @@ dt__pH(staticPropertiesHandler) staticPropertiesHandler::_pH(NULL);
 staticPropertiesHandler::staticPropertiesHandler()
   : optionHandling(), _initialized(false)
 {
-  dt__forceInfo(
-    staticPropertiesHandler(), << "Create staticPropertiesHandler ..."
-  );
+  dtLog__always << "Create staticPropertiesHandler ...";
   setOption("invY_precision", "1.e-2");
   setOption("xyz_resolution", "1.e-4");
   setOption("uvw_resolution", "1.e-2");
@@ -53,10 +52,6 @@ staticPropertiesHandler::staticPropertiesHandler()
   setOption("isEqualExtendCheck", "false");
   setOption("geometry_sort", "false");
   setOption("logLevel", "0");
-  if (std::getenv("DTOO_LOGLEVEL") != NULL)
-  {
-    setOption("logLevel", std::string(std::getenv("DTOO_LOGLEVEL")));
-  }
 
   _gDebug = false;
 }
@@ -77,15 +72,13 @@ void staticPropertiesHandler::jInit(jsonPrimitive const &jE)
   if (_initialized)
     return;
 
-  optionHandling oH;
-  oH.jInit(jE);
-  if (oH.hasOption("logLevel"))
-  {
-    setOption("logLevel", oH.getOption("logLevel"));
-  }
-  FILELog::ReportingLevel() = TLogLevel(getOptionInt("logLevel"));
-
   optionHandling::jInit(jE);
+  if (std::getenv("DTOO_LOGLEVEL") != NULL)
+  {
+    setOption("logLevel", std::string(std::getenv("DTOO_LOGLEVEL")));
+  }
+  dtLog::setLogLevel(getOption("logLevel"));
+
 #ifdef DTOO_HAS_OMP
   omp_set_num_threads(getOptionInt("ompNumThreads"));
 #endif
@@ -99,17 +92,14 @@ void staticPropertiesHandler::jInit(jsonPrimitive const &jE)
   }
 #endif
 
-  dt__forceInfo(
-    jInit(),
-    << dt__eval(FILELog::ReportingLevel()) << std::endl
-    << dt__eval(ompGetNumThreads()) << std::endl
-    << dt__eval(ompGetThreadLimit()) << std::endl
-    << dt__eval(ompGetMaxThreads()) << std::endl
-    << dt__eval(mpiParallel()) << std::endl
-    << dt__eval(thisRank()) << std::endl
-    << dt__eval(nRanks()) << std::endl
-    << dt__eval(_gDebug)
-  );
+  dtLog__always << dt__eval(dtLog::reportingLevel()) << std::endl
+                << dt__eval(ompGetNumThreads()) << std::endl
+                << dt__eval(ompGetThreadLimit()) << std::endl
+                << dt__eval(ompGetMaxThreads()) << std::endl
+                << dt__eval(mpiParallel()) << std::endl
+                << dt__eval(thisRank()) << std::endl
+                << dt__eval(nRanks()) << std::endl
+                << dt__eval(_gDebug);
 
   _initialized = true;
 }

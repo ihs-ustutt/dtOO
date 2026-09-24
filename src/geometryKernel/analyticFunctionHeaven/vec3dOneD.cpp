@@ -145,12 +145,6 @@ void vec3dOneD::setMax(int const &dir, dtReal const &max)
 
 dtReal vec3dOneD::length(dtReal const &x1) const
 {
-  std::vector<dtReal> itVal;
-  std::vector<std::string> header;
-  header.push_back("l0");
-  header.push_back("l1");
-  header.push_back("eps");
-
   dtInt glpOrder[16] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 20};
   dtReal l0 = length(1, x1);
   dtReal l1 = 0.;
@@ -161,17 +155,12 @@ dtReal vec3dOneD::length(dtReal const &x1) const
     l1 = length(glpOrder[ii], x1);
     dtReal eps = fabs(l1 - l0) / l1;
     l0 = l1;
-    itVal.push_back(l0);
-    itVal.push_back(l1);
-    itVal.push_back(eps);
+    dtLog__debug << dtFormat("ii: %02d | l0: %+11.6e, l1: %+11.6e, eps: %+11.6e"
+                    ) %
+                      ii % l0 % l1 % eps;
     if (eps < geoRes)
-    {
       break;
-    }
   }
-
-  dt__debug(length(), << logMe::vecToTable(header, itVal));
-
   return l1;
 }
 

@@ -276,7 +276,7 @@ template <typename T> T jsonPrimitive::lookup(std::string const &str) const
         lookup(),
         << "Cannot find " << str << " in " << std::endl
         << this->toStdString() << std::endl
-        << "Maybe: " << positiveMatches
+        << "Maybe: " << dtLog::str(positiveMatches)
       );
     }
   }

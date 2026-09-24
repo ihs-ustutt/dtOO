@@ -163,8 +163,8 @@ std::pair<SVector3, SVector3> dtGmshFace::firstDer(const SPoint2 &param) const
   {
     dt__ddebug(
       firstDer(),
-      << logMe::dtFormat("Accessing derivative out of range at point (%e, %e). "
-                         "Bounds U = [%e, %e] / V = [%e, %e]") %
+      << dtFormat("Accessing derivative out of range at point (%e, %e). "
+                  "Bounds U = [%e, %e] / V = [%e, %e]") %
              param.x() % param.y() % _mm->getUMin() % _mm->getUMax() %
              _mm->getVMin() % _mm->getVMax()
       << std::endl
@@ -236,7 +236,7 @@ SPoint2 dtGmshFace::reparamOnFace(dtPoint3 const ppXYZ) const
       dtLinearAlgebra::distance(ppXYZ, _mm->getPoint(uvw[0], uvw[1]));
     dt__warning(
       reparamOnFace(),
-      << logMe::dtFormat(
+      << dtFormat(
            "Reparameterization of Point (%e, %e, %e) fails with distance = %e."
          ) % ppXYZ.x() %
              ppXYZ.y() % ppXYZ.z() % dist
@@ -285,8 +285,8 @@ void dtGmshFace::setMap2dTo3d(map2dTo3d const *const base)
   dt__throwIf(vertices_uv.size() != verticesOrdered_uv.size(), setMap2dTo3d());
   dt__debug(
     setMap2dTo3d(),
-    << dt__eval(vertices_uv) << std::endl
-    << dt__eval(verticesOrdered_uv)
+    << dt__eval(dtLog::str(vertices_uv)) << std::endl
+    << dt__eval(dtLog::str(verticesOrdered_uv))
   );
 }
 
@@ -616,11 +616,9 @@ bool dtGmshFace::isEqual(::GFace const *const gf0, ::GFace const *const gf1)
         );
       dt__debug(
         isEqual(),
-        << logMe::dtFormat("p0 = (%6.2f, %6.2f, %6.2f)") % p0.x() % p0.y() %
-               p0.z()
+        << dtFormat("p0 = (%6.2f, %6.2f, %6.2f)") % p0.x() % p0.y() % p0.z()
         << std::endl
-        << logMe::dtFormat("p1 = (%6.2f, %6.2f, %6.2f)") % p1.x() % p1.y() %
-               p1.z()
+        << dtFormat("p1 = (%6.2f, %6.2f, %6.2f)") % p1.x() % p1.y() % p1.z()
         << std::endl
         << "|p0 - p1| = " << dist << std::endl
         << "p0 != p1 = " << differentPoint

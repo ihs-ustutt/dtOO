@@ -69,7 +69,7 @@ void bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::createWire(
 {
 
   logContainer<bSplineSurface_patchByPatchConstructOCCAFXmlBuilder> logC(
-    TLogLevel::logINFO, "createWire()"
+    dtLogLevel::logINFO, "createWire()"
   );
 
   std::vector<::QDomElement> elV =
@@ -252,7 +252,7 @@ void bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::buildPart(
   // logContainer
   //
   logContainer<bSplineSurface_patchByPatchConstructOCCAFXmlBuilder> logC(
-    TLogLevel::logINFO, "buildPart()"
+    dtLogLevel::logINFO, "buildPart()"
   );
 
   std::vector<dtReal> wire =

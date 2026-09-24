@@ -65,7 +65,7 @@ void bVODumpModel::preUpdate(void)
     gm->getPhysicalGroups(dim, map);
     dt__forAllRefAuto(map, aPair)
     {
-      logC() << logMe::dtFormat(
+      logC() << dtFormat(
                   "Physical group ( %d ): name = %s, dim = %d ( %d entities )"
                 ) %
                   aPair.first % gm->getPhysicalName(dim, aPair.first) % dim %
@@ -80,10 +80,10 @@ void bVODumpModel::preUpdate(void)
       logC() << "dtGmshVertex[] = NULL" << std::endl;
       continue;
     }
-    logC() << logMe::dtFormat("dtGmshVertex[ %3i ] = %s ( %x )") % aV->tag() %
+    logC() << dtFormat("dtGmshVertex[ %3i ] = %s ( %x )") % aV->tag() %
                 gm->getPhysicalString(aV) % aV
            << std::endl
-           << "  edges = " << aV->edges() << std::endl;
+           << "  edges = " << dtLog::str(aV->edges()) << std::endl;
   }
   dt__forAllRefAuto(gm->edges(), aE)
   {
@@ -92,11 +92,11 @@ void bVODumpModel::preUpdate(void)
       logC() << "dtGmshEdge[] = NULL" << std::endl;
       continue;
     }
-    logC() << logMe::dtFormat("dtGmshEdge[ %3i ] = %s ( %x )") % aE->tag() %
+    logC() << dtFormat("dtGmshEdge[ %3i ] = %s ( %x )") % aE->tag() %
                 gm->getPhysicalString(aE) % aE
            << std::endl
-           << "  faces = " << aE->faces() << std::endl
-           << "  vertices = " << aE->vertices() << std::endl
+           << "  faces = " << dtLog::str(aE->faces()) << std::endl
+           << "  vertices = " << dtLog::str(aE->vertices()) << std::endl
            << "  fullPhysicalList = [" << std::endl;
     dt__forAllRefAuto(gm->getFullPhysicalList(aE), aString)
     {
@@ -111,12 +111,13 @@ void bVODumpModel::preUpdate(void)
       logC() << "dtGmshFace[] = NULL" << std::endl;
       continue;
     }
-    logC() << logMe::dtFormat("dtGmshFace[ %3i ] = %s ( %x )") % aF->tag() %
+    logC() << dtFormat("dtGmshFace[ %3i ] = %s ( %x )") % aF->tag() %
                 gm->getPhysicalString(aF) % aF
            << std::endl
-           << "  edges = " << aF->edges() << std::endl
-           << "  edgeOrientations = " << aF->edgeOrientations() << std::endl
-           << "  regions = " << aF->regions() << std::endl
+           << "  edges = " << dtLog::str(aF->edges()) << std::endl
+           << "  edgeOrientations = " << dtLog::str(aF->edgeOrientations())
+           << std::endl
+           << "  regions = " << dtLog::str(aF->regions()) << std::endl
            << "  fullPhysicalList = [" << std::endl;
     dt__forAllRefAuto(gm->getFullPhysicalList(aF), aString)
     {
@@ -131,11 +132,12 @@ void bVODumpModel::preUpdate(void)
       logC() << "dtGmshRegion[] = NULL" << std::endl;
       continue;
     }
-    logC() << logMe::dtFormat("dtGmshRegion[ %3i ] = %s ( %x )") % aR->tag() %
+    logC() << dtFormat("dtGmshRegion[ %3i ] = %s ( %x )") % aR->tag() %
                 gm->getPhysicalString(aR) % aR
            << std::endl
-           << "  faceList = " << aR->faces() << std::endl
-           << "  faceOrientations = " << aR->faceOrientations() << std::endl
+           << "  faceList = " << dtLog::str(aR->faces()) << std::endl
+           << "  faceOrientations = " << dtLog::str(aR->faceOrientations())
+           << std::endl
            << "  fullPhysicalList = [" << std::endl;
     dt__forAllRefAuto(gm->getFullPhysicalList(aR), aString)
     {
