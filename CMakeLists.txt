@@ -130,6 +130,7 @@ endif (DTOO_USE_MPI)
 # Use BOOST_CONFIG_LIBRARIES for configuring instead of Boost_LIBRARIES to 
 # prevent error, when linking dtOODesignTool
 #
+add_definitions(-DBOOST_ALL_DYN_LINK)
 set(BOOST_COMPONENTS
   filesystem
   system
