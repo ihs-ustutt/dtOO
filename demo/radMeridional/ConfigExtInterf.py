@@ -528,6 +528,7 @@ def run(*args, **kwargs):
 
     return cc, rr
 
+
 if __name__ == "__main__":
     
     machine = ConfigExtInterf()
@@ -538,7 +539,7 @@ if __name__ == "__main__":
     
     generate.createMeridional(configM, hubCurves, shroudCurves)
     #generate.createLayerRegion(configL)
-    #generate.createBlade(configGV)
+    generate.createBlade(configGV)
     generate.createBlade(configRu)
     
     container = generate.getContainer()
@@ -568,13 +569,13 @@ if __name__ == "__main__":
     #  "interface.stp"
     #)
     
-    bV["ru_mesh"].makeGrid()
+    #bV["ru_mesh"].makeGrid()
     #bV["gv_mesh"].makeGrid()
     #bV["meshLayers"].makeGrid()
 
-    #stateLbl = "testCase"
-    #indiv = "0"
+    stateLbl = "testCase"
+    indiv = "0"
     
-    #createOFCase(container, stateLbl, indiv, 0.36)
+    createOFCase(container, stateLbl, indiv, 0.36)
 
     # ------------------- EOF ------------------- #

@@ -132,6 +132,30 @@ class ofCase:
                             'gv_mesh_suction', 'gv_mesh_pressure',
                             'ru_mesh_suction', 'ru_mesh_pressure'],
                 FPatches = ['gv_mesh_blade', 'ru_mesh_blade'],
+                convergenceCriteria = {
+                    "bufferSizeAvg" : 100,
+                    "bufferSizeConv" : 20,
+                    "minTimeSteps" : 200,
+                    "criteria" : {
+                        "F_ru_mesh_blade" : {
+                            "moment" : 2,
+                            "toleranceRSD" : 0.01,
+                            "toleranceRel" : 0.01,
+	                    },
+	                    "PT_ru_mesh_inlet" : {
+                            "toleranceRSD" : 0.01,
+                            "toleranceRel" : 0.01,
+	                    },
+	                    "PT_ru_mesh_outlet" : {
+                            "toleranceRSD" : 0.01,
+                            "toleranceRel" : 0.05,
+	                    },
+                        "Q_dt_mesh_outlet" : {
+                            "toleranceRSD" : 0.01,
+                            "toleranceRel" : 0.01,
+	                    },
+	                },
+                },
                 libs = [
                   "libsimpleFunctionObjects.so",
                   #"libsimpleSwakFunctionObjects.so",
@@ -341,6 +365,42 @@ class ofCase:
                     }
                 fc.control_dict['writeInterval'] = 100
                 fc.control_dict['endTime'] = 500
+                
+                # make the of-files modifiable during runtime
+                fc.control_dict['runTimeModifiable'] = True
+
+                # create a function which exchanges fvSolution with a modified file
+                # at a specific runtime
+                ## fileToUpdate: fvSolution   -> simulation starts with these settings
+                ## timeVsFile: [
+                ##    Time,           -> time where settings are changed,
+                ##    "Path/To/File"  -> file which has new settings which will be written to fileToUpdate
+                ## ]
+                fc.control_dict['functions']['updateFvSolution'] = {
+                    'type': 'timeActivatedFileUpdate',
+                    'libs': ['utilityFunctionObjects'],
+                    'writeControl': 'timeStep',
+                    'writeInterval': 1,
+                    'fileToUpdate': '"$FOAM_CASE/system/fvSolution"',   
+                    'timeVsFile': [
+                        [600, '"$FOAM_CASE/system/fvSolution.update"']
+                    ]
+                }
+                
+                #
+                # fvSolution.update -> file which will update fvSolution as specified in 'timeVsFile'
+                #
+                # copy the fvSolution file
+                source = Path(_case) / "system" / "fvSolution"
+                target = Path(_case) / "system" / "fvSolution.update"
+                shutil.copy2(source, target)
+
+                # open the copy with foamlib and edit the values
+                fv_orthogonal = foamlib.FoamFile(target)
+                with fv_orthogonal as f:
+                  f["SIMPLE"]["nNonOrthogonalCorrectors"] = 5
+                
+
                 solver_cmd = [*self.solver_launcher_, "simpleFoam"]
                 if cpus_per_task > 1:
                     solver_cmd.append("-parallel")
@@ -349,7 +409,7 @@ class ofCase:
                 #    fc.run(cmd=["mpiexec", "--oversubscribe", "-n", f"{cpus_per_task}","simpleFoam", "-parallel"])
                 #else:
                 #    fc.run()
-
+                
                 fc.control_dict['endTime'] = 2000
                 fc.control_dict['writeInterval'] = 100
                 #fc.control_dict['purgeWrite'] = 10
@@ -463,7 +523,7 @@ class ofCase:
         logging.info("dh_ru = %f" % dh_ru)
 
         #fit = np.abs(dh_ru + 0.8)/0.8 + (1.0 - eta)
-        fit = (1.0 - eta)
+        fit = -1*(np.abs(dh_ru)*eta)
 
         #
         # Check if the simulated geometry is a pump or a turbine; if it is a pump,

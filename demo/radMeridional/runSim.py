@@ -1,4 +1,7 @@
 import foamlib
+import copy
+import shutil
+from pathlib import Path
 
 import logging
 logging.basicConfig(
@@ -15,23 +18,87 @@ import numpy as np
 import re
 import sys
 
-#n_cores = sys.argv[1]
-#case_name = sys.argv[2]
+
+n_cores = sys.argv[1]
+case_name = sys.argv[2]
 #
 #print(str(n_cores))
 #print(case_name)
 #
-#_case = './'+case_name+'/'
-_case = './of_fittedBlade_0/'
+_case = './'+case_name+'/'
+#_case = './of_fittedBlade_0/'
 _safe_case = re.sub(r'[\\/:\*\?"<>|]', '_', _case)
 
 fc = foamlib.FoamCase( _case )
-#if True:
-if False:
+if True:
+#if False:
+
+  ##
+  ## Laminar Simulation Settings
+  ##
+
+  fc.turbulence_properties["RAS"]["turbulence"] = False
+  
+  #
+  # Decomposition 
+  #
   fc.decompose_par_dict['method'] = 'metis'
   fc.decompose_par_dict['numberOfSubdomains'] = int(n_cores)
-   
-  fc.turbulence_properties["RAS"]["turbulence"] = False
+  
+  
+  #
+  # Control dict entries
+  #
+  fc.control_dict['DebugSwitches'] = {
+          'mixingInterfacePolyPatch': 2
+        }
+  
+  fc.control_dict['writeInterval'] = 100
+  fc.control_dict['endTime'] = 500
+  
+  # make the of-files modifiable during runtime
+  fc.control_dict['runTimeModifiable'] = True
+
+  # create a function which exchanges fvSolution with a modified file
+  # at a specific runtime
+  ## fileToUpdate: fvSolution   -> simulation starts with these settings
+  ## timeVsFile: [
+  ##    Time,           -> time where settings are changed,
+  ##    "Path/To/File"  -> file which has new settings which will be written to fileToUpdate
+  ## ]
+  fc.control_dict['functions']['updateFvSolution'] = {
+      'type': 'timeActivatedFileUpdate',
+      'libs': ['utilityFunctionObjects'],
+      'writeControl': 'timeStep',
+      'writeInterval': 1,
+      'fileToUpdate': '"$FOAM_CASE/system/fvSolution"',   
+      'timeVsFile': [
+          [600, '"$FOAM_CASE/system/fvSolution.update"']
+      ]
+  }
+  
+  ## create a runtime control function
+  ## simulation stops when the specified value reaches tolerance within window 
+  #fc.control_dict['functions']['stopOnConvergence'] = {
+  #    'type': 'runTimeControl',
+  #    'libs': ['utilityFunctionObjects'],
+  #    'conditions': {
+  #        'convergenceCheck' : {
+  #            'type': 'average',
+  #            'functionObject': 'F_ru_mesh_blade',
+  #            'fields': ['moment'],
+  #            'dataFile': '"$FOAM_CASE/postProcessing/F_ru_mesh_blade/500/moment.dat"',
+  #            'component': 2,
+  #            'tolerance': 100,
+  #            'window': 100,
+  #            'windowType': 'exact',
+  #        }
+  #    }
+  #}
+  
+  #
+  # fvSchemes
+  #
   fc.fv_schemes['gradSchemes']['none'] = ('cellLimited', 'Gauss', 'linear', 0.33)
   fc.fv_schemes['gradSchemes']['grad(p)'] = ('cellLimited', 'Gauss', 'linear', 0.33)
   fc.fv_schemes['gradSchemes']['grad(U)'] = ('cellLimited', 'Gauss', 'linear', 0.33)
@@ -44,8 +111,12 @@ if False:
         "epsilon": "fluxAveraging",
         "omega": "fluxAveraging"
       }
+  
+  #
+  # fvSolution -> settings with which the simulation starts
+  #
   fc.fv_solution["relaxationFactors"] = {
-        "p": 0.2,
+        "p": 0.4,
         "U": 0.4,
         "k": 0.6,
         "epsilon": 0.6,
@@ -53,24 +124,47 @@ if False:
       }
   fc.fv_solution["SIMPLE"] = {
         "nNonOrthogonalCorrectors": 20,
+        #"residualControl": {
+        #    "p": 1e-6,
+        #    "U": 1e-6,
+        #    "k": 1e-6,
+        #    "omega": 1e-6,
+        #},
         #"consistent": "yes"
       }
- 
-  fc.control_dict['DebugSwitches'] = {
-          'mixingInterfacePolyPatch': 2
-        }
-  fc.control_dict['writeInterval'] = 100
-  fc.control_dict['endTime'] = 500
-  fc.run()
+
+  #
+  # fvSolution.update -> file which will update fvSolution as specified in 'timeVsFile'
+  #
+  # copy the fvSolution file
+  source = Path(_case) / "system" / "fvSolution"
+  target = Path(_case) / "system" / "fvSolution.update"
+  shutil.copy2(source, target)
   
+  # open the copy with foamlib and edit the values
+  fv_orthogonal = foamlib.FoamFile(target)
+  with fv_orthogonal as f:
+      f["SIMPLE"]["nNonOrthogonalCorrectors"] = 5
+   
+  # run the laminar simulation
+  fc.run()
+  fc.run(["reconstructPar", "-latestTime"])
+
+  ##
+  ## Turbulent Simulation Settings
+  ##
+
   fc.control_dict['endTime'] = 2000
-  fc.control_dict['writeInterval'] = 100
+  fc.control_dict['writeInterval'] = 500
   #fc.control_dict['purgeWrite'] = 10
   fc.turbulence_properties["RAS"]["turbulence"] = True
   
+  # run the turbulent simulation
+    
   fc.run()
-  
-fc.run(["reconstructPar", '-time', '500,2000'])
+#fc.run(["reconstructPar"])
+fc.run(["reconstructPar", "-latestTime"])
+#fc.run(["reconstructPar", '-time', '500,2000'])
 
 _omega = np.abs(
   foamlib.FoamFile(fc.path/'constant/MRFProperties')['MRF_ru_mesh']['omega']
@@ -86,8 +180,8 @@ for var in ["U", "U:Transformed", "p",]:
         ]:
     fc.run(["patchToCsv", var, patch])
 
-#_time = fc[-1].name
-_time = "2000"
+_time = fc[-1].name
+#_time = "2000"
 
 #patchToCsv U ru_mesh_outlet
 UTrans_gv_in = dtAverageValueField(dtCylField(_case+"gv_mesh_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
