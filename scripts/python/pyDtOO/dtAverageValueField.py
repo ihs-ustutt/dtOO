@@ -118,24 +118,24 @@ class dtAverageValueField(dtValueField):
       self.coordOne_[ self.indsOne[i]-1,: ] = self.coordOne_[ self.indsOne[i]-1,: ] + self.Coord()[i,:]
       self.valueAvQOne_[ self.indsOne[i]-1,: ] = self.valueAvQOne_[ self.indsOne[i]-1,: ] + self.Value()[i,:] * self.Q()[i]
       self.valueAvAOne_[ self.indsOne[i]-1,: ] = self.valueAvAOne_[ self.indsOne[i]-1,: ] + self.Value()[i,:] * self.A()[i]
-      self.QOne_[self.indsOne[i]-1] = self.QOne_[self.indsOne[i]-1] + self.Q()[i]
-      self.AOne_[self.indsOne[i]-1] = self.AOne_[self.indsOne[i]-1] + self.A()[i]
+      self.QOne_[self.indsOne[i]-1] = self.QOne_[self.indsOne[i]-1] + self.Q()[i].item()
+      self.AOne_[self.indsOne[i]-1] = self.AOne_[self.indsOne[i]-1] + self.A()[i].item()
     
     for i in range(len(self.indsTwo)):      
       self.nPointsTwo_[ self.indsTwo[i]-1 ] = self.nPointsTwo_[ self.indsTwo[i]-1 ] + 1
       self.coordTwo_[ self.indsTwo[i]-1,: ] = self.coordTwo_[ self.indsTwo[i]-1,: ] + self.Coord()[i,:]
       self.valueAvQTwo_[ self.indsTwo[i]-1,: ] = self.valueAvQTwo_[ self.indsTwo[i]-1,: ] + self.Value()[i,:] * self.Q()[i]
       self.valueAvATwo_[ self.indsTwo[i]-1,: ] = self.valueAvATwo_[ self.indsTwo[i]-1,: ] + self.Value()[i,:] * self.A()[i]
-      self.QTwo_[self.indsTwo[i]-1] = self.QTwo_[self.indsTwo[i]-1] + self.Q()[i]
-      self.ATwo_[self.indsTwo[i]-1] = self.ATwo_[self.indsTwo[i]-1] + self.A()[i]
+      self.QTwo_[self.indsTwo[i]-1] = self.QTwo_[self.indsTwo[i]-1] + self.Q()[i].item()
+      self.ATwo_[self.indsTwo[i]-1] = self.ATwo_[self.indsTwo[i]-1] + self.A()[i].item()
       
     for i in range(len(self.indsThree)):      
       self.nPointsThree_[ self.indsThree[i]-1 ] = self.nPointsThree_[ self.indsThree[i]-1 ] + 1      
       self.coordThree_[ self.indsThree[i]-1,: ] = self.coordThree_[ self.indsThree[i]-1,: ] + self.Coord()[i,:]
       self.valueAvQThree_[ self.indsThree[i]-1,: ] = self.valueAvQThree_[ self.indsThree[i]-1,: ] + self.Value()[i,:] * self.Q()[i]
       self.valueAvAThree_[ self.indsThree[i]-1,: ] = self.valueAvAThree_[ self.indsThree[i]-1,: ] + self.Value()[i,:] * self.A()[i]
-      self.QThree_[self.indsThree[i]-1] = self.QThree_[self.indsThree[i]-1] + self.Q()[i]
-      self.AThree_[self.indsThree[i]-1] = self.AThree_[self.indsThree[i]-1] + self.A()[i]
+      self.QThree_[self.indsThree[i]-1] = self.QThree_[self.indsThree[i]-1] + self.Q()[i].item()
+      self.AThree_[self.indsThree[i]-1] = self.AThree_[self.indsThree[i]-1] + self.A()[i].item()
       
     for i in range(nBinsOne):
       self.coordOne_[i,:] = self.coordOne_[i,:] / self.nPointsOne_[i]
