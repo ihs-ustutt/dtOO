@@ -19,19 +19,17 @@ import re
 import sys
 
 
-n_cores = sys.argv[1]
-case_name = sys.argv[2]
-#
-#print(str(n_cores))
-#print(case_name)
-#
+#n_cores = sys.argv[1]
+#case_name = sys.argv[2]
+
+case_name = "of_testCase_0"
 _case = './'+case_name+'/'
 #_case = './of_fittedBlade_0/'
 _safe_case = re.sub(r'[\\/:\*\?"<>|]', '_', _case)
 
 fc = foamlib.FoamCase( _case )
-if True:
-#if False:
+#if True:
+if False:
 
   ##
   ## Laminar Simulation Settings
@@ -289,7 +287,7 @@ p_gv_out = dtValueField(dtField(_case+"gv_mesh_outlet_p_"+_time+".csv").Read())
 Q_gv = np.abs(p_gv_in.IntQ())
 
 h_tot_gv_in = (p_gv_in.IntValueQ() / _g + U_gv_in.IntMagSquareQ() / (2.*_g))/Q_gv
-print("h_tot_gv_in = %f" % h_tot_gv_in)
+print("h_tot_gv_in = %f" % h_tot_gv_in[0])
 #h_tot_ru_out = (p_ru_out.IntValueQ() / _g + U_ru_out.IntMagSquareQ() / (2.*_g))/Q
 
 U_ru_in = dtValueField(dtField(_case+"ru_mesh_inlet_U_"+_time+".csv").Read())
@@ -310,19 +308,19 @@ print("p_ru_in.IntValueQ() = ", p_ru_in.IntValueQ())
 print("U_ru_in.IntMagSquareQ() = ", U_ru_in.IntMagSquareQ())
 print("p_ru_out.IntValueQ() = ", p_ru_out.IntValueQ())
 print("U_ru_out.IntMagSquareQ() = ", U_ru_out.IntMagSquareQ())
-print("h_tot_ru_in = %f" % h_tot_ru_in)
-print("h_tot_ru_out = %f" % h_tot_ru_out)
+print("h_tot_ru_in = %f" % h_tot_ru_in[0])
+print("h_tot_ru_out = %f" % h_tot_ru_out[0])
 
 dh_ru = (h_tot_ru_out - h_tot_ru_in)
 M_z = F.MomentMeanLast(100)[2]
 
 print("M_z = %f" % M_z)
 print("_omega = %f" % _omega)
-print("dh_ru = %f" % dh_ru)
+print("dh_ru = %f" % dh_ru[0])
 print("Q_ru = %f" % Q_ru)
 
 eta = M_z * _omega / (_rho*_g*dh_ru*Q_ru)
-print("eta = %f" % eta)
+print("eta = %f" % eta[0])
 
 fig.text(0.5, 0.02, 
          f"""Pressure: $p_{{T,GV,in}}$ = {pt_globIn:.2f}, $p_{{T,DT,out}}$ = {pt_globOut:.2f}, $dh$ = {dh:.2f} m

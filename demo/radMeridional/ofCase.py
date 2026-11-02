@@ -519,11 +519,11 @@ class ofCase:
 
         eta = M_z * _omega / (_rho*_g*dh_ru*Q_ru)
 
-        logging.info("eta = %f" % eta)
-        logging.info("dh_ru = %f" % dh_ru)
+        logging.info("eta = %f" % eta[0])
+        logging.info("dh_ru = %f" % dh_ru[0])
 
         #fit = np.abs(dh_ru + 0.8)/0.8 + (1.0 - eta)
-        fit = -1*(np.abs(dh_ru)*eta)
+        fit = -1*(np.abs(dh_ru[0])*eta[0])
 
         #
         # Check if the simulated geometry is a pump or a turbine; if it is a pump,
