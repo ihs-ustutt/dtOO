@@ -53,6 +53,7 @@ class ofOpenFOAMCase_setupWrapper:
     QPatches: List[ str ] = [],
     PTPatches: List[ str ] = [],
     FPatches: List[ str ] = [],
+    convergenceCriteria: dict = None,
     libs: List[str] = []
   ) -> str:
     """Create controlDict.
@@ -69,6 +70,37 @@ class ofOpenFOAMCase_setupWrapper:
       Patches to track total pressure.
     FPatches: List[ str ]
       Patches to track forces.
+    convergenceCriteria: dict
+      Dictionary containing settings of the convergence 
+      criteria with the following keys:
+      
+      - bufferSizeAvg (int):
+        Buffer size for the normalization of the convergence criteria.
+
+      - bufferSizeConv (int):
+        Buffer size for the convergence criteria. So many iterations in a
+        row must satisfy the criteria
+
+      - minTimeSteps (int):
+        Number of minimum time steps.
+
+      - criteria (dict(dict)):
+        Dictionary containing subdictionaries of the criteria
+        The keys to the subdicts has to correspond to the tracked patches in
+        QPatches, PTPatches and FPatches with the prefixes "Q_", "PT_" or "F_".
+        The subdicts contain the following keys:
+
+        - toleranceRSD (float)
+          Relative standard deviation tolerance of the criteria
+
+        - toleranceRel (float)
+          Relative range tolerance of the criteria
+
+        - moment (int)
+          Only used for criteria tracking the force values
+          values can be 0, 1 or 2 corresponding to the moments around the 
+          x-, y- or z-axis.
+
     libs: List[ str ]
       Libraries to be loaded within controlDict.
 
@@ -150,6 +182,34 @@ class ofOpenFOAMCase_setupWrapper:
         '      CofR ( 0 0 0 ) ;\n'
         '    }\n'
       )
+    if convergenceCriteria != None:
+        retStr += str(
+          '    stopOnConvergence {\n'
+          '      type convergenceCheck;\n'
+          '      libs ("libconvergenceCheck.so");\n'
+          '      bufferSizeAvg '+str(convergenceCriteria["bufferSizeAvg"])+';\n'
+          '      bufferSizeConv '+str(convergenceCriteria["bufferSizeConv"])+';\n'
+          '      minTimeSteps '+str(convergenceCriteria["minTimeSteps"])+';\n'
+          '      criteria{\n'
+        )
+        criteria = convergenceCriteria["criteria"]
+        if not criteria:
+            logging.exception("no convergence criteria are defined")
+        for crit, subdict in criteria.items():
+            retStr += str(
+                '        '+str(crit)+' {\n'
+            )
+            for key, value in subdict.items():
+                retStr += str(
+                '          '+str(key)+' '+str(value)+';\n'
+                )
+            retStr += str(
+                '        }\n'
+            )
+        retStr += str(    
+          '      }\n'
+          '    }\n'
+        )
     retStr += str(
       '    convertToCylindrical {\n'
       '      type            fieldCoordinateSystemTransform;\n'
