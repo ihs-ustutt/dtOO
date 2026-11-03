@@ -291,14 +291,14 @@ def runRadMeridional(x, state, solver_launcher=None):
         sim.createOFCase(cc, h_inlet)
         end_time = time.time()
         logging.info(f"Proxy: finished meshing for state {state}. Time: {end_time - start_time}. Start CFD...")
-        ## Run the simulation
-        #sim.simulate(solver_launcher)
-        ## Evaluation
-        #fit, dh_ru, M_z, eta = sim.evaluate()
-        #fit_extra = {'dh_ru':dh_ru.tolist(), 'M_z': float(M_z), 'eta': eta.tolist()}
-        #
-        #logging.info(f"STATE: {state}. SUCCESSFULLY.")
-        ##sim.delete_case()
+         Run the simulation
+        sim.simulate(solver_launcher)
+        # Evaluation
+        fit, dh_ru, M_z, eta = sim.evaluate()
+        fit_extra = {'dh_ru':dh_ru.tolist(), 'M_z': float(M_z), 'eta': eta.tolist()}
+        
+        logging.info(f"STATE: {state}. SUCCESSFULLY.")
+        #sim.delete_case()
 
     except Exception as e:
         logging.warning("Proxy: Exception in radMeridional: \n")
@@ -313,7 +313,7 @@ def runRadMeridional(x, state, solver_launcher=None):
 
 if __name__ == "__main__":
 
-    state = "convergenceCrit"
+    state = "radMeridional"
     x = [
             90.,
             75.,

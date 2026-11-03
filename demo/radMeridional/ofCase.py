@@ -298,6 +298,7 @@ class ofCase:
         iterations as a laminar simulation. Afterwards, it is switched to turbulent
         mode.
         """
+        #cpus_per_task = int(8)
         # get the cpus per task, the first set value is taken
         #  "FLOW_OPT_MPI_RANKS" is defined by the hydroflow config as mpi_ranks
         #  "SLURM_CPUS_PER_TASK" is set in the batch script
@@ -391,8 +392,8 @@ class ofCase:
                 # fvSolution.update -> file which will update fvSolution as specified in 'timeVsFile'
                 #
                 # copy the fvSolution file
-                source = Path(_case) / "system" / "fvSolution"
-                target = Path(_case) / "system" / "fvSolution.update"
+                source = Path(self.cDir_) / "system" / "fvSolution"
+                target = Path(self.cDir_) / "system" / "fvSolution.update"
                 shutil.copy2(source, target)
 
                 # open the copy with foamlib and edit the values
