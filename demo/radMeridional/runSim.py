@@ -114,7 +114,7 @@ if False:
   # fvSolution -> settings with which the simulation starts
   #
   fc.fv_solution["relaxationFactors"] = {
-        "p": 0.4,
+        "p": 0.2,
         "U": 0.4,
         "k": 0.6,
         "epsilon": 0.6,
