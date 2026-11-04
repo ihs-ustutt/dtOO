@@ -13,8 +13,11 @@ Run this tutorial by executing:
 
 .. code-block:: bash
 
-  export OSLO_LOCK_PATH=/tmp && export FOAM_SIGFPE=0 \\
-    && python3.12 -m doctest build.py
+  export OSLO_LOCK_PATH=/tmp && \\
+  export FOAM_SIGFPE=0 && \\
+  export OMPI_ALLOW_RUN_AS_ROOT=1 && \\
+  export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1 && \\
+    python3 -m doctest build.py
 
 Import ``logging`` package and create a configuration:
 
@@ -224,11 +227,14 @@ operating point:
 ...   fc.control_dict['writeInterval'] = 100
 ...   fc.control_dict['endTime'] = 100
 ...   fc.turbulence_properties["RAS"]["turbulence"] = False
-...   fc.fv_schemes['gradSchemes']['none'] = 'faceLimited Gauss linear 0.33'
-...   fc.fv_schemes['gradSchemes']['grad(p)'] = 'faceLimited Gauss linear 0.33'
-...   fc.fv_schemes['gradSchemes']['grad(U)'] = 'faceLimited Gauss linear 0.33'
+...   fc.fv_schemes['gradSchemes']['none'] = \\
+...     ('faceLimited', 'Gauss', 'linear', 0.33)
+...   fc.fv_schemes['gradSchemes']['grad(p)'] = \\
+...     ('faceLimited', 'Gauss', 'linear', 0.33)
+...   fc.fv_schemes['gradSchemes']['grad(U)'] = \\
+...     ('faceLimited', 'Gauss', 'linear', 0.33)
 ...   fc.fv_schemes['divSchemes']['div(phi,U)'] = \\
-...     'Gauss linearUpwindV faceLimited Gauss linear 0.33'
+...     ('Gauss', 'linearUpwindV', 'faceLimited', 'Gauss', 'linear', 0.33)
 ...   fc.run()
 ...   #
 ...   # Simulate until 1000 iterations reached as a turbulent simulation with
@@ -237,11 +243,14 @@ operating point:
 ...   fc.control_dict['writeInterval'] = 1000
 ...   fc.control_dict['endTime'] = 1000
 ...   fc.turbulence_properties["RAS"]["turbulence"] = True
-...   fc.fv_schemes['gradSchemes']['none'] = 'cellLimited Gauss linear 0.33'
-...   fc.fv_schemes['gradSchemes']['grad(p)'] = 'cellLimited Gauss linear 0.33'
-...   fc.fv_schemes['gradSchemes']['grad(U)'] = 'cellLimited Gauss linear 0.33'
+...   fc.fv_schemes['gradSchemes']['none'] = \\
+...     ('cellLimited', 'Gauss', 'linear', 0.33)
+...   fc.fv_schemes['gradSchemes']['grad(p)'] = \\
+...     ('cellLimited', 'Gauss', 'linear', 0.33)
+...   fc.fv_schemes['gradSchemes']['grad(U)'] = \\
+...     ('cellLimited', 'Gauss', 'linear', 0.33)
 ...   fc.fv_schemes['divSchemes']['div(phi,U)'] = \\
-...     'Gauss linearUpwindV cellLimited Gauss linear 0.33'
+...     ('Gauss', 'linearUpwindV', 'cellLimited', 'Gauss', 'linear', 0.33)
 ...   fc.run()
 ...   #
 ...   # Reconstruct the case
@@ -294,7 +303,8 @@ operating point:
 ...   # Handle exceptions
 ...   #
 ...   except Exception as e:
-...     logging.error('Catch exception : %s', e)
+...     logging.error('Catch exception : %s', e) # doctest: +ELLIPSIS
+(tistos_ru_of_tl_T1_21260) Running ... 
 
 Compare simulation results with the results in the database. Accept an error of
 1 %, otherwise report error:
