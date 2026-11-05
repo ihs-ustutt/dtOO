@@ -257,6 +257,10 @@ operating point:
 ...   #
 ...   fc.reconstruct_par()
 ...   #
+...   # Calculate relative velocity
+...   #
+...   fc.run("uRel")
+...   #
 ...   # Extract the rotation speed from the case
 ...   #
 ...   omega = np.abs(
