@@ -304,7 +304,7 @@ operating point:
 ...   #
 ...   except Exception as e:
 ...     logging.error('Catch exception : %s', e) # doctest: +ELLIPSIS
-(tistos_ru_of_tl_T1_21260) Running ... 
+(... 
 
 Compare simulation results with the results in the database. Accept an error of
 1 %, otherwise report error:
