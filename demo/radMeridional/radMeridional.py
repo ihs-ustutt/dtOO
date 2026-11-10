@@ -1783,7 +1783,10 @@ class radMeridional:
         # specified by meshBlock_thickness.
         #
         #meshBlock_thickness = 0.035
-        meshBlock_thickness = 0.025 
+        #meshBlock_thickness = 0.025 
+        meshBlock_thickness = configB["meshblock"][0]
+        print("TEST")
+        print(meshBlock_thickness)
         fRef = dtOO.vec3dMuParserTwoD(
           str(dAdd_dir)+".0*"+str(meshBlock_thickness)+", xx, yy", "xx", "yy"
         )
@@ -2204,7 +2207,8 @@ class radMeridional:
             blade = self.aG["xyz_"+label+"_blade"],
             nBoundaryLayers = 15,
             nElementsSpanwise = 50,
-            nElementsNormal = 6,
+	    nElementsNormal = configB["meshblock"][1],
+            #nElementsNormal = 6,
             firstElementSizeHubToShroud = 0.001,
             firstElementSizeNormalBlade = 0.001,
             bladeHubElementSize = scaOneD_scaCurve2dOneDPointConstruct(

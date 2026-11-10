@@ -142,13 +142,29 @@ class ofCase:
                             "toleranceRSD" : 0.01,
                             "toleranceRel" : 0.01,
 	                    },
+	                    "PT_gv_mesh_inlet" : {
+                            "toleranceRSD" : 0.01,
+                            "toleranceRel" : 0.01,
+	                    },
+	                    "PT_gv_mesh_outlet" : {
+                            "toleranceRSD" : 0.01,
+                            "toleranceRel" : 0.01,
+	                    },
 	                    "PT_ru_mesh_inlet" : {
                             "toleranceRSD" : 0.01,
                             "toleranceRel" : 0.01,
 	                    },
 	                    "PT_ru_mesh_outlet" : {
                             "toleranceRSD" : 0.01,
-                            "toleranceRel" : 0.05,
+                            "toleranceRel" : 0.01,
+	                    },
+	                    "PT_dt_mesh_inlet" : {
+                            "toleranceRSD" : 0.01,
+                            "toleranceRel" : 0.01,
+	                    },
+	                    "PT_dt_mesh_outlet" : {
+                            "toleranceRSD" : 0.01,
+                            "toleranceRel" : 0.01,
 	                    },
                         "Q_dt_mesh_outlet" : {
                             "toleranceRSD" : 0.01,
@@ -350,7 +366,7 @@ class ofCase:
                     "omega": "fluxAveraging"
                   }
                 fc.fv_solution["relaxationFactors"] = {
-                    "p": 0.2,
+                    "p": 0.4,
                     "U": 0.4,
                     "k": 0.6,
                     "epsilon": 0.6,

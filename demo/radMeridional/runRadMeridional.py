@@ -177,6 +177,8 @@ class Config():
             "u_te" : [1.00],
 
             "orientation" : -1,
+	    # meshblock : (thickness, nElements)
+	    "meshblock" : (0.025, 6),
         }
         # Case - Fitted to blade
         self.configRunner = {
@@ -253,6 +255,8 @@ class Config():
 
             "adjustRadius" : True,
             "orientation" : 1,
+	    
+	    "meshblock" : (0.015, 4),
 
         }
     
@@ -291,7 +295,7 @@ def runRadMeridional(x, state, solver_launcher=None):
         sim.createOFCase(cc, h_inlet)
         end_time = time.time()
         logging.info(f"Proxy: finished meshing for state {state}. Time: {end_time - start_time}. Start CFD...")
-         Run the simulation
+        # Run the simulation
         sim.simulate(solver_launcher)
         # Evaluation
         fit, dh_ru, M_z, eta = sim.evaluate()
@@ -313,7 +317,7 @@ def runRadMeridional(x, state, solver_launcher=None):
 
 if __name__ == "__main__":
 
-    state = "radMeridional"
+    state = "testState_meshblock"
     x = [
             90.,
             75.,
