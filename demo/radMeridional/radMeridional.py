@@ -1785,8 +1785,6 @@ class radMeridional:
         #meshBlock_thickness = 0.035
         #meshBlock_thickness = 0.025 
         meshBlock_thickness = configB["meshblock"][0]
-        print("TEST")
-        print(meshBlock_thickness)
         fRef = dtOO.vec3dMuParserTwoD(
           str(dAdd_dir)+".0*"+str(meshBlock_thickness)+", xx, yy", "xx", "yy"
         )
