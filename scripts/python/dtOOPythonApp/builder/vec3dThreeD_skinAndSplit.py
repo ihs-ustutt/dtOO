@@ -21,6 +21,7 @@ from dtOOPythonSWIG import bSplineCurve_pointConstructOCC
 from dtOOPythonSWIG import bSplineSurface_exchangeSurfaceConstructOCC 
 from dtOOPythonSWIG import vectorDtPoint3 
 from dtOOPythonSWIG import dtPoint3 
+from dtOOPythonSWIG import dtVector3 
 from dtOOPythonSWIG import vec3dCurveOneD 
 from dtOOPythonSWIG import analyticCurve
 from dtOOPythonSWIG import analyticFunction
@@ -34,6 +35,7 @@ from dtOOPythonSWIG import bSplineSurface_skinConstructOCC
 from dtOOPythonSWIG import dtOCCBSplineCurve
 
 from typing import List, Optional
+import numpy as np
 import logging
 
 class vec3dThreeD_skinAndSplit(dtBundleBuilder):
@@ -612,7 +614,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
           # splits are defined
           #
           cc = 0
-
+          
           #
           # iterate over the split positions
           #
@@ -640,19 +642,109 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
             vh_aF.push_back((bladeSurf).clone())
             
             #
-            # split the surrounding surface
+            # correct split positions on the blocks to reach 90 degree anfles
             #
-            #vh_aF.push_back( 
+
+            # set split postions for the blocks from splits or previously 
+            # corrected postion
+            if cc == 0:
+                blockSplit0 = split[0]
+            else: 
+                blockSplit0 = blockSplit1
+            blockSplit1 = split[1]
+            
+            # target angle between blade tangent and extending edge
+            targetAngle = np.pi/2
+            tolerance = 1e-2
+            
+            # perturbation and number of iteration for newtons approximation
+            eps = 1e-3
+            maxIter = 10
+            
+            # list for calculated block split positions and resulting errors
+            errorList = []
+            
+            logging.info("Correcting mesh block splits for meshblock no. %d" % (cc) )
+
+            # last besh block position is not corrected (always 100 percent TE)
+            if cc < len(self.splits_)-1:
+                for iCorrect in range(maxIter): 
+                
+                    # calculate angle between tangential direction of blade at split position
+                    # and the edge direction from the blade split position to the current 
+                    # mesh block split position
+                    meanAngle = self.calculateMeanAngle(
+                            bladeSurf, 
+                            blockSplit0, 
+                            blockSplit1, 
+                            cc, 
+                            iCorrect
+                        )
+                    
+                    error =  meanAngle - targetAngle
+                    
+                    logging.info(
+                        "Correction: %d | blockSplit1: %f | angle: %f deg | error: %f deg"
+                        % (
+                            iCorrect,
+                            blockSplit1,
+                            meanAngle * 180 / np.pi,
+                            error * 180 / np.pi
+                        )
+                    )
+                    
+                    # append error list
+                    errorList.append([error, blockSplit1])
+                    
+                    # check tolerance
+                    if abs(error) < tolerance:
+                        logging.info("Tolerance reached")
+                        break
+                    
+                    # calculate the mean angle with a slight pertuberation in the split position
+                    meanAnglePerturbed = self.calculateMeanAngle(
+                            bladeSurf, 
+                            blockSplit0, 
+                            blockSplit1 + eps, 
+                            cc
+                        )
+                    
+                    # derivative
+                    derivative = (meanAnglePerturbed - meanAngle) / eps
+                    if abs(derivative) < 1e-10:
+                        raise RuntimeError("Derivative too small!")
+
+                    # Newton correction
+                    delta = -error / derivative
+                    
+                    # Change split position
+                    blockSplit1 += delta
+                
+                else:
+                    # using best split position if tolerance isnt reached
+                    logging.info("Tolerance not reached, using split position with smallest error")
+                    
+                    bestSplit = min(errorList, key=lambda x: abs(x[0]))
+
+                    logging.info("Best error: %f" % (bestSplit[0]))
+                    logging.info("Corresponding split: %f" % (bestSplit[1]))
+
+                    blockSplit1 = bestSplit[1] 
+            
+            #
+            # Splliting surrounding surface according to corrected split position
+            #
             blockSurf = vec3dSurfaceTwoD(
                 bSplineSurface_bSplineSurfaceSplitConstructOCC(
                   self.aFTwo_.constPtrDtSurface(), 
                   self.splitDim_, 
-                  split[0], 
-                  split[1]
+                  blockSplit0, 
+                  blockSplit1
                 ).result()
-            )  
+            )
+
             vh_aF.push_back((blockSurf).clone())
-            
+
             #
             # skin the split surfaces to create the mesh block volume
             #
@@ -819,7 +911,95 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
             self.appendAnalyticFunction( theRef )
              
         return
+    
+    def calculateMeanAngle(self, bladeSurf, split0, split1, cc, iC = None):
+        
+        dtBladeSurf = bladeSurf.constPtrDtSurface()
+        
+        #
+        # split the surrounding surface
+        #
+        blockSurf = vec3dSurfaceTwoD(
+            bSplineSurface_bSplineSurfaceSplitConstructOCC(
+              self.aFTwo_.constPtrDtSurface(), 
+              self.splitDim_, 
+              split0, 
+              split1
+            ).result()
+        )
+        dtBlockSurf = blockSurf.constPtrDtSurface()
+        
+        # list for hub and shroud angles
+        angles_hs = np.zeros(2)
 
+        # iterate over hub and shroud
+        for hs in [0, 1]:
+            
+            # according to split dimension
+            if self.splitDim_ == 0:
+                # calculate tangent vector of the blade at the blade split position
+                tangVec = dtBladeSurf.firstDerU(
+                    dtBladeSurf.maxU(),
+                    dtBladeSurf.v_vPercent(hs)
+                )
+                
+                # calculate the point of the blade split position and the point
+                # of the current block split position
+                bladeP = dtBladeSurf.getPointPercent3d(1,hs)
+                blockP = dtBlockSurf.getPointPercent3d(1,hs)
+            
+            elif self.splitDim_ == 1:
+                tangVec = dtBladeSurf.firstDerV(
+                    dtBladeSurf.u_uPercent(hs),
+                    dtBladeSurf.maxV()
+                )
+                
+                bladeP = dtBladeSurf.getPointPercent3d(hs,1)
+                blockP = dtBlockSurf.getPointPercent3d(hs,1)
+
+            tangVec = dtLinearAlgebra.normalize(tangVec) 
+            
+            # vector extending from blade split to block split
+            blade2BlockVec = dtLinearAlgebra.normalize(
+                dtVector3(
+                    blockP.x() - bladeP.x(),
+                    blockP.y() - bladeP.y(),
+                    blockP.z() - bladeP.z()
+                )
+            )
+            
+            # calculate the angle between the two vectors
+            angles_hs[hs] = dtLinearAlgebra.angle(tangVec, blade2BlockVec)
+            
+            # useful debugging plots
+            if iC != None:
+                if iC == 0:
+                    # Debug statement to plot tangents
+                    tangent = bSplineCurve_pointConstructOCC(
+                        vectorDtPoint3()
+                          << dtBladeSurf.getPointPercent3d(1,hs)
+                          << dtBladeSurf.getPointPercent3d(1,hs) + tangVec * 0.1,
+                        1
+                    ).result()
+                    tC = (
+                        vec3dCurveOneD( tangent ) << self.label_ + "tangent_hs"+str(hs)+"_block"+str(cc)+"_correct"+str(iC)
+                    )
+                    self.appendAnalyticFunction(tC)
+                # Debug statement to plot block edges
+                b2bEdge = bSplineCurve_pointConstructOCC(
+                    vectorDtPoint3()
+                      << dtBladeSurf.getPointPercent3d(1,hs)
+                      << dtBladeSurf.getPointPercent3d(1,hs) + blade2BlockVec * 0.1,
+                    1
+                ).result()
+                nC = (
+                    vec3dCurveOneD( b2bEdge ) << self.label_ + "b2b_hs"+str(hs)+"_block"+str(cc)+"_correct"+str(iC)
+                )
+                self.appendAnalyticFunction(nC)
+        
+        # return the mean between the hub and shround angles
+        return np.mean(angles_hs)
+    
     #
     # Extracts the necessary curves and their offsets for the generation of the trailing edge meshBlocks
     #  and the generation of the meanplane curves

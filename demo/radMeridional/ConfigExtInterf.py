@@ -501,7 +501,7 @@ def run(*args, **kwargs):
     generate = radMeridional.radMeridional()
 
     generate.createMeridional(configM, hubCurves, shroudCurves)
-    #generate.createBlade(configGV)
+    generate.createBlade(configGV)
     generate.createBlade(configRu)
 
     cc = generate.getContainer()

@@ -1903,6 +1903,7 @@ class radMeridional:
               meanplaneExtIn = 0.03,
               nMeanplaneBlocks = nMeanplaneBlocks
             ).buildExtract(self.container) 
+        
         #
         # Build the two meanplane faces extending from the mesh block edges 
         # to the tangentially offset meanplane curves.
@@ -2233,7 +2234,7 @@ class radMeridional:
         #    charLengthMin=0.1,
         #    meshTEBlocks = True,
         #).enableDebug().buildExtract( self.container )
-         
+    
     #
     # returns a list with dtPoint2 types and spline orders
     #  with spanwise cut percentage and blade input parameters
