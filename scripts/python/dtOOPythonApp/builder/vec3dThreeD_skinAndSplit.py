@@ -239,6 +239,11 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
         if self.thickness_ != None:
             self.nMeanplaneBlocks_ = self.nMeanplaneBlocks_ - 1
         
+        if self.splitDim_ == 0:
+            self.normalOnHs_ = dtVector3(0,0,1)
+        elif self.splitDim_ == 1:
+          self.normalOnHs_ = dtVector3(0,1,0)
+
         # adjust splits to corresponding parameter space
         if splits != [[]]:
           for split in self.splits_:
@@ -644,7 +649,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
             #
             # correct split positions on the blocks to reach 90 degree anfles
             #
-
+            
             # set split postions for the blocks from splits or previously 
             # corrected postion
             if cc == 0:
@@ -654,12 +659,13 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
             blockSplit1 = split[1]
             
             # target angle between blade tangent and extending edge
-            targetAngle = np.pi/2
+            targetAngle = -1*np.pi/2
             tolerance = 1e-2
             
             # perturbation and number of iteration for newtons approximation
-            eps = 1e-3
-            maxIter = 10
+            eps = 1e-4
+            maxDelta = 0.5
+            maxIter = 20
             
             # list for calculated block split positions and resulting errors
             errorList = []
@@ -669,60 +675,75 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
             # last besh block position is not corrected (always 100 percent TE)
             if cc < len(self.splits_)-1:
                 for iCorrect in range(maxIter): 
-                
-                    # calculate angle between tangential direction of blade at split position
-                    # and the edge direction from the blade split position to the current 
-                    # mesh block split position
-                    meanAngle = self.calculateMeanAngle(
-                            bladeSurf, 
-                            blockSplit0, 
-                            blockSplit1, 
-                            cc, 
-                            iCorrect
+                    
+                    try:
+                        # calculate angle between tangential direction of blade at split position
+                        # and the edge direction from the blade split position to the current 
+                        # mesh block split position
+                        meanAngle = self.calculateMeanAngle(
+                                bladeSurf, 
+                                blockSplit0, 
+                                blockSplit1, 
+                                cc, 
+                                iCorrect
+                            )
+                        
+                        error =  meanAngle - targetAngle
+                        
+                        logging.info(
+                            "Correction: %d | blockSplit1: %f | angle: %f deg | error: %f deg"
+                            % (
+                                iCorrect,
+                                blockSplit1,
+                                meanAngle * 180 / np.pi,
+                                error * 180 / np.pi
+                            )
                         )
-                    
-                    error =  meanAngle - targetAngle
-                    
-                    logging.info(
-                        "Correction: %d | blockSplit1: %f | angle: %f deg | error: %f deg"
-                        % (
-                            iCorrect,
-                            blockSplit1,
-                            meanAngle * 180 / np.pi,
-                            error * 180 / np.pi
-                        )
-                    )
-                    
-                    # append error list
-                    errorList.append([error, blockSplit1])
-                    
-                    # check tolerance
-                    if abs(error) < tolerance:
-                        logging.info("Tolerance reached")
+                        
+                        # append error list
+                        errorList.append([error, blockSplit1])
+                        
+                        # check tolerance
+                        if abs(error) < tolerance:
+                            logging.info("Tolerance reached")
+                            break
+                        
+                        # calculate the mean angle with a slight pertuberation in the split position
+                        meanAnglePerturbed = self.calculateMeanAngle(
+                                bladeSurf, 
+                                blockSplit0, 
+                                blockSplit1 + eps, 
+                                cc
+                            )
+                        
+                        # derivative
+                        derivative = (meanAnglePerturbed - meanAngle) / eps
+                        if abs(derivative) < 1e-10:
+                            raise RuntimeError("Derivative too small!")
+
+                        # Newton correction
+                        delta = -error / derivative
+                        print("delta = " +str(delta)) 
+                        delta = np.clip(delta, -maxDelta, maxDelta)
+
+                        # Change split position
+                        blockSplit1 += delta
+
+                    except:
+                        print("ERROR: Failed in correct")
+
+                        bestSplit = min(errorList, key=lambda x: abs(x[0]))
+
+                        logging.info("Best error: %f" % (bestSplit[0]))
+                        logging.info("Corresponding split: %f" % (bestSplit[1]))
+
+                        blockSplit1 = bestSplit[1] 
+
                         break
                     
-                    # calculate the mean angle with a slight pertuberation in the split position
-                    meanAnglePerturbed = self.calculateMeanAngle(
-                            bladeSurf, 
-                            blockSplit0, 
-                            blockSplit1 + eps, 
-                            cc
-                        )
-                    
-                    # derivative
-                    derivative = (meanAnglePerturbed - meanAngle) / eps
-                    if abs(derivative) < 1e-10:
-                        raise RuntimeError("Derivative too small!")
-
-                    # Newton correction
-                    delta = -error / derivative
-                    
-                    # Change split position
-                    blockSplit1 += delta
-                
                 else:
                     # using best split position if tolerance isnt reached
-                    logging.info("Tolerance not reached, using split position with smallest error")
+                    logging.warning("Tolerance not reached in corrective iterations")
                     
                     bestSplit = min(errorList, key=lambda x: abs(x[0]))
 
@@ -730,7 +751,6 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
                     logging.info("Corresponding split: %f" % (bestSplit[1]))
 
                     blockSplit1 = bestSplit[1] 
-            
             #
             # Splliting surrounding surface according to corrected split position
             #
@@ -956,7 +976,7 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
                 
                 bladeP = dtBladeSurf.getPointPercent3d(hs,1)
                 blockP = dtBlockSurf.getPointPercent3d(hs,1)
-
+            
             tangVec = dtLinearAlgebra.normalize(tangVec) 
             
             # vector extending from blade split to block split
@@ -967,9 +987,21 @@ class vec3dThreeD_skinAndSplit(dtBundleBuilder):
                     blockP.z() - bladeP.z()
                 )
             )
+             
+            # calculate the signed angle between the two vectors
+            sin_theta = dtLinearAlgebra.dotProduct(
+                self.normalOnHs_,
+                dtLinearAlgebra.crossProduct(
+                    tangVec,
+                    blade2BlockVec
+                )
+            )
+            cos_theta = dtLinearAlgebra.dotProduct(
+                tangVec,
+                blade2BlockVec
+            )
             
-            # calculate the angle between the two vectors
-            angles_hs[hs] = dtLinearAlgebra.angle(tangVec, blade2BlockVec)
+            angles_hs[hs] = np.arctan2(sin_theta, cos_theta) 
             
             # useful debugging plots
             if iC != None:
