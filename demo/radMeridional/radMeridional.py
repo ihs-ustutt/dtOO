@@ -1841,15 +1841,28 @@ class radMeridional:
               aFTwo = self.aF[label+"_meshBlock"],
               splitDim = 0,
               splits = [
-                [0.00, 0.02],
-                [0.02, 0.10],
-                [0.10, 0.30],
-                [0.30, 0.45],
+                [0.00, 0.01],
+                [0.01, 0.05],
+                [0.05, 0.15],
+                [0.15, 0.25],
+                [0.25, 0.35],
+                [0.35, 0.45],
                 [0.45, 0.55],
-                [0.55, 0.70],
-                [0.70, 0.90],
-                [0.90, 0.98],
-                [0.98, 1.00],
+                [0.55, 0.65],
+                [0.65, 0.75],
+                [0.75, 0.85],
+                [0.85, 0.95],
+                [0.95, 0.99],
+                [0.99, 1.00],
+                #[0.00, 0.02],
+                #[0.02, 0.10],
+                #[0.10, 0.30],
+                #[0.30, 0.45],
+                #[0.45, 0.55],
+                #[0.55, 0.70],
+                #[0.70, 0.90],
+                #[0.90, 0.98],
+                #[0.98, 1.00],
               ],
             ).buildExtract(self.container) 
             
@@ -1889,21 +1902,25 @@ class radMeridional:
               aFTwo = self.aF[label+"_meshBlock"],
               splitDim = 0,
               splits = [
-                [0.00, 0.10],
-                [0.10, 0.30],
-                [0.30, 0.45],
+                [0.00, 0.05],
+                [0.05, 0.15],
+                [0.15, 0.25],
+                [0.25, 0.35],
+                [0.35, 0.45],
                 [0.45, 0.55],
-                [0.55, 0.70],
-                [0.70, 0.90],
-                [0.90, 1.00],
+                [0.55, 0.65],
+                [0.65, 0.75],
+                [0.75, 0.85],
+                [0.85, 0.95],
+                [0.95, 1.00],
               ],
               tEMeshBlockThickness = meshBlock_thickness,
               meanplaneFromBlocks = True,
               meanplaneExtOut = 0.02,
-              meanplaneExtIn = 0.03,
+              meanplaneExtIn = 0.04,
               nMeanplaneBlocks = nMeanplaneBlocks
             ).buildExtract(self.container) 
-        
+        """ 
         #
         # Build the two meanplane faces extending from the mesh block edges 
         # to the tangentially offset meanplane curves.
@@ -2183,7 +2200,7 @@ class radMeridional:
             blade = self.aG["xyz_"+label+"_blade"],
             nBoundaryLayers = 15,
             nElementsSpanwise = 50,
-            nElementsNormal = 6,
+            nElementsNormal = 8,
             firstElementSizeHubToShroud = 0.001,
             firstElementSizeNormalBlade = 0.001,
             bladeHubElementSize = scaOneD_scaCurve2dOneDPointConstruct(
@@ -2234,7 +2251,7 @@ class radMeridional:
         #    charLengthMin=0.1,
         #    meshTEBlocks = True,
         #).enableDebug().buildExtract( self.container )
-    
+    """ 
     #
     # returns a list with dtPoint2 types and spline orders
     #  with spanwise cut percentage and blade input parameters
