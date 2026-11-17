@@ -1098,11 +1098,11 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
             for i, periodic in enumerate(periodics):
                 self.appendAnalyticGeometry(
                     periodic[0].getMap2dTo3d(),
-                    "debug_periodic0_"+str(i)+"_"+periodic[0].getPhysicalString()
+                    "debug_periodic0_"+self.label_+"_"+str(i)+"_"+periodic[0].getPhysicalString()
                 )
                 self.appendAnalyticGeometry(
                     periodic[1].getMap2dTo3d(),
-                    "debug_periodic1_"+str(i)+"_"+periodic[1].getPhysicalString()
+                    "debug_periodic1_"+self.label_+"_"+str(i)+"_"+periodic[1].getPhysicalString()
                 )
 
         #
@@ -1649,7 +1649,7 @@ class map3dTo3dGmsh_gridFromMultipleBoundedVolumeAndBlocks(dtBundleBuilder):
         """
 
         # set tolerance
-        tol = 0.01
+        tol = 0.005
         # prepare direction list
         boundaryLayerDir = []
 

@@ -1825,7 +1825,7 @@ class radMeridional:
         
         # number of mesh block faces which will be part of the meanplane
         #  starts from 0
-        nMeanplaneBlocks = 3
+        nMeanplaneBlocks = 5
         
         if tERounded == True:
             
@@ -1885,7 +1885,7 @@ class radMeridional:
               label =label+"_meshBlockCurve_in",
               surf = dtOO.vec3dSurfaceTwoD.DownCast(
                 dtOO.vec3dTransVolThreeD.MustConstDownCast(
-                  self.aF[label+"_meshBlock_3"]
+                  self.aF[label+"_meshBlock_"+str(int(nMeanplaneBlocks))]
                 ).constPtrVec3dTwoD( 3 )
               ),
               thickness = 0.02,
@@ -1920,7 +1920,7 @@ class radMeridional:
               meanplaneExtIn = 0.04,
               nMeanplaneBlocks = nMeanplaneBlocks
             ).buildExtract(self.container) 
-        """ 
+         
         #
         # Build the two meanplane faces extending from the mesh block edges 
         # to the tangentially offset meanplane curves.
@@ -2205,8 +2205,8 @@ class radMeridional:
             firstElementSizeNormalBlade = 0.001,
             bladeHubElementSize = scaOneD_scaCurve2dOneDPointConstruct(
                 [
-                   dtOO.dtPoint2(0.00, 0.002),
-                   dtOO.dtPoint2(0.01, 0.003),
+                   dtOO.dtPoint2(0.00, 0.001),
+                   dtOO.dtPoint2(0.01, 0.002),
                    dtOO.dtPoint2(0.05, 0.014),
                    dtOO.dtPoint2(0.10, 0.015),
                    dtOO.dtPoint2(0.45, 0.003),
@@ -2214,8 +2214,8 @@ class radMeridional:
                    dtOO.dtPoint2(0.55, 0.003),
                    dtOO.dtPoint2(0.90, 0.015),
                    dtOO.dtPoint2(0.95, 0.014),
-                   dtOO.dtPoint2(0.99, 0.003),
-                   dtOO.dtPoint2(1.00, 0.002),
+                   dtOO.dtPoint2(0.99, 0.002),
+                   dtOO.dtPoint2(1.00, 0.001),
                 ], 1
             )(),
             bladeHubElementScale = 0.3,
@@ -2251,7 +2251,7 @@ class radMeridional:
         #    charLengthMin=0.1,
         #    meshTEBlocks = True,
         #).enableDebug().buildExtract( self.container )
-    """ 
+        
     #
     # returns a list with dtPoint2 types and spline orders
     #  with spanwise cut percentage and blade input parameters
