@@ -40,3 +40,4 @@ from .dtAnalyticFunction import dtAnalyticFunction
 from .dtPagmo2Binding import dtPagmo2Binding
 from .dtSample import dtSample
 from .dtValueSample import dtValueSample
+from .dtMeanplaneSeparator import dtMeanplaneSeparator

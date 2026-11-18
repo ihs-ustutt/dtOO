@@ -1,4 +1,7 @@
 import foamlib
+import copy
+import shutil
+from pathlib import Path
 
 import logging
 logging.basicConfig(
@@ -15,62 +18,269 @@ import numpy as np
 import re
 import sys
 
-#n_cores = sys.argv[1]
-#case_name = sys.argv[2]
-#
-#print(str(n_cores))
-#print(case_name)
-#
-#_case = './'+case_name+'/'
-_case = './of_fittedBlade_0/'
+n_cores = sys.argv[1]
+case_name = sys.argv[2]
+
+print(str(n_cores))
+print(case_name)
+
+_case = './'+case_name+'/'
+#_case = './of_testState_template/'
 _safe_case = re.sub(r'[\\/:\*\?"<>|]', '_', _case)
 
 fc = foamlib.FoamCase( _case )
-#if True:
-if False:
-  fc.decompose_par_dict['method'] = 'metis'
-  fc.decompose_par_dict['numberOfSubdomains'] = int(n_cores)
-   
-  fc.turbulence_properties["RAS"]["turbulence"] = False
-  fc.fv_schemes['gradSchemes']['none'] = ('cellLimited', 'Gauss', 'linear', 0.33)
-  fc.fv_schemes['gradSchemes']['grad(p)'] = ('cellLimited', 'Gauss', 'linear', 0.33)
-  fc.fv_schemes['gradSchemes']['grad(U)'] = ('cellLimited', 'Gauss', 'linear', 0.33)
-  fc.fv_schemes['divSchemes']['div(phi,U)'] = \
+if True:
+#if False:
+    
+    # Load constant/polyMesh/boundary
+    boundary = fc.file("constant/polyMesh/boundary")
+
+    # Create an object of the separator calculation
+    mp = dtMeanplaneSeparator(_case)
+
+    for reg in [
+        ("gv_mesh", "Z"),
+        ("ru_mesh", "R")
+    ]:
+        # Get separators for mixing plane averaging
+        sep = mp.getSeparator(
+            regionName=reg[0],
+            planes=40,
+            planesBl=15,
+            stackAxis=reg[1],
+            debug=True
+        )
+
+        patch_name = reg[0] + "_outlet"
+
+        # Read file contents
+        with open(boundary.path, "r") as f:
+            content = f.read()
+        
+        # Build ribbonPatch entry
+        ribbon_patch = (
+            "        ribbonPatch\n"
+            "        {\n"
+            "            division    manual;\n"
+            f"            stackAxis  {reg[1]};\n"
+            "            distances  (" + " ".join(map(str, sep.tolist())) + ");\n"
+            "        }"
+        )
+
+        ## Match the outlet patch block
+        #pattern = (
+        #    rf"({re.escape(patch_name)}\s*\{{)"
+        #    rf"(.*?)"
+        #    rf"(\n\s*\}})"
+        #)
+        #match = re.search(pattern, content, flags=re.DOTALL)
+
+        #if not match:
+        #    raise ValueError(f"Patch '{patch_name}' not found in boundary file")
+
+        #patch_content = match.group(2)
+
+        # Find the beginning of the outlet patch
+        start = content.find(patch_name)
+
+        if start == -1:
+            raise ValueError(f"Patch '{patch_name}' not found")
+
+        # Find opening brace
+        brace_start = content.find("{", start)
+
+        # Find matching closing brace
+        depth = 0
+        brace_end = None
+
+        for i in range(brace_start, len(content)):
+            if content[i] == "{":
+                depth += 1
+            elif content[i] == "}":
+                depth -= 1
+
+                if depth == 0:
+                    brace_end = i
+                    break
+
+        if brace_end is None:
+            raise ValueError(f"Could not find closing brace for '{patch_name}'")
+
+        # Extract patch contents
+        patch_content = content[brace_start + 1:brace_end]
+
+
+        
+        # Remove existing sep entry (parenthesized list)
+        patch_content = re.sub(
+            r"\bsep\s*\([^;]*?\)\s*;",
+            "",
+            patch_content,
+            flags=re.DOTALL
+        )
+        
+        # Remove existing ribbonPatch block
+        patch_content = re.sub(
+            r'ribbonPatch\s*\{[^{}]*\}',
+            "",
+            patch_content,
+            flags=re.DOTALL
+        )
+        # Insert new ribbonPatch entry
+        patch_content = patch_content.rstrip() + "\n" + ribbon_patch + "\n"
+
+        ## Replace patch block in file
+        #content = (
+        #    content[:match.start(2)]
+        #    + patch_content
+        #    + content[match.end(2):]
+        #)
+
+        # Replace original patch contents
+        content = (
+            content[:brace_start + 1]
+            + patch_content
+            + "\n    "
+            + content[brace_end:]
+        )
+
+        
+        # Write updated file
+        with open(boundary.path, "w") as f:
+            f.write(content)
+
+    #
+    # Laminar Simulation Settings
+    #
+
+    fc.turbulence_properties["RAS"]["turbulence"] = False
+
+    #
+    # Decomposition 
+    #
+    fc.decompose_par_dict['method'] = 'metis'
+    fc.decompose_par_dict['numberOfSubdomains'] = int(n_cores)
+
+
+    #
+    # Control dict entries
+    #
+    fc.control_dict['DebugSwitches'] = {
+        'mixingInterfacePatch': 2
+    }
+
+    fc.control_dict['writeInterval'] = 100
+    fc.control_dict['endTime'] = 500
+
+    # make the of-files modifiable during runtime
+    fc.control_dict['runTimeModifiable'] = True
+
+    # create a function which exchanges fvSolution with a modified file
+    # at a specific runtime
+    ## fileToUpdate: fvSolution   -> simulation starts with these settings
+    ## timeVsFile: [
+    ##    Time,           -> time where settings are changed,
+    ##    "Path/To/File"  -> file which has new settings which will be written to fileToUpdate
+    ## ]
+    fc.control_dict['functions']['updateFvSolution'] = {
+        'type': 'timeActivatedFileUpdate',
+        'libs': ['utilityFunctionObjects'],
+        'writeControl': 'timeStep',
+        'writeInterval': 1,
+        'fileToUpdate': '"$FOAM_CASE/system/fvSolution"',   
+        'timeVsFile': [
+            [600, '"$FOAM_CASE/system/fvSolution.update"']
+        ]
+    }
+
+    ## create a runtime control function
+    ## simulation stops when the specified value reaches tolerance within window 
+    #fc.control_dict['functions']['stopOnConvergence'] = {
+    #    'type': 'runTimeControl',
+    #    'libs': ['utilityFunctionObjects'],
+    #    'conditions': {
+    #        'convergenceCheck' : {
+    #            'type': 'average',
+    #            'functionObject': 'F_ru_mesh_blade',
+    #            'fields': ['moment'],
+    #            'dataFile': '"$FOAM_CASE/postProcessing/F_ru_mesh_blade/500/moment.dat"',
+    #            'component': 2,
+    #            'tolerance': 100,
+    #            'window': 100,
+    #            'windowType': 'exact',
+    #        }
+    #    }
+    #}
+
+    #
+    # fvSchemes
+    #
+    fc.fv_schemes['gradSchemes']['none'] = ('cellLimited', 'Gauss', 'linear', 0.33)
+    fc.fv_schemes['gradSchemes']['grad(p)'] = ('cellLimited', 'Gauss', 'linear', 0.33)
+    fc.fv_schemes['gradSchemes']['grad(U)'] = ('cellLimited', 'Gauss', 'linear', 0.33)
+    fc.fv_schemes['divSchemes']['div(phi,U)'] = \
     ('Gauss', 'linearUpwind', 'cellLimited', 'Gauss', 'linear', 0.33)
-  fc.fv_schemes["mixingInterface"] = {
+    fc.fv_schemes["mixingInterface"] = {
         "U": "consistentAveraging",
         "p": "consistentAveraging",
         "k": "fluxAveraging",
         "epsilon": "fluxAveraging",
         "omega": "fluxAveraging"
-      }
-  fc.fv_solution["relaxationFactors"] = {
-        "p": 0.2,
+    }
+
+    #
+    # fvSolution -> settings with which the simulation starts
+    #
+    fc.fv_solution["relaxationFactors"] = {
+        "p": 0.4,
         "U": 0.4,
         "k": 0.6,
         "epsilon": 0.6,
         "omega": 0.6
-      }
-  fc.fv_solution["SIMPLE"] = {
+    }
+    fc.fv_solution["SIMPLE"] = {
         "nNonOrthogonalCorrectors": 20,
+        #"residualControl": {
+        #    "p": 1e-6,
+        #    "U": 1e-6,
+        #    "k": 1e-6,
+        #    "omega": 1e-6,
+        #},
         #"consistent": "yes"
-      }
- 
-  fc.control_dict['DebugSwitches'] = {
-          'mixingInterfacePolyPatch': 2
-        }
-  fc.control_dict['writeInterval'] = 100
-  fc.control_dict['endTime'] = 500
-  fc.run()
-  
-  fc.control_dict['endTime'] = 2000
-  fc.control_dict['writeInterval'] = 100
-  #fc.control_dict['purgeWrite'] = 10
-  fc.turbulence_properties["RAS"]["turbulence"] = True
-  
-  fc.run()
-  
-fc.run(["reconstructPar", '-time', '500,2000'])
+    }
+
+    #
+    # fvSolution.update -> file which will update fvSolution as specified in 'timeVsFile'
+    #
+    # copy the fvSolution file
+    source = Path(_case) / "system" / "fvSolution"
+    target = Path(_case) / "system" / "fvSolution.update"
+    shutil.copy2(source, target)
+
+    # open the copy with foamlib and edit the values
+    fv_orthogonal = foamlib.FoamFile(target)
+    with fv_orthogonal as f:
+      f["SIMPLE"]["nNonOrthogonalCorrectors"] = 5
+
+    # run the laminar simulation
+    fc.run()
+    fc.run(["reconstructPar", "-latestTime"])
+
+    ##
+    ## Turbulent Simulation Settings
+    ##
+
+    fc.control_dict['endTime'] = 2000
+    fc.control_dict['writeInterval'] = 500
+    #fc.control_dict['purgeWrite'] = 10
+    fc.turbulence_properties["RAS"]["turbulence"] = True
+
+    # run the turbulent simulation
+
+    fc.run()
+#fc.run(["reconstructPar"])
+fc.run(["reconstructPar", "-latestTime"])
+#fc.run(["reconstructPar", '-time', '500,2000'])
 
 _omega = np.abs(
   foamlib.FoamFile(fc.path/'constant/MRFProperties')['MRF_ru_mesh']['omega']
@@ -86,8 +296,8 @@ for var in ["U", "U:Transformed", "p",]:
         ]:
     fc.run(["patchToCsv", var, patch])
 
-#_time = fc[-1].name
-_time = "2000"
+_time = fc[-1].name
+#_time = "2000"
 
 #patchToCsv U ru_mesh_outlet
 UTrans_gv_in = dtAverageValueField(dtCylField(_case+"gv_mesh_inlet_U:Transformed_"+_time+".csv").Read(), 10, 10, 10)
