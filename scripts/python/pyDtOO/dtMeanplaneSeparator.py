@@ -109,7 +109,8 @@ class dtMeanplaneSeparator():
             logging.info("Saved in %smeanplaneSep_%s_outlet.vtk" % (self.case_,regionName))
         
         sep = verticeCoordsRZ[:,ax]
-        
+        #sep = sep[1:-1]
+
         return sep
 
     def getPatchVertices(self, patchName):

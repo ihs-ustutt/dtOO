@@ -367,21 +367,6 @@ ax.grid(True)
 #ax.grid(True)
 
 
-pT_gv_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_gv_mesh_inlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_gv_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_gv_mesh_outlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_ru_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_ru_mesh_inlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_ru_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_ru_mesh_outlet").Read(pattern={"*.dat": ":,1:"}) )
-#pT_ml_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_meshLayers_inlet").Read(pattern={"*.dat": ":,1:"}) )
-#pT_ml_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_meshLayers_outlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_dt_in = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_dt_mesh_inlet").Read(pattern={"*.dat": ":,1:"}) )
-pT_dt_out = dtScalarDeveloping( dtDeveloping(_case+"postProcessing/PT_dt_mesh_outlet").Read(pattern={"*.dat": ":,1:"}) )
-dh_gv0 = (pT_gv_out.MeanLast(10) - pT_gv_in.MeanLast(10))/_g
-dh_ru0 = (pT_ru_out.MeanLast(10) - pT_ru_in.MeanLast(10))/_g
-#dh_ml0 = (pT_ml_out.MeanLast(10) - pT_ml_in.MeanLast(10))/_g
-dh_dt0 = (pT_dt_out.MeanLast(10) - pT_dt_in.MeanLast(10))/_g
-dh = dh_gv0 + dh_ru0 + dh_dt0
-F = dtForceDeveloping( dtDeveloping(_case+"postProcessing/F_ru_mesh_blade").Read(pattern={'force.dat' : ':,4:10', 'moment.dat' : ':,4:10', '*.*' : ''}) )
-
 print("pT_ru_in = ", pT_ru_in.MeanLast(1))
 print("pT_ru_out = ", pT_ru_out.MeanLast(1))
 pt_globIn = pT_gv_in.MeanLast(10)
@@ -405,7 +390,7 @@ p_gv_out = dtValueField(dtField(_case+"gv_mesh_outlet_p_"+_time+".csv").Read())
 Q_gv = np.abs(p_gv_in.IntQ())
 
 h_tot_gv_in = (p_gv_in.IntValueQ() / _g + U_gv_in.IntMagSquareQ() / (2.*_g))/Q_gv
-print("h_tot_gv_in = %f" % h_tot_gv_in)
+print("h_tot_gv_in = %f" % h_tot_gv_in[0])
 #h_tot_ru_out = (p_ru_out.IntValueQ() / _g + U_ru_out.IntMagSquareQ() / (2.*_g))/Q
 
 U_ru_in = dtValueField(dtField(_case+"ru_mesh_inlet_U_"+_time+".csv").Read())
@@ -426,19 +411,19 @@ print("p_ru_in.IntValueQ() = ", p_ru_in.IntValueQ())
 print("U_ru_in.IntMagSquareQ() = ", U_ru_in.IntMagSquareQ())
 print("p_ru_out.IntValueQ() = ", p_ru_out.IntValueQ())
 print("U_ru_out.IntMagSquareQ() = ", U_ru_out.IntMagSquareQ())
-print("h_tot_ru_in = %f" % h_tot_ru_in)
-print("h_tot_ru_out = %f" % h_tot_ru_out)
+print("h_tot_ru_in = %f" % h_tot_ru_in[0])
+print("h_tot_ru_out = %f" % h_tot_ru_out[0])
 
 dh_ru = (h_tot_ru_out - h_tot_ru_in)
 M_z = F.MomentMeanLast(100)[2]
 
 print("M_z = %f" % M_z)
 print("_omega = %f" % _omega)
-print("dh_ru = %f" % dh_ru)
+print("dh_ru = %f" % dh_ru[0])
 print("Q_ru = %f" % Q_ru)
 
 eta = M_z * _omega / (_rho*_g*dh_ru*Q_ru)
-print("eta = %f" % eta)
+print("eta = %f" % eta[0])
 
 fig.text(0.5, 0.02, 
          f"""Pressure: $p_{{T,GV,in}}$ = {pt_globIn:.2f}, $p_{{T,DT,out}}$ = {pt_globOut:.2f}, $dh$ = {dh:.2f} m
@@ -453,47 +438,3 @@ fig.suptitle("Case: "+_case)
 plt.tight_layout(rect=[0, 0.15, 1, 1])
 plt.savefig(f"./ofCase_eval/eval_{_safe_case}.png")
 plt.close()
-
-
-#try:
-#  #
-#  # Read data from ``postProcessing`` folder
-#  #
-#  Q_ru_dev = dtScalarDeveloping(
-#    dtDeveloping(str(fc.path/'postProcessing/Q_ru_in/100')).Read()
-#  )
-#  pIn_ru_dev = dtScalarDeveloping(
-#    dtDeveloping(str(fc.path/'postProcessing/ptot_ru_in/100')).Read()
-#  )
-#  pOut_ru_dev = dtScalarDeveloping(
-#    dtDeveloping(str(fc.path/'postProcessing/ptot_ru_out/100')).Read()
-#  )
-#  Vcav_dev = dtScalarDeveloping(
-#    dtDeveloping(str(fc.path/'postProcessing/V_CAV/100')).Read()
-#  )
-#  F_dev = dtForceDeveloping(
-#    dtDeveloping(str(fc.path/'postProcessing/forces')).Read(
-#      {'force.dat' : ':,4:10', 'moment.dat' : ':,4:10', '*.*' : ''}
-#    )
-#  )
-#  #
-#  # Calculate power, head, efficiency, and cavitation volume; average
-#  # simulation results over 100 iterations
-#  #
-#  P[i] = F_dev.MomentMeanLast(100)[2] * omega
-#  dH[i] = (pOut_ru_dev.MeanLast(100) - pIn_ru_dev.MeanLast(100)) / 9.81
-#  eta[i] = P[i] / (1000. * 9.81 * dH[i] * Q_ru_dev.MeanLast(100) )
-#  Vcav[i] = Vcav_dev.MeanLast(100)
-#  #
-#  # Check if number of iterations reached and if it is a turbine not a
-#  # pump
-#  #
-#  if fc[-1].name != '1000':
-#    raise ValueError('Max number of iterations not reached.')
-#  if np.abs(eta[i]) > 1:
-#    raise ValueError('Pump detected.')
-##
-## Handle exceptions
-##
-#except Exception as e:
-#  logging.error('Catch exception : %s', e)

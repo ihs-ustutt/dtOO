@@ -571,10 +571,10 @@ if __name__ == "__main__":
     #bV["ru_mesh"].makeGrid()
     #bV["gv_mesh"].makeGrid()
     #bV["meshLayers"].makeGrid()
-    """
-    stateLbl = "testCase"
+    
+    stateLbl = "manualMixingplane"
     indiv = "0"
     
     createOFCase(container, stateLbl, indiv, 0.36)
-    """
+    
     # ------------------- EOF ------------------- #

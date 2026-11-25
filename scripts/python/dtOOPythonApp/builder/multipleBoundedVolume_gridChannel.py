@@ -351,6 +351,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         origin: dtPoint3 = dtPoint3(0, 0, 0),
         orientation: int = 1,
         tERounded: bool = False,
+        flowDir: str = "turbine",
 
       ) -> None:
         """
@@ -392,6 +393,7 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
         self.origin_ = origin
         self.orientation_ = orientation
         self.tE_ = tERounded 
+        self.flowDir_ = flowDir
 
     def build(self) -> None:
         """Build part.
@@ -644,9 +646,14 @@ class multipleBoundedVolume_gridChannel(dtBundleBuilder):
             # outlet or inlet boundary of region (first or last meanplane face)
             #
             if i == 0 or i == len(self.meanplanes_)-1:
-
-                # boundary label
-                let = "outlet" if i == 0 else "inlet"
+                
+                if self.flowDir_ == "turbine":
+                    # boundary label
+                    let = "outlet" if i == 0 else "inlet"
+                elif self.flowDir_ == "pump":
+                    let = "inlet" if i == 0 else "outlet"
+                else:
+                    logging.error("Invalid flow direction. Valid options are 'turbine' and 'pump'")
                 
                 # rotate the interface edge to create the interface surface
                 rM = rotatingMap1dTo3d(
